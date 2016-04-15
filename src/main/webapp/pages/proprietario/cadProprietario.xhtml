@@ -1,0 +1,51 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/pages/templates/default.xhtml">
+        <ui:define name="corpo">
+            <br/> 
+            <h:form id="idFormCadastroProprietario" style="text-align: left"> 
+                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                <p:outputLabel value="Razão Social" style="font-size: 12px;text-align: left;"/>
+                <p:outputLabel value="Nome Fantasia" style="font-size: 12px;text-align: left;margin-left: 19.6%;"/>
+                <p:outputLabel value="Tipo de Logadouro" style="font-size: 12px;text-align: left;margin-left: 21%;"/>
+                <br/> 
+                <p:inputText value="#{cadProprietarioMB.proprietario.razaosocial}"/>
+                <p:inputText value="#{cadProprietarioMB.proprietario.nomefantasia}" style="margin-left: 12.2%;"/>
+                <p:inputText value="#{cadProprietarioMB.proprietario.tipologradouro}" style="margin-left: 14.5%;"/>
+                <br/><br/> 
+                
+                <p:outputLabel value="Logadouro" style="font-size: 12px;text-align: left;"/>
+                <p:outputLabel value="Número" style="font-size: 12px;text-align: left;margin-left: 20.5%;"/> 
+                <p:outputLabel value="Complemento" style="font-size: 12px;text-align: left;margin-left: 24%;"/>
+                <br/> 
+                <p:inputText value="#{cadProprietarioMB.proprietario.logradouro}"/>
+                <p:inputText value="#{cadProprietarioMB.proprietario.numero}" style="margin-left: 12.2%;"/>
+                <p:inputText value="#{cadProprietarioMB.proprietario.complemento}" style="margin-left: 14.5%;"/>
+                
+                <br/><br/> 
+                
+                <p:outputLabel value="Bairro" style="font-size: 12px;text-align: left;"/>
+                <p:outputLabel value="Cep" style="font-size: 12px;text-align: left;margin-left: 22%;"/> 
+                <p:outputLabel value="Cidade" style="font-size: 12px;text-align: left;margin-left: 25.5%;"/>
+                <br/> 
+                <p:inputText value="#{cadProprietarioMB.proprietario.bairro}"/> 
+                <p:inputText value="#{cadProprietarioMB.proprietario.cep}" style="margin-left: 12.2%;"/>
+                <p:inputText value="#{cadProprietarioMB.proprietario.cidade}" style="margin-left: 14.5%;"/>
+                
+                
+                <br/><br/> 
+                
+                <p:outputLabel value="Estado" style="font-size: 12px;text-align: left;"/>
+                 <br/> 
+                <p:inputText value="#{cadProprietarioMB.proprietario.estado}"/> 
+                <br/><br/>  
+                
+                <p:commandButton value="Salvar" update="idFormCadastroProprietario" actionListener="#{cadProprietarioMB.Salvar()}" ajax="false"/>
+            </h:form>  
+        </ui:define> 
+    </ui:composition>    
+</html>
+
