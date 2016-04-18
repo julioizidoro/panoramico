@@ -6,9 +6,38 @@
     <ui:composition template="/pages/templates/default.xhtml">
         <ui:define name="corpo">
             <br/> 
-            <h:form id="idFormConsultaCliente" style="text-align: left;margin-left: 10%;"> 
-                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+            <h:form id="idFormConsultaCliente" style="text-align: left;">
+                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:10%;width: 80%;"/>
+                <p:commandLink   action="#{clienteMB.novoCadastroCliente()}" style="margin-left:87.4%;text-decoration:none;" title="Novo Lançamento">
+				<img src="../../resources/img/iconeplus.png" style="border:solid; border-width: 1px; border-color: orange; border-radius:5px;"/>
+                                <p:ajax event="dialogReturn" listener="#{clienteMB.retornoDialogNovo}" update="idTabelaCliente"/>
+                </p:commandLink>
                 
+                <br/><br/>
+                <p:dataTable id="idTabelaCliente"  var="cliente"  value="#{clienteMB.listaCliente}" style="border:none;width:80%;margin-left: 10%;" class="tabelacontas" 
+                                 scrollRows="10"  scrollable="true" scrollHeight="300" selection="#{clienteMB.cliente}" selectionMode="single" rowKey="#{cliente.idcliente}">
+                       
+                        <p:column headerText="Nome" sortBy="#{cliente.nome}" style="width:30%; font-size:12px; background:white; color:black; border:none;">
+                            <h:outputText  value="#{cliente.nome}" />
+                        </p:column>
+                        <p:column headerText="Data Nascimento" sortBy="#{cliente.datanascimento}" style="width:15%; font-size:12px; background:white; color:black; border:#fff;">
+                            <h:outputText value="#{cliente.datanascimento}" style="margin-left:25%;">
+                                <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Email" sortBy="#{cliente.email}" style="width:40%; font-size:12px; background:white; color:black; border:none;" >
+                            <h:outputText value="#{cliente.email}"/>
+                        </p:column>
+                        <p:column headerText="Telefone" sortBy="#{cliente.telefone}" style=" font-size:12px; background:white; color:black; border:none;" >
+                            <h:outputText value="#{cliente.telefone}" style="margin-left: 13%;"/>
+                        </p:column> 
+                        <p:column headerText="" style="font-size: 12px;background: white;width: 4%;">
+                            <p:commandLink title="Editar" action="#{clienteMB.editar(cliente)}">
+                                <img src="../../resources/img/editarS.png" style="width: 80%;"/>
+                                <p:ajax event="dialogReturn" listener="#{clienteMB.retornoDialogNovo}" update=":idFormConsultaCliente:idTabelaCliente" process="@this"/>
+                             </p:commandLink>
+                        </p:column>
+                </p:dataTable> 
             </h:form>
         </ui:define>
     </ui:composition>

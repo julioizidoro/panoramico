@@ -5,10 +5,11 @@
         xmlns:f="http://xmlns.jcp.org/jsf/core">   
             <p:growl id="messages"/>
 
-            <p:menubar>
+            <p:menubar style="width: 80%;margin-left: 10%;">
                 <p:submenu label="Cadastro" icon="ui-icon-plus">
                     <p:menuitem value="Proprietario" ajax="false" action="#{menuMB.CadastroProprietario()}"/> 
-                    <p:menuitem value="Cliente" ajax="false" action="#{menuMB.consCliente}"/> 
+                    <p:menuitem value="Cliente" ajax="false" action="#{menuMB.consCliente()}"/>
+                    <p:menuitem value="Embora" ajax="false" action="#{menuMB.ConsEmpresa}"/> 
                 </p:submenu>
 
                 <p:submenu label="Edit" icon="ui-icon-pencil">
