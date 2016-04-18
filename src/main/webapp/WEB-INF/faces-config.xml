@@ -21,7 +21,16 @@
 			<to-view-id>/pages/empresa/consEmpresa.xhtml</to-view-id>
 			<redirect />
 		</navigation-case> 
-    </navigation-rule>v
+    </navigation-rule>
+    
+    <navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>consPlano</from-outcome> 
+			<to-view-id>/pages/plano/consPlano.xhtml</to-view-id>
+			<redirect />
+		</navigation-case> 
+    </navigation-rule>
 
      <application>
             <action-listener>

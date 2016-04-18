@@ -36,6 +36,7 @@ public class CadEmpresaMB implements  Serializable{
          FacesContext fc = FacesContext.getCurrentInstance();
          HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
          empresa =  (Empresa) session.getAttribute("empresa");
+         session.removeAttribute("empresa");
         if (empresa == null) {
             empresa = new Empresa();
         }

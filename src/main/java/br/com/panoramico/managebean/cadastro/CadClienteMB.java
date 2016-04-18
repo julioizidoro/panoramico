@@ -37,6 +37,7 @@ public class CadClienteMB implements  Serializable{
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         cliente = (Cliente) session.getAttribute("cliente");
+        session.removeAttribute("cliente");
         if (cliente == null) {
             cliente = new Cliente();
         }

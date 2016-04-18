@@ -48,4 +48,8 @@ public class MenuMB implements Serializable{
         public String ConsEmpresa(){
             return "consEmpresa";
         }
+        
+        public String ConsPlano(){
+            return "consPlano";
+        }
 }
