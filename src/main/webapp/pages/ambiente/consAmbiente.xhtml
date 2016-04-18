@@ -20,11 +20,9 @@
                     <p:column headerText="Nome" sortBy="#{ambiente.nome}" style="width:30%; font-size:12px; background:white; color:black; border:none;">
                         <h:outputText  value="#{ambiente.nome}" />
                         </p:column>
-                    <p:column headerText="Capacidade" sortBy="#{ambiente.nome}" style="width:10%;font-size:12px; background:white; color:black; border:none;">
-                            <h:outputText  value="#{ambiente.nome}">
-                                 <f:convertNumber currencySymbol="" type="currency"/>
-                            </h:outputText>
-                        </p:column>
+                    <p:column headerText="Capacidade" sortBy="#{ambiente.capacidade}" style="text-align: right;width:10%;font-size:12px; background:white; color:black; border:none;">
+                        <h:outputText  value="#{ambiente.capacidade}" />
+                    </p:column>
                         
                         <p:column headerText="" style="font-size: 12px;background: white;width: 4%;">
                             <p:commandLink title="Editar" action="#{ambienteMB.editar(ambiente)}">
