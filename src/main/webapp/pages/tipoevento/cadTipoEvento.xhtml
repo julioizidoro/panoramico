@@ -12,19 +12,19 @@
      
 
  <h:body style="background:#CEEDF4;" > 
-        <h:form id="idFormCadastroEmpresa" class="body2" style="font-size: 12px; background-color: #CEEDF4;" enctype="multipart/form-data">
+        <h:form id="idFormCadastroTipoEvento" class="body2" style="font-size: 12px; background-color: #CEEDF4;" enctype="multipart/form-data">
                 
             <title>Cadastro de Empresa</title>
             <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
             
-            <p:outputLabel value="Razão" style="font-size: 12px;text-align: left;margin-left:2%;"/>
+            <p:outputLabel value="Descrição" style="font-size: 12px;text-align: left;margin-left:2%;"/>
             <br/>
-            <p:inputText value="#{cadEmpresaMB.empresa.razao}" size="80" style="margin-left:2%;font-size: 12px;"/>
+            <p:inputText value="#{cadTipoEventoMB.tipoenvento.descricao}" size="90" style="margin-left:2%;font-size: 12px;"/>
             
             <br/>
             <hr/>
             <br/>
-            <p:commandButton value="Salvar"  actionListener="#{cadEmpresaMB.salvar()}" ajax="false"/>
+            <p:commandButton value="Salvar"  actionListener="#{cadTipoEventoMB.salvar()}" ajax="false"/>
         </h:form>
  </h:body>
 </html>

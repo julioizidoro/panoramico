@@ -52,4 +52,8 @@ public class MenuMB implements Serializable{
         public String ConsPlano(){
             return "consPlano";
         }
+        
+        public String ConsTipoEvento(){
+            return"consTipoEvento";
+        }
 }
