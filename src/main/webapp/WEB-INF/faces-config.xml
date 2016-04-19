@@ -49,6 +49,25 @@
 			<redirect />
 		</navigation-case> 
     </navigation-rule>
+    
+    
+    <navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>consAssociado</from-outcome> 
+			<to-view-id>/pages/associado/consAssociado.xhtml</to-view-id>
+			<redirect />
+		</navigation-case> 
+    </navigation-rule>
+    
+    <navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>consDependente</from-outcome> 
+			<to-view-id>/pages/dependente/consDependente.xhtml</to-view-id>
+			<redirect />
+		</navigation-case> 
+    </navigation-rule>
 
      <application>
             <action-listener>

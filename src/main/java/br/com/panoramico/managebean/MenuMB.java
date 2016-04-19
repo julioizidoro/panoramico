@@ -60,4 +60,12 @@ public class MenuMB implements Serializable{
         public String ConsAmbiente(){
             return "consAmbiente";
         }
+        
+        public String ConsAssociado(){
+            return "consAssociado";
+        }
+        
+        public String ConsDependente(){
+            return "consDependente";
+        }
 }
