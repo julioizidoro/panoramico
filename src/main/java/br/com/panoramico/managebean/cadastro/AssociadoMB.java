@@ -106,4 +106,16 @@ public class AssociadoMB implements Serializable{
     }
     
     
+    public void associarEmpresa(Associado associado){
+        if (associado != null) {
+            Map<String, Object> options = new HashMap<String, Object>();
+            FacesContext fc = FacesContext.getCurrentInstance();
+            HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+            session.setAttribute("associado", associado);
+            options.put("contentWidth", 600);
+            RequestContext.getCurrentInstance().openDialog("cadAssociadoEmpresa", options, null);
+        }
+    }
+    
+    
 }

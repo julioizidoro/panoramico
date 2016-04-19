@@ -1,0 +1,30 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+        <link href="../../resources/css/css.css" rel="stylesheet" type="text/css" />
+    </h:head>
+     
+
+ <h:body style="background:#CEEDF4;" > 
+        <h:form id="idFormCadastroAssociadoEmpresa" class="body2" style="font-size: 12px; background-color: #CEEDF4;" enctype="multipart/form-data">
+                
+            <title>Associado Empresa</title>
+                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                
+                <p:outputLabel value="Empresa" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
+                 <br/>
+                 <p:selectOneMenu  id="empresa"  style="width: 250px;margin-left: 2%"  value="#{cadAssociadoEmpresaMB.empresa}" converter="EmpresaConverter"
+                             filter="true" filterMatchMode="contains" panelStyle="width:180px" >
+                    <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
+                    <f:selectItems  value="#{cadAssociadoEmpresaMB.listarEmpresa}" var="empresaselecionado" itemLabel="#{empresaselecionado.razao}" itemValue="#{empresaselecionado}"/>
+                    <f:attribute name="listaCliente" value="#{cadAssociadoEmpresaMB.listarEmpresa}"/>
+                 </p:selectOneMenu>
+        </h:form>
+ </h:body>
+</html>
