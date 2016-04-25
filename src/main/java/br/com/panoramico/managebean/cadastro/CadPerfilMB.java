@@ -85,7 +85,7 @@ public class CadPerfilMB implements Serializable{
     
     public void salvar(){
         if (perfil.getAcesso() == null) {
-            acesso = acessoDao.find(1);
+            acesso = acessoDao.find(1L);
            perfil.setAcesso(acesso); 
            
         }

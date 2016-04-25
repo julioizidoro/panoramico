@@ -97,7 +97,7 @@ public class CadDependenteMB implements Serializable{
     
     
     public void salvar(){
-        Integer numeroAssociadoProvisorio = 1;
+        Long numeroAssociadoProvisorio = 1L;
         associado = associadoDao.find(numeroAssociadoProvisorio);
         dependente.setAssociado(associado);
         dependente = dependenteDao.update(dependente);
