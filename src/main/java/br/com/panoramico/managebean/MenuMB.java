@@ -68,4 +68,12 @@ public class MenuMB implements Serializable{
         public String ConsDependente(){
             return "consDependente";
         }
+        
+        public String ConsUsuario(){
+            return "consUsuario";
+        }
+        
+        public String ConsPerfil(){
+            return "consPerfil";
+        }
 }

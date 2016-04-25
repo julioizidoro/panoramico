@@ -6,14 +6,19 @@
 package br.com.panoramico.managebean.cadastro;
 
 import br.com.panoramico.dao.AssociadoDao;
+import br.com.panoramico.dao.AssociadoEmpresaDao;
 import br.com.panoramico.model.Associado;
+import br.com.panoramico.model.Associadoempresa;
 import br.com.panoramico.model.Cliente;
 import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
@@ -36,6 +41,9 @@ public class AssociadoMB implements Serializable{
     private AssociadoDao associadoDao;
     private Associado associado;
     private List<Associado> listaAssociado;
+    @EJB
+    private AssociadoEmpresaDao associadoEmpresaDao;
+    private Associadoempresa associadoempresa;
     
     
     @PostConstruct
@@ -66,6 +74,24 @@ public class AssociadoMB implements Serializable{
     public void setListaAssociado(List<Associado> listaAssociado) {
         this.listaAssociado = listaAssociado;
     }
+
+    public AssociadoEmpresaDao getAssociadoEmpresaDao() {
+        return associadoEmpresaDao;
+    }
+
+    public void setAssociadoEmpresaDao(AssociadoEmpresaDao associadoEmpresaDao) {
+        this.associadoEmpresaDao = associadoEmpresaDao;
+    }
+
+    public Associadoempresa getAssociadoempresa() {
+        return associadoempresa;
+    }
+
+    public void setAssociadoempresa(Associadoempresa associadoempresa) {
+        this.associadoempresa = associadoempresa;
+    }
+    
+    
     
     
     
@@ -108,10 +134,16 @@ public class AssociadoMB implements Serializable{
     
     public void associarEmpresa(Associado associado){
         if (associado != null) {
+            try {
+                associadoempresa = associadoEmpresaDao.consultar("Select a from Associadoempresa a where a.associado.idassociado=" + associado.getIdassociado());
+            } catch (SQLException ex) {
+                Logger.getLogger(AssociadoMB.class.getName()).log(Level.SEVERE, null, ex);
+            } 
             Map<String, Object> options = new HashMap<String, Object>();
             FacesContext fc = FacesContext.getCurrentInstance();
             HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
             session.setAttribute("associado", associado);
+            session.setAttribute("associadoempresa", associadoempresa);
             options.put("contentWidth", 600);
             RequestContext.getCurrentInstance().openDialog("cadAssociadoEmpresa", options, null);
         }

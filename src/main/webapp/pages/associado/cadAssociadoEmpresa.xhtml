@@ -23,8 +23,13 @@
                              filter="true" filterMatchMode="contains" panelStyle="width:180px" >
                     <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
                     <f:selectItems  value="#{cadAssociadoEmpresaMB.listarEmpresa}" var="empresaselecionado" itemLabel="#{empresaselecionado.razao}" itemValue="#{empresaselecionado}"/>
-                    <f:attribute name="listaCliente" value="#{cadAssociadoEmpresaMB.listarEmpresa}"/>
+                    <f:attribute name="listaEmpresa" value="#{cadAssociadoEmpresaMB.listarEmpresa}"/>
                  </p:selectOneMenu>
+                 
+                 <br/><br/><br/><br/><br/><br/><br/>
+                <hr/>
+                <br/>  
+                <p:commandButton value="Salvar"  actionListener="#{cadAssociadoEmpresaMB.salvar()}" ajax="false"/>
         </h:form>
  </h:body>
 </html>

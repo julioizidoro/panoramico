@@ -45,7 +45,7 @@ public class Usuario implements Serializable {
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="E-mail inválido")//if the field contains email address consider using this annotation to enforce field validation
     @Size(max = 100)
     @Column(name = "e-mail")
-    private String eMail;
+    private String email;
     @Size(max = 14)
     @Column(name = "cpf")
     private String cpf;
@@ -95,13 +95,15 @@ public class Usuario implements Serializable {
         this.senha = senha;
     }
 
-    public String getEMail() {
-        return eMail;
+    public String getEmail() {
+        return email;
     }
 
-    public void setEMail(String eMail) {
-        this.eMail = eMail;
+    public void setEmail(String email) {
+        this.email = email;
     }
+
+    
 
     public String getCpf() {
         return cpf;

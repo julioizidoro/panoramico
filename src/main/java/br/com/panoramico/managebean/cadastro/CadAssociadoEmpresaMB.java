@@ -7,10 +7,10 @@ package br.com.panoramico.managebean.cadastro;
 
 import br.com.panoramico.dao.AssociadoEmpresaDao;
 import br.com.panoramico.dao.EmpresaDao;
-import br.com.panoramico.model.Acesso;
 import br.com.panoramico.model.Associado;
 import br.com.panoramico.model.Associadoempresa;
 import br.com.panoramico.model.Empresa;
+import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +20,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -46,10 +47,11 @@ public class CadAssociadoEmpresaMB implements Serializable{
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         associado = (Associado) session.getAttribute("associado");
+        associadoempresa = (Associadoempresa) session.getAttribute("associadoempresa");
         gerarListaEmpresa();
         if (associado != null) {
-            associadoempresa = new Associadoempresa();
             if (associadoempresa == null) {
+                associadoempresa = new Associadoempresa();
                 empresa = new Empresa();
             }else{
                 empresa = associadoempresa.getEmpresa();
@@ -113,6 +115,14 @@ public class CadAssociadoEmpresaMB implements Serializable{
         if (listarEmpresa == null) {
             listarEmpresa = new ArrayList<Empresa>();
         }
+    }
+    
+    public void salvar(){
+        associadoempresa.setEmpresa(empresa);
+        associadoempresa.setAssociado(associado);
+        associadoempresa = associadoEmpresaDao.update(associadoempresa);
+        RequestContext.getCurrentInstance().closeDialog(associadoempresa);
+        Mensagem.lancarMensagemInfo("Salvou", "Associado a empresa com sucesso!!");
     }
     
 }
