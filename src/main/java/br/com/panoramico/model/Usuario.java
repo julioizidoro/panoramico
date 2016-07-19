@@ -39,12 +39,12 @@ public class Usuario implements Serializable {
     @Size(max = 50)
     @Column(name = "login")
     private String login;
-    @Size(max = 100)
+    @Size(max = 200)
     @Column(name = "senha")
     private String senha;
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="E-mail inválido")//if the field contains email address consider using this annotation to enforce field validation
     @Size(max = 100)
-    @Column(name = "e-mail")
+    @Column(name = "email")
     private String email;
     @Size(max = 14)
     @Column(name = "cpf")

@@ -103,4 +103,11 @@ public class TipoEventoMB implements Serializable{
             RequestContext.getCurrentInstance().openDialog("cadTipoEvento", options, null);
         }
     }
+    
+    
+    public void excluir(Tipoenvento tipoenvento){
+        tipoEventoDao.remove(tipoenvento.getIdtipoenvento());
+        Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
+        gerarListaTipoEvento();
+    }
 }

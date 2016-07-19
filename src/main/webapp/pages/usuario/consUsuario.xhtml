@@ -6,41 +6,46 @@
     <ui:composition template="/pages/templates/default.xhtml">
         <ui:define name="corpo">
             <br/> 
-            <h:form id="idFormConsultaUsuario" style="text-align: left;">
+            <h:form id="idFormConsultaUsuario" style="margin-left:10%;width: 78%;">
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:10%;width: 80%;"/>
-                <p:commandLink   action="#{usuarioMB.novoCadastroUsuario()}" style="margin-left:87.4%;text-decoration:none;" title="Novo Lançamento">
-				<img src="../../resources/img/iconeplus.png" style="border:solid; border-width: 1px; border-color: orange; border-radius:5px;"/>
-                                <p:ajax event="dialogReturn" listener="#{usuarioMB.retornoDialogNovo}" update="idTabelaUsuario"/>
-                </p:commandLink>
                 
-                <br/><br/>
-                <p:dataTable id="idTabelaUsuario"  var="usuario"  value="#{usuarioMB.listaUsuario}" style="border:none;width:80%;margin-left: 10%;" class="tabelacontas" 
-                             scrollRows="10"  scrollable="true" scrollHeight="300" selection="#{usuarioMB.usuario}" selectionMode="single" rowKey="#{usuario.idusuario}">
-                       
-                        <p:column headerText="Nome" sortBy="#{usuario.nome}" style="width:30%; font-size:12px; background:white; color:black; border:none;">
-                            <h:outputText  value="#{usuario.nome}" />
-                        </p:column>
-                        <p:column headerText="Data Nascimento" sortBy="#{usuario.datanascimento}" style="width:15%; font-size:12px; background:white; color:black; border:#fff;">
-                            <h:outputText value="#{usuario.datanascimento}" style="margin-left:25%;">
-                                <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
-                            </h:outputText>
-                        </p:column>
-                    <p:column headerText="Email" sortBy="#{usuario.email}" style="width:40%; font-size:12px; background:white; color:black; border:none;" >
-                        <h:outputText value="#{usuario.email}"/>
-                        </p:column>
-                        <p:column headerText="Login" sortBy="#{usuario.login}" style=" font-size:12px; background:white; color:black; border:none;" >
-                            <h:outputText value="#{usuario.login}" style="margin-left: 13%;"/>
-                        </p:column>
-                        <p:column headerText="Perfil" sortBy="#{usuario.perfil.nome}" style=" font-size:12px; background:white; color:black; border:none;" >
-                            <h:outputText value="#{usuario.perfil.nome}" style="margin-left: 13%;"/>
-                        </p:column> 
-                        <p:column headerText="" style="font-size: 12px;background: white;width: 4%;">
-                            <p:commandLink title="Editar" action="#{usuarioMB.editar(usuario)}">
-                                <img src="../../resources/img/editarS.png" style="width: 80%;"/>
-                                <p:ajax event="dialogReturn" listener="#{usuarioMB.retornoDialogNovo}" update=":idFormConsultaUsuario:idTabelaUsuario" process="@this"/>
-                             </p:commandLink>
-                        </p:column>
-                </p:dataTable> 
+                <!-- TABELA CADASTROS -->
+                        <div class="col-6 titTela" style="margin-left:-15%;">Consulta Usuário</div>
+                        <p:commandLink action="#{usuarioMB.novoCadastroUsuario()}">
+                            <div class="icoAdd fa fa-plus-square-o"></div>
+                            <p:ajax event="dialogReturn" update="messages, idConsultaUsuario" listener="#{usuarioMB.retornoDialogNovo}"/>
+                        </p:commandLink>
+                        <h:dataTable id="idConsultaUsuario" styleClass="table" value="#{usuarioMB.listaUsuario}" var="usuario">
+                            <h:column>
+				<f:facet name="header">Nome</f:facet> 
+                                <h:outputText value="#{usuario.nome}" styleClass="alinhamento" style="text-align: left !important;margin-right:40%;" />
+			    </h:column>
+                            <h:column >  
+				<f:facet name="header">Data Nascimento</f:facet> 
+                                <h:outputText value="#{usuario.datanascimento}" styleClass="alinhamento" style="text-align: left !important;margin-right:40%;">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"
+								timeZone="America/Sao_Paulo" />
+                                </h:outputText>
+			    </h:column>
+                            <h:column>
+				<f:facet name="header">Email</f:facet> 
+                                <h:outputText value="#{usuario.email}" styleClass="alinhamento" style="text-align: left !important;margin-right:40%;"/>
+			    </h:column>
+                            <h:column>
+				<f:facet name="header">Perfil</f:facet> 
+                                <h:outputText value="#{usuario.perfil.nome}" styleClass="alinhamento" style="text-align: left !important;margin-right:40%;" />
+			    </h:column>
+                             <h:column>
+                                 <p:commandLink action="#{usuarioMB.editar(usuario)}">
+                                    <div class="fa fa-pencil-square-o">
+
+                                    </div>
+                                 </p:commandLink>
+                                    <div class="fa fa-trash-o"></div>
+                            </h:column>
+				
+				
+			</h:dataTable>
             </h:form>
         </ui:define>
     </ui:composition>

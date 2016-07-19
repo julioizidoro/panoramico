@@ -1,0 +1,19 @@
+.btn, .btn.btn.btnAzul, .btn.btnLaranja {
+	color:#fff;
+	padding:5%;
+	margin:2%;
+	border-radius:3px;
+	border-width: 0px;
+	border-style:none;
+}
+
+.btnAzul {
+	background-color: #136581;
+}
+.btnAzul:hover, .btnAzul:focus {
+	background-color: #2A748D;
+}
+
+.btnLaranja {
+	background-color: #C87009;
+}

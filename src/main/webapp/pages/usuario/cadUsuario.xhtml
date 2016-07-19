@@ -1,16 +1,53 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <title>TODO supply a title</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+        <link href="../../resources/css/css.css" rel="stylesheet" type="text/css" />
+    </h:head>
+     
+
+ <h:body style="background:#CEEDF4;" > 
+        <h:form id="idFormCadastroUsuario" class="body2" style="font-size: 12px; background-color: #CEEDF4;" enctype="multipart/form-data">
+                
+            <title>Novo Proprietario</title>
+                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                <p:outputLabel value="Nome" style="font-size: 12px;text-align: left;margin-left:2%;"/>
+                <p:outputLabel value="Login" style="font-size: 12px;text-align: left;margin-left: 28.5%;"/>
+                <p:outputLabel value="Senha" style="font-size: 12px;text-align: left;margin-left: 39%;"/>
+                <br/> 
+                <p:inputText value="#{cadUsuarioMB.usuario.nome}" style="margin-left:2%;font-size: 12px;"/>
+                <p:inputText value="#{cadUsuarioMB.usuario.login}" size="30" style="margin-left: 9%;font-size: 12px;"/>
+                <p:inputText value="#{cadUsuarioMB.usuario.senha}" size="10" style="margin-left: 9%;font-size: 12px;"/>
+                <br/><br/>
+                
+                <p:outputLabel value="E-mail" style="font-size: 12px;text-align: left;margin-left:2%;"/>
+                <p:outputLabel value="CPF" style="font-size: 12px;text-align: left;margin-left:35.5%;"/> 
+                <p:outputLabel value="Data de Nascimento" style="font-size: 12px;text-align: left;margin-left:27.2%;"/>
+                <br/> 
+                <p:inputText value="#{cadUsuarioMB.usuario.email}" size="30" style="margin-left:2%;font-size: 12px;"/>
+                <p:inputText  value="#{cadUsuarioMB.usuario.cpf}" style="margin-left:6%;font-size: 12px;"/>    
+                <p:inputMask mask="99/99/9999" size="16" value="#{cadUsuarioMB.usuario.datanascimento}" style="margin-left:6%;font-size: 12px;">
+                    <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+                </p:inputMask>
+                <br/><br/>
+                <p:outputLabel value="Perfil" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
+                 <br/>
+                 <p:selectOneMenu  id="perfil"  style="width: 250px;margin-left: 2%"  value="#{cadUsuarioMB.perfil}" converter="PerfilConverter"
+                             filter="true" filterMatchMode="contains" panelStyle="width:180px" >
+                   <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
+                   <f:selectItems  value="#{cadUsuarioMB.listaPerfil}" var="perfilselecionado" itemLabel="#{perfilselecionado.nome}" itemValue="#{perfilselecionado}"/>
+                   <f:attribute name="listaPerfil" value="#{cadUsuarioMB.listaPerfil}"/>
+                </p:selectOneMenu>
+                <br/><br/><br/><br/><br/><br/><br/>
+                <hr/>
+                <br/>  
+                <p:commandButton value="Salvar"  actionListener="#{cadUsuarioMB.salvar()}" ajax="false"/>
+            
+        </h:form>
+ </h:body>
 </html>

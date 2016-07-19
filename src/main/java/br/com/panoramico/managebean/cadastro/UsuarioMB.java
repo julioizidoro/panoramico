@@ -68,11 +68,7 @@ public class UsuarioMB implements Serializable{
     
     
     public void gerarListaUsuario(){
-        try {
-            listaUsuario = usuarioDao.listar("Select u from Usuario u");
-        } catch (SQLException ex) {
-            Logger.getLogger(UsuarioMB.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            listaUsuario = usuarioDao.list("Select u from Usuario u");
         if (listaUsuario == null) {
             listaUsuario = new ArrayList<Usuario>();
         }
@@ -104,5 +100,11 @@ public class UsuarioMB implements Serializable{
             options.put("contentWidth", 600);
             RequestContext.getCurrentInstance().openDialog("cadUsuario", options, null);
         }
+    }
+    
+    public void excluir(Usuario usuario){
+        usuarioDao.remove(usuario.getIdusuario());
+        Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
+        gerarListaUsuario();
     }
 }

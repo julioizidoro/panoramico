@@ -25,11 +25,11 @@ public abstract class AbstractDao<T> {
         return em.merge(entity);
     }
 
-    public void remove(Long id) {
+    public void remove(Integer id) {
         em.remove(em.getReference(clazz, id));
     }
 
-    public T find(Long id) {
+    public T find(Integer id) {
         return (T) em.find(clazz, id);
     }
 

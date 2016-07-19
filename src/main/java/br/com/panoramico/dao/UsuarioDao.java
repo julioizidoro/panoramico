@@ -28,12 +28,4 @@ public class UsuarioDao extends  AbstractDao<Usuario>{
         super(Usuario.class);
     }
     
-    public List<Usuario> listar(String sql)throws SQLException{
-        Query q = em.createQuery(sql);
-        List<Usuario> listaUsuario = null;
-        if (q.getResultList().size()>0){
-            listaUsuario =  q.getResultList();
-        }
-        return listaUsuario;
-    }
 }

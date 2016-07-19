@@ -9,7 +9,6 @@ import br.com.panoramico.dao.AssociadoDao;
 import br.com.panoramico.dao.AssociadoEmpresaDao;
 import br.com.panoramico.model.Associado;
 import br.com.panoramico.model.Associadoempresa;
-import br.com.panoramico.model.Cliente;
 import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
 import java.sql.SQLException;
@@ -149,5 +148,9 @@ public class AssociadoMB implements Serializable{
         }
     }
     
-    
+    public void excluir(Associado associado){
+        associadoDao.remove(associado.getIdassociado());
+        Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
+        gerarListaAssociado();
+    }
 }

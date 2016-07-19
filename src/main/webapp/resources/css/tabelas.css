@@ -1,0 +1,21 @@
+table {
+	background-color: #EAEAEA;
+	width:100%;
+	margin:1%;
+	border:2px solid #0098da;
+}
+table th, table td {
+	padding:1%;
+}
+table th {
+	color:#3D8397;
+	border-bottom:2px solid #3D8397;
+}
+table td {
+	color:#367587;
+	border-bottom:2px solid #cccccc;
+}
+table td .icos {
+	text-align: right;
+	font-size: 150%;
+}

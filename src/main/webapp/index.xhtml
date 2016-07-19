@@ -8,6 +8,15 @@
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>Panorâmico</title>
+        <link href="resources/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
+        <link rel="stylesheet" type="text/css" href="resources/css/layout.css"/>
+	<link rel="stylesheet" type="text/css" href="resources/css/menu.css"/>
+	<link rel="stylesheet" type="text/css" href="resources/css/buttons.css"/>
+	<link rel="stylesheet" type="text/css" href="resources/css/tabelas.css"/>
+	<link rel="stylesheet" type="text/css" href="resources/css/textos.css"/>
+        
+        <!-- FONTS -->
+	<link rel="stylesheet" type="text/css" href="resources/fonts/font-awesome-4.6.3/css/font-awesome.min.css"/>
     </h:head>
   
     <h:body style="background:#CEEDF4;"> 
@@ -16,8 +25,7 @@
                 <div id="centrologin" >  
                     <br></br><br></br>
                     <h1>Bem Vindo!!</h1>
-                     <p:commandButton value="Login"  action="#{menuMB.PaginaTeste()}" ajax="false"/>
-                     
+                    <h:commandButton styleClass="btn btn-danger" value="Entrar"  action="#{menuMB.entrar()}"/>
                 </div>
             </h:form>
     </h:body>

@@ -102,4 +102,11 @@ public class EmpresaMB implements  Serializable{
             listaEmpresa = new ArrayList<Empresa>();
         }
     }
+    
+    
+    public void excluir(Empresa empresa){
+        empresaDao.remove(empresa.getIdempresa());
+        Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
+        gerarListaEmpresa();
+    }
 }

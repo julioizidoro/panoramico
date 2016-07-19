@@ -105,5 +105,9 @@ public class ClienteMB implements Serializable{
     }
     
    
-    
+    public void excluir(Cliente cliente){
+        clienteDao.remove(cliente.getIdcliente());
+        Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
+        gerarListaCliente();
+    }
 }

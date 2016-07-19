@@ -25,7 +25,7 @@ public class MenuMB implements Serializable{
 	}
 	
 	
-	public String PaginaTeste(){
+	public String entrar(){
 		return "incial";
 	}
         
@@ -76,4 +76,11 @@ public class MenuMB implements Serializable{
         public String ConsPerfil(){
             return "consPerfil";
         }
+        
+        public String novoCadastroUsuario() {
+            Map<String, Object> options = new HashMap<String, Object>();
+            options.put("contentWidth", 600);
+            RequestContext.getCurrentInstance().openDialog("cadUsuario", options, null);
+        return "";
+    }
 }

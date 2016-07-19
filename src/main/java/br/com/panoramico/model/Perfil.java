@@ -36,8 +36,6 @@ public class Perfil implements Serializable {
     @Size(max = 50)
     @Column(name = "nome")
     private String nome;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "perfil")
-    private List<Usuario> usuarioList;
     @JoinColumn(name = "acesso_idacesso", referencedColumnName = "idacesso")
     @ManyToOne(optional = false)
     private Acesso acesso;
@@ -63,14 +61,6 @@ public class Perfil implements Serializable {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public List<Usuario> getUsuarioList() {
-        return usuarioList;
-    }
-
-    public void setUsuarioList(List<Usuario> usuarioList) {
-        this.usuarioList = usuarioList;
     }
 
     public Acesso getAcesso() {

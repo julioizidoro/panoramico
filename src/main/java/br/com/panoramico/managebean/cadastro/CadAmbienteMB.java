@@ -62,4 +62,8 @@ public class CadAmbienteMB implements Serializable{
         ambiente = ambienteDao.update(ambiente);
         RequestContext.getCurrentInstance().closeDialog(ambiente);
     }
+    
+    public void cancelar(){
+        RequestContext.getCurrentInstance().closeDialog(ambiente);
+    }
 }

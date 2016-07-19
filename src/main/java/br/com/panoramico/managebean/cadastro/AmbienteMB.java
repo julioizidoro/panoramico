@@ -102,4 +102,11 @@ public class AmbienteMB implements  Serializable{
             RequestContext.getCurrentInstance().openDialog("cadAmbiente", options, null);
         }
     }
+    
+    
+    public void excluir(Ambiente ambiente){
+        ambienteDao.remove(ambiente.getIdambiente());
+        Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
+        gerarListaAmbiente();
+    }
 }

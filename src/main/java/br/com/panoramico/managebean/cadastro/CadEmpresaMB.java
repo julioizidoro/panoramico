@@ -65,5 +65,9 @@ public class CadEmpresaMB implements  Serializable{
         empresa = empresaDao.update(empresa);
         RequestContext.getCurrentInstance().closeDialog(empresa);
     }
+     
+     public void cancelar(){
+         RequestContext.getCurrentInstance().closeDialog(empresa);
+     }
     
 }

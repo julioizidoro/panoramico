@@ -65,4 +65,8 @@ public class CadClienteMB implements  Serializable{
         cliente = clienteDao.update(cliente);
         RequestContext.getCurrentInstance().closeDialog(cliente);
     }
+    
+    public void cancelar(){
+        RequestContext.getCurrentInstance().closeDialog(cliente);
+    }
 }

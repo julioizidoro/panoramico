@@ -106,4 +106,11 @@ public class DependenteMB implements Serializable{
             listaDependente = new ArrayList<Dependente>();
         }
     }
+    
+    
+    public void excluir(Dependente dependente){
+        dependenteDao.remove(dependente.getIddependente());
+        Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
+        gerarListaDependente();
+    }
 }

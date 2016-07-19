@@ -6,27 +6,32 @@
     <ui:composition template="/pages/templates/default.xhtml">
         <ui:define name="corpo">
             <br/> 
-            <h:form id="idFormConsultaPerfil" style="text-align: left;">
+            <h:form id="idFormConsultaPerfil" style="margin-left:25%;width: 50%;">
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:10%;width: 80%;"/>
-                <p:commandLink   action="#{perfilMB.novoCadastroPerfil()}" style="margin-left:87.4%;text-decoration:none;" title="Novo Lançamento">
-				<img src="../../resources/img/iconeplus.png" style="border:solid; border-width: 1px; border-color: orange; border-radius:5px;"/>
-                                <p:ajax event="dialogReturn" listener="#{perfilMB.retornoDialogNovo}" update="idTabelaPerfil"/>
-                </p:commandLink>
                 
-                <br/><br/>
-                <p:dataTable id="idTabelaPerfil"  var="perfil"  value="#{perfilMB.listaPerfil}" style="border:none;width:80%;margin-left: 10%;" class="tabelacontas" 
-                             scrollRows="10"  scrollable="true" scrollHeight="300" selection="#{perfilMB.perfil}" selectionMode="single" rowKey="#{perfil.idperfil}">
-                       
-                        <p:column headerText="Nome" sortBy="#{perfil.nome}" style="width:30%; font-size:12px; background:white; color:black; border:none;">
-                            <h:outputText  value="#{perfil.nome}" />
-                        </p:column>
-                        <p:column headerText="" style="font-size: 12px;background: white;width: 4%;">
-                            <p:commandLink title="Editar" action="#{perfilMB.editar(perfil)}">
-                                <img src="../../resources/img/editarS.png" style="width: 80%;"/>
-                                <p:ajax event="dialogReturn" listener="#{perfilMB.retornoDialogNovo}" update=":idFormConsultaPerfil:idTabelaPerfil" process="@this"/>
-                             </p:commandLink>
-                        </p:column>
-                </p:dataTable> 
+               <!-- TABELA CADASTROS -->
+                        <div class="col-6 titTela" style="margin-left:-14%;">Consulta Perfil</div>
+                        <p:commandLink action="#{perfilMB.novoCadastroPerfil()}">
+                            <div class="icoAdd fa fa-plus-square-o"></div>
+                            <p:ajax event="dialogReturn" update="messages, idConsultaPerfil" listener="#{perfilMB.retornoDialogNovo}"/>
+                        </p:commandLink>
+                        <h:dataTable id="idConsultaPerfil" styleClass="table" value="#{perfilMB.listaPerfil}" var="perfil">
+                            <h:column>
+				<f:facet name="header">Nome</f:facet> 
+                                <h:outputText value="#{perfil.nome}" styleClass="alinhamento" style="text-align: left !important;margin-right:90%;" />
+			    </h:column>
+                           
+                             <h:column>
+                                 <p:commandLink action="#{perfilMB.editar(perfil)}">
+                                     <div class="fa fa-pencil-square-o" style="margin-left:90%;">
+
+                                    </div>   
+                                 </p:commandLink>
+                                    <div class="fa fa-trash-o"></div>
+                            </h:column>
+				
+				
+			</h:dataTable>
             </h:form>
         </ui:define>
     </ui:composition>

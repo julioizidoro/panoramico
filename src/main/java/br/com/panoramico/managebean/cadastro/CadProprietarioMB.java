@@ -5,16 +5,16 @@
  */
 package br.com.panoramico.managebean.cadastro;
 
-import br.com.panoramico.dao.AbstractDao;
 import br.com.panoramico.dao.ProprietarioDao;
 import br.com.panoramico.model.Proprietario;
 import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import javax.ws.rs.core.Request;
+import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -32,6 +32,10 @@ public class CadProprietarioMB implements  Serializable{
     
     @PostConstruct
     public void init(){
+        FacesContext fc = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+        proprietario = (Proprietario) session.getAttribute("proprietario");
+        session.removeAttribute("proprietario");
         if (proprietario == null) {
             proprietario = new Proprietario();
         }

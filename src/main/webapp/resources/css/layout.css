@@ -1,0 +1,136 @@
+body { 
+	background: repeating-linear-gradient(
+  90deg,
+  #8CD1CF,
+  #8CD1CF 20px,
+  #A3DAD9 20px,
+  #A3DAD9 40px
+  );
+        
+.body { 
+	background: repeating-linear-gradient(
+  90deg,
+  #8CD1CF,
+  #8CD1CF 20px,
+  #A3DAD9 20px,
+  #A3DAD9 40px
+  ); 
+}  
+  font-family: 'seasideresortnfregular', Arial, sans-serif;
+
+	height: 100%;
+	min-height: 100%;
+}
+
+@font-face {
+    font-family: 'seasideresortnfregular';
+    src: url('fonts/SEASRN__-webfont.eot');
+    src: url('fonts/SEASRN__-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/SEASRN__-webfont.woff') format('woff'),
+         url('fonts/SEASRN__-webfont.ttf') format('truetype'),
+         url('fonts/SEASRN__-webfont.svg#seasideresortnfregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+p { 
+  font-family: 'seasideresortnfregular', Arial, sans-serif; 
+}
+
+/* Centraliza tudo dentro da div */
+.wrapper {
+  height: 100%;
+  min-height: 100%;
+
+  /* habilita o flex nos filhos diretos */
+  display: -ms-flex;
+  display: -webkit-flex;
+  display: flex;
+
+  /* centraliza na vertical */
+  -ms-align-items: center;
+  -webkit-align-items: center;
+  align-items: center;
+
+  /* centraliza na horizontal */
+  -ms-justify-content: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+/* COLUNAS - Template dividido em 12 colunas. O número se refere a quantidade de colunas que a classe ocupa
+Ex.: col-5 ocupa 5 das 12 colunas. */
+.col-12, .col-11, .col-10, 
+.col-9, .col-8, .col-7, 
+.col-6, .col-5, .col-4, 
+.col-3, .col-2, .col-1 {
+	float:left;
+  padding:1%;
+}
+.col-1 {
+	width:8.33%;
+}
+.col-2 {
+	width:16.66%;
+}
+.col-3 {
+	width:25%;
+}
+.col-4 {
+	width:33.33%;
+}
+.col-5 {
+	width:41.56%;
+}
+.col-6 {
+	width:50%;
+}
+.col-7 {
+	width:58.33%;
+}
+.col-8 {
+	width:66.66%;
+}
+.col-9 {
+	width:75%;
+}
+.col-10 {
+	width:83.33%;
+}
+.col-11 {
+	width:91.66%;
+}
+.col-12 {
+	width:100%;
+}
+
+
+/* TELA LOGIN */
+.logo {
+  padding:1% 2% 1% 2%;
+  z-index: 10;
+}
+.boxLogin {
+  float:left;
+  padding:3%;
+}
+
+/*BOXES - CORES*/
+.boxBranco {
+  background-color: #fff;
+}
+
+.boxCinza {
+  background-color: #cccccc;
+}
+
+.boxAzulClaro {
+  background-color: #A3DAD9;
+  border:1px solid #92c4c3;
+}
+
+.boxAzul {
+  
+}
+/* TELA LOGIN */
+

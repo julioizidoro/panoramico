@@ -8,7 +8,6 @@ package br.com.panoramico.managebean.cadastro;
 import br.com.panoramico.dao.AcessoDao;
 import br.com.panoramico.dao.PerfilDao;
 import br.com.panoramico.model.Acesso;
-import br.com.panoramico.model.Cliente;
 import br.com.panoramico.model.Perfil;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
@@ -85,11 +84,14 @@ public class CadPerfilMB implements Serializable{
     
     public void salvar(){
         if (perfil.getAcesso() == null) {
-            acesso = acessoDao.find(1L);
+            acesso = acessoDao.find(1);
            perfil.setAcesso(acesso); 
-           
         }
         perfil = perfilDao.update(perfil);
+        RequestContext.getCurrentInstance().closeDialog(perfil);
+    }
+
+    public void cancelar(){
         RequestContext.getCurrentInstance().closeDialog(perfil);
     }
 }

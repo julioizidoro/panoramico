@@ -97,7 +97,7 @@ public class CadDependenteMB implements Serializable{
     
     
     public void salvar(){
-        Long numeroAssociadoProvisorio = 1L;
+        Integer numeroAssociadoProvisorio = 1;
         associado = associadoDao.find(numeroAssociadoProvisorio);
         dependente.setAssociado(associado);
         dependente = dependenteDao.update(dependente);
@@ -109,5 +109,9 @@ public class CadDependenteMB implements Serializable{
         if (listaAssociado == null) {
             listaAssociado = new ArrayList<Associado>();
         }
+    }
+    
+    public void cancelar(){
+        RequestContext.getCurrentInstance().closeDialog(dependente);
     }
 }

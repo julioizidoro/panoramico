@@ -6,8 +6,9 @@
 package br.com.panoramico.managebean.cadastro;
 
 import br.com.panoramico.dao.PerfilDao;
-import br.com.panoramico.model.Cliente;
+import br.com.panoramico.dao.UsuarioDao;
 import br.com.panoramico.model.Perfil;
+import br.com.panoramico.model.Usuario;
 import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -36,6 +37,8 @@ public class PerfilMB implements  Serializable{
     private PerfilDao perfilDao;
     private Perfil perfil;
     private List<Perfil> listaPerfil;
+    @EJB
+    private UsuarioDao usuarioDao;
     
     
     @PostConstruct
@@ -43,6 +46,16 @@ public class PerfilMB implements  Serializable{
         gerarListaPerfil();
     }
 
+    public UsuarioDao getUsuarioDao() {
+        return usuarioDao;
+    }
+
+    public void setUsuarioDao(UsuarioDao usuarioDao) {
+        this.usuarioDao = usuarioDao;
+    }
+
+    
+    
     public PerfilDao getPerfilDao() {
         return perfilDao;
     }
@@ -102,6 +115,18 @@ public class PerfilMB implements  Serializable{
             session.setAttribute("perfil", perfil);
             options.put("contentWidth", 600);
             RequestContext.getCurrentInstance().openDialog("cadPerfil", options, null);
+        }
+    }
+    
+    
+    public void excluir(Perfil perfil){
+        List<Usuario> listaPerfilUsuario = usuarioDao.list("Select u from Usuario u where u.perfil.idperfil=" + perfil.getIdperfil());
+        if (listaPerfilUsuario == null || listaPerfilUsuario.isEmpty()) {
+            perfilDao.remove(perfil.getIdperfil());
+            Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
+            gerarListaPerfil();
+        }else{
+            Mensagem.lancarMensagemInfo("Atenção", " este perfil não pode ser excluido");
         }
     }
 }

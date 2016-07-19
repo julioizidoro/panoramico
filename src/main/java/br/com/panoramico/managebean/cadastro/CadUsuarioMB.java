@@ -7,15 +7,22 @@ package br.com.panoramico.managebean.cadastro;
 
 import br.com.panoramico.dao.PerfilDao;
 import br.com.panoramico.dao.UsuarioDao;
+import br.com.panoramico.model.Empresa;
 import br.com.panoramico.model.Perfil;
 import br.com.panoramico.model.Usuario;
+import br.com.panoramico.uil.Criptografia;
 import java.io.Serializable;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -38,6 +45,17 @@ public class CadUsuarioMB implements Serializable{
     
     @PostConstruct
     public void init(){
+        FacesContext fc = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+        usuario =  (Usuario) session.getAttribute("usuario");
+        session.removeAttribute("usuario");
+        gerarListaPerfil(); 
+        if (usuario == null) {
+            usuario = new Usuario();
+            perfil = new Perfil();
+        }else{
+            perfil = usuario.getPerfil();
+        }
         
     }
 
@@ -91,7 +109,17 @@ public class CadUsuarioMB implements Serializable{
     
     public void salvar(){
         usuario.setPerfil(perfil);
+        try {
+            usuario.setSenha(Criptografia.encript(usuario.getSenha()));
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(CadUsuarioMB.class.getName()).log(Level.SEVERE, null, ex);
+        }
         usuario = usuarioDao.update(usuario);
+        RequestContext.getCurrentInstance().closeDialog(usuario);
+    }
+    
+    
+    public void cancelar(){
         RequestContext.getCurrentInstance().closeDialog(usuario);
     }
 }

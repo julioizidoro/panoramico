@@ -109,4 +109,10 @@ public class PlanoMB implements Serializable{
         }
     }
     
+    
+    public void excluir(Plano plano){
+        planoDao.remove(plano.getIdplano());
+        Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
+        gerarListaPlano();
+    }
 }

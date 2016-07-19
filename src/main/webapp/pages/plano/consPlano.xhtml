@@ -6,33 +6,39 @@
     <ui:composition template="/pages/templates/default.xhtml">
         <ui:define name="corpo">
             <br/> 
-            <h:form id="idFormConsultaPlano" style="text-align: left;">
+            <h:form id="idFormConsultaPlano" style="margin-left:10%; width:78%;">
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:10%;width: 80%;"/>
-                <p:commandLink   action="#{planoMB.novoCadastroPlano()}" style="margin-left:87.4%;text-decoration:none;" title="Novo Lançamento">
-				<img src="../../resources/img/iconeplus.png" style="border:solid; border-width: 1px; border-color: orange; border-radius:5px;"/>
-                                <p:ajax event="dialogReturn" listener="#{planoMB.retornoDialogNovo}" update="idTabelaPlano"/>
-                </p:commandLink>
                 
-                <br/><br/>
-                <p:dataTable id="idTabelaPlano"  var="plano"  value="#{planoMB.listaPlano}" style="border:none;width:80%;margin-left: 10%;" class="tabelacontas" 
-                             scrollRows="10"  scrollable="true" scrollHeight="300" selection="#{planoMB.plano}" selectionMode="single" rowKey="#{plano.idplano}">
-                       
-                        <p:column headerText="Descricao" sortBy="#{plano.descricao}" style="width:30%; font-size:12px; background:white; color:black; border:none;">
-                            <h:outputText  value="#{plano.descricao}" />
-                        </p:column>
-                        <p:column headerText="Valor" sortBy="#{plano.valor}" style="width:10%;text-align: right; font-size:12px; background:white; color:black; border:none;">
-                            <h:outputText  value="#{plano.valor}">
-                                 <f:convertNumber currencySymbol="" type="currency"/>
-                            </h:outputText>
-                        </p:column>
-                        
-                        <p:column headerText="" style="font-size: 12px;background: white;width: 4%;">
-                            <p:commandLink title="Editar" action="#{planoMB.editar(plano)}">
-                                <img src="../../resources/img/editarS.png" style="width: 80%;"/>
-                                <p:ajax event="dialogReturn" listener="#{planoMB.retornoDialogNovo}" update=":idFormConsultaPlano:idTabelaPlano" process="@this"/>
-                             </p:commandLink>
-                        </p:column>
-                </p:dataTable> 
+                <!-- TABELA CADASTROS -->
+                        <div class="col-6 titTela" style="margin-left:-12%;">Consulta Plano</div>
+                        <p:commandLink action="#{planoMB.novoCadastroPlano()}">
+                            <div class="icoAdd fa fa-plus-square-o"></div>
+                            <p:ajax event="dialogReturn" update="messages, idConsultaPlano" listener="#{planoMB.retornoDialogNovo}"/>
+                        </p:commandLink>
+                        <h:dataTable id="idConsultaPlano" styleClass="table" value="#{planoMB.listaPlano}" var="plano">
+                            <h:column>
+				<f:facet name="header">Descrição</f:facet> 
+                                <h:outputText value="#{plano.descricao}" styleClass="alinhamento" style="text-align: left !important;margin-right:90%;" />
+			    </h:column>
+                            <h:column>
+				<f:facet name="header">Valor</f:facet> 
+                                <h:outputText value="#{plano.valor}" styleClass="alinhamento" style="text-align: left !important;margin-right:40%;">
+                                    <f:convertNumber pattern="##,###,###,###.##" minFractionDigits="2" />
+                                </h:outputText>
+			    </h:column>
+                             <h:column>
+                                 <p:commandLink action="#{planoMB.editar(plano)}">
+                                     <div class="fa fa-pencil-square-o" style="margin-left:5%;">
+
+                                    </div>
+                                 </p:commandLink>
+                                 <p:commandLink action="#{planoMB.excluir(plano)}" update=":idFormConsultaPlano:messages, @form">
+                                    <div class="fa fa-trash-o"></div>
+                                 </p:commandLink>
+                            </h:column> 
+				
+				
+			</h:dataTable>
             </h:form>
         </ui:define>
     </ui:composition>
