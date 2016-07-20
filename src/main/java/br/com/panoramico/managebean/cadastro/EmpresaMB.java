@@ -84,6 +84,14 @@ public class EmpresaMB implements  Serializable{
         gerarListaEmpresa();
     }
     
+     public void retornoDialogAlteracao(SelectEvent event){
+        Empresa empresa = (Empresa) event.getObject();
+        if (empresa.getIdempresa()!= null) {
+            Mensagem.lancarMensagemInfo("Salvou", "Alteração da empresa realizada com sucesso");
+        }
+        gerarListaEmpresa();
+    }
+    
     
     public void editar(Empresa empresa){
         if (empresa != null) {

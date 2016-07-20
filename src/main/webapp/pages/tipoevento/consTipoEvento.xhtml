@@ -24,10 +24,12 @@
                              <h:column>
                                  <p:commandLink action="#{tipoEventoMB.editar(tipoevento)}">
                                      <div class="fa fa-pencil-square-o" style="margin-left:90%;">
-
-                                    </div>   
+                                     </div>   
+                                     <p:ajax event="dialogReturn" listener="#{tipoEventoMB.retornoDialogAlteracao}" update=":idFormConsultaTipoEvento:messages, @form"/>
                                  </p:commandLink>
+                                 <p:commandLink style="text-decoration: none;" action="#{tipoEventoMB.excluir(tipoevento)}" update=":idFormConsultaTipoEvento:messages, @form">
                                     <div class="fa fa-trash-o"></div>
+                                 </p:commandLink>
                             </h:column>
 				
 				

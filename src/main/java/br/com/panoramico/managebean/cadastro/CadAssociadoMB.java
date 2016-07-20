@@ -156,4 +156,9 @@ public class CadAssociadoMB implements Serializable{
         }
     }
     
+    
+    public void cancelar(){
+        RequestContext.getCurrentInstance().closeDialog(associado);
+    }
+    
 }

@@ -11,7 +11,7 @@
                
  
 			<!-- TABELA CADASTROS -->
-			<div class="col-6 titTela">Consulta Ambiente</div>
+                        <div class="col-6 titTela" style="margin-left: -13%;">Consulta Ambiente</div>
                         <p:commandLink action="#{ambienteMB.novoCadastroAmbiente()}">
                             <div class="icoAdd fa fa-plus-square-o"></div>
                             <p:ajax event="dialogReturn" update="messages, idConsultaAmbiente" listener="#{ambienteMB.retornoDialogNovo}"/>
@@ -28,10 +28,12 @@
                              <h:column>
                                  <p:commandLink action="#{ambienteMB.editar(ambiente)}">
                                     <div class="fa fa-pencil-square-o">
-
                                     </div>
+                                     <p:ajax event="dialogReturn" listener="#{ambienteMB.retornoDialogAlteracao}" update=":idFormConsultaAmbiente:messages, @form"/>
                                  </p:commandLink>
+                                 <p:commandLink style="text-decoration: none;" action="#{ambienteMB.excluir(ambiente)}" update=":idFormConsultaAmbiente:messages, @form">
                                     <div class="fa fa-trash-o"></div>
+                                 </p:commandLink>
                             </h:column>
 				
 				

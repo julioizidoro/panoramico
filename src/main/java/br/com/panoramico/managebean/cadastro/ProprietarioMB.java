@@ -92,6 +92,14 @@ public class ProprietarioMB implements Serializable{
         gerarListaProprietario();
     }
     
+    public void retornoDialogAlteracao(SelectEvent event){
+        Proprietario proprietario = (Proprietario) event.getObject();
+        if (proprietario.getIdproprietario()!= null) {
+            Mensagem.lancarMensagemInfo("Salvou", "Alteração de Proprietario realizado com sucesso");
+        }
+        gerarListaProprietario();
+    }
+    
     
     public void editar(Proprietario proprietario){
         if (proprietario != null) {

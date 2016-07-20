@@ -19,14 +19,29 @@
 	<link rel="stylesheet" type="text/css" href="resources/fonts/font-awesome-4.6.3/css/font-awesome.min.css"/>
     </h:head>
   
-    <h:body style="background:#CEEDF4;"> 
-       
-            <h:form id="login">
-                <div id="centrologin" >  
-                    <br></br><br></br>
-                    <h1>Bem Vindo!!</h1>
-                    <h:commandButton styleClass="btn btn-danger" value="Entrar"  action="#{menuMB.entrar()}"/>
+    <body>
+        <br/><br/><br/><br/><br/><br/>
+        <div class="panel panel-info" style="margin-left: 30%; width: 40%;">
+                <div class="panel-body">
+                     <div class="wrapper">
+                        <img class="logo" src="resources/img/logo.png" />
+                    </div>
                 </div>
-            </h:form>
-    </h:body>
+                <div class="panel-footer">
+                    <h:form style="width: 50%; margin-left: 25%;">
+                        <div class="form-group">
+                                 <div class="col-6 titTela" style="margin-left: -16%;font-size: 18px;">Login</div>
+                                 <p:inputText  type="login" value="#{usuarioLogadoMB.usuario.login}" class="form-control" id="inputNome" placeholder="Login"/>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-6 titTela" style="margin-left: -16%;font-size: 18px;">Senha</div>
+                            <p:inputText type="password" value="#{usuarioLogadoMB.usuario.senha}" class="form-control" id="exampleInputPassword1" placeholder="Senha"/>
+                        </div> 
+                         <p:commandButton type="submit" class="btn btn-primary" style="width: 50%;margin-left: 6%;" action="#{usuarioLogadoMB.validarTrocarSenha()}" value="Alterar Senha"/>
+                            <p:commandButton type="submit" class="btn btn-primary" style="width: 35%;margin-left: 4%;" action="#{usuarioLogadoMB.validarUsuario()}" value="Entrar"/>
+                           
+                    </h:form>
+                 </div>
+            </div>
+    </body>
 </html>

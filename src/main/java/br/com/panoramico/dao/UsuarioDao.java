@@ -28,4 +28,17 @@ public class UsuarioDao extends  AbstractDao<Usuario>{
         super(Usuario.class);
     }
     
+    
+    public Usuario consultar(String login, String senha) throws SQLException{
+        em.getTransaction().begin();
+        Query q = em.createQuery("select u from Usuario u where u.login='" + login + "' and u.senha='" + senha + "'  order by u.nome");
+        Usuario usuario = null;
+        if (q.getResultList().size()>0){
+            usuario = (Usuario) q.getResultList().get(0);
+        }
+        em.getTransaction().commit();
+        em.close();
+        return usuario;
+    }
+    
 }

@@ -34,7 +34,7 @@
 				<nav id="menu" class="wrapper">
 					<ul>
 						<li> 
-							<div class="dropdown">
+							<div class="dropdown" style="margin-left:-48%;">
 								Pessoas <div class="fa fa-sort-desc"></div>
 									<div class="dropdown-content">
                                                                             <p><h:link outcome="/pages/usuario/consUsuario.xhtml" value="Usuário"></h:link></p>
@@ -46,7 +46,7 @@
 							</div> 
 						</li>
 						<li> 
-							<div class="dropdown">
+							<div class="dropdown" style="margin-left:-40%;">
 								Ambientes | Planos <div class="fa fa-sort-desc"></div>
 									<div class="dropdown-content">
                                                                             <p><h:link outcome="/pages/ambiente/consAmbiente.xhtml" value="Ambiente"></h:link></p>
@@ -57,13 +57,15 @@
                                                                         </div>
 							</div> 
 						</li>
-						<li class="menuSair"><a href="#">Sair</a></li>
+                                            <p:commandLink  class="menuSair" value="Sair" action="#{usuarioLogadoMB.deslogar()}">
+                                                <li></li>
+                                            </p:commandLink>
 					</ul>
 				</nav>
                        
 			</div> <!-- FIM MENU -->
                          </div>
             </div>
-        </h:form>
+        </h:form> 
     </body>
 </html>

@@ -14,7 +14,7 @@
  <h:body style="background:#CEEDF4;" > 
         <h:form id="idFormCadastroUsuario" class="body2" style="font-size: 12px; background-color: #CEEDF4;" enctype="multipart/form-data">
                 
-            <title>Novo Proprietario</title>
+            <title>Novo Usuário</title>
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                 <p:outputLabel value="Nome" style="font-size: 12px;text-align: left;margin-left:2%;"/>
                 <p:outputLabel value="Login" style="font-size: 12px;text-align: left;margin-left: 28.5%;"/>
@@ -46,8 +46,8 @@
                 <br/><br/><br/><br/><br/><br/><br/>
                 <hr/>
                 <br/>  
-                <p:commandButton value="Salvar"  actionListener="#{cadUsuarioMB.salvar()}" ajax="false"/>
-            
+                <p:commandButton style="margin-left: 35%;" value="Salvar"  actionListener="#{cadUsuarioMB.salvar()}" ajax="false"/>
+                <p:commandButton value="Cancelar" style="margin-left: 2%;" action="#{cadUsuarioMB.cancelar()}" ajax="false"/>
         </h:form>
  </h:body>
 </html>

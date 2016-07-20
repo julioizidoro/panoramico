@@ -6,11 +6,11 @@
     <ui:composition template="/pages/templates/default.xhtml">
         <ui:define name="corpo">
             <br/> 
-            <h:form id="idFormConsultaPlano" style="margin-left:10%; width:78%;">
+            <h:form id="idFormConsultaPlano" style="margin-left:18%; width:60%;">
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:10%;width: 80%;"/>
                 
                 <!-- TABELA CADASTROS -->
-                        <div class="col-6 titTela" style="margin-left:-12%;">Consulta Plano</div>
+                        <div class="col-6 titTela" style="margin-left:-15%;">Consulta Plano</div>
                         <p:commandLink action="#{planoMB.novoCadastroPlano()}">
                             <div class="icoAdd fa fa-plus-square-o"></div>
                             <p:ajax event="dialogReturn" update="messages, idConsultaPlano" listener="#{planoMB.retornoDialogNovo}"/>
@@ -29,8 +29,8 @@
                              <h:column>
                                  <p:commandLink action="#{planoMB.editar(plano)}">
                                      <div class="fa fa-pencil-square-o" style="margin-left:5%;">
-
-                                    </div>
+                                     </div>
+                                     <p:ajax event="dialogReturn" listener="#{planoMB.retornoDialogAlteracao}" update=":idFormConsultaPlano:messages, @form"/>
                                  </p:commandLink>
                                  <p:commandLink action="#{planoMB.excluir(plano)}" update=":idFormConsultaPlano:messages, @form">
                                     <div class="fa fa-trash-o"></div>

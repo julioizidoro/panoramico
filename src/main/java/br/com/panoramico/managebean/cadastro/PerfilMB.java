@@ -106,6 +106,14 @@ public class PerfilMB implements  Serializable{
         gerarListaPerfil();
     }
     
+    public void retornoDialogAlteracao(SelectEvent event){
+        Perfil perfil = (Perfil) event.getObject();
+        if (perfil.getIdperfil()!= null) {
+            Mensagem.lancarMensagemInfo("Salvou", "Ateração de perfil realizado com sucesso");
+        }
+        gerarListaPerfil();
+    }
+    
     
     public void editar(Perfil perfil){
         if (perfil != null) {

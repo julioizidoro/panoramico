@@ -7,7 +7,6 @@ package br.com.panoramico.managebean.cadastro;
 
 import br.com.panoramico.dao.PerfilDao;
 import br.com.panoramico.dao.UsuarioDao;
-import br.com.panoramico.model.Empresa;
 import br.com.panoramico.model.Perfil;
 import br.com.panoramico.model.Usuario;
 import br.com.panoramico.uil.Criptografia;

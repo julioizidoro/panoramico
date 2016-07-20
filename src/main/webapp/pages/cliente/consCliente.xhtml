@@ -38,10 +38,12 @@
                              <h:column>
                                  <p:commandLink action="#{clienteMB.editar(cliente)}">
                                      <div class="fa fa-pencil-square-o" style="margin-left:5%;">
-
                                     </div>
+                                     <p:ajax  event="dialogReturn" listener="#{clienteMB.retornoDialogAlteracao}" update=":idFormConsultaCliente:messages, @form"/>
                                  </p:commandLink>
+                                 <p:commandLink style="text-decoration: none;" action="#{clienteMB.excluir(cliente)}" update=":idFormConsultaCliente:messages, @form">
                                     <div class="fa fa-trash-o"></div>
+                                 </p:commandLink>
                             </h:column> 
 				
 				

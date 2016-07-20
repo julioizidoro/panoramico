@@ -88,6 +88,14 @@ public class DependenteMB implements Serializable{
         gerarListaDependente();
     }
     
+    public void retornoDialogAlteracao(SelectEvent event){
+        Dependente dependente = (Dependente) event.getObject();
+        if (dependente.getIddependente()!= null) {
+            Mensagem.lancarMensagemInfo("Salvou", "Alteração do Dependente realizado com sucesso");
+        }
+        gerarListaDependente();
+    }
+    
     
     public void editar(Dependente dependente){
         if (dependente != null) {

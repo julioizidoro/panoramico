@@ -118,6 +118,14 @@ public class AssociadoMB implements Serializable{
         gerarListaAssociado();
     }
     
+     public void retornoDialogAlteracao(SelectEvent event){
+        Associado associado = (Associado) event.getObject();
+        if (associado.getIdassociado()!= null) {
+            Mensagem.lancarMensagemInfo("Salvou", "Alteração do Associado realizado com sucesso");
+        }
+        gerarListaAssociado();
+    }
+    
     
     public void editar(Associado associado){
         if (associado != null) {

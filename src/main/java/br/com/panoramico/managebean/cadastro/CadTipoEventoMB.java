@@ -63,4 +63,8 @@ public class CadTipoEventoMB implements Serializable{
         tipoenvento = tipoEventoDao.update(tipoenvento);
         RequestContext.getCurrentInstance().closeDialog(tipoenvento);
     }
+    
+    public void cancelar(){
+        RequestContext.getCurrentInstance().closeDialog(tipoenvento);
+    }
 }

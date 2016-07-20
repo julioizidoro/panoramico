@@ -6,7 +6,7 @@
     <ui:composition template="/pages/templates/default.xhtml">
         <ui:define name="corpo">
             <br/> 
-            <h:form id="idFormConsultaEmpresa" style="margin-left:25%;width: 50%;">
+            <h:form id="idFormConsultaEmpresa" style="margin-left:20%;width: 55%;">
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:10%;width: 80%;"/>
                 
                 <!-- TABELA CADASTROS -->
@@ -23,11 +23,13 @@
                            
                              <h:column>
                                  <p:commandLink action="#{empresaMB.editar(empresa)}">
-                                     <div class="fa fa-pencil-square-o" style="margin-left:90%;">
-
+                                     <div class="fa fa-pencil-square-o" style="margin-left:89%;">
                                     </div>   
+                                     <p:ajax event="dialogReturn" listener="#{empresaMB.retornoDialogAlteracao}" update=":idFormConsultaEmpresa:messages, @form"/>
                                  </p:commandLink>
+                                 <p:commandLink style="text-decoration: none;" action="#{empresaMB.excluir(empresa)}" update=":idFormConsultaEmpresa:messages, @form">
                                     <div class="fa fa-trash-o"></div>
+                                 </p:commandLink>
                             </h:column>
 				
 				

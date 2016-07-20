@@ -97,6 +97,14 @@ public class PlanoMB implements Serializable{
         gerarListaPlano();
     }
     
+    public void retornoDialogAlteracao(SelectEvent event){
+        Plano plano = (Plano) event.getObject();
+        if (plano.getIdplano()!= null) {
+            Mensagem.lancarMensagemInfo("Salvou", "Alteração de Plano realizado com sucesso");
+        }
+        gerarListaPlano();
+    }
+    
     
     public void editar(Plano plano){
         if (plano != null) {

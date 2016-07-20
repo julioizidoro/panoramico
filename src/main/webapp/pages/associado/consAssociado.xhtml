@@ -42,10 +42,12 @@
                              <h:column>
                                  <p:commandLink action="#{associadoMB.editar(associado)}">
                                     <div class="fa fa-pencil-square-o">
-
                                     </div>
+                                     <p:ajax event="dialogReturn" listener="#{associadoMB.retornoDialogAlteracao}" update=":idFormConsultaAssociado:messages, @form"/>
                                  </p:commandLink>
+                                 <p:commandLink style="text-decoration: none;" action="#{associadoMB.excluir(associado)}" update=":idFormConsultaAssociado:messages, @form">
                                     <div class="fa fa-trash-o"></div>
+                                 </p:commandLink>
                             </h:column>
 				
 				

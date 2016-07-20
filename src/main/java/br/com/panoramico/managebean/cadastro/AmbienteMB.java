@@ -91,6 +91,14 @@ public class AmbienteMB implements  Serializable{
         gerarListaAmbiente();
     }
     
+    public void retornoDialogAlteracao(SelectEvent event){
+        Ambiente ambiente = (Ambiente) event.getObject();
+        if (ambiente.getIdambiente()!= null) {
+            Mensagem.lancarMensagemInfo("Salvou", "Alteração do Ambiente realizado com sucesso");
+        }
+        gerarListaAmbiente();
+    }
+    
     
     public void editar(Ambiente ambiente){
         if (ambiente != null) {

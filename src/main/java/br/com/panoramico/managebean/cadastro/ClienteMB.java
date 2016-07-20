@@ -92,6 +92,14 @@ public class ClienteMB implements Serializable{
         gerarListaCliente();
     }
     
+    public void retornoDialogAlteracao(SelectEvent event){
+        Cliente cliente = (Cliente) event.getObject();
+        if (cliente.getIdcliente() != null) {
+            Mensagem.lancarMensagemInfo("Salvou", "Alteração do cliente realizado com sucesso");
+        }
+        gerarListaCliente();
+    }
+    
     
     public void editar(Cliente cliente){
         if (cliente != null) {

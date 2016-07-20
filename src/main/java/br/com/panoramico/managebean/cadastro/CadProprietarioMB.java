@@ -68,4 +68,8 @@ public class CadProprietarioMB implements  Serializable{
       proprietario = new Proprietario();
       RequestContext.getCurrentInstance().closeDialog(proprietario);
     }
+    
+    public void cancelar(){
+        RequestContext.getCurrentInstance().closeDialog(proprietario);
+    }
 }

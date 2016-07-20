@@ -90,6 +90,14 @@ public class UsuarioMB implements Serializable{
         gerarListaUsuario();
     }
     
+    public void retornoDialogAlteracao(SelectEvent event){
+        Usuario usuario = (Usuario) event.getObject();
+        if (usuario.getIdusuario()!= null) {
+            Mensagem.lancarMensagemInfo("Salvou", "Alteração de usuario realizado com sucesso");
+        }
+        gerarListaUsuario();
+    }
+    
     
     public void editar(Usuario usuario){
         if (usuario != null) {

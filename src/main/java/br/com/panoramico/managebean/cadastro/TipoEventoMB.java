@@ -92,6 +92,14 @@ public class TipoEventoMB implements Serializable{
         gerarListaTipoEvento();
     }
     
+    public void retornoDialogAlteracao(SelectEvent event){
+        Tipoenvento tipoenvento = (Tipoenvento) event.getObject();
+        if (tipoenvento.getIdtipoenvento()!= null) {
+            Mensagem.lancarMensagemInfo("Salvou", "Alteração de cliente realizado com sucesso");
+        }
+        gerarListaTipoEvento();
+    }
+    
     
     public void editar(Tipoenvento tipoenvento){
         if (tipoenvento != null) {
