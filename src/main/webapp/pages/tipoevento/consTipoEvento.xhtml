@@ -6,35 +6,38 @@
     <ui:composition template="/pages/templates/default.xhtml">
         <ui:define name="corpo">
             <br/> 
-            <h:form id="idFormConsultaTipoEvento" style="margin-left:25%;width: 50%;">
-                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:10%;width: 80%;"/>
-                
-                <!-- TABELA CADASTROS -->
-                        <div class="col-6 titTela" style="margin-left:-6%;">Consulta Tipo de Evento</div>
-                        <p:commandLink action="#{tipoEventoMB.novoCadastroTipoEvento()}">
-                            <div class="icoAdd fa fa-plus-square-o"></div>
-                            <p:ajax event="dialogReturn" update="messages, idConsultaTipoEvento" listener="#{tipoEventoMB.retornoDialogNovo}"/>
-                        </p:commandLink>
-                        <h:dataTable id="idConsultaTipoEvento" styleClass="table" value="#{tipoEventoMB.listaTipoEvento}" var="tipoevento">
-                            <h:column>
-				<f:facet name="header">Descrição</f:facet> 
-                                <h:outputText value="#{tipoevento.descricao}" styleClass="alinhamento" style="text-align: left !important;margin-right:90%;" />
-			    </h:column>
-                           
-                             <h:column>
-                                 <p:commandLink action="#{tipoEventoMB.editar(tipoevento)}">
-                                     <div class="fa fa-pencil-square-o" style="margin-left:90%;">
-                                     </div>   
-                                     <p:ajax event="dialogReturn" listener="#{tipoEventoMB.retornoDialogAlteracao}" update=":idFormConsultaTipoEvento:messages, @form"/>
-                                 </p:commandLink>
-                                 <p:commandLink style="text-decoration: none;" action="#{tipoEventoMB.excluir(tipoevento)}" update=":idFormConsultaTipoEvento:messages, @form">
-                                    <div class="fa fa-trash-o"></div>
-                                 </p:commandLink>
-                            </h:column>
-				
-				
-			</h:dataTable>
-            </h:form>
+            <div class="col-10 boxAzulClaro" style="margin-left:8.5%;width: 83.2%;">   
+                <br/>
+                <h:form id="idFormConsultaTipoEvento" style="margin-left:10%;width: 78%;">
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:10%;width: 80%;"/>
+
+                    <!-- TABELA CADASTROS --> 
+                            <div class="col-6 titTela" style="margin-left:-10%;">Consulta Tipo de Evento</div>
+                            <p:commandLink action="#{tipoEventoMB.novoCadastroTipoEvento()}">
+                                <div class="icoAdd fa fa-plus-square-o"></div>
+                                <p:ajax event="dialogReturn" update="messages, idConsultaTipoEvento" listener="#{tipoEventoMB.retornoDialogNovo}"/>
+                            </p:commandLink>
+                            <h:dataTable id="idConsultaTipoEvento" styleClass="table" value="#{tipoEventoMB.listaTipoEvento}" var="tipoevento">
+                                <h:column>
+                                    <f:facet name="header">Descrição</f:facet> 
+                                    <h:outputText value="#{tipoevento.descricao}" styleClass="alinhamento" style="float: left;" />
+                                </h:column>
+
+                                 <h:column>
+                                     <p:commandLink action="#{tipoEventoMB.editar(tipoevento)}">
+                                         <div class="fa fa-pencil-square-o" style="margin-left:90%;">
+                                         </div>   
+                                         <p:ajax event="dialogReturn" listener="#{tipoEventoMB.retornoDialogAlteracao}" update=":idFormConsultaTipoEvento:messages, @form"/>
+                                     </p:commandLink>
+                                     <p:commandLink style="text-decoration: none;" action="#{tipoEventoMB.excluir(tipoevento)}" update=":idFormConsultaTipoEvento:messages, @form">
+                                        <div class="fa fa-trash-o"></div>
+                                     </p:commandLink>
+                                </h:column>
+
+
+                            </h:dataTable>
+                </h:form>
+            </div>
         </ui:define>
     </ui:composition>
 </html>

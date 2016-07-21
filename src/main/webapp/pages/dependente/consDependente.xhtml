@@ -6,47 +6,50 @@
     <ui:composition template="/pages/templates/default.xhtml">
         <ui:define name="corpo">
             <br/> 
-            <h:form id="idFormConsultaDependente" style="margin-left:10%;width: 78%;">
-                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:10%;width: 80%;"/>
-                
-                <!-- TABELA CADASTROS -->
-                        <div class="col-6 titTela" style="margin-left:-14%;">Consulta Dependente</div>
-                        <p:commandLink action="#{dependenteMB.novoCadastroDependente()}">
-                            <div class="icoAdd fa fa-plus-square-o"></div>
-                            <p:ajax event="dialogReturn" update="messages, idConsultaDependente" listener="#{dependenteMB.retornoDialogNovo}"/>
-                        </p:commandLink>
-                        <h:dataTable id="idConsultaDependente" styleClass="table" value="#{dependenteMB.listaDependente}" var="dependente">
-                            <h:column>
-				<f:facet name="header">Nome</f:facet> 
-                                <h:outputText value="#{dependente.nome}" styleClass="alinhamento" style="text-align: left !important;margin-right:40%;" />
-			    </h:column>
-                            <h:column>
-				<f:facet name="header">Data Nascimento</f:facet> 
-                                <h:outputText value="#{dependente.datanascimento}" styleClass="alinhamento" style="text-align: left !important;margin-right:40%;">
-                                    <f:convertDateTime pattern="dd/MM/yyyy"
-								timeZone="America/Sao_Paulo" />
-                                </h:outputText>
-			    </h:column>
-                            <h:column>
-				<f:facet name="header">Email</f:facet> 
-                                <h:outputText value="#{dependente.email}" styleClass="alinhamento" style="text-align: left !important;margin-right:40%;"/>
-			    </h:column>
-                            <h:column>
-				<f:facet name="header">Telefone</f:facet> 
-                                <h:outputText value="#{dependente.telefone}" styleClass="alinhamento" style="text-align: left !important;margin-right:40%;" />
-			    </h:column>
-                             <h:column>
-                                 <p:commandLink action="#{dependenteMB.editar(dependente)}">
-                                    <div class="fa fa-pencil-square-o">
-                                    </div>
-                                     <p:ajax event="dialogReturn" listener="#{dependenteMB.retornoDialogAlteracao}" update=":idFormConsultaDependente:messages, @form"/>
-                                 </p:commandLink>
-                                    <div class="fa fa-trash-o"></div>
-                            </h:column>
-				
-				
-			</h:dataTable>
-            </h:form>
+             <div class="col-10 boxAzulClaro" style="margin-left:8.5%;width: 83.2%;">   
+                <br/>
+                <h:form id="idFormConsultaDependente" style="margin-left:10%;width: 78%;">
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:10%;width: 80%;"/>
+
+                    <!-- TABELA CADASTROS -->
+                            <div class="col-6 titTela" style="margin-left:-14%;">Consulta Dependente</div>
+                            <p:commandLink action="#{dependenteMB.novoCadastroDependente()}">
+                                <div class="icoAdd fa fa-plus-square-o"></div>
+                                <p:ajax event="dialogReturn" update="messages, idConsultaDependente" listener="#{dependenteMB.retornoDialogNovo}"/>
+                            </p:commandLink>
+                            <h:dataTable id="idConsultaDependente" styleClass="table" value="#{dependenteMB.listaDependente}" var="dependente">
+                                <h:column>
+                                    <f:facet name="header">Nome</f:facet> 
+                                    <h:outputText value="#{dependente.nome}" styleClass="alinhamento" style="float: left;margin-right:40%;" />
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">Data Nascimento</f:facet> 
+                                    <h:outputText value="#{dependente.datanascimento}" styleClass="alinhamento" style="text-align: left !important;margin-right:40%;">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"
+                                                                    timeZone="America/Sao_Paulo" />
+                                    </h:outputText>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">Email</f:facet> 
+                                    <h:outputText value="#{dependente.email}" styleClass="alinhamento" style="text-align: left !important;float: left;margin-right:40%;"/>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">Telefone</f:facet> 
+                                    <h:outputText value="#{dependente.telefone}" styleClass="alinhamento" style="text-align: left !important;margin-right:40%;" />
+                                </h:column>
+                                 <h:column>
+                                     <p:commandLink action="#{dependenteMB.editar(dependente)}">
+                                        <div class="fa fa-pencil-square-o">
+                                        </div>
+                                         <p:ajax event="dialogReturn" listener="#{dependenteMB.retornoDialogAlteracao}" update=":idFormConsultaDependente:messages, @form"/>
+                                     </p:commandLink>
+                                        <div class="fa fa-trash-o"></div>
+                                </h:column>
+
+
+                            </h:dataTable>
+                </h:form>
+             </div>
         </ui:define>
     </ui:composition>
 </html>

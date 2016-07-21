@@ -6,35 +6,38 @@
     <ui:composition template="/pages/templates/default.xhtml">
         <ui:define name="corpo">
             <br/> 
-            <h:form id="idFormConsultaPerfil" style="margin-left:25%;width: 50%;">
-                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:10%;width: 80%;"/>
-                
-               <!-- TABELA CADASTROS -->
-                        <div class="col-6 titTela" style="margin-left:-14%;">Consulta Perfil</div>
-                        <p:commandLink action="#{perfilMB.novoCadastroPerfil()}">
-                            <div class="icoAdd fa fa-plus-square-o"></div>
-                            <p:ajax event="dialogReturn" update="messages, idConsultaPerfil" listener="#{perfilMB.retornoDialogNovo}"/>
-                        </p:commandLink>
-                        <h:dataTable id="idConsultaPerfil" styleClass="table" value="#{perfilMB.listaPerfil}" var="perfil">
-                            <h:column>
-				<f:facet name="header">Nome</f:facet> 
-                                <h:outputText value="#{perfil.nome}" styleClass="alinhamento" style="text-align: left !important;margin-right:90%;" />
-			    </h:column>
-                           
-                             <h:column>
-                                 <p:commandLink action="#{perfilMB.editar(perfil)}">
-                                     <div class="fa fa-pencil-square-o" style="margin-left:90%;">
-                                     </div>
-                                     <p:ajax event="dialogReturn" listener="#{perfilMB.retornoDialogAlteracao}" update=":idFormConsultaPerfil:messages, @form"/>
-                                 </p:commandLink>
-                                 <p:commandLink action="#{perfilMB.excluir(perfil)}" update=":idFormConsultaPerfil:messages, @form" style="text-decoration: none;">
-                                    <div class="fa fa-trash-o"></div>
-                                 </p:commandLink>
-                            </h:column>
-				
-				
-			</h:dataTable>
-            </h:form>
+             <div class="col-10 boxAzulClaro" style="margin-left:8.5%;width: 83.2%;">   
+                <br/>
+                <h:form id="idFormConsultaPerfil" style="margin-left:10%;width: 78%;">
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:10%;width: 80%;"/>
+
+                   <!-- TABELA CADASTROS -->
+                            <div class="col-6 titTela" style="margin-left:-14%;">Consulta Perfil</div>
+                            <p:commandLink action="#{perfilMB.novoCadastroPerfil()}">
+                                <div class="icoAdd fa fa-plus-square-o"></div>
+                                <p:ajax event="dialogReturn" update="messages, idConsultaPerfil" listener="#{perfilMB.retornoDialogNovo}"/>
+                            </p:commandLink>
+                            <h:dataTable id="idConsultaPerfil" styleClass="table" value="#{perfilMB.listaPerfil}" var="perfil">
+                                <h:column>
+                                    <f:facet name="header">Nome</f:facet> 
+                                    <h:outputText value="#{perfil.nome}" styleClass="alinhamento" style="float: left;" />
+                                </h:column>
+
+                                 <h:column>
+                                     <p:commandLink action="#{perfilMB.editar(perfil)}">
+                                         <div class="fa fa-pencil-square-o" style="margin-left:90%;">
+                                         </div>
+                                         <p:ajax event="dialogReturn" listener="#{perfilMB.retornoDialogAlteracao}" update=":idFormConsultaPerfil:messages, @form"/>
+                                     </p:commandLink>
+                                     <p:commandLink action="#{perfilMB.excluir(perfil)}" update=":idFormConsultaPerfil:messages, @form" style="text-decoration: none;">
+                                        <div class="fa fa-trash-o"></div>
+                                     </p:commandLink>
+                                </h:column>
+
+
+                            </h:dataTable>
+                </h:form>
+             </div>
         </ui:define>
     </ui:composition>
 </html>

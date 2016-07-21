@@ -8,6 +8,13 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
         <link href="../../resources/css/css.css" rel="stylesheet" type="text/css" />
+        <link type="text/javascript" href="../../resources/js/jquery-3.1.0.js"></link>
+        <link type="text/javascript" src="../../resources/js/modal.js"/> 
+        <link rel="stylesheet" type="text/css" href="../../resources/css/layout.css"/>
+        <link rel="stylesheet" type="text/css" href="../../resources/css/modal.css"/>
+	<link rel="stylesheet" type="text/css" href="../../resources/css/buttons.css"/>
+	<link rel="stylesheet" type="text/css" href="../../resources/css/tabelas.css"/>
+	<link rel="stylesheet" type="text/css" href="../../resources/css/textos.css"/>
     </h:head>
      
 
@@ -28,8 +35,12 @@
             <br/>
             <hr/>
             <br/>
-            <p:commandButton value="Salvar"  actionListener="#{cadAmbienteMB.salvar()}" ajax="false"/>
-            <p:commandButton value="Cancelar"  actionListener="#{cadAmbienteMB.cancelar()}" ajax="false"/>
+            <p:commandLink  actionListener="#{cadAmbienteMB.salvar()}" ajax="false">
+                <div style="font-size: 16px;margin-left: 32%;" class="cadastrar">Cadastrar</div>
+            </p:commandLink>
+            <p:commandLink actionListener="#{cadAmbienteMB.cancelar()}" ajax="false">
+                <div style="font-size: 16px" class="cancelar">Cancelar</div>
+            </p:commandLink>
             
         </h:form>  
  </h:body>

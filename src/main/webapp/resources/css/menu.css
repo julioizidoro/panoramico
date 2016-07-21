@@ -24,9 +24,10 @@
 	float: right;
 }
 
-#menu ul li a:hover {
+#menu ul li.menuSair:hover {
 	background-color:#0d647d;
 	color: #fff;
+        padding: 2%;
 }
 
 /* SUBMENU */

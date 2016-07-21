@@ -1,0 +1,80 @@
+#modal {
+    background: transparent;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 10;
+    display: none;
+}
+
+.modalBox {
+    background:#A3DAD9;
+    border:2px solid #f28100;
+    width: 50%;
+    min-height: auto;
+    margin-left: 25%;
+    margin-top: 15%;
+}
+
+.modalTopo {
+    background: #f28100;
+    background-image: -webkit-linear-gradient(top, #f28100, #c46a04);
+    background-image: -moz-linear-gradient(top, #f28100, #c46a04);
+    background-image: -ms-linear-gradient(top, #f28100, #c46a04);
+    background-image: -o-linear-gradient(top, #f28100, #c46a04);
+    background-image: linear-gradient(to bottom, #f28100, #c46a04);
+    height: 40px;
+    width: 100%;
+    color: #fff;
+    font-size:120%;
+}
+.modalContent {
+    padding: 2%;
+    min-height: 250px;
+    color: #0B4873;
+    font-weight: bold;
+}
+.modalRodape {
+    height: auto;
+    width: 100%;
+    min-height: 50px;
+    background: transparent;
+    bottom:0;
+    border-top: 1px solid #0B4873;
+}
+
+.cadastrar {
+    padding: 1%;
+    margin:1%;
+    border:1px solid #73BD8A;
+    position:relative;
+    float: left;
+    border-radius: 10px;
+    color:#fff;
+    cursor: pointer;
+    background-color: #73BD8A;
+}
+.cadastrar:hover {
+    color:#fff;
+    border:1px solid #67AA7C;
+    background-color: #67AA7C;
+}
+
+.cancelar {
+    padding: 1%;
+    margin:1%;
+    border:1px solid #ccc;
+    position:relative;
+    float: left;
+    border-radius: 10px;
+    color:#fff;
+    cursor: pointer;
+    background-color: #FB4C4C;
+}
+.cancelar:hover {
+    color:#fff;
+    border:1px solid #E14444;
+    background-color: #E14444;
+}

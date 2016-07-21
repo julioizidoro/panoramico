@@ -5,54 +5,57 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="/pages/templates/default.xhtml">
         <ui:define name="corpo"> 
-            <br/> 
-            <h:form id="idFormConsultaAssociado" style="margin-left:10%; width:78%;">
-                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:10%;width: 80%;"/>
-               
- 
-			<!-- TABELA CADASTROS -->
-                        <div class="col-6 titTela" style="margin-left:-15%;">Consulta Associado</div>
-                        <p:commandLink action="#{associadoMB.novoCadastroAssociado()}">
-                            <div class="icoAdd fa fa-plus-square-o"></div>
-                            <p:ajax event="dialogReturn" update="messages, idConsultaAssociado" listener="#{associadoMB.retornoDialogNovo}"/>
-                        </p:commandLink>
-                        <h:dataTable id="idConsultaAssociado" styleClass="table" value="#{associadoMB.listaAssociado}" var="associado">
-                            <h:column>
-				<f:facet name="header">Estado</f:facet> 
-                                <h:outputText value="#{associado.estado}" styleClass="alinhamento" style="text-align: left !important;margin-right:40%;" />
-			    </h:column>
-                            <h:column>
-				<f:facet name="header">Cidade</f:facet> 
-                                <h:outputText value="#{associado.cidade}" styleClass="alinhamento" style="text-align: left !important;margin-right:40%;" />
-			    </h:column>
-                            <h:column>
-				<f:facet name="header">Desconto Mensalidade</f:facet> 
-                                <h:outputText value="#{associado.descotomensalidade}" styleClass="alinhamento" style="text-align: left !important;margin-right:40%;">
-                                    <f:convertNumber pattern="##,###,###,###.##" minFractionDigits="2" />
-                                </h:outputText>
-			    </h:column>
-                            <h:column>
-				<f:facet name="header">Cliente</f:facet> 
-                                <h:outputText value="#{associado.cliente.nome}" styleClass="alinhamento" style="text-align: left !important;margin-right:40%;" />
-			    </h:column>
-			    <h:column>
-				<f:facet name="header">Plano</f:facet>
-                                <h:outputText value="#{associado.plano.descricao}" />
-                            </h:column>
-                             <h:column>
-                                 <p:commandLink action="#{associadoMB.editar(associado)}">
-                                    <div class="fa fa-pencil-square-o">
-                                    </div>
-                                     <p:ajax event="dialogReturn" listener="#{associadoMB.retornoDialogAlteracao}" update=":idFormConsultaAssociado:messages, @form"/>
-                                 </p:commandLink>
-                                 <p:commandLink style="text-decoration: none;" action="#{associadoMB.excluir(associado)}" update=":idFormConsultaAssociado:messages, @form">
-                                    <div class="fa fa-trash-o"></div>
-                                 </p:commandLink>
-                            </h:column>
-				
-				
-			</h:dataTable>
-            </h:form>
+            <br/>
+            <div class="col-10 boxAzulClaro" style="margin-left:8.5%;width: 83.2%;">  
+                <br/> 
+                <h:form id="idFormConsultaAssociado" style="margin-left:10%; width:78%;">
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:10%;width: 80%;"/>
+
+
+                            <!-- TABELA CADASTROS -->
+                            <div class="col-6 titTela" style="margin-left:-15%;">Consulta Associado</div>
+                            <p:commandLink action="#{associadoMB.novoCadastroAssociado()}">
+                                <div class="icoAdd fa fa-plus-square-o"></div>
+                                <p:ajax event="dialogReturn" update="messages, idConsultaAssociado" listener="#{associadoMB.retornoDialogNovo}"/>
+                            </p:commandLink>
+                            <h:dataTable id="idConsultaAssociado" styleClass="table" value="#{associadoMB.listaAssociado}" var="associado">
+                                <h:column>
+                                    <f:facet name="header">Estado</f:facet> 
+                                    <h:outputText value="#{associado.estado}" styleClass="alinhamento" style="text-align: left !important;margin-right:40%;" />
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">Cidade</f:facet> 
+                                    <h:outputText value="#{associado.cidade}" styleClass="alinhamento" style="text-align: left !important;margin-right:40%;" />
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">Desconto Mensalidade</f:facet> 
+                                    <h:outputText value="#{associado.descotomensalidade}" styleClass="alinhamento" style="text-align: left !important;margin-right:40%;">
+                                        <f:convertNumber pattern="##,###,###,###.##" minFractionDigits="2" />
+                                    </h:outputText>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">Cliente</f:facet> 
+                                    <h:outputText value="#{associado.cliente.nome}" styleClass="alinhamento" style="text-align: left !important;margin-right:40%;" />
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">Plano</f:facet>
+                                    <h:outputText value="#{associado.plano.descricao}" />
+                                </h:column>
+                                 <h:column>
+                                     <p:commandLink action="#{associadoMB.editar(associado)}">
+                                        <div class="fa fa-pencil-square-o">
+                                        </div>
+                                         <p:ajax event="dialogReturn" listener="#{associadoMB.retornoDialogAlteracao}" update=":idFormConsultaAssociado:messages, @form"/>
+                                     </p:commandLink>
+                                     <p:commandLink style="text-decoration: none;" action="#{associadoMB.excluir(associado)}" update=":idFormConsultaAssociado:messages, @form">
+                                        <div class="fa fa-trash-o"></div>
+                                     </p:commandLink>
+                                </h:column>
+
+
+                            </h:dataTable>
+                </h:form>
+            </div>
         </ui:define>
     </ui:composition>
 </html>

@@ -21,6 +21,7 @@
   
     <body>
         <br/><br/><br/><br/><br/><br/>
+        <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left: 30%; width: 40%;"/>
         <div class="panel panel-info" style="margin-left: 30%; width: 40%;">
                 <div class="panel-body">
                      <div class="wrapper">
@@ -37,8 +38,10 @@
                             <div class="col-6 titTela" style="margin-left: -16%;font-size: 18px;">Senha</div>
                             <p:inputText type="password" value="#{usuarioLogadoMB.usuario.senha}" class="form-control" id="exampleInputPassword1" placeholder="Senha"/>
                         </div> 
-                         <p:commandButton type="submit" class="btn btn-primary" style="width: 50%;margin-left: 6%;" action="#{usuarioLogadoMB.validarTrocarSenha()}" value="Alterar Senha"/>
-                            <p:commandButton type="submit" class="btn btn-primary" style="width: 35%;margin-left: 4%;" action="#{usuarioLogadoMB.validarUsuario()}" value="Entrar"/>
+                         <p:commandButton type="submit" class="btn btn-primary" style="width: 50%;margin-left: 6%;" action="#{usuarioLogadoMB.validarTrocarSenha()}" value="Alterar Senha">
+                             <p:ajax event="dialogReturn" listener="#{usuarioLogadoMB.retornoDialogAlteracaoSenha}" update="messages, @form"/>
+                         </p:commandButton>   
+                         <p:commandButton type="submit" class="btn btn-primary" style="width: 35%;margin-left: 4%;" action="#{usuarioLogadoMB.validarUsuario()}" value="Entrar"/>
                            
                     </h:form>
                  </div>

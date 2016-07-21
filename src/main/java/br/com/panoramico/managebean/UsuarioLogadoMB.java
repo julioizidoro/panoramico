@@ -114,7 +114,7 @@ public class UsuarioLogadoMB implements Serializable{
                 FacesContext.getCurrentInstance().addMessage(null, mensagem);
             }
             usuario.setSenha(senha);
-            usuario = usuarioDao.find("select u from Usuario u where u.login='" + usuario.getLogin() + "' and u.senha='" + usuario.getSenha() + "'  order by u.nome");
+            usuario = usuarioDao.find("select u from Usuario u where u.login='" + usuario.getLogin() + "' and u.senha='" + usuario.getSenha() + "'");
             if (usuario == null) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atenção!", "Acesso Negado."));
             } else {
@@ -127,10 +127,9 @@ public class UsuarioLogadoMB implements Serializable{
     
     
      public void validarTrocarSenha() {
-        if ((usuario.getLogin() != null) && (usuario.getSenha() == null) || (usuario.getLogin() == null) && (usuario.getSenha() != null)) {
+        if ((!usuario.getLogin().equalsIgnoreCase("")) && (usuario.getSenha().equalsIgnoreCase("")) || (usuario.getLogin().equalsIgnoreCase("")) && (!usuario.getSenha().equalsIgnoreCase(""))) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro!", "Login Invalido."));
         } else {
-            usuarioDao = new UsuarioDao();
             String senha = "";
             try {
                 senha = Criptografia.encript(usuario.getSenha());
@@ -140,25 +139,19 @@ public class UsuarioLogadoMB implements Serializable{
                 FacesContext.getCurrentInstance().addMessage(null, mensagem);
             }
             usuario.setSenha(senha);
-            try {
-                usuario = usuarioDao.consultar(usuario.getLogin(), usuario.getSenha());
+                usuario = usuarioDao.find("Select u from Usuario u where u.login='"+ usuario.getLogin() +"' and u.senha='"+ usuario.getSenha()+"'");
                 if (usuario == null) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Acesso Negado."));
                 }else{ 
                 	Map<String, Object> options = new HashMap<String, Object>();
-                	options.put("contentWidth", 300);
+                	options.put("contentWidth", 400);
                 	options.put("closable", false);
                 	RequestContext.getCurrentInstance().openDialog("cadNovaSenha", options, null);
                 }
-            } catch (SQLException ex) {
-                Logger.getLogger(UsuarioLogadoMB.class.getName()).log(Level.SEVERE, null, ex);
-                FacesMessage mensagem = new FacesMessage("Erro: " + ex);
-                FacesContext.getCurrentInstance().addMessage(null, mensagem);
-            }
 
         }
     }
-     public String confirmaNovaSenha() {
+     public String confirmaTrocaSenha() {
     	 String repetirSenhaAtual = "";
     	 try {
 			repetirSenhaAtual = Criptografia.encript(senhaAtual);
@@ -169,8 +162,7 @@ public class UsuarioLogadoMB implements Serializable{
     	if (repetirSenhaAtual.equalsIgnoreCase(usuario.getSenha())) {
     	
 	        if ((novaSenha.length() > 0) && (confirmaNovaSenha.length() > 0)) {
-	        	if (novaSenha.equalsIgnoreCase(confirmaNovaSenha)) { 
-	        		usuarioDao = new UsuarioDao();
+                    if (novaSenha.equalsIgnoreCase(confirmaNovaSenha)) { 
 	                String senha = "";
 	                try {
 	                    senha = Criptografia.encript(novaSenha);
@@ -183,12 +175,14 @@ public class UsuarioLogadoMB implements Serializable{
 	                    usuario = usuarioDao.update(usuario);
 	                    novaSenha = "";
 	                    confirmaNovaSenha = "";
+                            usuario = new Usuario();
                             RequestContext.getCurrentInstance().closeDialog(usuario);
                             return "";
 	            } else {
 	                novaSenha = "";
 	                confirmaNovaSenha = "";
 	                senhaAtual = "";
+                        usuario = new Usuario();
 	                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Acesso Negado."));
 	            }
 	
@@ -201,6 +195,7 @@ public class UsuarioLogadoMB implements Serializable{
     		senhaAtual = "";
     		novaSenha = "";
     		confirmaNovaSenha = "";
+                usuario = new Usuario();
     	}
         return "";
     }

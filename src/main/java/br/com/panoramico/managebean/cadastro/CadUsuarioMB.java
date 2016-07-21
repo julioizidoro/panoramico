@@ -119,6 +119,7 @@ public class CadUsuarioMB implements Serializable{
     
     
     public void cancelar(){
+        perfil = perfilDao.find(1);
         RequestContext.getCurrentInstance().closeDialog(usuario);
     }
 }

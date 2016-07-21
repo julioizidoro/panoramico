@@ -5,7 +5,9 @@
  */
 package br.com.panoramico.managebean.cadastro;
 
+import br.com.panoramico.dao.AssociadoDao;
 import br.com.panoramico.dao.PlanoDao;
+import br.com.panoramico.model.Associado;
 import br.com.panoramico.model.Cliente;
 import br.com.panoramico.model.Plano;
 import br.com.panoramico.uil.Mensagem;
@@ -38,7 +40,8 @@ public class PlanoMB implements Serializable{
     private PlanoDao planoDao;
     private Plano plano;
     private List<Plano> listaPlano;
-    
+    @EJB
+    private AssociadoDao associadoDao;
     
     @PostConstruct
     public void init(){
@@ -51,6 +54,14 @@ public class PlanoMB implements Serializable{
 
     public void setListaPlano(List<Plano> listaPlano) {
         this.listaPlano = listaPlano;
+    }
+
+    public AssociadoDao getAssociadoDao() {
+        return associadoDao;
+    }
+
+    public void setAssociadoDao(AssociadoDao associadoDao) {
+        this.associadoDao = associadoDao;
     }
     
     
@@ -119,8 +130,13 @@ public class PlanoMB implements Serializable{
     
     
     public void excluir(Plano plano){
-        planoDao.remove(plano.getIdplano());
-        Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
-        gerarListaPlano();
+        List<Associado> listaAssociado = associadoDao.list("Select a from Associado a where a.plano.idplano="+ plano.getIdplano());
+        if (listaAssociado == null || listaAssociado.isEmpty()) {
+            planoDao.remove(plano.getIdplano());
+            Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
+            gerarListaPlano();
+        }else{
+            Mensagem.lancarMensagemInfo("Atenção", " este plano não pode ser excluido");
+        }
     }
 }
