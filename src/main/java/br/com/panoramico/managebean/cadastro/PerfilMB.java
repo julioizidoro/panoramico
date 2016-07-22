@@ -7,6 +7,7 @@ package br.com.panoramico.managebean.cadastro;
 
 import br.com.panoramico.dao.PerfilDao;
 import br.com.panoramico.dao.UsuarioDao;
+import br.com.panoramico.managebean.UsuarioLogadoMB;
 import br.com.panoramico.model.Perfil;
 import br.com.panoramico.model.Usuario;
 import br.com.panoramico.uil.Mensagem;
@@ -19,6 +20,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
@@ -39,6 +41,8 @@ public class PerfilMB implements  Serializable{
     private List<Perfil> listaPerfil;
     @EJB
     private UsuarioDao usuarioDao;
+    @Inject
+    private UsuarioLogadoMB usuarioLogadoMB;
     
     
     @PostConstruct
@@ -54,7 +58,14 @@ public class PerfilMB implements  Serializable{
         this.usuarioDao = usuarioDao;
     }
 
-    
+    public UsuarioLogadoMB getUsuarioLogadoMB() {
+        return usuarioLogadoMB;
+    }
+
+    public void setUsuarioLogadoMB(UsuarioLogadoMB usuarioLogadoMB) {
+        this.usuarioLogadoMB = usuarioLogadoMB;
+    }
+
     
     public PerfilDao getPerfilDao() {
         return perfilDao;
@@ -92,7 +103,7 @@ public class PerfilMB implements  Serializable{
     
     public String novoCadastroPerfil() {
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put("contentWidth", 600);
+        options.put("contentWidth", 400);
         RequestContext.getCurrentInstance().openDialog("cadPerfil", options, null);
         return "";
     }
@@ -121,7 +132,7 @@ public class PerfilMB implements  Serializable{
             FacesContext fc = FacesContext.getCurrentInstance();
             HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
             session.setAttribute("perfil", perfil);
-            options.put("contentWidth", 600);
+            options.put("contentWidth", 400);
             RequestContext.getCurrentInstance().openDialog("cadPerfil", options, null);
         }
     }

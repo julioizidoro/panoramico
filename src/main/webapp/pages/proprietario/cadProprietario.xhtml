@@ -8,41 +8,47 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
         <link href="../../resources/css/css.css" rel="stylesheet" type="text/css" />
+        <link type="text/javascript" href="../../resources/js/jquery-3.1.0.js"></link>
+        <link type="text/javascript" src="../../resources/js/modal.js"/> 
+        <link rel="stylesheet" type="text/css" href="../../resources/css/layout.css"/>
+        <link rel="stylesheet" type="text/css" href="../../resources/css/modal.css"/>
+	<link rel="stylesheet" type="text/css" href="../../resources/css/buttons.css"/>
+	<link rel="stylesheet" type="text/css" href="../../resources/css/textos.css"/>
     </h:head>
      
 
- <h:body style="background:#CEEDF4;" > 
-        <h:form id="idFormCadastroProprietario" class="body2" style="font-size: 12px; background-color: #CEEDF4;" enctype="multipart/form-data">
+ <h:body style="background:#A3DAD9; border-color: #CF7000;border: 2px;" > 
+        <h:form id="idFormCadastroProprietario" class="body2" style="font-size: 12px;" enctype="multipart/form-data">
                 
             <title>Novo Proprietario</title>
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                <p:outputLabel value="Razão Social" style="font-size: 12px;text-align: left;margin-left:2%;"/>
-                <p:outputLabel value="Nome Fantasia" style="font-size: 12px;text-align: left;margin-left: 22.5%;"/>
-                <p:outputLabel value="Tipo de Logadouro" style="font-size: 12px;text-align: left;margin-left: 30%;"/>
+                <p:outputLabel class="titTela" value="Razão Social" style="font-size: 12px;text-align: left;margin-left:1%;"/>
+                <p:outputLabel class="titTela" value="Nome Fantasia" style="font-size: 12px;text-align: left;margin-left: 18.5%;"/>
+                <p:outputLabel class="titTela" value="Tipo de Logadouro" style="font-size: 12px;text-align: left;margin-left: 32%;"/>
                 <br/> 
-                <p:inputText value="#{cadProprietarioMB.proprietario.razaosocial}" style="margin-left:2%;font-size: 12px;"/>
-                <p:inputText value="#{cadProprietarioMB.proprietario.nomefantasia}" size="30" style="margin-left: 9%;font-size: 12px;"/>
-                <p:inputText value="#{cadProprietarioMB.proprietario.tipologradouro}" size="10" style="margin-left: 9%;font-size: 12px;"/>
+                <p:inputText class="form-control" value="#{cadProprietarioMB.proprietario.razaosocial}" style="margin-left:1%;font-size: 12px;"/>
+                <p:inputText class="form-control" value="#{cadProprietarioMB.proprietario.nomefantasia}" size="30" style="margin-left: 4.5%;font-size: 12px;"/>
+                <p:inputText class="form-control" value="#{cadProprietarioMB.proprietario.tipologradouro}" size="10" style="margin-left: 13%;font-size: 12px;"/>
                 <br/><br/>  
                 
-                <p:outputLabel value="Logadouro" style="font-size: 12px;text-align: left;margin-left:2%;"/>
-                <p:outputLabel value="Número" style="font-size: 12px;text-align: left;margin-left: 67.5%;"/>  
+                <p:outputLabel class="titTela" value="Logadouro" style="font-size: 12px;text-align: left;margin-left:1%;"/>
+                <p:outputLabel value="Número" class="titTela" style="font-size: 12px;text-align: left;margin-left: 71.5%;"/>  
                 
                 <br/> 
-                <p:inputText value="#{cadProprietarioMB.proprietario.logradouro}" size="62" style="margin-left: 2%;font-size: 12px;"/>
-                <p:inputText value="#{cadProprietarioMB.proprietario.numero}" size="10" style="margin-left: 9.8%;font-size: 12px;"/>
+                <p:inputText class="form-control" value="#{cadProprietarioMB.proprietario.logradouro}" size="58" style="margin-left: 1%;font-size: 12px;"/>
+                <p:inputText class="form-control" value="#{cadProprietarioMB.proprietario.numero}" size="10" style="margin-left: 12.6%;font-size: 12px;"/>
                  
                 
                 <br/><br/> 
                 
-                <p:outputLabel value="Complemento" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
-                <p:outputLabel value="Estado" style="font-size: 12px;text-align: left; margin-left: 10%;"/>
-                <p:outputLabel value="Cidade" style="font-size: 12px;text-align: left;margin-left: 35%;"/>
+                <p:outputLabel class="titTela" value="Complemento" style="font-size: 12px;text-align: left;margin-left: 1%;"/>
+                <p:outputLabel value="Estado" class="titTela" style="font-size: 12px;text-align: left; margin-left: 9.5%;"/>
+                <p:outputLabel value="Cidade" class="titTela" style="font-size: 12px;text-align: left;margin-left: 37%;"/>
                  
                 <br/>
-                <h:panelGrid style="margin-left: 2%;font-size: 12px;" columns="3"> 
-                    <p:inputText value="#{cadProprietarioMB.proprietario.complemento}" size="10"/> 
-                    <p:selectOneMenu id="estado" value="#{cadProprietarioMB.proprietario.estado}" class="" style="width:182px;margin-left: 12.7%;">
+                <h:panelGrid style="margin-left: 1%;font-size: 12px;" columns="3"> 
+                    <p:inputText class="form-control" value="#{cadProprietarioMB.proprietario.complemento}" size="10"/> 
+                    <p:selectOneMenu class="form-control" id="estado" value="#{cadProprietarioMB.proprietario.estado}"  style="width:178px;margin-left: 10.7%;">
                             <f:selectItem itemLabel="Selecione" itemValue="sn" noSelectionOption="true"/> 
                             <f:selectItem itemLabel="Acre" itemValue="AC" /> 
                             <f:selectItem itemLabel="Alagoas" itemValue="AL" /> 
@@ -72,21 +78,24 @@
                             <f:selectItem itemLabel="Sergipe" itemValue="SE" />  
                             <f:selectItem itemLabel="Tocantins" itemValue="TO" /> 
                     </p:selectOneMenu>
-                    <p:inputText value="#{cadProprietarioMB.proprietario.cidade}" size="20" style="margin-left: 14.2%;"/>
+                    <p:inputText value="#{cadProprietarioMB.proprietario.cidade}" size="20" style="margin-left: 13.5%;"/>
                 </h:panelGrid>
                 
                  <br/>
-                 <p:outputLabel value="Bairro" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
-                 <p:outputLabel value="Cep" style="font-size: 12px;text-align: left;margin-left: 29%;"/> 
+                 <p:outputLabel class="titTela" value="Bairro" style="font-size: 12px;text-align: left;margin-left: 1%;"/>
+                 <p:outputLabel value="Cep" class="titTela" style="font-size: 12px;text-align: left;margin-left: 25%;"/> 
                  <br/> 
-                 <p:inputText value="#{cadProprietarioMB.proprietario.bairro}" size="15" style="margin-left: 2%;"/>
-                 <p:inputText value="#{cadProprietarioMB.proprietario.cep}" size="10" style="margin-left: 12.2%;"/>
-                 <br/><br/><br/><br/><br/><br/><br/>
+                 <p:inputText class="form-control" value="#{cadProprietarioMB.proprietario.bairro}" size="15" style="margin-left: 1%;"/>
+                 <p:inputText class="form-control" value="#{cadProprietarioMB.proprietario.cep}" size="10" style="margin-left: 7.2%;"/>
+                 <br/><br/><br/><br/><br/><br/>
                 <hr/>
-                <br/>  
-                <p:commandButton value="Salvar" style="margin-left: 35%;" actionListener="#{cadProprietarioMB.Salvar()}" ajax="false"/>
-                <p:commandButton value="Cancelar" style="margin-left: 2%;" action="#{cadProprietarioMB.cancelar()}" ajax="false"/>
-        
+                <br/>
+                <p:commandLink style="text-decoration: none;" actionListener="#{cadProprietarioMB.salvar()}" ajax="false">
+                    <div style="font-size: 16px;margin-left: 32%;" class="cadastrar">Cadastrar</div>
+                </p:commandLink>
+                <p:commandLink style="text-decoration: none;" actionListener="#{cadProprietarioMB.cancelar()}" ajax="false">
+                    <div style="font-size: 16px" class="cancelar">Cancelar</div>
+                </p:commandLink>
         </h:form>
  </h:body>
   

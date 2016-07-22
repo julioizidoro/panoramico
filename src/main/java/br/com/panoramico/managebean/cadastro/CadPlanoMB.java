@@ -63,4 +63,8 @@ public class CadPlanoMB implements Serializable{
         plano = planoDao.update(plano);
         RequestContext.getCurrentInstance().closeDialog(plano);
     }
+    
+    public void cancelar(){
+        RequestContext.getCurrentInstance().closeDialog(plano);
+    }
 }

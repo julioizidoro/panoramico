@@ -78,7 +78,7 @@ public class TipoEventoMB implements Serializable{
     
     public String novoCadastroTipoEvento() {
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put("contentWidth", 600);
+        options.put("contentWidth", 400);
         RequestContext.getCurrentInstance().openDialog("cadTipoEvento", options, null);
         return "";
     }
@@ -107,7 +107,7 @@ public class TipoEventoMB implements Serializable{
             FacesContext fc = FacesContext.getCurrentInstance();
             HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
             session.setAttribute("tipoenvento", tipoenvento);
-            options.put("contentWidth", 600);
+            options.put("contentWidth", 400);
             RequestContext.getCurrentInstance().openDialog("cadTipoEvento", options, null);
         }
     }

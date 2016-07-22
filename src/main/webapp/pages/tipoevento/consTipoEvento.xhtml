@@ -13,7 +13,7 @@
 
                     <!-- TABELA CADASTROS --> 
                             <div class="col-6 titTela" style="margin-left:-10%;">Consulta Tipo de Evento</div>
-                            <p:commandLink action="#{tipoEventoMB.novoCadastroTipoEvento()}">
+                            <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" action="#{tipoEventoMB.novoCadastroTipoEvento()}">
                                 <div class="icoAdd fa fa-plus-square-o"></div>
                                 <p:ajax event="dialogReturn" update="messages, idConsultaTipoEvento" listener="#{tipoEventoMB.retornoDialogNovo}"/>
                             </p:commandLink>
@@ -24,12 +24,12 @@
                                 </h:column>
 
                                  <h:column>
-                                     <p:commandLink action="#{tipoEventoMB.editar(tipoevento)}">
+                                     <p:commandLink rendered="#{usuarioLogadoMB.editar}" action="#{tipoEventoMB.editar(tipoevento)}">
                                          <div class="fa fa-pencil-square-o" style="margin-left:90%;">
                                          </div>   
                                          <p:ajax event="dialogReturn" listener="#{tipoEventoMB.retornoDialogAlteracao}" update=":idFormConsultaTipoEvento:messages, @form"/>
                                      </p:commandLink>
-                                     <p:commandLink style="text-decoration: none;" action="#{tipoEventoMB.excluir(tipoevento)}" update=":idFormConsultaTipoEvento:messages, @form">
+                                     <p:commandLink rendered="#{usuarioLogadoMB.excluir}" style="text-decoration: none;" action="#{tipoEventoMB.excluir(tipoevento)}" update=":idFormConsultaTipoEvento:messages, @form">
                                         <div class="fa fa-trash-o"></div>
                                      </p:commandLink>
                                 </h:column>

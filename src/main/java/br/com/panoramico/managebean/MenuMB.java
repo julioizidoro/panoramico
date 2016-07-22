@@ -1,13 +1,10 @@
 package br.com.panoramico.managebean;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import org.primefaces.context.RequestContext;
 
 @Named
 @ViewScoped
@@ -25,62 +22,4 @@ public class MenuMB implements Serializable{
 	}
 	
 	
-	public String entrar(){
-		return "incial";
-	}
-        
-        
-        public String CadastroProprietario(){
-            return "cadProprietario";
-        }
-        
-        public String CadastroProprietarioPrincipal(){
-            Map<String, Object> options = new HashMap<String, Object>();
-            options.put("contentWidth", 800);
-            RequestContext.getCurrentInstance().openDialog("cadProprietarioPrincipal", options, null);
-            return "";
-        }
-        
-        public String ConsCliente(){
-            return "consCliente";
-        }
-        
-        public String ConsEmpresa(){
-            return "consEmpresa";
-        }
-        
-        public String ConsPlano(){
-            return "consPlano";
-        }
-        
-        public String ConsTipoEvento(){
-            return"consTipoEvento";
-        }
-        
-        public String ConsAmbiente(){
-            return "consAmbiente";
-        }
-        
-        public String ConsAssociado(){
-            return "consAssociado";
-        }
-        
-        public String ConsDependente(){
-            return "consDependente";
-        }
-        
-        public String ConsUsuario(){
-            return "consUsuario";
-        }
-        
-        public String ConsPerfil(){
-            return "consPerfil";
-        }
-        
-        public String novoCadastroUsuario() {
-            Map<String, Object> options = new HashMap<String, Object>();
-            options.put("contentWidth", 600);
-            RequestContext.getCurrentInstance().openDialog("cadUsuario", options, null);
-        return "";
-    }
 }

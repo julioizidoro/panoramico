@@ -8,24 +8,35 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
         <link href="../../resources/css/css.css" rel="stylesheet" type="text/css" />
-    </h:head>
+        <link type="text/javascript" href="../../resources/js/jquery-3.1.0.js"></link>
+        <link type="text/javascript" src="../../resources/js/modal.js"/> 
+        <link rel="stylesheet" type="text/css" href="../../resources/css/layout.css"/>
+        <link rel="stylesheet" type="text/css" href="../../resources/css/modal.css"/>
+	<link rel="stylesheet" type="text/css" href="../../resources/css/buttons.css"/>
+	<link rel="stylesheet" type="text/css" href="../../resources/css/tabelas.css"/>
+	<link rel="stylesheet" type="text/css" href="../../resources/css/textos.css"/>
+    </h:head> 
      
 
- <h:body style="background:#CEEDF4;" > 
-        <h:form id="idFormCadastroTipoEvento" class="body2" style="font-size: 12px; background-color: #CEEDF4;" enctype="multipart/form-data">
+ <h:body style="background:#A3DAD9; border-color: #CF7000;border: 2px;" > 
+        <h:form id="idFormCadastroTipoEvento" class="body2" style="font-size: 12px;" enctype="multipart/form-data">
                 
-            <title>Cadastro de Empresa</title>
+            <title>Nova Empresa</title>
             <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
             
-            <p:outputLabel value="Descrição" style="font-size: 12px;text-align: left;margin-left:2%;"/>
+            <p:outputLabel class="titTela" value="Descrição" style="font-size: 12px;text-align: left;margin-left:2%;"/>
             <br/>
-            <p:inputText value="#{cadTipoEventoMB.tipoenvento.descricao}" size="90" style="margin-left:2%;font-size: 12px;"/>
+            <p:inputText class="form-control" value="#{cadTipoEventoMB.tipoenvento.descricao}" size="53" style="margin-left:2%;font-size: 12px;"/>
             
             <br/>
             <hr/>
             <br/>
-            <p:commandButton value="Salvar" style="margin-left: 35%;"  actionListener="#{cadTipoEventoMB.salvar()}" ajax="false"/>
-            <p:commandButton value="Cancelar" style="margin-left: 2%;" action="#{cadTipoEventoMB.cancelar()}" ajax="false"/>
+            <p:commandLink style="text-decoration: none;" actionListener="#{cadTipoEventoMB.salvar()}" ajax="false">
+                <div style="font-size: 16px;margin-left: 32%;" class="cadastrar">Cadastrar</div>
+            </p:commandLink>
+            <p:commandLink style="text-decoration: none;" actionListener="#{cadTipoEventoMB.cancelar()}" ajax="false">
+                <div style="font-size: 16px" class="cancelar">Cancelar</div>
+            </p:commandLink>
         </h:form>
  </h:body>
 </html>

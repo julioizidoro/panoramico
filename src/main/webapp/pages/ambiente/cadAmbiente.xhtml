@@ -18,17 +18,17 @@
     </h:head>
      
 
- <h:body style="background:#CEEDF4;" > 
-        <h:form id="idFormCadastroPlano" class="body2" style="font-size: 12px; background-color: #CEEDF4;" enctype="multipart/form-data">
+ <h:body style="background:#A3DAD9; border-color: #CF7000;border: 2px;" > 
+        <h:form id="idFormCadastroPlano" style="font-size: 12px;" enctype="multipart/form-data">
                 
-            <title>Cadastro de Ambiente</title>
+            <title>Novo Ambiente</title>
             <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
             
-            <p:outputLabel value="Nome" style="font-size: 12px;text-align: left;margin-left:2%;"/>
-            <p:outputLabel value="Capacidade" style="font-size: 12px;text-align: left;margin-left:64.5%;"/>
+            <p:outputLabel class="titTela" value="Nome" style="font-size: 12px;text-align: left;margin-left:2%;"/>
+            <p:outputLabel value="Capacidade" class="titTela" style="font-size: 12px;text-align: left;margin-left:63%;"/>
             <br/> 
-            <p:inputText value="#{cadAmbienteMB.ambiente.nome}" size="60" style="margin-left:2%;font-size: 12px;"/>
-            <p:inputText value="#{cadAmbienteMB.ambiente.capacidade}" size="15" style="margin-left:4%;font-size: 12px;">
+            <p:inputText class="form-control" value="#{cadAmbienteMB.ambiente.nome}" size="45" style="margin-left:2%;font-size: 12px;"/>
+            <p:inputText class="form-control" value="#{cadAmbienteMB.ambiente.capacidade}" size="15" style="margin-left:4%;font-size: 12px;text-align: right;">
                 <f:convertNumber pattern="##,###,###,###.##"/> 
             </p:inputText>
             
@@ -41,7 +41,6 @@
             <p:commandLink actionListener="#{cadAmbienteMB.cancelar()}" ajax="false">
                 <div style="font-size: 16px" class="cancelar">Cancelar</div>
             </p:commandLink>
-            
         </h:form>  
  </h:body>
 </html>

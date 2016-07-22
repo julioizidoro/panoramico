@@ -5,14 +5,11 @@
  */
 package br.com.panoramico.managebean;
 
-import br.com.panoramico.dao.ClienteDao;
 import br.com.panoramico.dao.UsuarioDao;
-import br.com.panoramico.model.Cliente;
 import br.com.panoramico.model.Usuario;
 import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -41,14 +38,40 @@ public class UsuarioLogadoMB implements Serializable{
     private String novaSenha;
     private String senhaAtual;
     private String confirmaNovaSenha;
+    private boolean cadastrar;
+    private boolean editar;
+    private boolean excluir;
 
     public UsuarioLogadoMB() {
         this.usuario = new Usuario();
     }
-    
-    
-    
 
+    public boolean isCadastrar() {
+        return cadastrar;
+    }
+
+    public void setCadastrar(boolean cadastrar) {
+        this.cadastrar = cadastrar;
+    }
+
+    public boolean isEditar() {
+        return editar;
+    }
+
+    public void setEditar(boolean editar) {
+        this.editar = editar;
+    }
+
+    public boolean isExcluir() {
+        return excluir;
+    }
+
+    public void setExcluir(boolean excluir) {
+        this.excluir = excluir;
+    }
+
+   
+    
     public String getConfirmaNovaSenha() {
         return confirmaNovaSenha;
     }
@@ -118,13 +141,14 @@ public class UsuarioLogadoMB implements Serializable{
             if (usuario == null) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atenção!", "Acesso Negado."));
             } else {
+                verificarPerfilUsuario(usuario);
                 return "incial";
             }
         }
         usuario = new Usuario();
         return "";
     }
-    
+     
     
      public void validarTrocarSenha() {
         if ((!usuario.getLogin().equalsIgnoreCase("")) && (usuario.getSenha().equalsIgnoreCase("")) || (usuario.getLogin().equalsIgnoreCase("")) && (!usuario.getSenha().equalsIgnoreCase(""))) {
@@ -221,5 +245,22 @@ public class UsuarioLogadoMB implements Serializable{
          Map<String, Object> sessionMap = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();  
          sessionMap.clear();  
          return "index";
+     }
+     
+     public void verificarPerfilUsuario(Usuario usuario){
+         if(usuario.getPerfil().getAcesso().getIdacesso() == 1) {
+             cadastrar = true;
+             editar = true;
+             excluir = true;
+         }else if (usuario.getPerfil().getAcesso().getIdacesso() == 2) {
+             cadastrar = true;
+             editar = true;
+         }else if (usuario.getPerfil().getAcesso().getIdacesso() == 3) {
+             cadastrar = true;
+             excluir = true;
+         }else if (usuario.getPerfil().getAcesso().getIdacesso() == 4) {
+             editar = true;
+             excluir = true;
+         }
      }
 }

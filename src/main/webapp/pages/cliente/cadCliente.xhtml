@@ -8,39 +8,48 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
         <link href="../../resources/css/css.css" rel="stylesheet" type="text/css" />
+        <link type="text/javascript" href="../../resources/js/jquery-3.1.0.js"></link>
+        <link type="text/javascript" src="../../resources/js/modal.js"/> 
+        <link rel="stylesheet" type="text/css" href="../../resources/css/layout.css"/>
+        <link rel="stylesheet" type="text/css" href="../../resources/css/modal.css"/>
+	<link rel="stylesheet" type="text/css" href="../../resources/css/buttons.css"/>
+	<link rel="stylesheet" type="text/css" href="../../resources/css/textos.css"/>
     </h:head>
      
 
- <h:body style="background:#CEEDF4;" > 
-        <h:form id="idFormCadastroCliente" class="body2" style="font-size: 12px; background-color: #CEEDF4;" enctype="multipart/form-data">
+ <h:body style="background:#A3DAD9; border-color: #CF7000;border: 2px;" > 
+        <h:form id="idFormCadastroCliente" class="body2" style="font-size: 12px;" enctype="multipart/form-data">
                 
-            <title style="background: #cf7000">Cadastro de cliente</title>
+            <title style="background: #cf7000">Novo cliente</title>
             <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
             
-            <p:outputLabel value="Nome" style="font-size: 12px;text-align: left;margin-left:2%;"/>
-            <p:outputLabel value="CPF" style="font-size: 12px;text-align: left;margin-left:35.5%;"/> 
-            <p:outputLabel value="Data de Nascimento" style="font-size: 12px;text-align: left;margin-left:27.2%;"/>
+            <p:outputLabel class="titTela" value="Nome" style="font-size: 12px;text-align: left;margin-left:2%;"/>
+            <p:outputLabel value="CPF" class="titTela" style="font-size: 12px;text-align: left;margin-left:39%;"/> 
+            <p:outputLabel value="Data de Nascimento" class="titTela" style="font-size: 12px;text-align: left;margin-left:26.9%;"/>
             <br/> 
-            <p:inputText value="#{cadClienteMB.cliente.nome}" size="30" style="margin-left:2%;font-size: 12px;"/>
-            <p:inputMask mask="999.999.999-99" value="#{cadClienteMB.cliente.cpf}" style="margin-left:6%;font-size: 12px;"/>    
-            <p:inputMask mask="99/99/9999" value="#{cadClienteMB.cliente.datanascimento}" style="margin-left:6%;font-size: 12px;">
+            <p:inputText class="form-control" value="#{cadClienteMB.cliente.nome}" size="30" style="margin-left:2%;font-size: 12px;"/>
+            <p:inputMask mask="999.999.999-99" class="form-control" value="#{cadClienteMB.cliente.cpf}" style="margin-left:6%;font-size: 12px;"/>    
+            <p:inputMask mask="99/99/9999" size="12" class="form-control" value="#{cadClienteMB.cliente.datanascimento}" style="margin-left:6%;font-size: 12px;">
                 <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
             </p:inputMask>
             <br/><br/>
             
             
-            <p:outputLabel value="E-mail" style="font-size: 12px;text-align: left;margin-left:2%;"/> 
-            <p:outputLabel value="Telefone" style="font-size: 12px;text-align: left;margin-left:35.5%;"/>
+            <p:outputLabel class="titTela" value="E-mail" style="font-size: 12px;text-align: left;margin-left:2%;"/> 
+            <p:outputLabel value="Telefone" class="titTela" style="font-size: 12px;text-align: left;margin-left:38.5%;"/>
             <br/> 
-            <p:inputText value="#{cadClienteMB.cliente.email}" size="30" style="margin-left:2%;font-size: 12px;"/>
-            <p:inputMask mask="(99)99999999" value="#{cadClienteMB.cliente.telefone}" style="margin-left:6%;font-size: 12px;"/> 
+            <p:inputText class="form-control" value="#{cadClienteMB.cliente.email}" size="30" style="margin-left:2%;font-size: 12px;"/>
+            <p:inputMask mask="(99)99999999" class="form-control" value="#{cadClienteMB.cliente.telefone}" style="margin-left:6%;font-size: 12px;"/> 
             
             <br/>
             <hr/>
             <br/>
-            <p:commandButton value="Salvar" style="margin-left: 35%;" actionListener="#{cadClienteMB.salvar()}" ajax="false"/>
-            <p:commandButton value="Cancelar" style="margin-left: 2%;" actionListener="#{cadClienteMB.cancelar()}" ajax="false"/>
-            
-        </h:form>
+            <p:commandLink style="text-decoration: none;" actionListener="#{cadClienteMB.salvar()}" ajax="false">
+                <div style="font-size: 16px;margin-left: 32%;" class="cadastrar">Cadastrar</div>
+            </p:commandLink>
+            <p:commandLink style="text-decoration: none;" actionListener="#{cadClienteMB.cancelar()}" ajax="false">
+               <div style="font-size: 16px" class="cancelar">Cancelar</div>
+            </p:commandLink>            
+        </h:form> 
  </h:body>
 </html>

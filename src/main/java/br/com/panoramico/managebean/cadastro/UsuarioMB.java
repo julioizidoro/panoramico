@@ -105,7 +105,7 @@ public class UsuarioMB implements Serializable{
             FacesContext fc = FacesContext.getCurrentInstance();
             HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
             session.setAttribute("usuario", usuario);
-            options.put("contentWidth", 600);
+            options.put("contentWidth", 545);
             RequestContext.getCurrentInstance().openDialog("cadUsuario", options, null);
         }
     }

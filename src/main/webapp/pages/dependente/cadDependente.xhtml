@@ -8,38 +8,48 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
         <link href="../../resources/css/css.css" rel="stylesheet" type="text/css" />
+        <link type="text/javascript" href="../../resources/js/jquery-3.1.0.js"></link>
+        <link type="text/javascript" src="../../resources/js/modal.js"/> 
+        <link rel="stylesheet" type="text/css" href="../../resources/css/layout.css"/>
+        <link rel="stylesheet" type="text/css" href="../../resources/css/modal.css"/>
+	<link rel="stylesheet" type="text/css" href="../../resources/css/buttons.css"/>
+	<link rel="stylesheet" type="text/css" href="../../resources/css/textos.css"/>
     </h:head>
      
 
- <h:body style="background:#CEEDF4;" > 
-        <h:form id="idFormCadastroDependente" class="body2" style="font-size: 12px; background-color: #CEEDF4;" enctype="multipart/form-data">
+ <h:body style="background:#A3DAD9; border-color: #CF7000;border: 2px;" > 
+        <h:form id="idFormCadastroDependente" class="body2" style="font-size: 12px;" enctype="multipart/form-data">
                 
             <title>Cadastro de Dependente</title>
             <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
             
-            <p:outputLabel value="Nome" style="font-size: 12px;text-align: left;margin-left:2%;"/>
-            <p:outputLabel value="Telefone" style="font-size: 12px;text-align: left;margin-left:35.5%;"/> 
-            <p:outputLabel value="Data de Nascimento" style="font-size: 12px;text-align: left;margin-left:22%;"/>
+            <p:outputLabel class="titTela" value="Nome" style="font-size: 12px;text-align: left;margin-left:2%;"/>
+            <p:outputLabel class="titTela" value="Telefone" style="font-size: 12px;text-align: left;margin-left:38.5%;"/> 
+            <p:outputLabel class="titTela" value="Data de Nascimento" style="font-size: 12px;text-align: left;margin-left:22%;"/>
             <br/> 
-            <p:inputText value="#{cadDependenteMB.dependente.nome}" size="30" style="margin-left:2%;font-size: 12px;"/>
-            <p:inputMask mask="(99)99999999" value="#{cadDependenteMB.dependente.telefone}" style="margin-left:6%;font-size: 12px;"/>    
-            <p:inputMask mask="99/99/9999" value="#{cadDependenteMB.dependente.datanascimento}" style="margin-left:6%;font-size: 12px;">
+            <p:inputText class="form-control" value="#{cadDependenteMB.dependente.nome}" size="30" style="margin-left:2%;font-size: 12px;"/>
+            <p:inputMask class="form-control" mask="(99)99999999" value="#{cadDependenteMB.dependente.telefone}" style="margin-left:6%;font-size: 12px;"/>    
+            <p:inputMask mask="99/99/9999" size="12" class="form-control" value="#{cadDependenteMB.dependente.datanascimento}" style="margin-left:5%;font-size: 12px;">
                 <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
             </p:inputMask>
             <br/><br/>
             
             
-            <p:outputLabel value="E-mail" style="font-size: 12px;text-align: left;margin-left:2%;"/> 
-            <p:outputLabel value="Cep" style="font-size: 12px;text-align: left;margin-left:35%;"/> 
+            <p:outputLabel class="titTela" value="E-mail" style="font-size: 12px;text-align: left;margin-left:2%;"/> 
+            <p:outputLabel value="Cep" class="titTela" style="font-size: 12px;text-align: left;margin-left:38%;"/> 
             <br/> 
-            <p:inputText value="#{cadDependenteMB.dependente.email}" size="30" style="margin-left:2%;font-size: 12px;"/>
-            <p:inputMask mask="99999-999" value="#{cadDependenteMB.dependente.cep}" style="margin-left:6%;font-size: 12px;"/>    
+            <p:inputText class="form-control" value="#{cadDependenteMB.dependente.email}" size="30" style="margin-left:2%;font-size: 12px;"/>
+            <p:inputMask class="form-control" mask="99999-999" value="#{cadDependenteMB.dependente.cep}" style="margin-left:6%;font-size: 12px;"/>    
             
             <br/>
             <hr/>
             <br/>
-            <p:commandButton value="Salvar" style="margin-left: 35%;" actionListener="#{cadDependenteMB.salvar()}" ajax="false"/>
-            <p:commandButton value="Cancelar" style="margin-left: 2%;"  actionListener="#{cadDependenteMB.cancelar()}" ajax="false"/>
+            <p:commandLink style="text-decoration: none;" actionListener="#{cadDependenteMB.salvar()}" ajax="false">
+                <div style="font-size: 16px;margin-left: 32%;" class="cadastrar">Cadastrar</div>
+            </p:commandLink>
+            <p:commandLink style="text-decoration: none;" actionListener="#{cadDependenteMB.cancelar()}" ajax="false">
+                <div style="font-size: 16px" class="cancelar">Cancelar</div>
+            </p:commandLink>
         </h:form>
  </h:body>
 </html>

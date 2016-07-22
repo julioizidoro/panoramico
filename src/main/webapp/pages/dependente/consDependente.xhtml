@@ -13,7 +13,7 @@
 
                     <!-- TABELA CADASTROS -->
                             <div class="col-6 titTela" style="margin-left:-14%;">Consulta Dependente</div>
-                            <p:commandLink action="#{dependenteMB.novoCadastroDependente()}">
+                            <p:commandLink action="#{dependenteMB.novoCadastroDependente()}" rendered="#{usuarioLogadoMB.cadastrar}">
                                 <div class="icoAdd fa fa-plus-square-o"></div>
                                 <p:ajax event="dialogReturn" update="messages, idConsultaDependente" listener="#{dependenteMB.retornoDialogNovo}"/>
                             </p:commandLink>
@@ -38,12 +38,14 @@
                                     <h:outputText value="#{dependente.telefone}" styleClass="alinhamento" style="text-align: left !important;margin-right:40%;" />
                                 </h:column>
                                  <h:column>
-                                     <p:commandLink action="#{dependenteMB.editar(dependente)}">
+                                     <p:commandLink action="#{dependenteMB.editar(dependente)}" rendered="#{usuarioLogadoMB.editar}">
                                         <div class="fa fa-pencil-square-o">
                                         </div>
                                          <p:ajax event="dialogReturn" listener="#{dependenteMB.retornoDialogAlteracao}" update=":idFormConsultaDependente:messages, @form"/>
                                      </p:commandLink>
+                                     <p:commandLink rendered="#{usuarioLogadoMB.excluir}" style="text-decoration: none;" action="#{dependenteMB.excluir(dependente)}" update=":idFormConsultaDependente:messages, @form">
                                         <div class="fa fa-trash-o"></div>
+                                     </p:commandLink>
                                 </h:column>
 
 

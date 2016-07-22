@@ -115,7 +115,7 @@ public class AssociadoMB implements Serializable{
     
     public String novoCadastroAssociado() {
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put("contentWidth", 600);
+        options.put("contentWidth", 580);
         RequestContext.getCurrentInstance().openDialog("cadAssociado", options, null);
         return "";
     }
@@ -144,7 +144,7 @@ public class AssociadoMB implements Serializable{
             FacesContext fc = FacesContext.getCurrentInstance();
             HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
             session.setAttribute("associado", associado);
-            options.put("contentWidth", 600);
+            options.put("contentWidth", 580);
             RequestContext.getCurrentInstance().openDialog("cadAssociado", options, null);
         }
     }

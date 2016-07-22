@@ -77,7 +77,7 @@ public class AmbienteMB implements  Serializable{
     
     public String novoCadastroAmbiente() {
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put("contentWidth", 600);
+        options.put("contentWidth", 480);
         RequestContext.getCurrentInstance().openDialog("cadAmbiente", options, null);
         return "";
     }
@@ -106,7 +106,7 @@ public class AmbienteMB implements  Serializable{
             FacesContext fc = FacesContext.getCurrentInstance();
             HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
             session.setAttribute("ambiente", ambiente);
-            options.put("contentWidth", 600);
+            options.put("contentWidth", 480);
             RequestContext.getCurrentInstance().openDialog("cadAmbiente", options, null);
         }
     }

@@ -44,13 +44,13 @@
                 <br/><br/>
                 <p:outputLabel class="titTela" value="Perfil" style="font-size: 14px;text-align: left;margin-left: 2%;"/>
                  <br/>
-                 <p:selectOneMenu class="form-control"  id="perfil"  style="width: 250px;margin-left: 2%"  value="#{cadUsuarioMB.perfil}" converter="PerfilConverter"
+                 <p:selectOneMenu class="form-control"  id="perfil"  style="width: 178px;margin-left: 2%"  value="#{cadUsuarioMB.perfil}" converter="PerfilConverter"
                              filter="true" filterMatchMode="contains" panelStyle="width:180px" >
                    <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
                    <f:selectItems  value="#{cadUsuarioMB.listaPerfil}" var="perfilselecionado" itemLabel="#{perfilselecionado.nome}" itemValue="#{perfilselecionado}"/>
                    <f:attribute name="listaPerfil" value="#{cadUsuarioMB.listaPerfil}"/>
                 </p:selectOneMenu>
-                 <br/><br/><br/><br/><br/><br/><br/>/<br/><br/><br/><br/>
+                 <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
                 <hr/>
                 <br/>  
                 <p:commandLink style="text-decoration: none;" actionListener="#{cadUsuarioMB.salvar()}" ajax="false">

@@ -13,7 +13,7 @@
 
                     <!-- TABELA CADASTROS -->
                             <div class="col-6 titTela" style="margin-left:-15%;">Consulta Usuário</div>
-                            <p:commandLink action="#{usuarioMB.novoCadastroUsuario()}">
+                            <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" action="#{usuarioMB.novoCadastroUsuario()}">
                                 <div class="icoAdd fa fa-plus-square-o"></div>
                                 <p:ajax event="dialogReturn" update="messages, idConsultaUsuario" listener="#{usuarioMB.retornoDialogNovo}"/>
                             </p:commandLink>
@@ -38,12 +38,12 @@
                                     <h:outputText value="#{usuario.perfil.nome}" styleClass="alinhamento" style="float: left;" />
                                 </h:column>
                                  <h:column>
-                                     <p:commandLink action="#{usuarioMB.editar(usuario)}">
+                                     <p:commandLink rendered="#{usuarioLogadoMB.editar}" action="#{usuarioMB.editar(usuario)}">
                                         <div class="fa fa-pencil-square-o">
                                         </div>
                                          <p:ajax event="dialogReturn" listener="#{usuarioMB.retornoDialogAlteracao}" update=":idFormConsultaUsuario:messages, @form"/>
                                      </p:commandLink>
-                                     <p:commandLink action="#{usuarioMB.excluir(usuario)}" style="text-decoration: none;" update=":idFormConsultaUsuario:messages, @form">
+                                     <p:commandLink rendered="#{usuarioLogadoMB.excluir}" action="#{usuarioMB.excluir(usuario)}" style="text-decoration: none;" update=":idFormConsultaUsuario:messages, @form">
                                         <div class="fa fa-trash-o"></div>
                                      </p:commandLink>
                                 </h:column> 

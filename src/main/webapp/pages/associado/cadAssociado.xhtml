@@ -9,35 +9,68 @@
 
         <link href="../../resources/css/css.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" type="text/css" href="../../resources/fonts/font-awesome-4.6.3/css/font-awesome.min.css"/>
+        
+        <link type="text/javascript" href="../../resources/js/jquery-3.1.0.js"></link>
+        <link type="text/javascript" src="../../resources/js/modal.js"/> 
+        <link rel="stylesheet" type="text/css" href="../../resources/css/layout.css"/>
+        <link rel="stylesheet" type="text/css" href="../../resources/css/modal.css"/>
+	<link rel="stylesheet" type="text/css" href="../../resources/css/buttons.css"/>
+	<link rel="stylesheet" type="text/css" href="../../resources/css/textos.css"/>
     </h:head>
      
 
- <h:body style="background:#CEEDF4;" > 
-        <h:form id="idFormCadastroAssociado" class="body2" style="font-size: 12px; background-color: #CEEDF4;" enctype="multipart/form-data">
+ <h:body style="background:#A3DAD9; border-color: #CF7000;border: 2px;" > 
+        <h:form id="idFormCadastroAssociado" style="font-size: 12px; background-color:#A3DAD9" enctype="multipart/form-data">
                 
             <title>Novo Associado</title>
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                <p:outputLabel value="Tipo de Logadouro" style="font-size: 12px;text-align: left;margin-left:2%;"/>
-                <p:outputLabel value="Logadouro" style="font-size: 12px;text-align: left;margin-left: 4.5%;"/>
-                <p:outputLabel value="Número" style="font-size: 12px;text-align: left;margin-left: 45.5%;"/>
-                <br/> 
-                <p:inputText value="#{cadAssociadoMB.associado.tipologradouro}" size="10" style="margin-left:2%;font-size: 12px;"/>
-                <p:inputText value="#{cadAssociadoMB.associado.logradouro}" size="45" style="margin-left: 8%;font-size: 12px;"/>
-                <p:inputText value="#{cadAssociadoMB.associado.numero}" size="10" style="margin-left: 5.3%;font-size: 12px;"/>
-                <br/><br/>  
                 
-                
-                <p:outputLabel value="Complemento" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
-                <p:outputLabel value="Estado" style="font-size: 12px;text-align: left; margin-left: 10%;"/>
-                <p:outputLabel value="Cidade" style="font-size: 12px;text-align: left;margin-left: 35%;"/>
-                 
+                <p:outputLabel class="titTela" value="Cliente" style="font-size: 12px;text-align: left;margin-left: 1%;"/>
+                <p:outputLabel class="titTela" value="Plano" style="font-size: 12px;text-align: left;margin-left: 46%;"/>
+                 <br/>
+                <p:selectOneMenu class="form-control"  id="cliente"  style="width: 250px;margin-left: 1%"  value="#{cadAssociadoMB.cliente}" converter="ClienteConverter"
+                             filter="true" filterMatchMode="contains" panelStyle="width:180px" >
+                    <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
+                    <f:selectItems  value="#{cadAssociadoMB.listaCliente}" var="clienteselecionado" itemLabel="#{clienteselecionado.nome}" itemValue="#{clienteselecionado}"/>
+                    <f:attribute name="listaCliente" value="#{cadAssociadoMB.listaCliente}"/>
+                </p:selectOneMenu>
+                <p:selectOneMenu  class="form-control" id="plano"  style="width: 220px;margin-left: 2%"  value="#{cadAssociadoMB.plano}" converter="PlanoConverter"
+                             filter="true" filterMatchMode="contains" panelStyle="width:180px" >
+                    <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
+                    <f:selectItems  value="#{cadAssociadoMB.listaPlano}" var="planoselecionado" itemLabel="#{planoselecionado.descricao}" itemValue="#{planoselecionado}"/>
+                    <f:attribute name="listaPlano" value="#{cadAssociadoMB.listaPlano}"/>
+                </p:selectOneMenu> 
+                <br/><br/>
+                <p:outputLabel class="titTela" value="Desconto de Mensalidade" style="font-size: 12px;text-align: right;margin-left: 1%;"/>
+                <p:outputLabel class="titTela" value="Tipo de Logadouro" style="font-size: 12px;text-align: left;margin-left:3.8%;"/>
+                <p:outputLabel class="titTela" value="Logadouro" style="font-size: 12px;text-align: left;margin-left: 4%;"/>
                 <br/>
-                <h:panelGrid style="margin-left: 2%;font-size: 12px;" columns="3"> 
-                    <p:inputText value="#{cadAssociadoMB.associado.complemento}" size="10"/> 
-                    <p:selectOneMenu id="estado" value="#{cadAssociadoMB.associado.estado}" class="" style="width:182px;margin-left: 12.7%;">
+                <p:inputText class="form-control" value="#{cadAssociadoMB.associado.descotomensalidade}" size="15" style="margin-left:1%;text-align: right;">
+                    <f:convertNumber pattern="##,###,###,###.##"/> 
+                </p:inputText>
+                <p:inputText class="form-control" value="#{cadAssociadoMB.associado.tipologradouro}" size="10" style="margin-left:6%;font-size: 12px;"/>
+                <p:inputText class="form-control" value="#{cadAssociadoMB.associado.logradouro}" size="37" style="margin-left: 8.3%;font-size: 12px;"/>
+                <br/><br/>
+                <p:outputLabel class="titTela" value="Número" style="font-size: 12px;text-align: left;margin-left: 1%;"/>
+                <p:outputLabel class="titTela" value="Complemento" style="font-size: 12px;text-align: left;margin-left: 11.5%;"/>
+                <p:outputLabel class="titTela" value="Cep" style="font-size: 12px;text-align: left;margin-left: 6.5%;"/>
+                <p:outputLabel class="titTela" value="Cidade" style="font-size: 12px;text-align: left;margin-left: 17.5%;"/>
+                <br/>
+                <p:inputText class="form-control" value="#{cadAssociadoMB.associado.numero}" size="10" style="margin-left: 1%;font-size: 12px;"/>
+                <p:inputText class="form-control" value="#{cadAssociadoMB.associado.complemento}" size="10" style="margin-left: 4%;"/> 
+                <p:inputMask class="form-control" mask="99999-999" value="#{cadAssociadoMB.associado.cep}" size="10" style="margin-left: 4%;"/>
+                <p:inputText class="form-control" value="#{cadAssociadoMB.associado.cidade}" size="25" style="margin-left: 4%;"/>
+                <br/><br/>
+                
+                <p:outputLabel class="titTela" value="Bairro" style="font-size: 12px;text-align: left;margin-left: 1%;"/>
+                <p:outputLabel class="titTela" value="Estado" style="font-size: 12px;text-align: left; margin-left: 17.5%;"/>
+                <br/>
+                <h:panelGrid columns="2">
+                <p:inputText class="form-control" value="#{cadAssociadoMB.associado.bairro}" size="15" style="margin-left: 1%;font-size: 12px;"/>
+                <p:selectOneMenu class="form-control" id="estado" value="#{cadAssociadoMB.associado.estado}"  style="width:178px;margin-left: 6%; font-size: 12px;">
                             <f:selectItem itemLabel="Selecione" itemValue="sn" noSelectionOption="true"/> 
                             <f:selectItem itemLabel="Acre" itemValue="AC" /> 
-                            <f:selectItem itemLabel="Alagoas" itemValue="AL" /> 
+                            <f:selectItem itemLabel="Alagoas" itemValue="AL" />  
                             <f:selectItem itemLabel="Amapá" itemValue="AP" />  
                             <f:selectItem itemLabel="Amazonas" itemValue="AM" />  
                             <f:selectItem itemLabel="Bahia" itemValue="BA" />  
@@ -62,44 +95,22 @@
                             <f:selectItem itemLabel="Santa Catarina" itemValue="SC" />  
                             <f:selectItem itemLabel="São Paulo" itemValue="SP" />  
                             <f:selectItem itemLabel="Sergipe" itemValue="SE" />  
-                            <f:selectItem itemLabel="Tocantins" itemValue="TO" /> 
+                            <f:selectItem itemLabel="Tocantins" itemValue="TO" />  
                     </p:selectOneMenu>
-                    <p:inputText value="#{cadAssociadoMB.associado.cidade}" size="20" style="margin-left: 14.5%;"/>
                 </h:panelGrid>
-                
-                 <br/>
-                 <p:outputLabel value="Bairro" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
-                 <p:outputLabel value="Cep" style="font-size: 12px;text-align: left;margin-left: 32%;"/>
-                 <p:outputLabel value="Desconto de Mensalidade" style="font-size: 12px;text-align: left;margin-left: 25.2%;"/>
-                 
                  <br/> 
-                 <p:inputText value="#{cadAssociadoMB.associado.bairro}" size="15" style="margin-left: 2%;"/>
-                 <p:inputMask mask="99999-999" value="#{cadAssociadoMB.associado.cep}" size="10" style="margin-left: 15.1%;"/>
-                 <p:inputText value="#{cadAssociadoMB.associado.descotomensalidade}" size="15" style="margin-left:16.4%;">
-                     <f:convertNumber pattern="##,###,###,###.##"/> 
-                 </p:inputText>
+                
                  <br/><br/>
-                 <p:outputLabel value="Cliente" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
-                 <p:outputLabel value="Plano" style="font-size: 12px;text-align: left;margin-left: 30%;"/>
-                 <br/>
-                 <p:selectOneMenu  id="cliente"  style="width: 250px;margin-left: 2%"  value="#{cadAssociadoMB.cliente}" converter="ClienteConverter"
-                             filter="true" filterMatchMode="contains" panelStyle="width:180px" >
-                    <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
-                    <f:selectItems  value="#{cadAssociadoMB.listaCliente}" var="clienteselecionado" itemLabel="#{clienteselecionado.nome}" itemValue="#{clienteselecionado}"/>
-                    <f:attribute name="listaCliente" value="#{cadAssociadoMB.listaCliente}"/>
-                 </p:selectOneMenu>
-                 <p:selectOneMenu  id="plano"  style="width: 220px;margin-left: 2%"  value="#{cadAssociadoMB.plano}" converter="PlanoConverter"
-                             filter="true" filterMatchMode="contains" panelStyle="width:180px" >
-                    <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
-                    <f:selectItems  value="#{cadAssociadoMB.listaPlano}" var="planoselecionado" itemLabel="#{planoselecionado.descricao}" itemValue="#{planoselecionado}"/>
-                    <f:attribute name="listaPlano" value="#{cadAssociadoMB.listaPlano}"/>
-                 </p:selectOneMenu> 
-                 <br/><br/><br/><br/><br/><br/><br/>
-                <hr/>
+                 
+                 <br/><br/><br/><br/><br/>
+                 <hr style="color: #367587; background: #367587"/>
                 <br/>  
-                <p:commandButton value="Salvar" style="margin-left: 35%;" actionListener="#{cadAssociadoMB.salvar()}" ajax="false"/>
-                <p:commandButton value="Cancelar" style="margin-left: 2%;" action="#{cadAssociadoMB.cancelar()}" ajax="false"/>
-        
+                <p:commandLink style="text-decoration: none;" actionListener="#{cadAssociadoMB.salvar()}" ajax="false">
+                    <div style="font-size: 16px;margin-left: 32%;" class="cadastrar">Cadastrar</div>
+                </p:commandLink>
+                <p:commandLink style="text-decoration: none;" action="#{cadAssociadoMB.cancelar()}" ajax="false">
+                    <div style="font-size: 16px" class="cancelar">Cancelar</div>
+                </p:commandLink>
         </h:form>
  </h:body>
   

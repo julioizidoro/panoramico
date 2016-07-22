@@ -78,7 +78,7 @@ public class ProprietarioMB implements Serializable{
     
     public String novoCadastroProprietario() {
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put("contentWidth", 600);
+        options.put("contentWidth", 570);
         RequestContext.getCurrentInstance().openDialog("cadProprietario", options, null);
         return "";
     }
@@ -107,7 +107,7 @@ public class ProprietarioMB implements Serializable{
             FacesContext fc = FacesContext.getCurrentInstance();
             HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
             session.setAttribute("proprietario", proprietario);
-            options.put("contentWidth", 600);
+            options.put("contentWidth", 570);
             RequestContext.getCurrentInstance().openDialog("cadProprietario", options, null);
         }
     }

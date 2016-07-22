@@ -78,7 +78,7 @@ public class ClienteMB implements Serializable{
     
     public String novoCadastroCliente() {
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put("contentWidth", 600);
+        options.put("contentWidth", 550);
         RequestContext.getCurrentInstance().openDialog("cadCliente", options, null);
         return "";
     }
@@ -107,7 +107,7 @@ public class ClienteMB implements Serializable{
             FacesContext fc = FacesContext.getCurrentInstance();
             HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
             session.setAttribute("cliente", cliente);
-            options.put("contentWidth", 600);
+            options.put("contentWidth", 550);
             RequestContext.getCurrentInstance().openDialog("cadCliente", options, null);
         }
     }

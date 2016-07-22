@@ -38,6 +38,9 @@ public class DependenteMB implements Serializable{
     private DependenteDao dependenteDao;
     private Dependente dependente;
     private List<Dependente> listaDependente;
+    @EJB
+    private AssociadoDao associadoDao;
+    
    
     
     
@@ -70,11 +73,19 @@ public class DependenteMB implements Serializable{
         this.listaDependente = listaDependente;
     }
 
+    public AssociadoDao getAssociadoDao() {
+        return associadoDao;
+    }
+
+    public void setAssociadoDao(AssociadoDao associadoDao) {
+        this.associadoDao = associadoDao;
+    }
+
 
     
     public String novoCadastroDependente() {
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put("contentWidth", 600);
+        options.put("contentWidth", 550);
         RequestContext.getCurrentInstance().openDialog("cadDependente", options, null);
         return "";
     }
@@ -103,7 +114,7 @@ public class DependenteMB implements Serializable{
             FacesContext fc = FacesContext.getCurrentInstance();
             HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
             session.setAttribute("dependente", dependente);
-            options.put("contentWidth", 600);
+            options.put("contentWidth", 550);
             RequestContext.getCurrentInstance().openDialog("cadDependente", options, null);
         }
     }

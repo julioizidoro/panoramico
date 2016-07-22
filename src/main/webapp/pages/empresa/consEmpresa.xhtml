@@ -13,7 +13,7 @@
 
                     <!-- TABELA CADASTROS -->
                             <div class="col-6 titTela" style="margin-left:-11%;">Consulta Empresa</div>
-                            <p:commandLink action="#{empresaMB.novoCadastroEmpresa()}">
+                            <p:commandLink action="#{empresaMB.novoCadastroEmpresa()}" rendered="#{usuarioLogadoMB.cadastrar}">
                                 <div class="icoAdd fa fa-plus-square-o"></div>
                                 <p:ajax event="dialogReturn" update="messages, idConsultaEmpresa" listener="#{empresaMB.retornoDialogNovo}"/>
                             </p:commandLink>
@@ -24,12 +24,12 @@
                                 </h:column>
 
                                  <h:column>
-                                     <p:commandLink action="#{empresaMB.editar(empresa)}">
+                                     <p:commandLink action="#{empresaMB.editar(empresa)}" rendered="#{usuarioLogadoMB.editar}">
                                          <div class="fa fa-pencil-square-o" style="margin-left: 80%;">
                                         </div>   
                                          <p:ajax event="dialogReturn" listener="#{empresaMB.retornoDialogAlteracao}" update=":idFormConsultaEmpresa:messages, @form"/>
                                      </p:commandLink>
-                                     <p:commandLink style="text-decoration: none;float: right" action="#{empresaMB.excluir(empresa)}" update=":idFormConsultaEmpresa:messages, @form">
+                                     <p:commandLink rendered="#{usuarioLogadoMB.excluir}" style="text-decoration: none;float: right" action="#{empresaMB.excluir(empresa)}" update=":idFormConsultaEmpresa:messages, @form">
                                         <div class="fa fa-trash-o"></div>
                                      </p:commandLink>
                                 </h:column>

@@ -1,32 +1,47 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:p="http://primefaces.org/ui">
 
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
         <link href="../../resources/css/css.css" rel="stylesheet" type="text/css" />
-    </h:head>
+        <link type="text/javascript" href="../../resources/js/jquery-3.1.0.js"></link>
+        <link type="text/javascript" src="../../resources/js/modal.js"/> 
+        <link rel="stylesheet" type="text/css" href="../../resources/css/layout.css"/>
+        <link rel="stylesheet" type="text/css" href="../../resources/css/modal.css"/>
+	<link rel="stylesheet" type="text/css" href="../../resources/css/buttons.css"/>
+	<link rel="stylesheet" type="text/css" href="../../resources/css/tabelas.css"/>
+	<link rel="stylesheet" type="text/css" href="../../resources/css/textos.css"/>
+    </h:head> 
      
 
  <h:body style="background:#CEEDF4;" > 
         <h:form id="idFormCadastroPerfil" class="body2" style="font-size: 12px; background-color: #CEEDF4;" enctype="multipart/form-data">
                 
-            <title>Cadastro de perfil</title>
+            <title>Novo perfil</title>
             <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
             
-            <p:outputLabel value="Nome" style="font-size: 12px;text-align: left;margin-left:2%;"/>
+            <p:outputLabel class="titTela" value="Nome" style="font-size: 12px;text-align: left;margin-left:1%;"/>
             <br/> 
-            <p:inputText value="#{cadPerfilMB.perfil.nome}" size="50" style="margin-left:2%;font-size: 12px;"/>
-            
+            <p:inputText class="form-control" value="#{cadPerfilMB.perfil.nome}" size="53" style="margin-left:1%;font-size: 12px;"/>
+            <br/><br/>
+            <p:selectBooleanCheckbox value="#{cadPerfilMB.cadastrar}" label="Cadastrar" style="margin-left: 1%;font-size: 12px;"/>
+            <p:outputLabel value="Pode cadastrar" class="titTela" style="font-size: 14px;margin-left: 1%;"/> 
+            <p:selectBooleanCheckbox value="#{cadPerfilMB.editar}" label="Cadastrar" style="margin-left: 3%;font-size: 12px;"/>
+            <p:outputLabel value="Pode editar" class="titTela" style="font-size: 14px;margin-left: 1%;"/> 
+            <p:selectBooleanCheckbox value="#{cadPerfilMB.exlcuir}" label="Cadastrar" style="margin-left: 3%;font-size: 12px;"/>
+            <p:outputLabel value="Pode excluir" class="titTela" style="font-size: 14px;margin-left: 1%;"/> 
             <br/><br/>
             <br/>
             <hr/>
             <br/>
-            <p:commandButton value="Salvar" style="margin-left: 35%;" actionListener="#{cadPerfilMB.salvar()}" ajax="false"/>
-            <p:commandButton value="Cancelar" style="margin-left: 2%;" action="#{cadPerfilMB.cancelar()}" ajax="false"/>
+            <p:commandLink style="text-decoration: none;" actionListener="#{cadPerfilMB.salvar()}" ajax="false">
+                <div style="font-size: 16px;margin-left: 32%;" class="cadastrar">Cadastrar</div>
+            </p:commandLink>
+            <p:commandLink style="text-decoration: none;" actionListener="#{cadPerfilMB.cancelar()}" ajax="false">
+                <div style="font-size: 16px" class="cancelar">Cancelar</div>
+            </p:commandLink>
         </h:form>
  </h:body>
 </html>
