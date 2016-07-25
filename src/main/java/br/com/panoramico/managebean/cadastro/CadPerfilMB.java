@@ -126,7 +126,6 @@ public class CadPerfilMB implements Serializable{
     
     
     public void salvar(){
-        if (perfil.getAcesso() == null) {
             if (cadastrar && editar && exlcuir) {
                 acesso = acessoDao.find(1);
             }else if(cadastrar && editar){
@@ -138,7 +137,6 @@ public class CadPerfilMB implements Serializable{
             }
             perfil.setAcesso(acesso);
            
-        }
         perfil = perfilDao.update(perfil);
         RequestContext.getCurrentInstance().closeDialog(perfil);
     }

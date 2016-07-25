@@ -21,11 +21,11 @@
                             <h:dataTable id="idConsultaAmbiente" styleClass="table" value="#{ambienteMB.listaAmbiente}" var="ambiente">
                                 <h:column>
                                     <f:facet name="header">Nome</f:facet> 
-                                    <h:outputText value="#{ambiente.nome}" styleClass="alinhamento" style="text-align: left !important;margin-right:90%;" />
+                                    <h:outputText value="#{ambiente.nome}" styleClass="alinhamento" style="float: left;" />
                                 </h:column>
                                 <h:column>
                                     <f:facet name="header">Capacidade</f:facet>
-                                    <h:outputText value="#{ambiente.capacidade}" />
+                                    <h:outputText value="#{ambiente.capacidade}" style="float: right;"/>
                                 </h:column>
                                  <h:column>
                                      <p:commandLink action="#{ambienteMB.editar(ambiente)}" style="margin-left: 55%;" rendered="#{usuarioLogadoMB.editar}">

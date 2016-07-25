@@ -34,7 +34,7 @@
                     <f:selectItems  value="#{cadAssociadoMB.listaCliente}" var="clienteselecionado" itemLabel="#{clienteselecionado.nome}" itemValue="#{clienteselecionado}"/>
                     <f:attribute name="listaCliente" value="#{cadAssociadoMB.listaCliente}"/>
                 </p:selectOneMenu>
-                <p:selectOneMenu  class="form-control" id="plano"  style="width: 220px;margin-left: 2%"  value="#{cadAssociadoMB.plano}" converter="PlanoConverter"
+                <p:selectOneMenu  class="form-control" id="plano"  style="width: 216px;margin-left: 2%"  value="#{cadAssociadoMB.plano}" converter="PlanoConverter"
                              filter="true" filterMatchMode="contains" panelStyle="width:180px" >
                     <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
                     <f:selectItems  value="#{cadAssociadoMB.listaPlano}" var="planoselecionado" itemLabel="#{planoselecionado.descricao}" itemValue="#{planoselecionado}"/>
@@ -48,19 +48,19 @@
                 <p:inputText class="form-control" value="#{cadAssociadoMB.associado.descotomensalidade}" size="15" style="margin-left:1%;text-align: right;float: left">
                     <f:convertNumber pattern="##,###,###,###.##"/> 
                 </p:inputText> 
-                <p:inputText class="form-control" value="#{cadAssociadoMB.associado.tipologradouro}" size="10" style="margin-left:5%;font-size: 12px;float: left"/>
-                <p:inputText class="form-control" value="#{cadAssociadoMB.associado.logradouro}" size="32" style="margin-left: 7%;font-size: 12px;float: left"/>
-                <br/><br/><br/>
+                <p:inputText class="form-control" value="#{cadAssociadoMB.associado.tipologradouro}" size="10" style="margin-left:6%;font-size: 12px;float: left"/>
+                <p:inputText class="form-control" value="#{cadAssociadoMB.associado.logradouro}" size="36" style="margin-left: 8.3%;font-size: 12px;float: left"/>
+                <br/><br/>
                 <p:outputLabel class="titTela" value="Número" style="font-size: 12px;text-align: left;margin-left: 1%;"/>
                 <p:outputLabel class="titTela" value="Complemento" style="font-size: 12px;text-align: left;margin-left: 11.5%;"/>
                 <p:outputLabel class="titTela" value="Cep" style="font-size: 12px;text-align: left;margin-left: 6.5%;"/>
                 <p:outputLabel class="titTela" value="Cidade" style="font-size: 12px;text-align: left;margin-left: 17.5%;"/>
                 <br/>
                 <p:inputText class="form-control" value="#{cadAssociadoMB.associado.numero}" size="10" style="margin-left: 1%;font-size: 12px;float: left;"/>
-                <p:inputText class="form-control" value="#{cadAssociadoMB.associado.complemento}" size="10" style="margin-left: 3%; float: left;"/> 
-                <p:inputMask class="form-control" mask="99999-999" value="#{cadAssociadoMB.associado.cep}" size="10" style="margin-left: 3%; float: left;"/>
-                <p:inputText class="form-control" value="#{cadAssociadoMB.associado.cidade}" size="22" style="margin-left: 4%; float: left;"/>
-                <br/><br/><br/>
+                <p:inputText class="form-control" value="#{cadAssociadoMB.associado.complemento}" size="10" style="margin-left: 4%; float: left;"/> 
+                <p:inputMask class="form-control" mask="99999-999" value="#{cadAssociadoMB.associado.cep}" size="10" style="margin-left: 4%; float: left;"/>
+                <p:inputText class="form-control" value="#{cadAssociadoMB.associado.cidade}" size="24" style="margin-left: 4%; float: left;"/>
+                <br/><br/>
                 
                 <p:outputLabel class="titTela" value="Bairro" style="font-size: 12px;text-align: left;margin-left: 1%;"/>
                 <p:outputLabel class="titTela" value="Estado" style="font-size: 12px;text-align: left; margin-left: 17.5%;"/>

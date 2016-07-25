@@ -13,13 +13,18 @@ and open the template in the editor.
         
         <link href="resources/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
 	<link rel="stylesheet" type="text/css" href="resources/css/textos.css"/>
-        <script type="text/javascript" src="resources/js/jquery-3.1.0.js"></script>
-	<script type="text/javascript" src="resources/js/modal.js"></script>
         
         <!-- FONTS -->
 	<link rel="stylesheet" type="text/css" href="resources/fonts/font-awesome-4.6.3/css/font-awesome.min.css"/>
+        
+        <link type="text/javascript" href="resources/js/jquery-3.1.0.js"></link>
+        <link type="text/javascript" src="resources/js/modal.js"/> 
+        <link rel="stylesheet" type="text/css" href="resources/css/layout.css"/>
+        <link rel="stylesheet" type="text/css" href="resources/css/modal.css"/>
+	<link rel="stylesheet" type="text/css" href="resources/css/buttons.css"/>
+	<link rel="stylesheet" type="text/css" href="resources/css/textos.css"/>
     </h:head>
-     <h:body style="background:#CEEDF4;"> 
+     <h:body style="background:#A3DAD9; border-color: #CF7000;border: 2px;"> 
         <h:form id="idFrmCadNovaSenha" class="body2" style="font-size: 12px;" enctype="multipart/form-data">
             <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
 
@@ -27,25 +32,27 @@ and open the template in the editor.
             <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
             <h:panelGrid columns="2">
                 <p:outputLabel value="Senha Atual" for="senhaAtual" style="font-size: 16px;" class="titTela"/>
-                 <p:inputText class="form-control" type="password" id="senhaAtual" size="10"  style="margin-left:30%;" value="#{usuarioLogadoMB.senhaAtual}"/>
+                <h:inputSecret class="form-control"  id="senhaAtual" size="15"  style="margin-left:30%;" value="#{usuarioLogadoMB.senhaAtual}"/>
             </h:panelGrid>
             <br />
             <h:panelGrid columns="2">
                  <p:outputLabel value="Nova Senha" for="novaSenha" style="font-size: 16px;" class="titTela"/>
-                 <p:inputText class="form-control" type="password" id="novaSenha" size="10" style=" margin-left:30.5%;" value="#{usuarioLogadoMB.novaSenha}"/>
+                 <h:inputSecret class="form-control"  id="novaSenha" size="15" style=" margin-left:30.5%;" value="#{usuarioLogadoMB.novaSenha}"/>
             </h:panelGrid>
             <br />
              <h:panelGrid columns="2">
                     <p:outputLabel value="Confirmar Senha" for="confirmaSenha" style="font-size: 16px;" class="titTela" />
-                    <p:inputText type="password" size="15" id="confirmaSenha"  class="form-control" style="margin-left: 8%;" value="#{usuarioLogadoMB.confirmaNovaSenha}"/>
+                    <h:inputSecret class="form-control"  size="15" id="confirmaSenha"   style="margin-left: 8%;" value="#{usuarioLogadoMB.confirmaNovaSenha}"/>
              </h:panelGrid>
               <br/>
               <hr />
               <br />
-              <p:commandButton class="cadastrar" value="Confirmar" style="text-decoration: none" ajax="false" action="#{usuarioLogadoMB.confirmaTrocaSenha()}"/>
-              
-              <p:commandButton value="Cancelar" style="margin-left: 5%;text-decoration: none" action="#{usuarioLogadoMB.cancelarTrocaSenha()}"/>
-              
+              <p:commandLink style="text-decoration: none;" action="#{usuarioLogadoMB.confirmaTrocaSenha()}" ajax="false">
+                <div style="font-size: 16px;margin-left: 32%;" class="cadastrar">Cadastrar</div>
+              </p:commandLink>
+              <p:commandLink style="text-decoration: none;" action="#{usuarioLogadoMB.cancelarTrocaSenha()}" ajax="false">
+                <div style="font-size: 16px" class="cancelar">Cancelar</div>
+              </p:commandLink>
               <br/><br/>
         </h:form>
 </h:body>

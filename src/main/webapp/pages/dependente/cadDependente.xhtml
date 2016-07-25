@@ -24,12 +24,12 @@
             <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
             
             <p:outputLabel class="titTela" value="Nome" style="font-size: 12px;text-align: left;margin-left:2%;"/>
-            <p:outputLabel class="titTela" value="Telefone" style="font-size: 12px;text-align: left;margin-left:38.5%;"/> 
-            <p:outputLabel class="titTela" value="Data de Nascimento" style="font-size: 12px;text-align: left;margin-left:22%;"/>
+            <p:outputLabel class="titTela" value="Telefone" style="font-size: 12px;text-align: left;margin-left:38.3%;"/> 
+            <p:outputLabel class="titTela" value="Data de Nascimento" style="font-size: 12px;text-align: left;margin-left:21%;"/>
             <br/> 
             <p:inputText class="form-control" value="#{cadDependenteMB.dependente.nome}" size="30" style="margin-left:2%;font-size: 12px;"/>
-            <p:inputMask class="form-control" mask="(99)99999999" value="#{cadDependenteMB.dependente.telefone}" style="margin-left:6%;font-size: 12px;"/>    
-            <p:inputMask mask="99/99/9999" size="12" class="form-control" value="#{cadDependenteMB.dependente.datanascimento}" style="margin-left:5%;font-size: 12px;">
+            <p:inputMask class="form-control" mask="(99)99999999" value="#{cadDependenteMB.dependente.telefone}" style="margin-left:4%;font-size: 12px;"/>    
+            <p:inputMask mask="99/99/9999" size="11" class="form-control" value="#{cadDependenteMB.dependente.datanascimento}" style="margin-left:4%;font-size: 12px;">
                 <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
             </p:inputMask>
             <br/><br/>

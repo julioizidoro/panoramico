@@ -25,11 +25,11 @@
 
                                  <h:column>
                                      <p:commandLink action="#{empresaMB.editar(empresa)}" rendered="#{usuarioLogadoMB.editar}">
-                                         <div class="fa fa-pencil-square-o" style="margin-left: 80%;">
+                                         <div class="fa fa-pencil-square-o" style="margin-left: 78%;">
                                         </div>   
                                          <p:ajax event="dialogReturn" listener="#{empresaMB.retornoDialogAlteracao}" update=":idFormConsultaEmpresa:messages, @form"/>
                                      </p:commandLink>
-                                     <p:commandLink rendered="#{usuarioLogadoMB.excluir}" style="text-decoration: none;float: right" action="#{empresaMB.excluir(empresa)}" update=":idFormConsultaEmpresa:messages, @form">
+                                     <p:commandLink rendered="#{usuarioLogadoMB.excluir}" style="text-decoration: none;" action="#{empresaMB.excluir(empresa)}" update=":idFormConsultaEmpresa:messages, @form">
                                         <div class="fa fa-trash-o"></div>
                                      </p:commandLink>
                                 </h:column>

@@ -62,7 +62,7 @@ public class CadProprietarioMB implements  Serializable{
     /**
      *
      */
-    public void Salvar(){ 
+    public void salvar(){ 
       proprietario =  proprietarioDao.update(proprietario);
       Mensagem.lancarMensagemInfo("Salvou", "Proprietario cadastrado com sucesso!!");
       proprietario = new Proprietario();
@@ -70,6 +70,6 @@ public class CadProprietarioMB implements  Serializable{
     }
     
     public void cancelar(){
-        RequestContext.getCurrentInstance().closeDialog(proprietario);
+        RequestContext.getCurrentInstance().closeDialog(new Proprietario());
     }
 }
