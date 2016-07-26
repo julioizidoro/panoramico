@@ -134,6 +134,14 @@ public class CadPerfilMB implements Serializable{
                 acesso = acessoDao.find(3);
             }else if (editar && exlcuir) {
                 acesso = acessoDao.find(4);
+            }else if(cadastrar){
+                acesso = acessoDao.find(5);
+            }else if(editar){
+                acesso = acessoDao.find(6);
+            }else if(exlcuir){
+                acesso = acessoDao.find(7);
+            }else{
+                acesso = acessoDao.find(8);
             }
             perfil.setAcesso(acesso);
            

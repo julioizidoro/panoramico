@@ -10,7 +10,6 @@
         <link href="../../resources/css/css.css" rel="stylesheet" type="text/css" />
         <link type="text/javascript" href="../../resources/js/jquery-3.1.0.js"></link>
         <link type="text/javascript" src="../../resources/js/modal.js"/> 
-        <link rel="stylesheet" type="text/css" href="../../resources/css/layout.css"/>
         <link rel="stylesheet" type="text/css" href="../../resources/css/modal.css"/>
 	<link rel="stylesheet" type="text/css" href="../../resources/css/buttons.css"/>
 	<link rel="stylesheet" type="text/css" href="../../resources/css/textos.css"/>
@@ -29,7 +28,7 @@
             <br/> 
             <p:inputText class="form-control" value="#{cadClienteMB.cliente.nome}" size="30" style="margin-left:2%;font-size: 12px;"/>
             <p:inputMask mask="999.999.999-99" class="form-control" value="#{cadClienteMB.cliente.cpf}" style="margin-left:6%;font-size: 12px;"/>    
-            <p:inputMask mask="99/99/9999" size="12" class="form-control" value="#{cadClienteMB.cliente.datanascimento}" style="margin-left:6%;font-size: 12px;">
+            <p:inputMask mask="99/99/9999" size="15" class="form-control" value="#{cadClienteMB.cliente.datanascimento}" style="margin-left:5%;font-size: 12px;">
                 <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
             </p:inputMask>
             <br/><br/>

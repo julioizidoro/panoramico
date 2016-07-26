@@ -7,13 +7,14 @@
    
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title>Panorâmico</title>
+        <title>Panorâmico</title> 
         <link href="resources/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
         <link rel="stylesheet" type="text/css" href="resources/css/layout.css"/>
 	<link rel="stylesheet" type="text/css" href="resources/css/menu.css"/>
 	<link rel="stylesheet" type="text/css" href="resources/css/buttons.css"/>
 	<link rel="stylesheet" type="text/css" href="resources/css/tabelas.css"/>
 	<link rel="stylesheet" type="text/css" href="resources/css/textos.css"/>
+        <link rel="stylesheet" type="text/css" href="resources/css/css.css"/>
         
         <!-- FONTS -->
 	<link rel="stylesheet" type="text/css" href="resources/fonts/font-awesome-4.6.3/css/font-awesome.min.css"/>
@@ -27,22 +28,29 @@
                      <div class="wrapper">
                         <img class="logo" src="resources/img/logo.png" />
                     </div>
+                    
                 </div>
                 <div class="panel-footer">
                     <h:form style="width: 50%; margin-left: 25%;">
-                        <div class="form-group">
+                        <div class="form-group" style="margin-left: 10%;">
                                  <div class="col-6 titTela" style="margin-left: -16%;font-size: 18px;">Login</div>
-                                 <p:inputText  type="login" value="#{usuarioLogadoMB.usuario.login}" class="form-control" id="inputNome" placeholder="Login"/>
+                                 <br/><br/>
+                                 <div>
+                                     <p:inputText style="width: 85%;" type="login" value="#{usuarioLogadoMB.usuario.login}" class="form-control" id="inputNome" placeholder="Login"/>
+                                 </div>
                         </div>
-                        <div class="form-group">
-                            <div class="col-6 titTela" style="margin-left: -16%;font-size: 18px;">Senha</div>
-                            <p:inputText type="password" value="#{usuarioLogadoMB.usuario.senha}" class="form-control" id="exampleInputPassword1" placeholder="Senha"/>
+                        <div class="form-group" style="margin-left: 10%;">
+                            <div class="col-6 titTela" style="margin-left: -15%;font-size: 18px;">Senha</div>
+                            <br/><br/>
+                            <div>
+                                <p:inputText type="password" style="width: 85%;" value="#{usuarioLogadoMB.usuario.senha}" class="form-control" id="exampleInputPassword1" placeholder="Senha"/>
+                            </div>
                         </div> 
-                         <p:commandButton type="submit" class="btn btn-primary" style="width: 50%;margin-left: 6%;" action="#{usuarioLogadoMB.validarTrocarSenha()}" value="Alterar Senha">
+                         <p:commandButton type="submit" class="botaoAzulLogin" style="width: 50%;margin-left: 3%;" action="#{usuarioLogadoMB.validarTrocarSenha()}" value="Alterar Senha">
                              <p:ajax event="dialogReturn" listener="#{usuarioLogadoMB.retornoDialogAlteracaoSenha}" update="messages, @form"/>
                          </p:commandButton>   
-                         <p:commandButton type="submit" class="btn btn-primary" style="width: 35%;margin-left: 4%;" action="#{usuarioLogadoMB.validarUsuario()}" value="Entrar"/>
-                           
+                         <p:commandButton type="submit" class="botaoAzulLogin" style="width: 35%;margin-left: 4%;" action="#{usuarioLogadoMB.validarUsuario()}" value="Entrar"/>
+                         <br/><br/><br/>
                     </h:form>
                  </div>
             </div>

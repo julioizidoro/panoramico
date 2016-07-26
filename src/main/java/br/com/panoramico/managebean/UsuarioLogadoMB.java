@@ -261,6 +261,12 @@ public class UsuarioLogadoMB implements Serializable{
          }else if (usuario.getPerfil().getAcesso().getIdacesso() == 4) {
              editar = true;
              excluir = true;
+         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 5){
+             cadastrar = true;
+         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 6){
+             editar = true;
+         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 7){
+             excluir = true;
          }
      }
 }

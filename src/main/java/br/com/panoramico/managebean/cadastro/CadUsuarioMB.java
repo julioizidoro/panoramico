@@ -10,8 +10,10 @@ import br.com.panoramico.dao.UsuarioDao;
 import br.com.panoramico.model.Perfil;
 import br.com.panoramico.model.Usuario;
 import br.com.panoramico.uil.Criptografia;
+import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -114,9 +116,9 @@ public class CadUsuarioMB implements Serializable{
             Logger.getLogger(CadUsuarioMB.class.getName()).log(Level.SEVERE, null, ex);
         }
         usuario = usuarioDao.update(usuario);
-        RequestContext.getCurrentInstance().closeDialog(usuario);
-    }
-    
+        RequestContext.getCurrentInstance().closeDialog(usuario);      
+    } 
+     
     
     public void cancelar(){
         perfil = perfilDao.find(1);

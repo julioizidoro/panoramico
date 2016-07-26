@@ -10,7 +10,6 @@
         <link href="../../resources/css/css.css" rel="stylesheet" type="text/css" />
         <link type="text/javascript" href="../../resources/js/jquery-3.1.0.js"></link>
         <link type="text/javascript" src="../../resources/js/modal.js"/> 
-        <link rel="stylesheet" type="text/css" href="../../resources/css/layout.css"/>
         <link rel="stylesheet" type="text/css" href="../../resources/css/modal.css"/>
 	<link rel="stylesheet" type="text/css" href="../../resources/css/buttons.css"/>
 	<link rel="stylesheet" type="text/css" href="../../resources/css/textos.css"/>
@@ -24,22 +23,22 @@
             <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
             
             <p:outputLabel class="titTela" value="Nome" style="font-size: 12px;text-align: left;margin-left:2%;"/>
-            <p:outputLabel class="titTela" value="Telefone" style="font-size: 12px;text-align: left;margin-left:38.3%;"/> 
+            <p:outputLabel class="titTela" value="Telefone" style="font-size: 12px;text-align: left;margin-left:37%;"/> 
             <p:outputLabel class="titTela" value="Data de Nascimento" style="font-size: 12px;text-align: left;margin-left:21%;"/>
             <br/> 
             <p:inputText class="form-control" value="#{cadDependenteMB.dependente.nome}" size="30" style="margin-left:2%;font-size: 12px;"/>
             <p:inputMask class="form-control" mask="(99)99999999" value="#{cadDependenteMB.dependente.telefone}" style="margin-left:4%;font-size: 12px;"/>    
-            <p:inputMask mask="99/99/9999" size="11" class="form-control" value="#{cadDependenteMB.dependente.datanascimento}" style="margin-left:4%;font-size: 12px;">
+            <p:inputMask mask="99/99/9999" size="15" class="form-control" value="#{cadDependenteMB.dependente.datanascimento}" style="margin-left:4%;font-size: 12px;">
                 <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
             </p:inputMask>
             <br/><br/>
             
             
             <p:outputLabel class="titTela" value="E-mail" style="font-size: 12px;text-align: left;margin-left:2%;"/> 
-            <p:outputLabel value="Cep" class="titTela" style="font-size: 12px;text-align: left;margin-left:38%;"/> 
+            <p:outputLabel value="Cep" class="titTela" style="font-size: 12px;text-align: left;margin-left:36%;"/> 
             <br/> 
             <p:inputText class="form-control" value="#{cadDependenteMB.dependente.email}" size="30" style="margin-left:2%;font-size: 12px;"/>
-            <p:inputMask class="form-control" mask="99999-999" value="#{cadDependenteMB.dependente.cep}" style="margin-left:6%;font-size: 12px;"/>    
+            <p:inputMask class="form-control" mask="99999-999" size="15" value="#{cadDependenteMB.dependente.cep}" style="margin-left:4%;font-size: 12px;"/>    
             
             <br/>
             <hr/>
