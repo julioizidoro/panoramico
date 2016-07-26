@@ -1,0 +1,83 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+        <link href="../../resources/css/css.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" type="text/css" href="../../resources/fonts/font-awesome-4.6.3/css/font-awesome.min.css"/>
+        
+        <link type="text/javascript" href="../../resources/js/jquery-3.1.0.js"></link>
+        <link type="text/javascript" src="../../resources/js/modal.js"/> 
+        <link rel="stylesheet" type="text/css" href="../../resources/css/modal.css"/>
+	<link rel="stylesheet" type="text/css" href="../../resources/css/buttons.css"/>
+	<link rel="stylesheet" type="text/css" href="../../resources/css/textos.css"/>
+        <link rel="stylesheet" type="text/css" href="../../resources/css/css.css"/>
+    </h:head>
+     
+
+    <h:body style="background:#A3DAD9; border-color: #CF7000;" > 
+        <h:form id="idFormCadastroEvento" style="font-size: 12px; background-color:#A3DAD9">
+                
+            <title>Novo Evento</title>
+                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                
+                <p:outputLabel class="titTela" value="Responsavel" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
+                <p:outputLabel class="titTela" value="Ambiente" style="font-size: 12px;text-align: left;margin-left: 40%;"/>
+                 <br/>
+                <p:selectOneMenu class="form-control"  id="cliente"  style="width: 250px;margin-left: 2%;font-size: 12px;"  value="#{cadEventoMB.cliente}" converter="ClienteConverter"
+                             filter="true" filterMatchMode="contains" panelStyle="width:180px" >
+                    <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
+                    <f:selectItems  value="#{cadEventoMB.listaCliente}" var="clienteselecionado" itemLabel="#{clienteselecionado.nome}" itemValue="#{clienteselecionado}"/>
+                    <f:attribute name="listaCliente" value="#{cadEventoMB.listaCliente}"/>
+                </p:selectOneMenu>
+                 <p:selectOneMenu  class="form-control" id="ambiente"  style="width: 216px;margin-left: 2%;font-size: 12px;"  value="#{cadEventoMB.ambiente}" converter="AmbienteConverter"
+                             filter="true" filterMatchMode="contains" panelStyle="width:180px" >
+                    <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
+                    <f:selectItems  value="#{cadEventoMB.listaAmbiente}" var="ambienteselecionado" itemLabel="#{ambienteselecionado.nome}" itemValue="#{ambienteselecionado}"/>
+                    <f:attribute name="listaAmbiente" value="#{cadEventoMB.listaAmbiente}"/>
+                </p:selectOneMenu> 
+                <br/><br/>
+                <p:outputLabel class="titTela" value="Tipo Evento" style="font-size: 12px;text-align: left; margin-left: 2%;"/>
+                <p:outputLabel class="titTela" value="Situação" style="font-size: 12px;text-align: left;margin-left: 40%;"/>
+                <br/>
+                <p:selectOneMenu  class="form-control" id="tipoEvento"  style="width: 250px;margin-left: 2%;font-size: 12px;"  value="#{cadEventoMB.tipoevento}" converter="TipoEventoConverter"
+                             filter="true" filterMatchMode="contains" panelStyle="width:180px" >
+                    <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
+                    <f:selectItems  value="#{cadEventoMB.listaTipoEvento}" var="tipoEventoSelecionado" itemLabel="#{tipoEventoSelecionado.descricao}" itemValue="#{tipoEventoSelecionado}"/>
+                    <f:attribute name="listaTipoEvento" value="#{cadEventoMB.listaTipoEvento}"/>
+                </p:selectOneMenu> 
+                <p:selectOneMenu class="form-control" id="estado" value="#{cadEventoMB.evento.situacao}"  style="width:216px;margin-left: 2%; font-size: 12px;">
+                    <f:selectItem itemLabel="Selecione" itemValue="sn" noSelectionOption="true"/> 
+                    <f:selectItem itemLabel="Agendado" itemValue="A" /> 
+                    <f:selectItem itemLabel="Cancelado" itemValue="C" />  
+                    <f:selectItem itemLabel="Realizado" itemValue="R" />
+                </p:selectOneMenu>
+                <br/><br/>
+                <p:outputLabel class="titTela" value="Valor" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
+                <p:outputLabel class="titTela" value="Data" style="font-size: 12px;text-align: left;margin-left: 18%;"/>
+                <br/>
+                <p:inputText class="form-control" value="#{cadEventoMB.evento.valor}" size="12" style="margin-left:2%;text-align: right;float: left">
+                    <f:convertNumber pattern="##,###,###,###.##"/>  
+                </p:inputText>
+                <p:inputMask mask="99/99/9999" size="15" class="form-control" value="#{cadEventoMB.evento.data}" style="margin-left:4%;font-size: 12px;">
+                    <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+                </p:inputMask>
+                <br/>
+                 <br/><br/>
+                 
+                 <br/><br/>
+                 <hr style="color: #367587; background: #367587"/>
+                <br/>  
+                <p:commandLink style="text-decoration: none;" actionListener="#{cadEventoMB.salvar()}" ajax="false">
+                    <div style="font-size: 16px;margin-left: 32%;" class="cadastrar">Cadastrar</div>
+                </p:commandLink>
+                <p:commandLink style="text-decoration: none;" action="#{cadEventoMB.cancelar()}" ajax="false">
+                    <div style="font-size: 16px" class="cancelar">Cancelar</div>
+                </p:commandLink>
+        </h:form>
+ </h:body>
+  
+</html>

@@ -44,12 +44,13 @@
                             <br/><br/>
                             <div>
                                 <p:inputText type="password" style="width: 85%;" value="#{usuarioLogadoMB.usuario.senha}" class="form-control" id="exampleInputPassword1" placeholder="Senha"/>
+                                
                             </div>
-                        </div> 
-                         <p:commandButton type="submit" class="botaoAzulLogin" style="width: 50%;margin-left: 3%;" action="#{usuarioLogadoMB.validarTrocarSenha()}" value="Alterar Senha">
-                             <p:ajax event="dialogReturn" listener="#{usuarioLogadoMB.retornoDialogAlteracaoSenha}" update="messages, @form"/>
-                         </p:commandButton>   
-                         <p:commandButton type="submit" class="botaoAzulLogin" style="width: 35%;margin-left: 4%;" action="#{usuarioLogadoMB.validarUsuario()}" value="Entrar"/>
+                        </div>
+                         <p:commandButton type="submit" class="botaoAzulLogin" style="width: 35%;margin-left: 3%;" action="#{usuarioLogadoMB.validarUsuario()}" value="Entrar"/>
+                         <p:commandButton type="submit" class="botaoAzulLogin" style="width: 50%;margin-left: 4%;" action="#{usuarioLogadoMB.validarTrocarSenha()}" value="Alterar Senha">
+                            <p:ajax event="dialogReturn" listener="#{usuarioLogadoMB.retornoDialogAlteracaoSenha}" update="messages, @form"/>
+                         </p:commandButton>    
                          <br/><br/><br/>
                     </h:form>
                  </div>
