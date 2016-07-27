@@ -15,54 +15,58 @@
 	<link rel="stylesheet" type="text/css" href="../../resources/css/buttons.css"/>
 	<link rel="stylesheet" type="text/css" href="../../resources/css/textos.css"/>
         <link rel="stylesheet" type="text/css" href="../../resources/css/css.css"/>
+        <link rel="stylesheet" type="text/css" href="../../resources/css/tabelas.css"/>
     </h:head>
      
 
     <h:body style="background:#A3DAD9; border-color: #CF7000;" > 
-        <h:form id="idFormCadastroEvento" style="font-size: 12px; background-color:#A3DAD9">
+        <h:form id="idFormCadastroConvidados" style="font-size: 12px; background-color:#A3DAD9">
                 
-            <title>Novo Evento</title>
+            <title>Lista de convidados</title>
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                 
                 <p:outputLabel class="titTela" value="Nome" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
-                <p:outputLabel class="titTela" value="Telefone" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
+                <p:outputLabel class="titTela" value="Telefone" style="font-size: 12px;text-align: left;margin-left: 45%;"/>
                 <br/>
-                <p:inputText class="form-control" value="#{cadPerfilMB.perfil.nome}" size="53" style="margin-left:1%;font-size: 12px;"/>
-                <p:inputMask class="form-control" mask="00000-0000" value="#{cadAssociadoMB.associado.cep}" size="10" style="margin-left: 5%; float: left;"/>
+                <p:inputText class="form-control" value="#{cadConvidadosEventoMB.eventoconvidados.nome}" size="40" style="margin-left:2%;font-size: 12px;float: left;"/>
+                <p:inputMask class="form-control" mask="9999-9999" value="#{cadConvidadosEventoMB.eventoconvidados.telefone}" size="12" style="margin-left: 6%; float: left;"/>
                 <br/><br/>
-                <p:outputLabel class="titTela" value="N° Acompanhantes" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
+                <p:outputLabel class="titTela" value="Email" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
+                <p:outputLabel class="titTela" value="N° Acompanhantes" style="font-size: 12px;text-align: left;margin-left: 46%;"/>
                 <br/>
-                <p:inputText class="form-control" value="#{cadAssociadoMB.associado.descotomensalidade}" size="19" style="margin-left:6%;text-align: right;float: left"/> 
-                <p:commandLink style="text-decoration: none;" actionListener="#{cadEventoMB.salvar()}" ajax="false">
-                    <div style="font-size: 16px;margin-left: 32%;" class="botaoAzulLogin">Adicionar</div>
+                <p:inputText class="form-control" value="#{cadConvidadosEventoMB.eventoconvidados.email}" size="40" style="margin-left:2%;float: left;font-size: 12px;"/> 
+                <p:inputText class="form-control" value="#{cadConvidadosEventoMB.eventoconvidados.acompanhante}" size="12" style="margin-left:6%;text-align: right;float: left"/> 
+                <p:commandLink style="text-decoration: none; margin-top: -2%;" actionListener="#{cadConvidadosEventoMB.adicionarConvidado()}" ajax="false" update="idConsultaConvidados, messages">
+                    <div style="font-size: 16px;margin-left: 2%;" class="adicionar">Adicionar</div>
                 </p:commandLink>
                  <br/><br/>
-                 <h:dataTable id="idConsultaEvento" styleClass="table" value="#{eventoMB.listaEvento}" var="evento">
-                                <h:column>
-                                    <f:facet name="header">Nome</f:facet> 
-                                    <h:outputText value="#{evento.cliente.nome}" styleClass="alinhamento" style="float: left;#{eventoMB.verificarSituacao(evento)}" />
-                                </h:column>
-                                <h:column>
-                                    <f:facet name="header">Ambiente</f:facet> 
-                                    <h:outputText value="#{evento.ambiente.nome}" styleClass="alinhamento" style="float: left;#{eventoMB.verificarSituacao(evento)}"/>
-                                </h:column>
-                                <h:column>
-                                    <f:facet name="header">Acompanhantes</f:facet> 
-                                    <h:outputText value="#{evento.tipoenvento.descricao}" styleClass="alinhamento" style="float: left;#{eventoMB.verificarSituacao(evento)}" />
-                                </h:column>
-                                     <p:commandLink rendered="#{usuarioLogadoMB.excluir}" title="Editar" action="#{eventoMB.editar(evento)}" style="text-decoration: none;">
-                                        <div class="fa fa-trash-o">
-                                        </div>
-                                     </p:commandLink>
-                                </h:column> 
-                            </h:dataTable>
+                 <h:dataTable id="idConsultaConvidados" style="width: 98%;" styleClass="table" value="#{cadConvidadosEventoMB.listaConvidados}" var="convidados">
+                     <h:column>
+                        <f:facet name="header">Nome</f:facet> 
+                        <h:outputText value="#{convidados.nome}" styleClass="alinhamento" style="float: left;" />
+                     </h:column>
+                     <h:column>
+                        <f:facet name="header">Telefone</f:facet> 
+                        <h:outputText value="#{convidados.telefone}" styleClass="alinhamento"/>
+                     </h:column>
+                     <h:column>
+                        <f:facet name="header">Acompanhantes</f:facet> 
+                        <h:outputText value="#{convidados.acompanhante}" styleClass="alinhamento" style="float: right;" />
+                     </h:column>
+                     <h:column>
+                         <p:commandLink rendered="#{usuarioLogadoMB.excluir}" title="Editar" action="#{cadConvidadosEventoMB.excluirConvidado(convidados)}" style="text-decoration: none;" update=":idFormCadastroConvidados:messages, @form">
+                            <div class="fa fa-trash-o">
+                            </div>
+                        </p:commandLink>
+                     </h:column> 
+                 </h:dataTable>
                  <br/><br/>
                  <hr style="color: #367587; background: #367587"/>
                 <br/>  
-                <p:commandLink style="text-decoration: none;" actionListener="#{cadEventoMB.salvar()}" ajax="false">
+                <p:commandLink style="text-decoration: none;" actionListener="#{cadConvidadosEventoMB.salvar()}" ajax="false">
                     <div style="font-size: 16px;margin-left: 32%;" class="cadastrar">Cadastrar</div>
                 </p:commandLink>
-                <p:commandLink style="text-decoration: none;" action="#{cadEventoMB.cancelar()}" ajax="false">
+                <p:commandLink style="text-decoration: none;" action="#{cadConvidadosEventoMB.cancelar()}" ajax="false">
                     <div style="font-size: 16px" class="cancelar">Cancelar</div>
                 </p:commandLink>
         </h:form>

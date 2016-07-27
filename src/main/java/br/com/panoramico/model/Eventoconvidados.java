@@ -6,9 +6,7 @@
 package br.com.panoramico.model;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,9 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
 
 /**
  *
@@ -40,8 +36,8 @@ public class Eventoconvidados implements Serializable{
     private String telefone;
     @Column(name = "email")
     private String email;
-    @Column(name = "acompanhantes")
-    private Integer acompanhantes;
+    @Column(name = "acompanhante")
+    private Integer acompanhante;
     @JoinColumn(name = "evento_idevento", referencedColumnName = "idevento")
     @ManyToOne(optional = false)
     private Evento evento;
@@ -81,12 +77,12 @@ public class Eventoconvidados implements Serializable{
         this.email = email;
     }
 
-    public Integer getAcompanhantes() {
-        return acompanhantes;
+    public Integer getAcompanhante() {
+        return acompanhante;
     }
 
-    public void setAcompanhantes(Integer acompanhantes) {
-        this.acompanhantes = acompanhantes;
+    public void setAcompanhante(Integer acompanhante) {
+        this.acompanhante = acompanhante;
     }
 
     public Evento getEvento() {

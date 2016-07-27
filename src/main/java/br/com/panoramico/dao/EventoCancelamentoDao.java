@@ -5,7 +5,7 @@
  */
 package br.com.panoramico.dao;
 
-import br.com.panoramico.model.Eventoconvidados;
+import br.com.panoramico.model.Eventocancelamento;
 import javax.ejb.Stateless;
 
 /**
@@ -14,10 +14,10 @@ import javax.ejb.Stateless;
  */
 
 @Stateless
-public class EventoConvidadosDao extends AbstractDao<Eventoconvidados>{
+public class EventoCancelamentoDao extends AbstractDao<Eventocancelamento>{
     
-    public EventoConvidadosDao() {
-        super(EventoDao.class);
+    public EventoCancelamentoDao() {
+        super(Eventocancelamento.class);
     }
     
 }
