@@ -51,10 +51,10 @@
                      </h:column>
                      <h:column>
                         <f:facet name="header">Acompanhantes</f:facet> 
-                        <h:outputText value="#{convidados.acompanhante}" styleClass="alinhamento" style="float: right;" />
+                        <h:outputText value="#{convidados.acompanhante}" styleClass="alinhamento" />
                      </h:column>
                      <h:column>
-                         <p:commandLink rendered="#{usuarioLogadoMB.excluir}" title="Editar" action="#{cadConvidadosEventoMB.excluirConvidado(convidados)}" style="text-decoration: none;" update=":idFormCadastroConvidados:messages, @form">
+                         <p:commandLink rendered="#{usuarioLogadoMB.excluir}" title="Excluir" action="#{cadConvidadosEventoMB.excluirConvidado(convidados)}" style="text-decoration: none;" update=":idFormCadastroConvidados:messages, @form">
                             <div class="fa fa-trash-o">
                             </div>
                         </p:commandLink>

@@ -7,15 +7,20 @@ package br.com.panoramico.managebean.evento;
 
 import br.com.panoramico.dao.AmbienteDao;
 import br.com.panoramico.dao.ClienteDao;
+import br.com.panoramico.dao.ContasReceberDao;
 import br.com.panoramico.dao.EventoDao;
 import br.com.panoramico.dao.TipoEventoDao;
 import br.com.panoramico.managebean.UsuarioLogadoMB;
 import br.com.panoramico.model.Ambiente;
 import br.com.panoramico.model.Cliente;
+import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.model.Evento;
 import br.com.panoramico.model.Tipoenvento;
+import br.com.panoramico.uil.Formatacao;
+import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -52,6 +57,8 @@ public class CadEventoMB implements Serializable{
     private TipoEventoDao tipoEventoDao;
     @EJB
     private ClienteDao clienteDao;
+    @EJB
+    private ContasReceberDao contasReceberDao;
     
     
     @PostConstruct
@@ -193,12 +200,26 @@ public class CadEventoMB implements Serializable{
     
     
     public void salvar(){
-        evento.setAmbiente(ambiente);
-        evento.setCliente(cliente);
-        evento.setTipoenvento(tipoevento);
-        evento.setUsuario(usuarioLogadoMB.getUsuario());
-        evento = eventoDao.update(evento);
-        RequestContext.getCurrentInstance().closeDialog(evento);
+        Contasreceber contasreceber = new Contasreceber();
+        List<Evento> listaEventos = eventoDao.list("Select e from Evento e where e.ambiente.idambiente=" + ambiente.getIdambiente() 
+                + " and e.data='" + Formatacao.ConvercaoDataSql(evento.getData()) + "'");
+        if (listaEventos == null | listaEventos.isEmpty()) {
+            evento.setAmbiente(ambiente);
+            evento.setCliente(cliente);
+            evento.setTipoenvento(tipoevento);
+            evento.setUsuario(usuarioLogadoMB.getUsuario());
+            evento = eventoDao.update(evento);
+            contasreceber.setCliente(cliente);
+            contasreceber.setDatalancamento(new Date());
+            contasreceber.setNumeroparcela("1/1");
+            contasreceber.setValorconta(evento.getValor());
+            contasreceber.setUsuario(usuarioLogadoMB.getUsuario());
+            contasreceber.setNumerodocumento(""+evento.getIdevento());
+            contasReceberDao.update(contasreceber);
+            RequestContext.getCurrentInstance().closeDialog(evento);
+        }else{
+            Mensagem.lancarMensagemInfo("Atenção", " esse ambiente ja tem um evento neste dia");
+        }
     }
     
     public void cancelar(){

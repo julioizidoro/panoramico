@@ -1,0 +1,47 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+        <link href="../../resources/css/css.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" type="text/css" href="../../resources/fonts/font-awesome-4.6.3/css/font-awesome.min.css"/>
+        
+        <link type="text/javascript" href="../../resources/js/jquery-3.1.0.js"></link>
+        <link type="text/javascript" src="../../resources/js/modal.js"/> 
+        <link rel="stylesheet" type="text/css" href="../../resources/css/modal.css"/>
+	<link rel="stylesheet" type="text/css" href="../../resources/css/buttons.css"/>
+	<link rel="stylesheet" type="text/css" href="../../resources/css/textos.css"/>
+        <link rel="stylesheet" type="text/css" href="../../resources/css/css.css"/>
+    </h:head>
+     
+
+    <h:body style="background:#A3DAD9; border-color: #CF7000;" > 
+        <h:form id="idFormCadastroEvento" style="font-size: 12px; background-color:#A3DAD9">
+                
+            <title>Novo Evento</title>
+                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                
+                <p:outputLabel class="titTela" value="Situação" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
+                <br/>
+                <p:selectOneMenu class="form-control" id="situacao" value="#{alterarSituacaoEventoMB.evento.situacao}"  style="width:216px;margin-left: 2%; font-size: 12px;">
+                    <f:selectItem itemLabel="Selecione" itemValue="sn" noSelectionOption="true"/> 
+                    <f:selectItem itemLabel="Agendado" itemValue="A" /> 
+                    <f:selectItem itemLabel="Cancelado" itemValue="C" />  
+                    <f:selectItem itemLabel="Realizado" itemValue="R" />
+                </p:selectOneMenu>   
+                <br/><br/>
+                 <hr style="color: #367587; background: #367587"/>
+                <br/>  
+                <p:commandLink style="text-decoration: none;" actionListener="#{alterarSituacaoEventoMB.salvar()}" ajax="false">
+                    <div style="font-size: 16px;margin-left: 32%;" class="cadastrar">Cadastrar</div>
+                </p:commandLink>
+                <p:commandLink style="text-decoration: none;" action="#{alterarSituacaoEventoMB.cancelar()}" ajax="false">
+                    <div style="font-size: 16px" class="cancelar">Cancelar</div>
+                </p:commandLink>
+        </h:form>
+ </h:body>
+  
+</html>

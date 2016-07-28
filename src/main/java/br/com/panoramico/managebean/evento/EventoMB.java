@@ -63,6 +63,7 @@ public class EventoMB implements Serializable{
     private String situacao;
     private Date dataInicio;
     private Date dataFinal;
+    private List<BolinhaBean> listaBolinhas;
     
     
     @PostConstruct
@@ -200,6 +201,15 @@ public class EventoMB implements Serializable{
     public void setDataFinal(Date dataFinal) {
         this.dataFinal = dataFinal;
     }
+
+    public List<BolinhaBean> getListaBolinhas() {
+        return listaBolinhas;
+    }
+
+    public void setListaBolinhas(List<BolinhaBean> listaBolinhas) {
+        this.listaBolinhas = listaBolinhas;
+    }
+    
     
     
     
@@ -304,6 +314,14 @@ public class EventoMB implements Serializable{
         }
     }
     
+    public String verificarSituacaoRealizada(Evento evento){
+        if (evento.getSituacao().equalsIgnoreCase("R")) {
+            return "true";
+        }else{
+            return "false";
+        }
+    }
+    
     public void gerarListaAmbiente(){
         listaAmbiente = ambienteDao.list("Select a from Ambiente a");
         if (listaAmbiente == null) {
@@ -390,6 +408,13 @@ public class EventoMB implements Serializable{
             return "Situação: Cancelado";
         }else{
             return "Situação: Realizado";
+        }
+    }
+    
+    public void realizadoEvento(Evento evento){
+        if (evento != null) {
+            evento.setSituacao("R");
+            eventoDao.update(evento);
         }
     }
 }

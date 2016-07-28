@@ -1,0 +1,88 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/pages/templates/default.xhtml">
+        <ui:define name="corpo">
+             
+            <br/>  
+            <div class="col-10 boxAzulClaro" style="margin-left:8.5%;width: 83.2%;">   
+                <br/> 
+                <h:form id="idFormConsultaContasPagar" style="margin-left:5%;width: 90%;">
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:10%;width: 80%;"/>
+                    <p:accordionPanel activeIndex="-1">
+                        <p:tab title="Pesquisar">
+                            <p:outputLabel class="titTela" value="Plano de contas" style="font-size: 12px;text-align: left;margin-left: 25%;float: left;"/>
+                            <p:outputLabel class="titTela" value="Periodo" style="font-size: 12px;text-align: left;margin-left: 20%;float: left;"/>
+                            <br/>
+                            <p:selectOneMenu id="planoConta"  style="width: 216px;margin-left: -35%;font-size: 12px;float: left;"  value="#{contasPagarMB.planoconta}" converter="PlanoContaConverter"
+                                         filter="true" filterMatchMode="contains" panelStyle="width:180px" >
+                                <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
+                                <f:selectItems  value="#{contasPagarMB.listaPlanoContas}" var="planocontaselecionado" itemLabel="#{planocontaselecionado.descricao}" itemValue="#{planocontaselecionado}"/>
+                                <f:attribute name="listaPlanoContas" value="#{contasPagarMB.listaPlanoContas}"/>
+                            </p:selectOneMenu>
+                            <p:inputMask mask="99/99/9999" size="15"  value="#{contasPagarMB.dataInicial}" style="margin-left:-5%;font-size: 12px;float: left;">
+                                <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+                            </p:inputMask>
+                            <p:inputMask mask="99/99/9999" size="15" value="#{contasPagarMB.dataFinal}" style="margin-left:2%;font-size: 12px;float: left;">
+                                <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+                            </p:inputMask>
+                            <p:commandLink style="text-decoration: none; margin-top: 10%;" actionListener="#" ajax="false" update="idConsultaContasPagar, messages">
+                                <div style="font-size: 16px;margin-left: 2%;" class="adicionar">Filtrar</div>
+                            </p:commandLink>
+                            <p:commandLink style="text-decoration: none; margin-top: 2%;" actionListener="#" ajax="false" update="@form">
+                                <div style="font-size: 16px;margin-left: 2%;" class="limpar">Limpar</div>
+                            </p:commandLink>
+                        </p:tab> 
+                    </p:accordionPanel>
+                            <br/><br/>
+                    <!-- TABELA CADASTROS -->
+                            <div class="col-6 titTela" style="margin-left:-10%;">Consulta Contas a Pagar</div>
+                            <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" action="#{contasReceberMB.novoCadastroContasReceber()}">
+                                <div class="icoAdd fa fa-plus-square-o"></div>
+                                <p:ajax event="dialogReturn" listener="#{contasPagarMB.retornoDialogNovo}" update="messages, idConsultaContasPagar"/>
+                            </p:commandLink>
+                            <h:dataTable  id="idConsultaContasPagar" class="table" styleClass="table" value="#{contasPagarMB.listaContasPagar}" var="contapagar">
+                                <h:column>
+                                    <f:facet name="header">Credor</f:facet> 
+                                    <h:outputText value="#{contapagar.credor}" styleClass="alinhamento" style="float: left;" />
+                                </h:column>
+                                <h:column >  
+                                    <f:facet name="header">Vencimento</f:facet> 
+                                    <h:outputText value="#{contapagar.datavencimento}" styleClass="alinhamento" style="text-align: left !important;margin-right:50%;">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"
+                                                                    timeZone="America/Sao_Paulo" />
+                                    </h:outputText>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">Valor</f:facet> 
+                                    <h:outputText value="#{contapagar.valor}" styleClass="alinhamento" style="float: right;">
+                                        <f:convertNumber pattern="##,###,###,###.##" minFractionDigits="2" />
+                                    </h:outputText>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">Parcela</f:facet> 
+                                    <h:outputText value="#{contapagar.numeroparcela}" styleClass="alinhamento"/>
+                                </h:column>
+                                 <h:column>
+                                     <p:commandLink rendered="#{usuarioLogadoMB.editar}" title="Editar" action="#" style="text-decoration: none;">
+                                        <div class="fa fa-pencil-square-o">
+                                        </div>
+                                         <p:ajax event="dialogReturn" listener="#{contasReceberMB.retornoDialogAlteracao}" update=":idFormConsultaContasPagar:messages, @form"/>
+                                     </p:commandLink> 
+                                     <p:commandLink title="Cancelamento" style="text-decoration: none;" rendered="#{usuarioLogadoMB.excluir}"  action="#">
+                                        <div class="fa fa-times" >
+                                        </div>
+                                         <p:ajax event="dialogReturn" listener="#{contasReceberMB.retornoDialogCancelamento}" update=":idFormConsultaContasPagar:messages, @form"/>
+                                     </p:commandLink>
+                                </h:column> 
+
+
+                            </h:dataTable>
+
+                </h:form>
+             </div>
+        </ui:define> 
+    </ui:composition>
+</html>

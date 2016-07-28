@@ -5,19 +5,14 @@
  */
 package br.com.panoramico.dao;
 
-import br.com.panoramico.model.Eventoconvidados;
+import br.com.panoramico.model.Pagamento;
 import javax.ejb.Stateless;
 
-/**
- *
- * @author Kamilla Rodrigues
- */
-
 @Stateless
-public class EventoConvidadosDao extends AbstractDao<Eventoconvidados>{
+public class PagamentoDao extends AbstractDao<Pagamento>{
     
-    public EventoConvidadosDao() {
-        super(Eventoconvidados.class);
+    public PagamentoDao() {
+        super(Pagamento.class);
     }
     
 }

@@ -139,8 +139,9 @@ public class cadConvidadosEventoMB implements Serializable{
     
     public void excluirConvidado(Eventoconvidados excluirConvidado){
         listaConvidados.remove(excluirConvidado);
+        eventoConvidadosDao.remove(excluirConvidado.getIdeventoconvidados());
     }
-    
+     
     public void gerarListaConvidados(){
         listaConvidados = eventoConvidadosDao.list("Select c from Eventoconvidados c where c.evento.idevento=" + evento.getIdevento());
         if (listaConvidados == null) {

@@ -5,6 +5,7 @@
  */
 package br.com.panoramico.model;
 
+import br.com.panoramico.managebean.evento.BolinhaBean;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -18,6 +19,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 
 /**
@@ -54,6 +56,8 @@ public class Evento implements Serializable{
     @JoinColumn(name = "cliente_idcliente", referencedColumnName = "idcliente")
     @ManyToOne(optional = false)
     private Cliente cliente;
+    @Transient
+    private BolinhaBean bolinhas;
 
     public Evento() {
     }
@@ -121,6 +125,14 @@ public class Evento implements Serializable{
 
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
+    }
+
+    public BolinhaBean getBolinhas() {
+        return bolinhas;
+    }
+
+    public void setBolinhas(BolinhaBean bolinhas) {
+        this.bolinhas = bolinhas;
     }
     
     
