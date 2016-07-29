@@ -15,10 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
-/**
- *
- * @author Kamilla Rodrigues
- */
+
 
 @Entity
 @Table(name = "planoconta")

@@ -14,6 +14,8 @@ import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.model.Crcancelamento;
 import br.com.panoramico.model.Evento;
 import br.com.panoramico.model.Planoconta;
+import br.com.panoramico.model.Recebimento;
+import br.com.panoramico.uil.Formatacao;
 import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -23,9 +25,11 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 
@@ -49,6 +53,7 @@ public class ContasReceberMB implements Serializable{
     private ClienteDao clienteDao;
     private Date dataInicial;
     private Date dataFinal;
+    private String situacao;
     
     
     @PostConstruct
@@ -155,10 +160,19 @@ public class ContasReceberMB implements Serializable{
     public void setContasReceberDao(ContasReceberDao contasReceberDao) {
         this.contasReceberDao = contasReceberDao;
     }
+
+    public String getSituacao() {
+        return situacao;
+    }
+
+    public void setSituacao(String situacao) {
+        this.situacao = situacao;
+    }
+    
     
     
     public void gerarListaContasReceber(){
-        listaContasReceber = contasReceberDao.list("Select c from Contasreceber c");
+        listaContasReceber = contasReceberDao.list("Select c from Contasreceber c where c.situacao<>'CANCELADO' and c.situacao<>'PAGO'");
         if (listaContasReceber == null) {
             listaContasReceber = new ArrayList<Contasreceber>();
         }
@@ -201,11 +215,110 @@ public class ContasReceberMB implements Serializable{
         gerarListaContasReceber();
     }
     
+    public void retornoDialogRecebimento(SelectEvent event){
+        Recebimento recebimento = (Recebimento) event.getObject();
+        if (recebimento.getIdrecebimento()!= null) {
+            Mensagem.lancarMensagemInfo("Salvou", "Recebimento de uma conta a receber realizado com sucesso");
+        }
+        gerarListaContasReceber();
+    }
+    
     public void retornoDialogAlteracao(SelectEvent event){
         Contasreceber contasreceber = (Contasreceber) event.getObject();
         if (contasreceber.getIdcontasreceber()!= null) {
             Mensagem.lancarMensagemInfo("Salvou", "Alteração de uma conta a receber realizado com sucesso");
         }
         gerarListaContasReceber();
+    }
+    
+    
+    public void editar(Contasreceber contasreceber){
+        if (contasreceber != null) {
+            Map<String, Object> options = new HashMap<String, Object>();
+            FacesContext fc = FacesContext.getCurrentInstance();
+            HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+            session.setAttribute("contasreceber", contasreceber);
+            options.put("contentWidth", 580);
+            RequestContext.getCurrentInstance().openDialog("cadContasReceber", options, null);
+        }
+    }
+    
+    
+    public String novoCancelamento(Contasreceber contasreceber) {
+        if (contasreceber != null) {
+           Map<String, Object> options = new HashMap<String, Object>();
+           options.put("contentWidth", 600);
+           FacesContext fc = FacesContext.getCurrentInstance();
+           HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+           session.setAttribute("contasreceber", contasreceber);
+           RequestContext.getCurrentInstance().openDialog("cadCancelamentoContasReceber", options, null);
+        }
+        return "";
+    }
+    
+    public String novoRecebimento(Contasreceber contasreceber) {
+        if (contasreceber != null) {
+           Map<String, Object> options = new HashMap<String, Object>();
+           options.put("contentWidth", 500);
+           FacesContext fc = FacesContext.getCurrentInstance();
+           HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+           session.setAttribute("contasreceber", contasreceber);
+           RequestContext.getCurrentInstance().openDialog("cadRecebimento", options, null);
+        }
+        return "";
+    }
+    
+    public String visualizarRecebimento(Contasreceber contasreceber) {
+        if (contasreceber != null) {
+           Map<String, Object> options = new HashMap<String, Object>();
+           options.put("contentWidth", 500);
+           FacesContext fc = FacesContext.getCurrentInstance();
+           HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+           session.setAttribute("contasreceber", contasreceber);
+           RequestContext.getCurrentInstance().openDialog("consRecebimentos", options, null);
+        }
+        return "";
+    }
+    
+    public void filtrar(){
+        String sql = "Select c from Contasreceber c";
+        if (cliente.getIdcliente() != null || planoconta.getIdplanoconta() != null || !situacao.equalsIgnoreCase("sn") || dataInicial != null || dataFinal != null) {
+            sql = sql + " where";
+        }
+        if (cliente.getIdcliente() != null) {
+            sql = sql + " c.cliente.idcliente=" + cliente.getIdcliente();
+            if (planoconta.getIdplanoconta() != null || !situacao.equalsIgnoreCase("sn") || dataInicial != null || dataFinal != null) {
+                sql = sql + " and";
+            }
+        }
+        if (planoconta.getIdplanoconta() != null) {
+            sql = sql + " c.planoconta.idplanoconta=" + planoconta.getIdplanoconta();
+            if (!situacao.equalsIgnoreCase("sn") || dataInicial != null || dataFinal != null) {
+                sql = sql + " and";
+            }
+        }
+        if (!situacao.equalsIgnoreCase("sn")) {
+            sql = sql + " c.situacao='" + situacao + "'";
+            if (dataInicial != null || dataFinal != null) {
+                sql = sql + " and";
+            }
+        }
+        if (dataInicial != null && dataFinal != null) {
+            sql = sql + " c.datalancamento>='" + Formatacao.ConvercaoDataSql(dataInicial) + "' and c.datalancamento<='"
+                    + Formatacao.ConvercaoDataSql(dataFinal) + "'";
+        }
+        listaContasReceber = contasReceberDao.list(sql);
+        Mensagem.lancarMensagemInfo("", "Filtrado com sucesso");
+    }
+    
+    public void limparFiltro(){
+        cliente = null;
+        situacao = null;
+        planoconta = null;
+        dataFinal = null;
+        dataInicial = null;
+        gerarListaCliente();
+        gerarListaContasReceber();
+        gerarListaPlanoConta();
     }
 }

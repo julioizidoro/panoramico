@@ -1,0 +1,104 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+        <link href="../../resources/css/css.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" type="text/css" href="../../resources/fonts/font-awesome-4.6.3/css/font-awesome.min.css"/>
+        
+        <link type="text/javascript" href="../../resources/js/jquery-3.1.0.js"></link>
+        <link type="text/javascript" src="../../resources/js/modal.js"/> 
+        <link rel="stylesheet" type="text/css" href="../../resources/css/modal.css"/>
+	<link rel="stylesheet" type="text/css" href="../../resources/css/buttons.css"/>
+	<link rel="stylesheet" type="text/css" href="../../resources/css/textos.css"/>
+        <link rel="stylesheet" type="text/css" href="../../resources/css/css.css"/>
+    </h:head>
+     
+
+    <h:body style="background:#A3DAD9; border-color: #CF7000;" > 
+        <h:form id="idFormCadastroContasReceber" style="font-size: 12px; background-color:#A3DAD9">
+                
+            <title>Novo Evento</title>
+                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                
+                <p:outputLabel class="titTela" value="Cliente" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
+                <p:outputLabel class="titTela" value="Plano de contas" style="font-size: 12px;text-align: left;margin-left: 44%;"/>
+                 <br/>
+                <p:selectOneMenu class="form-control"  id="cliente"  style="width: 250px;margin-left: 2%;font-size: 12px;"  value="#{cadContasReceberMB.cliente}" converter="ClienteConverter"
+                             filter="true" filterMatchMode="contains" panelStyle="width:180px" >
+                    <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
+                    <f:selectItems  value="#{cadContasReceberMB.listaCliente}" var="clienteselecionado" itemLabel="#{clienteselecionado.nome}" itemValue="#{clienteselecionado}"/>
+                    <f:attribute name="listaCliente" value="#{cadContasReceberMB.listaCliente}"/>
+                </p:selectOneMenu>
+                 <p:selectOneMenu  class="form-control" id="ambiente"  style="width: 216px;margin-left: 2%;font-size: 12px;"  value="#{cadContasReceberMB.planoconta}" converter="PlanoContaConverter"
+                             filter="true" filterMatchMode="contains" panelStyle="width:180px" >
+                    <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
+                    <f:selectItems  value="#{cadContasReceberMB.listaPlanoContas}" var="planocontaselecionado" itemLabel="#{planocontaselecionado.descricao}" itemValue="#{planocontaselecionado}"/>
+                    <f:attribute name="listaPlanoContas" value="#{cadContasReceberMB.listaPlanoContas}"/>
+                </p:selectOneMenu> 
+                <br/><br/>
+                <p:outputLabel class="titTela" value="Tipo de pagamento" style="font-size: 12px;text-align: left; margin-left: 2%;"/>
+                <p:outputLabel class="titTela" value="N° de Parcelas" style="font-size: 12px;text-align: left;margin-left: 25%;"/>
+                <p:outputLabel class="titTela" value="N° do Documento" style="font-size: 12px;text-align: left;margin-left: 17%;"/>
+                <h:panelGrid columns="3">
+                    <p:selectOneMenu id="tipoPagamento" class="form-control" style="width:194px;font-size: 12px; margin-left: 2%;" value="#{cadContasReceberMB.tipoPagamento}">
+                        <f:selectItem itemLabel="Selecione" itemValue="" noSelectionOption="true"/> 
+                        <f:selectItem itemLabel="Boleto" itemValue="Boleto" />  
+                        <f:selectItem itemLabel="Dinheiro" itemValue="Dinheiro" /> 
+                        <f:selectItem itemLabel="Cartão" itemValue="cartao" />  
+                        <f:selectItem itemLabel="Cheque" itemValue="Cheque" />
+                        <f:selectItem itemLabel="Transferência" itemValue="transferencia" />
+                    </p:selectOneMenu>
+                    <p:selectOneMenu id="numeroParcela" class="form-control" style="width:90px;font-size: 12px; margin-left: 20%;" value="#{cadContasReceberMB.numeroParcela}">
+                        <f:selectItem itemLabel="Selecione" itemValue="" noSelectionOption="true"/> 
+                        <f:selectItem itemLabel="1" itemValue="1" />  
+                        <f:selectItem itemLabel="2" itemValue="2" /> 
+                        <f:selectItem itemLabel="3" itemValue="3" />  
+                        <f:selectItem itemLabel="4" itemValue="5" />
+                        <f:selectItem itemLabel="6" itemValue="6" />
+                        <f:selectItem itemLabel="7" itemValue="7" />
+                        <f:selectItem itemLabel="8" itemValue="8" />
+                        <f:selectItem itemLabel="9" itemValue="9" />
+                        <f:selectItem itemLabel="10" itemValue="10" />
+                        <f:selectItem itemLabel="11" itemValue="11" />
+                        <f:selectItem itemLabel="12" itemValue="12" />
+                        <f:selectItem itemLabel="13" itemValue="13" />
+                        <f:selectItem itemLabel="14" itemValue="14" />
+                        <f:selectItem itemLabel="15" itemValue="15" />
+                        <f:selectItem itemLabel="16" itemValue="16" />
+                        <f:selectItem itemLabel="17" itemValue="17" />
+                        <f:selectItem itemLabel="18" itemValue="18" />
+                        <f:selectItem itemLabel="19" itemValue="19" />
+                        <f:selectItem itemLabel="20" itemValue="20" />
+                    </p:selectOneMenu>
+                    <p:inputText class="form-control" value="#{cadContasReceberMB.contasreceber.numerodocumento}" size="13" style="margin-left:37%;float: left;font-size: 12px;"/>
+                </h:panelGrid>
+                <br/>
+                <p:outputLabel class="titTela" value="Valor" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
+                <p:outputLabel class="titTela" value="Data" style="font-size: 12px;text-align: left;margin-left: 18%;"/>
+                <br/>
+                <p:inputText class="form-control" value="#{cadContasReceberMB.contasreceber.valorconta}" size="12" style="margin-left:2%;text-align: right;float: left">
+                    <f:convertNumber pattern="##,###,###,###.##"/>  
+                </p:inputText>
+                <p:inputMask mask="99/99/9999" size="15" class="form-control" value="#{cadContasReceberMB.contasreceber.datalancamento}" style="margin-left:4%;font-size: 12px;float: left;">
+                    <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+                </p:inputMask>
+                <br/>
+                 <br/><br/>
+                 
+                 <br/><br/>
+                 <hr style="color: #367587; background: #367587"/>
+                <br/>  
+                <p:commandLink style="text-decoration: none;" actionListener="#{cadContasReceberMB.salvar()}" ajax="false">
+                    <div style="font-size: 16px;margin-left: 32%;" class="cadastrar">Cadastrar</div>
+                </p:commandLink>
+                <p:commandLink style="text-decoration: none;" action="#{cadContasReceberMB.cancelar()}" ajax="false">
+                    <div style="font-size: 16px" class="cancelar">Cancelar</div>
+                </p:commandLink>
+        </h:form>
+ </h:body>
+  
+</html>

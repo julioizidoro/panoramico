@@ -1,0 +1,56 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+        <link href="../../resources/css/css.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" type="text/css" href="../../resources/fonts/font-awesome-4.6.3/css/font-awesome.min.css"/>
+        
+        <link type="text/javascript" href="../../resources/js/jquery-3.1.0.js"></link>
+        <link type="text/javascript" src="../../resources/js/modal.js"/> 
+        <link rel="stylesheet" type="text/css" href="../../resources/css/modal.css"/>
+	<link rel="stylesheet" type="text/css" href="../../resources/css/buttons.css"/>
+	<link rel="stylesheet" type="text/css" href="../../resources/css/textos.css"/>
+        <link rel="stylesheet" type="text/css" href="../../resources/css/css.css"/>
+        <link rel="stylesheet" type="text/css" href="../../resources/css/tabelas.css"/>
+    </h:head>
+     
+
+    <h:body style="background:#A3DAD9; border-color: #CF7000;" > 
+        <h:form id="idFormConsultaRecebimentos" style="font-size: 12px; background-color:#A3DAD9">
+                
+            <title>Visualização de recebimentos</title>
+                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                
+                <h:dataTable id="idConsultaRecebimentos" style="width: 98%;" styleClass="table" value="#{consRecebimentosMB.listaRecebimentos}" var="recebimento">
+                     <h:column>
+                        <f:facet name="header">Data</f:facet> 
+                        <h:outputText value="#{recebimento.datarecebimento}" styleClass="alinhamento" style="float: left;">
+                            <f:convertDateTime pattern="dd/MM/yyyy"
+                                                                    timeZone="America/Sao_Paulo" />
+                        </h:outputText>
+                     </h:column>
+                     <h:column>
+                        <f:facet name="header">Forma Recebimento</f:facet> 
+                        <h:outputText value="#{recebimento.formarecebimento}" styleClass="alinhamento" style="float: left;"/>
+                     </h:column>
+                     <h:column>
+                        <f:facet name="header">Valor</f:facet> 
+                        <h:outputText value="#{recebimento.valorrecebido}" styleClass="alinhamento" style="float: right;">
+                            <f:convertNumber pattern="##,###,###,###.##" minFractionDigits="2" />
+                        </h:outputText>
+                     </h:column>
+                 </h:dataTable>
+                 <br/><br/>
+                 <hr style="color: #367587; background: #367587"/>
+                <br/>
+                <p:commandLink style="text-decoration: none;margin-left: 40%;" action="#{consRecebimentosMB.fechar()}" ajax="false">
+                    <div style="font-size: 16px" class="cancelar">Fechar</div>
+                </p:commandLink>
+        </h:form>
+ </h:body>
+  
+</html>

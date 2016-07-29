@@ -344,7 +344,10 @@ public class EventoMB implements Serializable{
     }
     
     public void filtrar(){
-        String sql = "Select e from Evento e where";
+        String sql = "Select e from Evento e";
+        if (cliente.getIdcliente() != null || ambiente.getIdambiente() != null || tipoenvento.getIdtipoenvento() != null || !situacao.equalsIgnoreCase("sn") || dataInicio != null || dataFinal != null) {
+                sql = sql + " where";
+        }
         if (cliente.getIdcliente() != null) {
             sql = sql + " e.cliente.idcliente=" + cliente.getIdcliente();
             if (ambiente.getIdambiente() != null || tipoenvento.getIdtipoenvento() != null || !situacao.equalsIgnoreCase("sn") || dataInicio != null || dataFinal != null) {
@@ -372,10 +375,8 @@ public class EventoMB implements Serializable{
         if (dataInicio != null && dataFinal != null) {
             sql = sql + " e.data>='" + Formatacao.ConvercaoDataSql(dataInicio) + "' and e.data<='" + Formatacao.ConvercaoDataSql(dataFinal) + "'";
         }
-        if (sql.length() > 28) {
-            listaEvento = eventoDao.list(sql);
-            Mensagem.lancarMensagemInfo("", "Filtrado com sucesso");
-        }
+        listaEvento = eventoDao.list(sql);
+        Mensagem.lancarMensagemInfo("", "Filtrado com sucesso");
     }
     
     public void limparFiltro(){

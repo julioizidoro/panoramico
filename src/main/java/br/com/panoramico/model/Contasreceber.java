@@ -35,6 +35,8 @@ public class Contasreceber implements Serializable{
     private String tipopagamento;
     @Column(name = "numerodocumento")
     private String numerodocumento;
+    @Column(name = "situacao")
+    private String situacao;
     @Column(name = "numeroparcela")
     private String numeroparcela;
     @Column(name = "datalancamento")
@@ -127,8 +129,14 @@ public class Contasreceber implements Serializable{
         this.usuario = usuario;
     }
 
-    
-    
+    public String getSituacao() {
+        return situacao;
+    }
+
+    public void setSituacao(String situacao) {
+        this.situacao = situacao;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;

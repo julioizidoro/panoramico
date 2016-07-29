@@ -29,8 +29,6 @@ public class Crcancelamento implements Serializable{
     @Basic(optional = false)
     @Column(name = "idcrcancelamento")
     private Integer idcrcancelamento;
-    @Column(name = "formarecebimento")
-    private String formarecebimento;
     @Column(name = "hora")
     private String hora;
     @Column(name = "data")
@@ -56,13 +54,6 @@ public class Crcancelamento implements Serializable{
         this.idcrcancelamento = idcrcancelamento;
     }
 
-    public String getFormarecebimento() {
-        return formarecebimento;
-    }
-
-    public void setFormarecebimento(String formarecebimento) {
-        this.formarecebimento = formarecebimento;
-    }
 
     public String getHora() {
         return hora;

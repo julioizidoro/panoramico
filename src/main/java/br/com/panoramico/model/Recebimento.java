@@ -38,6 +38,8 @@ public class Recebimento implements Serializable{
     private Date datarecebimento;
     @Column(name = "desagio")
     private Float desagio;
+    @Column(name = "valorrecebido")
+    private Float valorrecebido;
     @JoinColumn(name = "contasreceber_idcontasreceber", referencedColumnName = "idcontasreceber")
     @ManyToOne(optional = false)
     private Contasreceber contasreceber;
@@ -102,6 +104,14 @@ public class Recebimento implements Serializable{
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+
+    public Float getValorrecebido() {
+        return valorrecebido;
+    }
+
+    public void setValorrecebido(Float valorrecebido) {
+        this.valorrecebido = valorrecebido;
     }
 
     

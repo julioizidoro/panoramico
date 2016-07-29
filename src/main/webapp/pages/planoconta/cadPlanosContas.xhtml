@@ -1,0 +1,39 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+        <link href="../../resources/css/css.css" rel="stylesheet" type="text/css" />
+        <link type="text/javascript" href="../../resources/js/jquery-3.1.0.js"></link>
+        <link type="text/javascript" src="../../resources/js/modal.js"/> 
+        <link rel="stylesheet" type="text/css" href="../../resources/css/modal.css"/>
+	<link rel="stylesheet" type="text/css" href="../../resources/css/buttons.css"/>
+	<link rel="stylesheet" type="text/css" href="../../resources/css/textos.css"/>
+    </h:head>
+     
+
+ <h:body style="background:#A3DAD9; border-color: #CF7000;border: 2px;" > 
+        <h:form id="idFormCadastroPlanosContas" class="body2" style="font-size: 12px;" enctype="multipart/form-data">
+                
+            <title>Novo Plano de Conta</title>
+            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+            
+            <p:outputLabel class="titTela" value="Descrição" style="font-size: 12px;text-align: left;margin-left:2%;"/>
+            <br/>
+            <p:inputText class="form-control" value="#{cadPlanosContasMB.planoconta.descricao}" size="53" style="margin-left:2%;font-size: 12px;"/>
+            
+            <br/>
+            <hr/>
+            <br/> 
+            <p:commandLink style="text-decoration: none;" actionListener="#{cadPlanosContasMB.salvar()}" ajax="false">
+                <div style="font-size: 16px;margin-left: 32%;" class="cadastrar">Cadastrar</div>
+            </p:commandLink>
+            <p:commandLink style="text-decoration: none;" actionListener="#{cadPlanosContasMB.cancelar()}" ajax="false">
+                <div style="font-size: 16px" class="cancelar">Cancelar</div>
+            </p:commandLink>
+        </h:form>
+ </h:body>
+</html>
