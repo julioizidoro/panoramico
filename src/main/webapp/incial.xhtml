@@ -24,7 +24,7 @@
         <h:form>   
             <p:growl id="messages"/>
 
-            <div class="wrapper">  <!-- DIV CONTENT -->
+            <div class="wrapper" style="z-index: 9999;">  <!-- DIV CONTENT -->
 		<div class="col-10 boxAzulClaro">
 			<div class="col-12"> <!-- DIV MENU SUPERIOR -->
 				<div class="wrapper">
@@ -39,7 +39,7 @@
 				<nav id="menu" class="wrapper">
 					<ul>
 						<li> 
-							<div class="dropdown" style="float: left;">
+							<div class="dropdown" style="float: left;z-index: 9999;">
 								Pessoas <div class="fa fa-sort-desc"></div>
 									<div class="dropdown-content">
                                                                             <p><h:link  outcome="/pages/usuario/consUsuario.xhtml" value="Usuário"></h:link></p>
@@ -51,7 +51,7 @@
 							</div> 
 						</li> 
 						<li> 
-							<div class="dropdown" style="float: left;">
+							<div class="dropdown" style="float: left;z-index: 9999;">
 								Ambientes | Planos <div class="fa fa-sort-desc"></div>
 									<div class="dropdown-content">
                                                                             <p><h:link outcome="/pages/ambiente/consAmbiente.xhtml" value="Ambiente"></h:link></p>
@@ -64,7 +64,7 @@
 							</div> 
 						</li>
                                                 <li> 
-							<div class="dropdown" style="float: left;">
+							<div class="dropdown" style="float: left;z-index: 9999;">
 								Eventos <div class="fa fa-sort-desc"></div>
 									<div class="dropdown-content">
                                                                             <p><h:link outcome="/pages/eventos/consEventos.xhtml" value="Eventos"></h:link></p>
@@ -72,7 +72,7 @@
 							</div> 
 						</li>
                                                 <li> 
-							<div class="dropdown" style="float: left;">
+							<div class="dropdown" style="float: left;z-index: 9999;">
 								Financeiro <div class="fa fa-sort-desc"></div>
 									<div class="dropdown-content">
                                                                             <p><h:link outcome="/pages/contasreceber/consContasReceber.xhtml" value="Contas a Receber"></h:link></p>

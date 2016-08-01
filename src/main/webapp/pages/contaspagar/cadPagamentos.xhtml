@@ -19,16 +19,16 @@
      
 
     <h:body style="background:#A3DAD9; border-color: #CF7000;" > 
-        <h:form id="idFormCadastroRecebimento" style="font-size: 12px; background-color:#A3DAD9">
+        <h:form id="idFormCadastroPagamento" style="font-size: 12px; background-color:#A3DAD9">
                 
-            <title>Novo Recebimento</title>
+            <title>Novo Pagamento</title>
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                 
-                <p:outputLabel class="titTela" value="Forma de Recebimento" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
-                <p:outputLabel class="titTela" value="Data" style="font-size: 12px;text-align: left;margin-left: 44%;"/>
+                <p:outputLabel class="titTela" value="Forma de Pagamento" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
+                <p:outputLabel class="titTela" value="Data" style="font-size: 12px;text-align: left;margin-left: 47%;"/>
                 <br/>
                 <h:panelGrid columns="2">
-                    <p:selectOneMenu id="formarecebimento" class="form-control" style="width:194px;font-size: 12px; margin-left: 2%;" value="#{cadRecebimentoMB.recebimento.formarecebimento}">
+                    <p:selectOneMenu id="formarecebimento" class="form-control" style="width:194px;font-size: 12px; margin-left: 2%;" value="#{cadPagamentoMB.pagamento.formapagamento}">
                         <f:selectItem itemLabel="Selecione" itemValue="" noSelectionOption="true"/> 
                         <f:selectItem itemLabel="Boleto" itemValue="Boleto" />  
                         <f:selectItem itemLabel="Dinheiro" itemValue="Dinheiro" /> 
@@ -36,30 +36,31 @@
                         <f:selectItem itemLabel="Cheque" itemValue="Cheque" />
                         <f:selectItem itemLabel="Transferência" itemValue="transferencia" />
                     </p:selectOneMenu>
-                    <p:inputMask mask="99/99/9999" size="15" class="form-control" value="#{cadRecebimentoMB.recebimento.datarecebimento}" style="margin-left:52%;font-size: 12px;">
+                    <p:inputMask mask="99/99/9999" size="15" class="form-control" value="#{cadPagamentoMB.pagamento.datapagamento}" style="margin-left:52%;font-size: 12px;">
                         <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
                     </p:inputMask>
                 </h:panelGrid>
-                <p:outputLabel class="titTela" value="Valor a Receber" style="font-size: 12px;text-align: left; margin-left: 2%;"/>
-                <p:outputLabel class="titTela" value="Juros" style="font-size: 12px;text-align: left;margin-left: 18%;"/>
+                <br/>
+                <p:outputLabel class="titTela" value="Valor a Pagar" style="font-size: 12px;text-align: left; margin-left: 2%;"/>
+                <p:outputLabel class="titTela" value="Juros" style="font-size: 12px;text-align: left;margin-left: 22%;"/>
                 <p:outputLabel class="titTela" value="Desagio" style="font-size: 12px;text-align: left;margin-left: 30%;"/>
                 <br/>
-                <p:inputText id="idValorReceber" class="form-control" value="#{cadRecebimentoMB.valorReceber}" size="12" style="margin-left:2%;text-align: right;float: left">
+                <p:inputText id="idValorPagar" class="form-control" value="#{cadPagamentoMB.valorPagar}" size="12" style="margin-left:2%;text-align: right;float: left">
                     <f:convertNumber pattern="##,###,###,###.##"/>
-                    <p:ajax event="change" listener="#{cadRecebimentoMB.calcularTotal()}" update="idValorReceber, idValorJuros, idValorDesagio, idValorTotalRecebido"/>
+                    <p:ajax event="change" listener="#{cadPagamentoMB.calcularTotal()}" update="idValorPagar, idValorJuros, idValorDesagio, idValorTotalPagamento"/>
                 </p:inputText>
-                <p:inputText id="idValorJuros" class="form-control" value="#{cadRecebimentoMB.juros}" size="12" style="margin-left:14%;text-align: right;float: left">
+                <p:inputText id="idValorJuros" class="form-control" value="#{cadPagamentoMB.juros}" size="12" style="margin-left:14%;text-align: right;float: left">
                     <f:convertNumber pattern="##,###,###,###.##"/>
-                    <p:ajax event="change" listener="#{cadRecebimentoMB.calcularTotal()}" update="idValorReceber, idValorJuros, idValorDesagio, idValorTotalRecebido"/>
+                    <p:ajax event="change" listener="#{cadPagamentoMB.calcularTotal()}" update="idValorPagar, idValorJuros, idValorDesagio, idValorTotalPagamento"/>
                 </p:inputText>
-                <p:inputText id="idValorDesagio" class="form-control" value="#{cadRecebimentoMB.desagio}" size="12" style="margin-left:14%;text-align: right;float: left">
+                <p:inputText id="idValorDesagio" class="form-control" value="#{cadPagamentoMB.desagio}" size="12" style="margin-left:14%;text-align: right;float: left">
                     <f:convertNumber pattern="##,###,###,###.##"/>
-                    <p:ajax event="change" listener="#{cadRecebimentoMB.calcularTotal()}" update="idValorReceber, idValorJuros, idValorDesagio, idValorTotalRecebido"/>
+                    <p:ajax event="change" listener="#{cadPagamentoMB.calcularTotal()}" update="idValorPagar, idValorJuros, idValorDesagio, idValorTotalPagamento"/>
                 </p:inputText>
-                <br/><br/> 
+                <br/><br/> <br/> 
                 <p:outputLabel class="titTela" value="Valor Total" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
                 <br/>
-                <p:inputText id="idValorTotalRecebido" class="form-control" readonly="true" value="#{cadRecebimentoMB.valorTotalRecebido}" size="12" style="margin-left:2%;text-align: right;float: left">
+                <p:inputText id="idValorTotalPagamento" class="form-control" readonly="true" value="#{cadPagamentoMB.valorTotalPago}" size="12" style="margin-left:2%;text-align: right;float: left">
                     <f:convertNumber pattern="##,###,###,###.##"/>
                 </p:inputText>
                 
@@ -69,10 +70,10 @@
                  <br/><br/>
                  <hr style="color: #367587; background: #367587"/>
                 <br/>  
-                <p:commandLink style="text-decoration: none;" actionListener="#{cadRecebimentoMB.salvar()}" ajax="false">
+                <p:commandLink style="text-decoration: none;" actionListener="#{cadPagamentoMB.salvar()}" ajax="false">
                     <div style="font-size: 16px;margin-left: 32%;" class="cadastrar">Cadastrar</div>
                 </p:commandLink>
-                <p:commandLink style="text-decoration: none;" action="#{cadRecebimentoMB.cancelar()}" ajax="false">
+                <p:commandLink style="text-decoration: none;" action="#{cadPagamentoMB.cancelar()}" ajax="false">
                     <div style="font-size: 16px" class="cancelar">Cancelar</div>
                 </p:commandLink>
         </h:form>

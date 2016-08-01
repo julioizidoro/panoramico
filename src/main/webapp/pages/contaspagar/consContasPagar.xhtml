@@ -28,10 +28,10 @@
                             <p:inputMask mask="99/99/9999" size="15" value="#{contasPagarMB.dataFinal}" style="margin-left:2%;font-size: 12px;float: left;">
                                 <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
                             </p:inputMask>
-                            <p:commandLink style="text-decoration: none; margin-top: 10%;" actionListener="#" ajax="false" update="idConsultaContasPagar, messages">
+                            <p:commandLink style="text-decoration: none; margin-top: 10%;" actionListener="#{contasPagarMB.filtrar()}" ajax="false" update="idConsultaContasPagar, messages">
                                 <div style="font-size: 16px;margin-left: 2%;" class="adicionar">Filtrar</div>
                             </p:commandLink>
-                            <p:commandLink style="text-decoration: none; margin-top: 2%;" actionListener="#" ajax="false" update="@form">
+                            <p:commandLink style="text-decoration: none; margin-top: 2%;" actionListener="#{contasPagarMB.limparFiltro()}" ajax="false" update="@form">
                                 <div style="font-size: 16px;margin-left: 2%;" class="limpar">Limpar</div>
                             </p:commandLink>
                         </p:tab> 
@@ -39,7 +39,7 @@
                             <br/><br/>
                     <!-- TABELA CADASTROS -->
                             <div class="col-6 titTela" style="margin-left:-10%;">Consulta Contas a Pagar</div>
-                            <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" action="#{contasReceberMB.novoCadastroContasReceber()}">
+                            <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" action="#{contasPagarMB.novoCadastroContasPagar()}">
                                 <div class="icoAdd fa fa-plus-square-o"></div>
                                 <p:ajax event="dialogReturn" listener="#{contasPagarMB.retornoDialogNovo}" update="messages, idConsultaContasPagar"/>
                             </p:commandLink>
@@ -65,16 +65,24 @@
                                     <f:facet name="header">Parcela</f:facet> 
                                     <h:outputText value="#{contapagar.numeroparcela}" styleClass="alinhamento"/>
                                 </h:column>
-                                 <h:column>
-                                     <p:commandLink rendered="#{usuarioLogadoMB.editar}" title="Editar" action="#" style="text-decoration: none;">
+                                <h:column>
+                                    <p:commandLink rendered="#{usuarioLogadoMB.editar}" title="Editar" action="#{contasPagarMB.editar(contapagar)}" style="text-decoration: none;">
                                         <div class="fa fa-pencil-square-o">
                                         </div>
-                                         <p:ajax event="dialogReturn" listener="#{contasReceberMB.retornoDialogAlteracao}" update=":idFormConsultaContasPagar:messages, @form"/>
+                                         <p:ajax event="dialogReturn" listener="#{contasPagarMB.retornoDialogAlteracao}" update=":idFormConsultaContasPagar:messages, @form"/>
                                      </p:commandLink> 
-                                     <p:commandLink title="Cancelamento" style="text-decoration: none;" rendered="#{usuarioLogadoMB.excluir}"  action="#">
-                                        <div class="fa fa-times" >
+                                    <p:commandLink title="Excluir" style="text-decoration: none;" update=":idFormConsultaContasPagar:messages, @form" rendered="#{usuarioLogadoMB.excluir}"  action="#{contasPagarMB.excluir(contapagar)}">
+                                        <div class="fa fa-trash" >
                                         </div>
-                                         <p:ajax event="dialogReturn" listener="#{contasReceberMB.retornoDialogCancelamento}" update=":idFormConsultaContasPagar:messages, @form"/>
+                                    </p:commandLink>
+                                    <p:commandLink title="Pagamento" style="text-decoration: none;" rendered="#{usuarioLogadoMB.cadastrar}"  action="#{contasPagarMB.novoPagamento(contapagar)}">
+                                        <div class="fa fa-money" >
+                                        </div>
+                                        <p:ajax event="dialogReturn" listener="#{contasPagarMB.retornoDialogPagamento}" update=":idFormConsultaContasPagar:messages, @form"/>
+                                     </p:commandLink>
+                                    <p:commandLink title="Visualizar Recebimentos" style="text-decoration: none;" rendered="#{usuarioLogadoMB.editar}"  action="#{contasPagarMB.visualizarPagamento(contapagar)}">
+                                        <div class="fa fa-eye" >
+                                        </div>
                                      </p:commandLink>
                                 </h:column> 
 

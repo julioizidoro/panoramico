@@ -38,6 +38,8 @@ public class Pagamento implements Serializable{
     private Date datapagamento;
     @Column(name = "desagio")
     private Float desagio;
+    @Column(name = "valorpago")
+    private Float valorpago;
     @JoinColumn(name = "contaspagar_idcontaspagar", referencedColumnName = "idcontaspagar")
     @ManyToOne(optional = false)
     private Contaspagar contaspagar;
@@ -103,6 +105,15 @@ public class Pagamento implements Serializable{
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
+
+    public Float getValorpago() {
+        return valorpago;
+    }
+
+    public void setValorpago(Float valorpago) {
+        this.valorpago = valorpago;
+    }
+    
     
     
     @Override

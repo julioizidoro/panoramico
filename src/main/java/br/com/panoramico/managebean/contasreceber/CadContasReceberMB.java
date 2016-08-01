@@ -15,9 +15,7 @@ import br.com.panoramico.model.Planoconta;
 import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
@@ -188,6 +186,7 @@ public class CadContasReceberMB implements Serializable{
         contasreceber.setCliente(cliente);
         contasreceber.setPlanoconta(planoconta);
         contasreceber.setUsuario(usuarioLogadoMB.getUsuario());
+        contasreceber.setSituacao("PAGAR");
         String mensagem = validarDados(contasreceber);
         if (mensagem.length() < 5) {
             contasreceber = contasReceberDao.update(contasreceber);

@@ -12,7 +12,6 @@ import br.com.panoramico.managebean.UsuarioLogadoMB;
 import br.com.panoramico.model.Cliente;
 import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.model.Crcancelamento;
-import br.com.panoramico.model.Evento;
 import br.com.panoramico.model.Planoconta;
 import br.com.panoramico.model.Recebimento;
 import br.com.panoramico.uil.Formatacao;
