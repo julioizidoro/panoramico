@@ -27,6 +27,7 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "associado")
 public class Associado implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -70,6 +71,9 @@ public class Associado implements Serializable {
     private List<Dependente> dependenteList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "associado")
     private List<Associadoempresa> associadoempresaList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "associado")
+    private List<Exameassociado> exameassociadoList;
+    
 
     public Associado() {
     }
@@ -213,6 +217,14 @@ public class Associado implements Serializable {
     @Override
     public String toString() {
         return "br.com.panoramico.model.Associado[ idassociado=" + idassociado + " ]";
+    }
+
+    public List<Exameassociado> getExameassociadoList() {
+        return exameassociadoList;
+    }
+
+    public void setExameassociadoList(List<Exameassociado> exameassociadoList) {
+        this.exameassociadoList = exameassociadoList;
     }
     
 }

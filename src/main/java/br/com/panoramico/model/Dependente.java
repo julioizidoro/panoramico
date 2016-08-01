@@ -7,7 +7,9 @@ package br.com.panoramico.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,8 +17,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,9 +29,9 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "dependente")
-@NamedQueries({
-    @NamedQuery(name = "Dependente.findAll", query = "SELECT d FROM Dependente d")})
 public class Dependente implements Serializable {
+
+    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,6 +57,8 @@ public class Dependente implements Serializable {
     @JoinColumn(name = "associado_idassociado", referencedColumnName = "idassociado")
     @ManyToOne(optional = false)
     private Associado associado;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "dependente")
+    private List<Examedependente> examedependenteList;
 
     public Dependente() {
     }
@@ -143,6 +146,14 @@ public class Dependente implements Serializable {
     @Override
     public String toString() {
         return "br.com.panoramico.model.Dependente[ iddependente=" + iddependente + " ]";
+    }
+
+    public List<Examedependente> getExamedependenteList() {
+        return examedependenteList;
+    }
+
+    public void setExamedependenteList(List<Examedependente> examedependenteList) {
+        this.examedependenteList = examedependenteList;
     }
     
 }
