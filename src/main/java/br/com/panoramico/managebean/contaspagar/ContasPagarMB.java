@@ -202,7 +202,7 @@ public class ContasPagarMB implements Serializable{
            FacesContext fc = FacesContext.getCurrentInstance();
            HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
            session.setAttribute("contaspagar", contaspagar);
-           RequestContext.getCurrentInstance().openDialog("", options, null);
+           RequestContext.getCurrentInstance().openDialog("consPagamentos", options, null);
         }
         return "";
     }

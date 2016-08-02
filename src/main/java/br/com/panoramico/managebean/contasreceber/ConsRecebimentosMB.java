@@ -74,8 +74,7 @@ public class ConsRecebimentosMB implements Serializable{
     
     public void gerarListaRecebimentos(){
         listaRecebimentos = recebimentoDao.list("Select r from Recebimento r "
-                + "JOIN Contasreceber c on r.contasreceber.idcontasreceber=c.idcontasreceber"
-                + " where r.contasreceber.idcontasreceber=" + contasreceber.getIdcontasreceber() + " and c.numeroparcela='" + contasreceber.getNumeroparcela() + "'");
+                + " where r.contasreceber.idcontasreceber=" + contasreceber.getIdcontasreceber());
         if (listaRecebimentos == null) {
             listaRecebimentos = new ArrayList<Recebimento>();
         }  

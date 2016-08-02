@@ -108,15 +108,21 @@ public class CadUsuarioMB implements Serializable{
     }
     
     
-    public void salvar(){
-        usuario.setPerfil(perfil);
-        try {
-            usuario.setSenha(Criptografia.encript(usuario.getSenha()));
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(CadUsuarioMB.class.getName()).log(Level.SEVERE, null, ex);
+    public String salvar(){
+        List<Usuario> listaUsuario = usuarioDao.list("Select u from Usuario u where u.login='" + usuario.getLogin() + "'");
+        if (listaUsuario == null || listaUsuario.isEmpty()) {
+            usuario.setPerfil(perfil);
+            try {
+                usuario.setSenha(Criptografia.encript(usuario.getSenha()));
+            } catch (NoSuchAlgorithmException ex) {
+                Logger.getLogger(CadUsuarioMB.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            usuario = usuarioDao.update(usuario);
+            RequestContext.getCurrentInstance().closeDialog(usuario);      
+        }else{
+            Mensagem.lancarMensagemInfo("Atenção", "este login ja tem uma conta existente!!");
         }
-        usuario = usuarioDao.update(usuario);
-        RequestContext.getCurrentInstance().closeDialog(usuario);      
+        return "";
     } 
      
     

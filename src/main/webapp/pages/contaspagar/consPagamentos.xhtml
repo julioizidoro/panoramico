@@ -20,26 +20,26 @@
      
 
     <h:body style="background:#A3DAD9; border-color: #CF7000;" > 
-        <h:form id="idFormConsultaRecebimentos" style="font-size: 12px; background-color:#A3DAD9">
+        <h:form id="idFormConsultaPagamentos" style="font-size: 12px; background-color:#A3DAD9">
                 
-            <title>Visualização de recebimentos</title>
+            <title>Visualização de pagamentos</title>
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                 
-                <h:dataTable id="idConsultaRecebimentos" style="width: 98%;" styleClass="table" value="#{consRecebimentosMB.listaRecebimentos}" var="recebimento">
+                <h:dataTable id="idConsultaPagamentos" style="width: 98%;" styleClass="table" value="#{consPagamentosMB.listaPagamentos}" var="pagamento">
                      <h:column>
                         <f:facet name="header">Data</f:facet> 
-                        <h:outputText value="#{recebimento.datarecebimento}" styleClass="alinhamento" style="text-align: center;margin-left:20%;">
+                        <h:outputText value="#{pagamento.datapagamento}" styleClass="alinhamento" style="text-align: center;margin-left:20%;">
                             <f:convertDateTime pattern="dd/MM/yyyy"
                                                                     timeZone="America/Sao_Paulo" />
                         </h:outputText>
                      </h:column>
                      <h:column>
-                        <f:facet name="header">Forma Recebimento</f:facet> 
-                        <h:outputText value="#{recebimento.formarecebimento}" styleClass="alinhamento" style="float: left;"/>
+                        <f:facet name="header">Forma Pagamento</f:facet> 
+                        <h:outputText value="#{pagamento.formapagamento}" styleClass="alinhamento" style="float: left;"/>
                      </h:column>
                      <h:column>
                         <f:facet name="header">Valor</f:facet> 
-                        <h:outputText value="#{recebimento.valorrecebido}" styleClass="alinhamento" style="float: right;">
+                        <h:outputText value="#{pagamento.valorpago}" styleClass="alinhamento" style="float: right;">
                             <f:convertNumber pattern="##,###,###,###.##" minFractionDigits="2" />
                         </h:outputText>
                      </h:column>
@@ -47,7 +47,7 @@
                  <br/><br/>
                  <hr style="color: #367587; background: #367587"/>
                 <br/>
-                <p:commandLink style="text-decoration: none;" action="#{consRecebimentosMB.fechar()}" ajax="false">
+                <p:commandLink style="text-decoration: none;" action="#{consPagamentosMB.fechar()}" ajax="false">
                     <div style="margin-left: 40%;font-size: 16px" class="cancelar">Fechar</div>
                 </p:commandLink>
         </h:form>

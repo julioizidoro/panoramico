@@ -11,6 +11,7 @@ import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -136,13 +137,18 @@ public class UsuarioLogadoMB implements Serializable{
                 FacesMessage mensagem = new FacesMessage("Erro: " + ex);
                 FacesContext.getCurrentInstance().addMessage(null, mensagem);
             }
-            usuario.setSenha(senha);
-            usuario = usuarioDao.find("select u from Usuario u where u.login='" + usuario.getLogin() + "' and u.senha='" + usuario.getSenha() + "'");
-            if (usuario == null) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atenção!", "Acesso Negado."));
+            List<Usuario> listaUsuario = usuarioDao.list("Select u from Usuario u where u.login='" + usuario.getLogin() + "' and u.senha='" + senha + "'");
+            if (listaUsuario == null || listaUsuario.isEmpty()) {
+                Mensagem.lancarMensagemInfo("", "Acesso negado!!");
             } else {
-                verificarPerfilUsuario(usuario);
-                return "incial";
+                usuario.setSenha(senha);
+                usuario = usuarioDao.find("select u from Usuario u where u.login='" + usuario.getLogin() + "' and u.senha='" + usuario.getSenha() + "'");
+                if (usuario == null) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atenção!", "Acesso Negado."));
+                } else {
+                    verificarPerfilUsuario(usuario);
+                    return "incial";
+                }
             }
         }
         usuario = new Usuario();

@@ -13,7 +13,7 @@
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:10%;width: 80%;"/>
                     <p:accordionPanel activeIndex="-1">
                         <p:tab title="Pesquisar">
-                            <p:outputLabel class="titTela" value="Plano de contas" style="font-size: 12px;text-align: left;margin-left: 25%;float: left;"/>
+                            <p:outputLabel class="titTela" value="Plano de contas" style="font-size: 12px;text-align: left;margin-left: 15%;float: left;"/>
                             <p:outputLabel class="titTela" value="Periodo" style="font-size: 12px;text-align: left;margin-left: 20%;float: left;"/>
                             <br/>
                             <p:selectOneMenu id="planoConta"  style="width: 216px;margin-left: -35%;font-size: 12px;float: left;"  value="#{contasPagarMB.planoconta}" converter="PlanoContaConverter"
@@ -80,7 +80,7 @@
                                         </div>
                                         <p:ajax event="dialogReturn" listener="#{contasPagarMB.retornoDialogPagamento}" update=":idFormConsultaContasPagar:messages, @form"/>
                                      </p:commandLink>
-                                    <p:commandLink title="Visualizar Recebimentos" style="text-decoration: none;" rendered="#{usuarioLogadoMB.editar}"  action="#{contasPagarMB.visualizarPagamento(contapagar)}">
+                                    <p:commandLink title="Visualizar Pagamentos" style="text-decoration: none;" rendered="#{usuarioLogadoMB.editar}"  action="#{contasPagarMB.visualizarPagamento(contapagar)}">
                                         <div class="fa fa-eye" >
                                         </div>
                                      </p:commandLink>

@@ -1,0 +1,70 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+        <link href="../../resources/css/css.css" rel="stylesheet" type="text/css" />
+        <link type="text/javascript" href="../../resources/js/jquery-3.1.0.js"></link>
+        <link type="text/javascript" src="../../resources/js/modal.js"/> 
+        <link rel="stylesheet" type="text/css" href="../../resources/css/modal.css"/>
+	<link rel="stylesheet" type="text/css" href="../../resources/css/buttons.css"/>
+	<link rel="stylesheet" type="text/css" href="../../resources/css/textos.css"/>
+        
+    </h:head> 
+     
+
+    <h:body style="background:#A3DAD9; border-color: #CF7000;border: 2px;z-index: 9999;"> 
+        <h:form id="idFormCadastroUsuario" style="font-size: 12px;" enctype="multipart/form-data">
+                
+            <title>Cadastro de Medico</title>
+                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                <p:outputLabel class="titTela" value="Nome" style="font-size: 14px;text-align: left;margin-left:2%;"/>
+                <p:outputLabel class="titTela" value="Usuario" style="font-size: 14px;text-align: left;margin-left: 38%;"/>
+                <br/>
+                <h:panelGrid columns="2">
+                    <p:inputText class="form-control" value="#{cadMedicoMB.medico.nome}" size="30" style="margin-left:2%;font-size: 12px;border-radius: 4px;"/>
+                    <p:selectOneMenu styleClass="form-control" class="form-control"  id="usuario"  style="width: 235px;margin-left: 11%;font-size: 12px;border-radius: 3px;"  value="#{cadMedicoMB.usuario}" converter="UsuarioConverter"
+                                 filter="true" filterMatchMode="contains" panelStyle="width:180px" >
+                       <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
+                       <f:selectItems  value="#{cadMedicoMB.listaUsuarios}" var="usuarioselecionado" itemLabel="#{usuarioselecionado.nome}" itemValue="#{usuarioselecionado}"/>
+                       <f:attribute name="listaUsuarios" value="#{cadMedicoMB.listaUsuarios}"/>
+                    </p:selectOneMenu>
+                </h:panelGrid>
+                <br/>
+                
+                <p:outputLabel class="titTela" value="E-mail" style="font-size: 14px;text-align: left;margin-left:2%;"/>
+                <p:outputLabel class="titTela" value="CRM" style="font-size: 14px;text-align: left;margin-left:37%;"/> 
+                <p:outputLabel class="titTela" value="Telefone" style="font-size: 14px;text-align: left;margin-left:27%;"/>
+                <br/> 
+                <p:inputText class="form-control" value="#{cadMedicoMB.medico.email}" size="30" style="margin-left:2%;font-size: 12px;border-radius: 4px;"/>
+                <p:inputText class="form-control" value="#{cadMedicoMB.medico.crm}" size="12" style="margin-left:6%;font-size: 12px;border-radius: 4px;"/>    
+                <p:inputText class="form-control" value="#{cadMedicoMB.medico.telefone}" size="12" style="margin-left:14%;font-size: 12px;border-radius: 4px;"/>    
+                <br/><br/>
+               <p:outputLabel class="titTela" value="Especialidade" style="font-size: 14px;text-align: left;margin-left: 2%;"/>
+               <p:outputLabel class="titTela" value="Celular" style="font-size: 14px;text-align: left;margin-left:24%;"/>
+               <p:outputLabel class="titTela" value="Situação" style="font-size: 14px;text-align: left;margin-left: 12%;"/>
+                <br/>
+                <h:panelGrid columns="3">
+                    <p:inputText class="form-control" value="#{cadMedicoMB.medico.especialidade}" size="30" style="margin-left: 2%;font-size: 12px;border-radius: 4px;"/>
+                    <p:inputText class="form-control" value="#{cadMedicoMB.medico.celular}" size="12" style="margin-left:10%;font-size: 12px;border-radius: 4px;"/>    
+                    <p:selectOneMenu class="form-control" id="situacao" value="#{cadMedicoMB.medico.situacao}"  style="width:150px;margin-left: 6%; font-size: 12px;">
+                        <f:selectItem itemLabel="Selecione" itemValue="sn" noSelectionOption="true"/> 
+                        <f:selectItem itemLabel="Ativo" itemValue="Ativo" /> 
+                        <f:selectItem itemLabel="Inativo" itemValue="Inativo" />
+                    </p:selectOneMenu>
+                </h:panelGrid>
+                <br/><br/><br/><br/><br/>
+                <hr/>
+                <br/>  
+                <p:commandLink style="text-decoration: none;" actionListener="#{cadMedicoMB.salvar()}" update="messages" ajax="false">
+                    <div style="font-size: 16px;margin-left: 32%;" class="cadastrar">Cadastrar</div>
+                </p:commandLink>
+                <p:commandLink style="text-decoration: none;" actionListener="#{cadMedicoMB.cancelar()}" ajax="false">
+                    <div style="font-size: 16px" class="cancelar">Cancelar</div>
+                </p:commandLink>
+        </h:form>
+ </h:body>  
+</html>
