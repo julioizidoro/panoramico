@@ -19,7 +19,9 @@ import br.com.panoramico.uil.Formatacao;
 import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -211,10 +213,19 @@ public class EventoMB implements Serializable{
     }
     
     
-    
+    public Date calcularDiasEventos() {
+        Calendar c = new GregorianCalendar();
+        c.setTime(new Date());
+        c.add(Calendar.DAY_OF_MONTH, 30);
+        Date data = c.getTime();
+       return data;
+    }
     
     public void gerarListaEventos(){
-        listaEvento = eventoDao.list("Select e from Evento e");
+        Date dataIncial = new Date();
+        Date dataFinal = calcularDiasEventos();
+        listaEvento = eventoDao.list("Select e from Evento e where e.data>='" + Formatacao.ConvercaoDataSql(dataIncial) + "' and "
+                + "e.data<='" + Formatacao.ConvercaoDataSql(dataFinal) + "'");
         if (listaEvento == null) {
             listaEvento = new ArrayList<Evento>();
         }

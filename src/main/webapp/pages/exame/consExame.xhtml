@@ -20,18 +20,18 @@
                             <h:dataTable id="idConsultaExame" styleClass="table" value="#{exameMB.listaExames}" var="exame">
                                 <h:column>
                                     <f:facet name="header">Data</f:facet> 
-                                    <h:outputText value="#{exame.data}" styleClass="alinhamento" style="text-align: left !important;">
+                                    <h:outputText value="#{exame.data}" styleClass="alinhamento" style="float: left;">
                                         <f:convertDateTime pattern="dd/MM/yyyy"
                                                                     timeZone="America/Sao_Paulo" />
                                     </h:outputText>
                                 </h:column>
                                 <h:column >  
                                     <f:facet name="header">Diagnostico</f:facet> 
-                                    <h:outputText value="#{exame.diagnostico}" styleClass="alinhamento" style="text-align: left !important;margin-right:40%;"/>
+                                    <h:outputText value="#{exame.diagnostico}" styleClass="alinhamento" style="float: left;"/>
                                 </h:column>
                                 <h:column>
                                     <f:facet name="header">Validade</f:facet> 
-                                    <h:outputText value="#{exame.datavalidade}" styleClass="alinhamento" style="text-align: left !important;">
+                                    <h:outputText value="#{exame.datavalidade}" styleClass="alinhamento" style="float: left;">
                                         <f:convertDateTime pattern="dd/MM/yyyy"
                                                                     timeZone="America/Sao_Paulo" />
                                     </h:outputText>
@@ -41,12 +41,12 @@
                                     <h:outputText value="#{exame.situacao}" styleClass="alinhamento" style="float: left;" />
                                 </h:column>
                                  <h:column>
-                                     <p:commandLink rendered="#{usuarioLogadoMB.editar}" action="#{exameMB.editar(medico)}">
+                                     <p:commandLink rendered="#{usuarioLogadoMB.editar}" action="#{exameMB.editar(exame)}">
                                         <div class="fa fa-pencil-square-o">
                                         </div>
                                          <p:ajax event="dialogReturn" listener="#{exameMB.retornoDialogAlteracao}" update=":idFormConsultaExame:messages, @form"/>
                                      </p:commandLink>
-                                     <p:commandLink rendered="#{usuarioLogadoMB.excluir}" action="#{exameMB.excluir(medico)}" style="text-decoration: none;" update=":idFormConsultaExame:messages, @form">
+                                     <p:commandLink rendered="#{usuarioLogadoMB.excluir}" action="#{exameMB.excluir(exame)}" style="text-decoration: none;" update=":idFormConsultaExame:messages, @form">
                                         <div class="fa fa-trash-o"></div>
                                      </p:commandLink> 
                                 </h:column> 

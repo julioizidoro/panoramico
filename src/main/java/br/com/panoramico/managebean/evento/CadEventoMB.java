@@ -9,12 +9,14 @@ import br.com.panoramico.dao.AmbienteDao;
 import br.com.panoramico.dao.ClienteDao;
 import br.com.panoramico.dao.ContasReceberDao;
 import br.com.panoramico.dao.EventoDao;
+import br.com.panoramico.dao.PlanoContaDao;
 import br.com.panoramico.dao.TipoEventoDao;
 import br.com.panoramico.managebean.UsuarioLogadoMB;
 import br.com.panoramico.model.Ambiente;
 import br.com.panoramico.model.Cliente;
 import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.model.Evento;
+import br.com.panoramico.model.Planoconta;
 import br.com.panoramico.model.Tipoenvento;
 import br.com.panoramico.uil.Formatacao;
 import br.com.panoramico.uil.Mensagem;
@@ -46,6 +48,7 @@ public class CadEventoMB implements Serializable{
     private Ambiente ambiente;
     private Tipoenvento tipoevento;
     private Cliente cliente;
+    private Planoconta planoconta;
     private List<Ambiente> listaAmbiente;
     private List<Tipoenvento> listaTipoEvento;
     private List<Cliente> listaCliente;
@@ -59,6 +62,8 @@ public class CadEventoMB implements Serializable{
     private ClienteDao clienteDao;
     @EJB
     private ContasReceberDao contasReceberDao;
+    @EJB
+    private PlanoContaDao planoContaDao;
     
     
     @PostConstruct
@@ -175,6 +180,31 @@ public class CadEventoMB implements Serializable{
     public void setClienteDao(ClienteDao clienteDao) {
         this.clienteDao = clienteDao;
     }
+
+    public ContasReceberDao getContasReceberDao() {
+        return contasReceberDao;
+    }
+
+    public void setContasReceberDao(ContasReceberDao contasReceberDao) {
+        this.contasReceberDao = contasReceberDao;
+    }
+
+    public PlanoContaDao getPlanoContaDao() {
+        return planoContaDao;
+    }
+
+    public void setPlanoContaDao(PlanoContaDao planoContaDao) {
+        this.planoContaDao = planoContaDao;
+    }
+
+    public Planoconta getPlanoconta() {
+        return planoconta;
+    }
+
+    public void setPlanoconta(Planoconta planoconta) {
+        this.planoconta = planoconta;
+    }
+    
     
     
     public void gerarListaAmbiente(){
@@ -215,6 +245,8 @@ public class CadEventoMB implements Serializable{
             contasreceber.setValorconta(evento.getValor());
             contasreceber.setUsuario(usuarioLogadoMB.getUsuario());
             contasreceber.setNumerodocumento(""+evento.getIdevento());
+            planoconta = planoContaDao.find(4);
+            contasreceber.setPlanoconta(planoconta);
             contasReceberDao.update(contasreceber);
             RequestContext.getCurrentInstance().closeDialog(evento);
         }else{
