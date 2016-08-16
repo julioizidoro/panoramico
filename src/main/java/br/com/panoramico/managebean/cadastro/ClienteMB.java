@@ -83,7 +83,7 @@ public class ClienteMB implements Serializable{
         return "";
     }
     
-    
+      
     public void retornoDialogNovo(SelectEvent event){
         Cliente cliente = (Cliente) event.getObject();
         if (cliente.getIdcliente() != null) {

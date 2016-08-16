@@ -44,15 +44,12 @@ public class CadDependenteMB implements Serializable{
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         dependente = (Dependente) session.getAttribute("dependente");
         session.removeAttribute("dependente");
-        gerarListaAssociado();
         if (dependente == null) {
             dependente = new Dependente();
-            if (associado == null) {
-                associado = new Associado();
-            }
         }else{
             associado = dependente.getAssociado();
         }
+        gerarListaAssociado();
     }
     
     public AssociadoDao getAssociadoDao() {
@@ -97,8 +94,6 @@ public class CadDependenteMB implements Serializable{
     
     
     public void salvar(){
-        Integer numeroAssociadoProvisorio = 1;
-        associado = associadoDao.find(numeroAssociadoProvisorio);
         dependente.setAssociado(associado);
         dependente = dependenteDao.update(dependente);
         RequestContext.getCurrentInstance().closeDialog(dependente);
@@ -112,6 +107,7 @@ public class CadDependenteMB implements Serializable{
     }
     
     public void cancelar(){
-        RequestContext.getCurrentInstance().closeDialog(dependente);
+        associado = associadoDao.find(1);
+        RequestContext.getCurrentInstance().closeDialog(new Dependente());
     }
 }

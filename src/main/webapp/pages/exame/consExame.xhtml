@@ -13,17 +13,14 @@
 
                     <!-- TABELA CADASTROS -->
                             <div class="col-6 titTela" style="margin-left:-15%;">Consulta Exames</div>
-                            <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" action="#{exameMB.novoCadastroExame()}">
+                            <p:commandLink rendered="false" action="#{exameMB.novoCadastroExame()}">
                                 <div class="icoAdd fa fa-plus-square-o"></div>
                                 <p:ajax event="dialogReturn" update="messages, idConsultaExame" listener="#{exameMB.retornoDialogNovo}"/>
                             </p:commandLink>
                             <h:dataTable id="idConsultaExame" styleClass="table" value="#{exameMB.listaExames}" var="exame">
                                 <h:column>
-                                    <f:facet name="header">Data</f:facet> 
-                                    <h:outputText value="#{exame.data}" styleClass="alinhamento" style="float: left;">
-                                        <f:convertDateTime pattern="dd/MM/yyyy"
-                                                                    timeZone="America/Sao_Paulo" />
-                                    </h:outputText>
+                                    <f:facet name="header">Nome</f:facet> 
+                                    <h:outputText value="#{exameMB.pegarValores(exame)}" styleClass="alinhamento" style="float: left;"/>
                                 </h:column>
                                 <h:column >  
                                     <f:facet name="header">Diagnostico</f:facet> 
@@ -41,8 +38,8 @@
                                     <h:outputText value="#{exame.situacao}" styleClass="alinhamento" style="float: left;" />
                                 </h:column>
                                  <h:column>
-                                     <p:commandLink rendered="#{usuarioLogadoMB.editar}" action="#{exameMB.editar(exame)}">
-                                        <div class="fa fa-pencil-square-o">
+                                     <p:commandLink rendered="#{usuarioLogadoMB.editar}" title="diagnóstico" action="#{exameMB.editar(exame)}">
+                                        <div class="fa fa-user-md">
                                         </div>
                                          <p:ajax event="dialogReturn" listener="#{exameMB.retornoDialogAlteracao}" update=":idFormConsultaExame:messages, @form"/>
                                      </p:commandLink>

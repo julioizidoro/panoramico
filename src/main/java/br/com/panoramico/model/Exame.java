@@ -48,6 +48,12 @@ public class Exame implements Serializable {
     @Column(name = "datavalidade")
     @Temporal(TemporalType.DATE)
     private Date datavalidade;
+    @Column(name = "valor")
+    private Float valor;
+    @Column(name = "desconto")
+    private Float desconto;
+    @Column(name = "formapagamento")
+    private String formapagamento;
     @JoinColumn(name = "medico_idmedico", referencedColumnName = "idmedico")
     @ManyToOne(optional = false)
     private Medico medico;
@@ -98,6 +104,32 @@ public class Exame implements Serializable {
     public void setDatavalidade(Date datavalidade) {
         this.datavalidade = datavalidade;
     }
+
+    public Float getValor() {
+        return valor;
+    }
+
+    public void setValor(Float valor) {
+        this.valor = valor;
+    }
+
+    public Float getDesconto() {
+        return desconto;
+    }
+
+    public void setDesconto(Float desconto) {
+        this.desconto = desconto;
+    }
+
+    public String getFormapagamento() {
+        return formapagamento;
+    }
+
+    public void setFormapagamento(String formapagamento) {
+        this.formapagamento = formapagamento;
+    }
+    
+    
 
     public Medico getMedico() {
         return medico;

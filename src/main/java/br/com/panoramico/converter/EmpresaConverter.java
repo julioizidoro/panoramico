@@ -24,7 +24,7 @@ public class EmpresaConverter implements Converter {
 		List<Empresa> listaEmpresa = (List<Empresa>) arg1.getAttributes().get("listaEmpresa");
 	    if (listaEmpresa != null) {
 	        for (Empresa empresa : listaEmpresa) {
-	            if (empresa.getRazao().equalsIgnoreCase(arg2)) {
+	            if (empresa.getRazaosocial().equalsIgnoreCase(arg2)) {
 	                return empresa;
 	            }
 	        }
@@ -41,7 +41,7 @@ public class EmpresaConverter implements Converter {
 	        return "Selecione";
 	    } else {
 	        Empresa empresa = (Empresa) arg2;
-	        return empresa.getRazao();
+	        return empresa.getRazaosocial();
 	    }
 	}
 }

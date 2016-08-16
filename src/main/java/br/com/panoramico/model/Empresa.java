@@ -14,6 +14,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
@@ -32,10 +34,39 @@ public class Empresa implements Serializable {
     @Column(name = "idempresa")
     private Integer idempresa;
     @Size(max = 45)
-    @Column(name = "razao")
-    private String razao;
+    @Column(name = "razaosocial")
+    private String razaosocial;
+    @Column(name = "nomefantasia")
+    private String nomefantasia;
+    @Column(name = "tipologradouro")
+    private String tipologradouro;
+    @Column(name = "logradouro")
+    private String logradouro;
+    @Column(name = "complemento")
+    private String complemento;
+    @Column(name = "bairro")
+    private String bairro;
+    @Column(name = "cidade")
+    private String cidade;
+    @Column(name = "estado")
+    private String estado;
+    @Column(name = "cnpj")
+    private String cnpj;
+    @Column(name = "pessoacontato")
+    private String pessoacontato;
+    @Column(name = "email")
+    private String email;
+    @Column(name = "cep")
+    private String cep;
+    @Column(name = "numero")
+    private String numero;
+    @Column(name = "valormensalidade")
+    private Float valormensalidade;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empresa")
     private List<Associadoempresa> associadoempresaList;
+    @JoinColumn(name = "plano_idplano", referencedColumnName = "idplano")
+    @ManyToOne(optional = false)
+    private Plano plano;
 
     public Empresa() {
     }
@@ -52,13 +83,127 @@ public class Empresa implements Serializable {
         this.idempresa = idempresa;
     }
 
-    public String getRazao() {
-        return razao;
+    public String getRazaosocial() {
+        return razaosocial;
     }
 
-    public void setRazao(String razao) {
-        this.razao = razao;
+    public void setRazaosocial(String razaosocial) {
+        this.razaosocial = razaosocial;
     }
+
+    public String getNomefantasia() {
+        return nomefantasia;
+    }
+
+    public void setNomefantasia(String nomefantasia) {
+        this.nomefantasia = nomefantasia;
+    }
+
+    public String getTipologradouro() {
+        return tipologradouro;
+    }
+
+    public void setTipologradouro(String tipologradouro) {
+        this.tipologradouro = tipologradouro;
+    }
+
+    public String getLogradouro() {
+        return logradouro;
+    }
+
+    public void setLogradouro(String logradouro) {
+        this.logradouro = logradouro;
+    }
+
+    public String getComplemento() {
+        return complemento;
+    }
+
+    public void setComplemento(String complemento) {
+        this.complemento = complemento;
+    }
+
+    public String getBairro() {
+        return bairro;
+    }
+
+    public void setBairro(String bairro) {
+        this.bairro = bairro;
+    }
+
+    public String getCidade() {
+        return cidade;
+    }
+
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public String getCnpj() {
+        return cnpj;
+    }
+
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
+    }
+
+    public String getPessoacontato() {
+        return pessoacontato;
+    }
+
+    public void setPessoacontato(String pessoacontato) {
+        this.pessoacontato = pessoacontato;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getCep() {
+        return cep;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
+    }
+
+    public String getNumero() {
+        return numero;
+    }
+
+    public void setNumero(String numero) {
+        this.numero = numero;
+    }
+
+    public Float getValormensalidade() {
+        return valormensalidade;
+    }
+
+    public void setValormensalidade(Float valormensalidade) {
+        this.valormensalidade = valormensalidade;
+    }
+
+    public Plano getPlano() {
+        return plano;
+    }
+
+    public void setPlano(Plano plano) {
+        this.plano = plano;
+    }
+
+    
 
     public List<Associadoempresa> getAssociadoempresaList() {
         return associadoempresaList;

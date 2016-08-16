@@ -28,25 +28,26 @@ import org.primefaces.event.SelectEvent;
 
 @Named
 @ViewScoped
-public class ExameMB implements Serializable{
+public class SolicitacaoExameMB implements Serializable{
     
     private Exame exame;
-    private List<Exame> listaExames;
+    private List<Exame> listaSolicitacao;
     @EJB
     private ExameDao exameDao;
     private Exameassociado exameassociado;
     private Examedependente examedependente;
     @EJB
-    private ExameAssociadoDao exameAssociadoDao;
-    @EJB
     private ExameDependenteDao exameDependenteDao;
+    @EJB
+    private ExameAssociadoDao exameAssociadoDao;
     
     
     @PostConstruct
     public void init(){
-        gerarListaExame();
+        gerarListaSolicitacoes();
     }
 
+    
     public Exame getExame() {
         return exame;
     }
@@ -55,14 +56,15 @@ public class ExameMB implements Serializable{
         this.exame = exame;
     }
 
-    public List<Exame> getListaExames() {
-        return listaExames;
+    public List<Exame> getListaSolicitacao() {
+        return listaSolicitacao;
     }
 
-    public void setListaExames(List<Exame> listaExames) {
-        this.listaExames = listaExames;
+    public void setListaSolicitacao(List<Exame> listaSolicitacao) {
+        this.listaSolicitacao = listaSolicitacao;
     }
 
+    
     public ExameDao getExameDao() {
         return exameDao;
     }
@@ -87,14 +89,6 @@ public class ExameMB implements Serializable{
         this.examedependente = examedependente;
     }
 
-    public ExameAssociadoDao getExameAssociadoDao() {
-        return exameAssociadoDao;
-    }
-
-    public void setExameAssociadoDao(ExameAssociadoDao exameAssociadoDao) {
-        this.exameAssociadoDao = exameAssociadoDao;
-    }
-
     public ExameDependenteDao getExameDependenteDao() {
         return exameDependenteDao;
     }
@@ -102,30 +96,38 @@ public class ExameMB implements Serializable{
     public void setExameDependenteDao(ExameDependenteDao exameDependenteDao) {
         this.exameDependenteDao = exameDependenteDao;
     }
-    
-    
-    
-    public void gerarListaExame(){
-        listaExames = exameDao.list("Select e from Exame e");
-        if (listaExames == null) {
-            listaExames = new ArrayList<Exame>();
-        }
+
+    public ExameAssociadoDao getExameAssociadoDao() {
+        return exameAssociadoDao;
+    }
+
+    public void setExameAssociadoDao(ExameAssociadoDao exameAssociadoDao) {
+        this.exameAssociadoDao = exameAssociadoDao;
     }
     
     
-     public String novoCadastroExame() {
+    
+    public void gerarListaSolicitacoes(){
+        listaSolicitacao = exameDao.list("Select e from Exame e");
+        if (listaSolicitacao == null || listaSolicitacao.isEmpty()) {
+            listaSolicitacao = new ArrayList<Exame>();
+        }
+    }  
+     
+    
+    public String novaSolicitacaoExame() {
         Map<String, Object> options = new HashMap<String, Object>();
         options.put("contentWidth", 545);
-        RequestContext.getCurrentInstance().openDialog("cadExame", options, null);
+        RequestContext.getCurrentInstance().openDialog("cadSolicitacaoExame", options, null);
         return "";
     }
     
     public void retornoDialogNovo(SelectEvent event){
         Exame exame = (Exame) event.getObject();
         if (exame.getIdexame()!= null) {
-            Mensagem.lancarMensagemInfo("Salvou", "Cadastro de exame realizado com sucesso");
+            Mensagem.lancarMensagemInfo("Salvou", "Solicitação de exame realizado com sucesso");
         }
-        gerarListaExame();
+        gerarListaSolicitacoes();
     }
     
     public void retornoDialogAlteracao(SelectEvent event){
@@ -133,22 +135,10 @@ public class ExameMB implements Serializable{
         if (exame.getIdexame()!= null) {
             Mensagem.lancarMensagemInfo("Salvou", "Alteração de exame realizado com sucesso");
         }
-        gerarListaExame();
+        gerarListaSolicitacoes();
     }
     
-    
-    public void editar(Exame exame){
-        if (exame != null) {
-            Map<String, Object> options = new HashMap<String, Object>();
-            FacesContext fc = FacesContext.getCurrentInstance();
-            HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
-            session.setAttribute("exame", exame);
-            options.put("contentWidth", 545);
-            RequestContext.getCurrentInstance().openDialog("cadExame", options, null);
-        }
-    }
-    
-    public void excluir(Exame exame){
+      public void excluir(Exame exame){
         List<Exameassociado> listaExameAssociado = exameAssociadoDao.list("Select ea from Exameassociado ea where ea.exame.idexame=" + exame.getIdexame());
         List<Examedependente> listaExameDependente  = exameDependenteDao.list("Select ed from Examedependente ed where ed.exame.idexame=" + exame.getIdexame());
         if (listaExameAssociado == null || listaExameAssociado.isEmpty()) {
@@ -162,24 +152,17 @@ public class ExameMB implements Serializable{
         }
         exameDao.remove(exame.getIdexame());
         Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
-        gerarListaExame();
+        gerarListaSolicitacoes();
     }
-    
-    
-     public String pegarValores(Exame exame){
-        List<Exameassociado> listaExameAssociado = exameAssociadoDao.list("Select ea from Exameassociado ea where ea.exame.idexame=" + exame.getIdexame());
-        List<Examedependente> listaExameDependente  = exameDependenteDao.list("Select ed from Examedependente ed where ed.exame.idexame=" + exame.getIdexame());
-        if (listaExameAssociado == null || listaExameAssociado.isEmpty()) {
-            for (int i = 0; i < listaExameDependente.size(); i++) {
-                examedependente = listaExameDependente.get(i);
-                return examedependente.getDependente().getNome();
-            }
-        }else{
-            for (int i = 0; i < listaExameAssociado.size(); i++) {
-                exameassociado = listaExameAssociado.get(i);
-                return exameassociado.getAssociado().getCliente().getNome();
-            }
+     
+     public void editar(Exame exame){
+        if (exame != null) {
+            Map<String, Object> options = new HashMap<String, Object>();
+            FacesContext fc = FacesContext.getCurrentInstance();
+            HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+            session.setAttribute("exame", exame);
+            options.put("contentWidth", 545);
+            RequestContext.getCurrentInstance().openDialog("cadSolicitacaoExame", options, null);
         }
-        return "";
     }
 }

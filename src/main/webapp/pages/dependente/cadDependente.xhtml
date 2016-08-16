@@ -22,24 +22,32 @@
             <title>Cadastro de Dependente</title>
             <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
             
-            <p:outputLabel class="titTela" value="Nome" style="font-size: 12px;text-align: left;margin-left:2%;"/>
-            <p:outputLabel class="titTela" value="Telefone" style="font-size: 12px;text-align: left;margin-left:37%;"/> 
-            <p:outputLabel class="titTela" value="Data de Nascimento" style="font-size: 12px;text-align: left;margin-left:21%;"/>
-            <br/> 
-            <p:inputText class="form-control" value="#{cadDependenteMB.dependente.nome}" size="30" style="margin-left:2%;font-size: 12px;"/>
-            <p:inputMask class="form-control" mask="(99)99999999" value="#{cadDependenteMB.dependente.telefone}" style="margin-left:4%;font-size: 12px;"/>    
-            <p:inputMask mask="99/99/9999" size="15" class="form-control" value="#{cadDependenteMB.dependente.datanascimento}" style="margin-left:4%;font-size: 12px;">
-                <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
-            </p:inputMask>
-            <br/><br/>
-            
-            
+            <p:outputLabel class="titTela" value="Associado" style="font-size: 12px;text-align: left;margin-left:2%;"/>
+            <p:outputLabel class="titTela" value="Nome" style="font-size: 12px;text-align: left;margin-left:46%;"/>
+            <br/>
+            <h:panelGrid columns="2">
+                <p:selectOneMenu  class="form-control"  id="associadoDependente2"  style="width: 255px;margin-left: 2%;font-size: 12px;"  value="#{cadDependenteMB.associado}" converter="AssociadoConverter"
+                                 filter="true" filterMatchMode="contains" panelStyle="width:180px" >
+                    <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
+                    <f:selectItems  value="#{cadDependenteMB.listaAssociado}" var="associadoselecionado" itemLabel="#{associadoselecionado.cliente.nome}" itemValue="#{associadoselecionado}"/>
+                    <f:attribute name="listaAssociado" value="#{cadDependenteMB.listaAssociado}"/>
+                </p:selectOneMenu>
+                <p:inputText class="form-control" value="#{cadDependenteMB.dependente.nome}" size="30" style="margin-left:7%;font-size: 12px;"/>
+            </h:panelGrid>  
+            <br/>
             <p:outputLabel class="titTela" value="E-mail" style="font-size: 12px;text-align: left;margin-left:2%;"/> 
-            <p:outputLabel value="Cep" class="titTela" style="font-size: 12px;text-align: left;margin-left:36%;"/> 
+            <p:outputLabel value="Cep" class="titTela" style="font-size: 12px;text-align: left;margin-left:36%;"/>
+            <p:outputLabel class="titTela" value="Telefone" style="font-size: 12px;text-align: left;margin-left:21%;"/>
             <br/> 
             <p:inputText class="form-control" value="#{cadDependenteMB.dependente.email}" size="30" style="margin-left:2%;font-size: 12px;"/>
             <p:inputMask class="form-control" mask="99999-999" size="15" value="#{cadDependenteMB.dependente.cep}" style="margin-left:4%;font-size: 12px;"/>    
-            
+            <p:inputMask class="form-control" mask="(99)99999999" value="#{cadDependenteMB.dependente.telefone}" style="margin-left:4%;font-size: 12px;"/>    
+            <br/><br/>
+            <p:outputLabel class="titTela" value="Data de Nascimento" style="font-size: 12px;text-align: left;margin-left:2%;"/>
+            <br/>
+            <p:inputMask mask="99/99/9999" size="15" class="form-control" value="#{cadDependenteMB.dependente.datanascimento}" style="margin-left:2%;font-size: 12px;">
+                <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+            </p:inputMask>
             <br/>
             <hr/>
             <br/>

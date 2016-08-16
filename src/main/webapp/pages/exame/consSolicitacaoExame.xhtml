@@ -1,0 +1,53 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/pages/templates/default.xhtml">
+        <ui:define name="corpo">
+            <br/> 
+            <div class="col-10 boxAzulClaro" style="margin-left:8.5%;width: 83.2%;">   
+                <br/> 
+                <h:form id="idFormConsultaSolicitacaoExame" style="margin-left:10%;width: 78%;">
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:10%;width: 80%;"/>
+
+                    <!-- TABELA CADASTROS -->
+                            <div class="col-6 titTela" style="margin-left:-7%;">Consulta Solicitação de Exame</div>
+                            <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" action="#{solicitacaoExameMB.novaSolicitacaoExame()}">
+                                <div class="icoAdd fa fa-plus-square-o"></div>
+                                <p:ajax event="dialogReturn" update="messages, idConsultaSolicitacaoExame" listener="#{solicitacaoExameMB.retornoDialogNovo}"/>
+                            </p:commandLink>
+                            <h:dataTable id="idConsultaSolicitacaoExame" styleClass="table" value="#{solicitacaoExameMB.listaSolicitacao}" var="exame">
+                                <h:column>
+                                    <f:facet name="header">Medico</f:facet> 
+                                    <h:outputText value="#{exame.medico.nome}" styleClass="alinhamento" style="float: left;"/>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">Valor</f:facet> 
+                                    <h:outputText value="#{exame.valor}" styleClass="alinhamento" style="float: right;">
+                                        <f:convertNumber pattern="##,###,###,###.##" minFractionDigits="2" />
+                                    </h:outputText>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">Forma Pagamento</f:facet> 
+                                    <h:outputText value="#{exame.formapagamento}" styleClass="alinhamento" style="float: left;" />
+                                </h:column>
+                                 <h:column>
+                                     <p:commandLink rendered="#{usuarioLogadoMB.editar}" action="#{solicitacaoExameMB.editar(exame)}">
+                                        <div class="fa fa-pencil-square-o">
+                                        </div>
+                                         <p:ajax event="dialogReturn" listener="#{solicitacaoExameMB.retornoDialogAlteracao}" update=":idFormConsultaSolicitacaoExame:messages, @form"/>
+                                     </p:commandLink>
+                                     <p:commandLink rendered="#{usuarioLogadoMB.excluir}" action="#{solicitacaoExameMB.excluir(exame)}" style="text-decoration: none;" update=":idFormConsultaSolicitacaoExame:messages, @form">
+                                        <div class="fa fa-trash-o"></div>
+                                     </p:commandLink> 
+                                </h:column> 
+
+
+                            </h:dataTable>
+
+                </h:form>
+             </div>
+        </ui:define>
+    </ui:composition>
+</html>
