@@ -193,6 +193,16 @@ public class Associado implements Serializable {
     public void setAssociadoempresaList(List<Associadoempresa> associadoempresaList) {
         this.associadoempresaList = associadoempresaList;
     }
+    
+    
+    public List<Exameassociado> getExameassociadoList() {
+        return exameassociadoList;
+    }
+
+    public void setExameassociadoList(List<Exameassociado> exameassociadoList) {
+        this.exameassociadoList = exameassociadoList;
+    }
+    
 
     @Override
     public int hashCode() {
@@ -219,12 +229,4 @@ public class Associado implements Serializable {
         return "br.com.panoramico.model.Associado[ idassociado=" + idassociado + " ]";
     }
 
-    public List<Exameassociado> getExameassociadoList() {
-        return exameassociadoList;
-    }
-
-    public void setExameassociadoList(List<Exameassociado> exameassociadoList) {
-        this.exameassociadoList = exameassociadoList;
-    }
-    
 }

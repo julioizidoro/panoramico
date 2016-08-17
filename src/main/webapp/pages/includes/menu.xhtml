@@ -1,85 +1,98 @@
- <h:form xmlns="http://www.w3.org/1999/xhtml"
+<h:form xmlns="http://www.w3.org/1999/xhtml"
         xmlns:h="http://xmlns.jcp.org/jsf/html"
         xmlns:p="http://primefaces.org/ui"
         xmlns:ui="http://java.sun.com/jsf/facelets"
-        xmlns:f="http://xmlns.jcp.org/jsf/core">   
-            <p:growl id="messages"/>
+        xmlns:f="http://xmlns.jcp.org/jsf/core">    
 
-            <div class="wrapper" style="z-index: 9999;">  <!-- DIV CONTENT -->
-		<div class="col-10 boxAzulClaro">
-			<div class="col-12"> <!-- DIV MENU SUPERIOR -->
-                            
-                            <h:link outcome="/incial.xhtml">
-                                <div class="wrapper">
-                                    <img class="logo" src="../../resources/img/logo.png" />
+    <div class="wrapper" style="z-index: 9999;">  <!-- DIV CONTENT -->
+        <div class="col-10 boxAzulClaro">
+            <div class="col-12"> <!-- DIV MENU SUPERIOR -->
+
+                <h:link outcome="/incial.xhtml">
+                    <div class="wrapper">
+                        <img class="logo" src="../../resources/img/logo.png" />
+                    </div>
+                    <br/>
+                </h:link>
+                <ul class="nav-notification clearfix" style="text-decoration: none;margin-right:2%;float:right;margin-top:-7%;">
+                    <li class="dropdown">
+                        <p:commandLink action="#{menuMB.adicionarNotificacao()}" class="dropdown-toggle" style="text-decoration: none;">
+                            <i class="fa fa-plus fa-lg"></i>
+                            <p:ajax event="dialogReturn" listener="#{menuMB.retornoDialogAddNotificacao}"/>
+                        </p:commandLink>
+                        <p:commandLink action="#{menuMB.notificacoes()}" class="dropdown-toggle" style="text-decoration: none;">
+                            <i class="fa fa-envelope fa-lg"></i>
+                            <span style="font-size: 10px;" class="notification-label bounceIn animation-delay4">
+                                #{menuMB.gerarNumeroNotificacoes()}
+                            </span>
+                        </p:commandLink>
+                    </li>
+                </ul>
+                <p style="margin-right: 2%;margin-top: -5%;font-size: 14px; float: right; " class="titTela">
+                    Bem vindo #{usuarioLogadoMB.usuario.nome}
+                </p>
+                <!-- MENU -->
+                <nav id="menu" class="wrapper">
+                    <ul>
+                        <li> 
+                            <div class="dropdown"  style="float: left;z-index: 9999;">
+                                Pessoas <div class="fa fa-sort-desc"></div>
+                                <div class="dropdown-content">
+                                    <p><h:link outcome="/pages/usuario/consUsuario.xhtml" value="Usuário"></h:link></p>
+                                    <p><h:link outcome="/pages/associado/consAssociado.xhtml" value="Associado"></h:link></p>
+                                    <p><h:link outcome="/pages/dependente/consDependente.xhtml" value="Dependente"></h:link></p>
+                                    <p><h:link outcome="/pages/perfil/consPerfil.xhtml" value="Perfil"></h:link></p>
+                                    <p><h:link outcome="/pages/cliente/consCliente.xhtml" value="Cliente"></h:link></p>
+                                    <p><h:link outcome="/pages/medico/consMedico.xhtml" value="Medico"></h:link></p>
                                 </div>
-                                <br/>
-                            </h:link>
-                            <p style="margin-right: 2%;margin-top: -5%;font-size: 14px; float: right; " class="titTela">
-                                Bem vindo #{usuarioLogadoMB.usuario.nome}
-                            </p>
-				<!-- MENU -->
-                                <nav id="menu" class="wrapper">
-					<ul>
-						<li> 
-                                                    <div class="dropdown"  style="float: left;z-index: 9999;">
-								Pessoas <div class="fa fa-sort-desc"></div>
-									<div class="dropdown-content">
-                                                                            <p><h:link outcome="/pages/usuario/consUsuario.xhtml" value="Usuário"></h:link></p>
-                                                                            <p><h:link outcome="/pages/associado/consAssociado.xhtml" value="Associado"></h:link></p>
-                                                                            <p><h:link outcome="/pages/dependente/consDependente.xhtml" value="Dependente"></h:link></p>
-                                                                            <p><h:link outcome="/pages/perfil/consPerfil.xhtml" value="Perfil"></h:link></p>
-                                                                            <p><h:link outcome="/pages/cliente/consCliente.xhtml" value="Cliente"></h:link></p>
-                                                                            <p><h:link outcome="/pages/medico/consMedico.xhtml" value="Medico"></h:link></p>
-                                                                        </div>
-							</div> 
-						</li>
-						<li>  
-							<div class="dropdown"  style="float: left;z-index: 9999;">
-								Ambientes | Planos <div class="fa fa-sort-desc"></div>
-									<div class="dropdown-content">
-                                                                            <p><h:link outcome="/pages/ambiente/consAmbiente.xhtml" value="Ambiente"></h:link></p>
-                                                                            <p><h:link outcome="/pages/empresa/consEmpresa.xhtml" value="Empresa"></h:link></p>
-                                                                            <p><h:link outcome="/pages/plano/consPlano.xhtml" value="Plano"></h:link></p>
-                                                                            <p><h:link outcome="/pages/tipoevento/consTipoEvento.xhtml" value="Tipo Evento"></h:link></p>
-                                                                            <p><h:link outcome="/pages/proprietario/consProprietario.xhtml" value="Proprietário"></h:link></p>
-                                                                            <p><h:link outcome="/pages/planoconta/consPlanosContas.xhtml" value="Plano de Contas"></h:link></p>
-                                                                        </div>
-							</div> 
-						</li>
-                                                <li> 
-							<div class="dropdown" style="float: left;z-index: 9999;">
-								Eventos <div class="fa fa-sort-desc"></div>
-									<div class="dropdown-content">
-                                                                            <p><h:link outcome="/pages/eventos/consEventos.xhtml" value="Eventos"></h:link></p>
-                                                                        </div>
-							</div> 
-						</li>
-                                                <li> 
-							<div class="dropdown" style="float: left;z-index: 9999;">
-								Financeiro <div class="fa fa-sort-desc"></div>
-									<div class="dropdown-content">
-                                                                            <p><h:link outcome="/pages/contasreceber/consContasReceber.xhtml" value="Contas a Receber"></h:link></p>
-                                                                            <p><h:link outcome="/pages/contaspagar/consContasPagar.xhtml" value="Contas a Pagar"></h:link></p>
-                                                                        </div>
-							</div> 
-						</li>
-                                                <li> 
-							<div class="dropdown" style="float: left;z-index: 9999;">
-								Exame Medico <div class="fa fa-sort-desc"></div>
-									<div class="dropdown-content">
-                                                                            <p><h:link  outcome="/pages/exame/consExame.xhtml" value="Exames"></h:link></p>
-                                                                            <p><h:link  outcome="/pages/exame/consSolicitacaoExame.xhtml" value="Solicitações de Exame"></h:link></p>
-                                                                        </div>
-							</div> 
-						</li>
-                                            <p:commandLink style="float: right; text-decoration: none; color: white; margin-top:1%;" action="#{usuarioLogadoMB.deslogar()}">
-                                                <li class="menuSair">Sair</li>
-                                            </p:commandLink>
-					</ul>
-				</nav>
-                       
-			</div> <!-- FIM MENU -->
-                         </div>
-            </div>
-        </h:form>
+                            </div> 
+                        </li>
+                        <li>  
+                            <div class="dropdown"  style="float: left;z-index: 9999;">
+                                Ambientes | Planos <div class="fa fa-sort-desc"></div>
+                                <div class="dropdown-content">
+                                    <p><h:link outcome="/pages/ambiente/consAmbiente.xhtml" value="Ambiente"></h:link></p>
+                                    <p><h:link outcome="/pages/empresa/consEmpresa.xhtml" value="Empresa"></h:link></p>
+                                    <p><h:link outcome="/pages/plano/consPlano.xhtml" value="Plano"></h:link></p>
+                                    <p><h:link outcome="/pages/tipoevento/consTipoEvento.xhtml" value="Tipo Evento"></h:link></p>
+                                    <p><h:link outcome="/pages/proprietario/consProprietario.xhtml" value="Proprietário"></h:link></p>
+                                    <p><h:link outcome="/pages/planoconta/consPlanosContas.xhtml" value="Plano de Contas"></h:link></p>
+                                </div>
+                            </div> 
+                        </li>
+                        <li> 
+                            <div class="dropdown" style="float: left;z-index: 9999;">
+                                Eventos <div class="fa fa-sort-desc"></div>
+                                <div class="dropdown-content">
+                                    <p><h:link outcome="/pages/eventos/consEventos.xhtml" value="Eventos"></h:link></p>
+                                </div>
+                            </div> 
+                        </li>
+                        <li> 
+                            <div class="dropdown" style="float: left;z-index: 9999;">
+                                Financeiro <div class="fa fa-sort-desc"></div>
+                                <div class="dropdown-content">
+                                    <p><h:link outcome="/pages/contasreceber/consContasReceber.xhtml" value="Contas a Receber"></h:link></p>
+                                    <p><h:link outcome="/pages/contaspagar/consContasPagar.xhtml" value="Contas a Pagar"></h:link></p>
+                                </div>
+                            </div> 
+                        </li>
+                        <li> 
+                            <div class="dropdown" style="float: left;z-index: 9999;">
+                                Exame Medico <div class="fa fa-sort-desc"></div>
+                                <div class="dropdown-content">
+                                    <p><h:link  outcome="/pages/exame/consExame.xhtml" value="Exames"></h:link></p>
+                                    <p><h:link  outcome="/pages/exame/consSolicitacaoExame.xhtml" value="Solicitações de Exame"></h:link></p>
+                                </div>
+                            </div> 
+                        </li>
+                        <p:commandLink style="float: right; text-decoration: none; color: white; margin-top:1%;" action="#{usuarioLogadoMB.deslogar()}">
+                            <li class="menuSair">Sair</li>
+                        </p:commandLink>
+                    </ul>
+                </nav>
+
+            </div> <!-- FIM MENU -->
+        </div>
+    </div>
+</h:form>

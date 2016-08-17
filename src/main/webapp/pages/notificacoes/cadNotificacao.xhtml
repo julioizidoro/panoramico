@@ -1,0 +1,61 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+        <link href="../../resources/css/css.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" type="text/css" href="../../resources/fonts/font-awesome-4.6.3/css/font-awesome.min.css"/>
+        
+        <link type="text/javascript" href="../../resources/js/jquery-3.1.0.js"></link>
+        <link type="text/javascript" src="../../resources/js/modal.js"/> 
+        <link rel="stylesheet" type="text/css" href="../../resources/css/modal.css"/>
+	<link rel="stylesheet" type="text/css" href="../../resources/css/buttons.css"/>
+	<link rel="stylesheet" type="text/css" href="../../resources/css/textos.css"/>
+        <link rel="stylesheet" type="text/css" href="../../resources/css/css.css"/>
+    </h:head>
+     
+
+    <h:body style="background:#A3DAD9; border-color: #CF7000;" > 
+        <h:form id="idFormCadastroNotificacao" style="font-size: 12px; background-color:#A3DAD9">
+                
+            <title>Adicionar Notificação</title>
+                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                <p:outputLabel class="titTela" value="De" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
+                <p:outputLabel class="titTela" value="Para" style="font-size: 12px;text-align: left;margin-left: 42%;"/>
+                <br/>
+                <h:panelGrid columns="2">
+                    <p:inputText class="form-control" value="#{cadNotificacaoMB.usuarioEnviar.nome}" readonly="true" size="30" style="font-size:12px;margin-left:2%;float: left"/>
+                    <p:selectOneMenu class="form-control"  id="cliente"  style="width: 220px;margin-left: 8%;font-size: 12px;"  value="#{cadNotificacaoMB.usuario}" converter="UsuarioConverter"
+                                 filter="true" filterMatchMode="contains" panelStyle="width:180px" >
+                        <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
+                        <f:selectItems  value="#{cadNotificacaoMB.listaUsuarios}" var="usuarioselecionado" itemLabel="#{usuarioselecionado.nome}" itemValue="#{usuarioselecionado}"/>
+                        <f:attribute name="listaUsuarios" value="#{cadNotificacaoMB.listaUsuarios}"/>
+                    </p:selectOneMenu>
+                </h:panelGrid>
+                <p:outputLabel class="titTela" value="Assunto" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
+                <br/>
+                <p:inputTextarea class="form-control" value="#{cadNotificacaoMB.notificacao.assunto}"  style="width:94%;margin-left:2%;float: left"/>
+                <br/><br/><br/><br/>
+                <p:outputLabel class="titTela" value="Data" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
+                <p:outputLabel class="titTela" value="Horario" style="font-size: 12px;text-align: left;margin-left: 22%;"/>
+                <br/>
+                <p:inputMask mask="99/99/9999" size="15" class="form-control" value="#{cadNotificacaoMB.notificacao.data}" style="margin-left:2%;font-size: 12px;float: left;">
+                    <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+                </p:inputMask>
+                <p:inputText class="form-control" value="#{cadNotificacaoMB.notificacao.hora}" size="12" style="margin-left:4%;float: left;"/>
+                <br/><br/>
+                <hr style="color: #367587; background: #367587"/> 
+                <br/>  
+                <p:commandLink style="text-decoration: none;" actionListener="#{cadNotificacaoMB.salvar()}" ajax="false">
+                    <div style="font-size: 16px;margin-left: 32%;" class="cadastrar">Cadastrar</div>
+                </p:commandLink> 
+                <p:commandLink style="text-decoration: none;" action="#{cadNotificacaoMB.cancelar()}" ajax="false">
+                    <div style="font-size: 16px" class="cancelar">Cancelar</div>
+                </p:commandLink>
+        </h:form>  
+ </h:body>
+  
+</html>

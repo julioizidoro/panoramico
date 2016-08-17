@@ -8,12 +8,15 @@ package br.com.panoramico.managebean.exame;
 import br.com.panoramico.dao.ExameAssociadoDao;
 import br.com.panoramico.dao.ExameDao;
 import br.com.panoramico.dao.ExameDependenteDao;
+import br.com.panoramico.managebean.UsuarioLogadoMB;
 import br.com.panoramico.model.Exame;
 import br.com.panoramico.model.Exameassociado;
 import br.com.panoramico.model.Examedependente;
+import br.com.panoramico.uil.Formatacao;
 import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +24,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
@@ -40,7 +44,11 @@ public class ExameMB implements Serializable{
     private ExameAssociadoDao exameAssociadoDao;
     @EJB
     private ExameDependenteDao exameDependenteDao;
-    
+    private Date dataInicio;
+    private Date dataFinal;
+    private String situacao;
+    @Inject
+    private UsuarioLogadoMB usuarioLogadoMB;
     
     @PostConstruct
     public void init(){
@@ -102,6 +110,38 @@ public class ExameMB implements Serializable{
     public void setExameDependenteDao(ExameDependenteDao exameDependenteDao) {
         this.exameDependenteDao = exameDependenteDao;
     }
+
+    public Date getDataInicio() {
+        return dataInicio;
+    }
+
+    public void setDataInicio(Date dataInicio) {
+        this.dataInicio = dataInicio;
+    }
+
+    public Date getDataFinal() {
+        return dataFinal;
+    }
+
+    public void setDataFinal(Date dataFinal) {
+        this.dataFinal = dataFinal;
+    }
+
+    public String getSituacao() {
+        return situacao;
+    }
+
+    public void setSituacao(String situacao) {
+        this.situacao = situacao;
+    }
+
+    public UsuarioLogadoMB getUsuarioLogadoMB() {
+        return usuarioLogadoMB;
+    }
+
+    public void setUsuarioLogadoMB(UsuarioLogadoMB usuarioLogadoMB) {
+        this.usuarioLogadoMB = usuarioLogadoMB;
+    }
     
     
     
@@ -138,13 +178,15 @@ public class ExameMB implements Serializable{
     
     
     public void editar(Exame exame){
-        if (exame != null) {
+        if (exame.getMedico().getIdusuario() == usuarioLogadoMB.getUsuario().getIdusuario()) {
             Map<String, Object> options = new HashMap<String, Object>();
             FacesContext fc = FacesContext.getCurrentInstance();
             HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
             session.setAttribute("exame", exame);
             options.put("contentWidth", 545);
             RequestContext.getCurrentInstance().openDialog("cadExame", options, null);
+        }else{
+            Mensagem.lancarMensagemInfo("", "Acesso Negado!!");
         }
     }
     
@@ -181,5 +223,34 @@ public class ExameMB implements Serializable{
             }
         }
         return "";
+    }
+     
+    
+    public void filtrar(){
+        String sql = "Select e from Exame e";
+        if (!situacao.equalsIgnoreCase("sn") || dataInicio != null || dataFinal != null) {
+            sql = sql + " where";
+        }
+        
+        if (!situacao.equalsIgnoreCase("sn")) {
+            sql = sql + " e.situacao='" + situacao + "'";
+            if (dataInicio != null && dataFinal != null) {
+                sql = sql + " and";
+            }
+        }
+        
+        if (dataInicio != null && dataFinal != null) {
+            sql = sql + " e.data>='" + Formatacao.ConvercaoDataSql(dataInicio) + "' and e.data<='" 
+                    + Formatacao.ConvercaoDataSql(dataFinal) + "'";
+        }
+        listaExames = exameDao.list(sql);
+        Mensagem.lancarMensagemInfo("", "Filtrado com sucesso");
+    }
+     
+    public void limparFiltro(){
+        situacao = "";
+        dataInicio = null;
+        dataFinal = null;
+        gerarListaExame();
     }
 }

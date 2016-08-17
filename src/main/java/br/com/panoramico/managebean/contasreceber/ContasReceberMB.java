@@ -190,7 +190,7 @@ public class ContasReceberMB implements Serializable{
             listaCliente = new ArrayList<Cliente>();
         }
     }
-    
+     
     public String novoCadastroContasReceber() {
         Map<String, Object> options = new HashMap<String, Object>();
         options.put("contentWidth", 580);

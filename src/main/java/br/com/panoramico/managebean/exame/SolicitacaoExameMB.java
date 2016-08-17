@@ -8,6 +8,7 @@ package br.com.panoramico.managebean.exame;
 import br.com.panoramico.dao.ExameAssociadoDao;
 import br.com.panoramico.dao.ExameDao;
 import br.com.panoramico.dao.ExameDependenteDao;
+import br.com.panoramico.managebean.UsuarioLogadoMB;
 import br.com.panoramico.model.Exame;
 import br.com.panoramico.model.Exameassociado;
 import br.com.panoramico.model.Examedependente;
@@ -21,6 +22,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
@@ -40,6 +42,8 @@ public class SolicitacaoExameMB implements Serializable{
     private ExameDependenteDao exameDependenteDao;
     @EJB
     private ExameAssociadoDao exameAssociadoDao;
+    @Inject
+    private UsuarioLogadoMB usuarioLogadoMB;
     
     
     @PostConstruct
@@ -113,12 +117,26 @@ public class SolicitacaoExameMB implements Serializable{
             listaSolicitacao = new ArrayList<Exame>();
         }
     }  
+
+    public UsuarioLogadoMB getUsuarioLogadoMB() {
+        return usuarioLogadoMB;
+    }
+
+    public void setUsuarioLogadoMB(UsuarioLogadoMB usuarioLogadoMB) {
+        this.usuarioLogadoMB = usuarioLogadoMB;
+    }
      
     
+    
     public String novaSolicitacaoExame() {
-        Map<String, Object> options = new HashMap<String, Object>();
-        options.put("contentWidth", 545);
-        RequestContext.getCurrentInstance().openDialog("cadSolicitacaoExame", options, null);
+        if (usuarioLogadoMB.getUsuario().getPerfil().getNome().equalsIgnoreCase("Administrativo")
+                || usuarioLogadoMB.getUsuario().getPerfil().getNome().equalsIgnoreCase("Gerencial")) {
+            Map<String, Object> options = new HashMap<String, Object>();
+            options.put("contentWidth", 545);
+            RequestContext.getCurrentInstance().openDialog("cadSolicitacaoExame", options, null);
+        }else{
+            Mensagem.lancarMensagemInfo("", "Acesso Negado!!");
+        }
         return "";
     }
     
@@ -156,13 +174,16 @@ public class SolicitacaoExameMB implements Serializable{
     }
      
      public void editar(Exame exame){
-        if (exame != null) {
+        if (usuarioLogadoMB.getUsuario().getPerfil().getNome().equalsIgnoreCase("Administrativo")
+                || usuarioLogadoMB.getUsuario().getPerfil().getNome().equalsIgnoreCase("Gerencial")) {
             Map<String, Object> options = new HashMap<String, Object>();
             FacesContext fc = FacesContext.getCurrentInstance();
             HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
             session.setAttribute("exame", exame);
             options.put("contentWidth", 545);
             RequestContext.getCurrentInstance().openDialog("cadSolicitacaoExame", options, null);
+        }else{
+            Mensagem.lancarMensagemInfo("", "Acesso Negado!!");
         }
     }
 }

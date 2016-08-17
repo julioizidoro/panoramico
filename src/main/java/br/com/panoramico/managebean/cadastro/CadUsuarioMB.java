@@ -100,15 +100,14 @@ public class CadUsuarioMB implements Serializable{
         this.listaPerfil = listaPerfil;
     }
     
-    public void gerarListaPerfil(){
+    public void gerarListaPerfil() {
         listaPerfil = perfilDao.list("Select p from Perfil p");
         if (listaPerfil == null) {
             listaPerfil = new ArrayList<Perfil>();
         }
     }
-    
-    
-    public String salvar(){
+
+    public String salvar() {
         List<Usuario> listaUsuario = usuarioDao.list("Select u from Usuario u where u.login='" + usuario.getLogin() + "'");
         if (listaUsuario == null || listaUsuario.isEmpty()) {
             usuario.setPerfil(perfil);
@@ -118,14 +117,23 @@ public class CadUsuarioMB implements Serializable{
                 Logger.getLogger(CadUsuarioMB.class.getName()).log(Level.SEVERE, null, ex);
             }
             usuario = usuarioDao.update(usuario);
-            RequestContext.getCurrentInstance().closeDialog(usuario);      
-        }else{
+            RequestContext.getCurrentInstance().closeDialog(usuario);
+        } else if (usuario.getIdusuario() != null) {
+            usuario.setPerfil(perfil);
+            try {
+                usuario.setSenha(Criptografia.encript(usuario.getSenha()));
+            } catch (NoSuchAlgorithmException ex) {
+                Logger.getLogger(CadUsuarioMB.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            usuario = usuarioDao.update(usuario);
+            RequestContext.getCurrentInstance().closeDialog(usuario);
+        } else {
             Mensagem.lancarMensagemInfo("Atenção", "este login ja tem uma conta existente!!");
         }
         return "";
-    } 
+    }
      
-    
+        
     public void cancelar(){
         perfil = perfilDao.find(1);
         RequestContext.getCurrentInstance().closeDialog(usuario);

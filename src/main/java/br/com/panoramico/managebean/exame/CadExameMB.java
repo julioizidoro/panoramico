@@ -152,17 +152,6 @@ public class CadExameMB implements Serializable{
         String mensagem = validarDados();
         if (mensagem.length() < 5) {
             exame = exameDao.update(exame);
- //           if (true) {
- //               examedependente = new Examedependente();
- //               examedependente.setDependente(new Dependente());
- //               examedependente.setExame(exame);
- //               exameDependenteDao.update(examedependente);
- //           }else{
- //               exameassociado = new Exameassociado();
- //               exameassociado.setAssociado(new Associado());
- //               exameassociado.setExame(exame);
- //               exameAssociadoDao.update(exameassociado);
- //           }
             RequestContext.getCurrentInstance().closeDialog(exame);
         }
     }

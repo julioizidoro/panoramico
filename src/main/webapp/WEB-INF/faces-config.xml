@@ -112,6 +112,24 @@
 			<redirect />
 		</navigation-case> 
     </navigation-rule>
+    
+    <navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>consNotificacao</from-outcome> 
+			<to-view-id>/pages/notificacoes/consNotificacao.xhtml</to-view-id>
+			<redirect />
+		</navigation-case> 
+    </navigation-rule>
+    
+    <navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>cadNotificacao</from-outcome> 
+			<to-view-id>/pages/notificacoes/cadNotificacao.xhtml</to-view-id>
+			<redirect />
+		</navigation-case> 
+    </navigation-rule>
 
      <application>
             <action-listener>
