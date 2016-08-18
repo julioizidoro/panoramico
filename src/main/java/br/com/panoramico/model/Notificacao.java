@@ -30,13 +30,11 @@ public class Notificacao implements Serializable{
     @Basic(optional = false)
     @Column(name = "idnotificacao")
     private Integer idnotificacao;
-    @Size(max = 30)
     @Column(name = "assunto")
     private String assunto;
-    @Size(max = 30)
+    @Size(max = 5)
     @Column(name = "hora")
     private String hora;
-    @Size(max = 30)
     @Column(name = "visto")
     private boolean visto;
     @JoinColumn(name = "usuario_envia", referencedColumnName = "idusuario")

@@ -28,10 +28,15 @@ public class MenuMB implements Serializable{
     private List<Notificacao> listaNotificacao;
     @EJB
     private NotificacaoDao notificacaoDao;
+    private boolean desabilitarNumeroMensagem;
+    private int numeroTotalNotificacao;
+    private String escolherCor = "";
 
     @PostConstruct
     public void init() {
         getUsuarioLogadoMB();
+        gerarNumeroNotificacoes();
+        habilitarMensagem();
     }
 
     public UsuarioLogadoMB getUsuarioLogadoMB() {
@@ -58,10 +63,36 @@ public class MenuMB implements Serializable{
         this.notificacaoDao = notificacaoDao;
     }
 
+    public boolean isDesabilitarNumeroMensagem() {
+        return desabilitarNumeroMensagem;
+    }
+
+    public void setDesabilitarNumeroMensagem(boolean desabilitarNumeroMensagem) {
+        this.desabilitarNumeroMensagem = desabilitarNumeroMensagem;
+    }
+
+    public int getNumeroTotalNotificacao() {
+        return numeroTotalNotificacao;
+    }
+
+    public void setNumeroTotalNotificacao(int numeroTotalNotificacao) {
+        this.numeroTotalNotificacao = numeroTotalNotificacao;
+    }
+
+    public String getEscolherCor() {
+        return escolherCor;
+    }
+
+    public void setEscolherCor(String escolherCor) {
+        this.escolherCor = escolherCor;
+    }
+
+    
     
     public void notificacoes(){
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put("contentWidth", 600);
+        options.put("contentWidth", 700);
+        options.put("closable", false);
         FacesContext fc = FacesContext.getCurrentInstance();
         RequestContext.getCurrentInstance().openDialog("consNotificacao", options, null);
     }  
@@ -69,6 +100,7 @@ public class MenuMB implements Serializable{
     public void adicionarNotificacao(){ 
         Map<String, Object> options = new HashMap<String, Object>();
         options.put("contentWidth", 520);
+        options.put("closable", false);
         RequestContext.getCurrentInstance().openDialog("cadNotificacao", options, null);
     }
     
@@ -80,10 +112,25 @@ public class MenuMB implements Serializable{
     }
     
     public Integer gerarNumeroNotificacoes(){
-        int numeroTotalNotificacao = 0;
+        numeroTotalNotificacao = 0;
         listaNotificacao = notificacaoDao.list("Select n from Notificacao n where n.usuariorecebe.idusuario=" + usuarioLogadoMB.getUsuario().getIdusuario()
                                     + " and n.visto=0");
         numeroTotalNotificacao = listaNotificacao.size();
         return numeroTotalNotificacao;
+    }
+    
+    public void habilitarMensagem(){
+        if (numeroTotalNotificacao > 0) {
+            desabilitarNumeroMensagem = true;
+            escolherCor = "color:#91D8F7";
+        }else{
+            desabilitarNumeroMensagem = false;
+            escolherCor = "";
+        }
+    }
+    
+    public void retornoDialogConsNotificacao(){
+        gerarNumeroNotificacoes();
+        habilitarMensagem();
     }
 }

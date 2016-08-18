@@ -250,7 +250,7 @@ public class UsuarioLogadoMB implements Serializable{
      public String deslogar(){
          Map<String, Object> sessionMap = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();  
          sessionMap.clear();  
-         return "index.jsf";
+         return "index";
      }
      
      public void verificarPerfilUsuario(Usuario usuario){
