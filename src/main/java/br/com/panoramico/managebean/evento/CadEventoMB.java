@@ -227,28 +227,37 @@ public class CadEventoMB implements Serializable{
     
     
     public void salvar(){
-        Contasreceber contasreceber = new Contasreceber();
         List<Evento> listaEventos = eventoDao.list("Select e from Evento e where e.ambiente.idambiente=" + ambiente.getIdambiente() 
-                + " and e.data='" + Formatacao.ConvercaoDataSql(evento.getData()) + "'");
+                + " and e.data='" + Formatacao.ConvercaoDataSql(evento.getData()) + "' and e.idevento<>" + evento.getIdevento());
         if (listaEventos == null | listaEventos.isEmpty()) {
             evento.setAmbiente(ambiente);
             evento.setCliente(cliente);
             evento.setTipoenvento(tipoevento);
             evento.setUsuario(usuarioLogadoMB.getUsuario());
-            evento = eventoDao.update(evento);
-            contasreceber.setCliente(cliente);
-            contasreceber.setDatalancamento(new Date());
-            contasreceber.setNumeroparcela("1/1");
-            contasreceber.setValorconta(evento.getValor());
-            contasreceber.setUsuario(usuarioLogadoMB.getUsuario());
-            contasreceber.setNumerodocumento(""+evento.getIdevento());
-            planoconta = planoContaDao.find(4);
-            contasreceber.setPlanoconta(planoconta);
-            contasReceberDao.update(contasreceber);
+            if (evento.getIdevento() == null) {
+                evento = eventoDao.update(evento);
+                lancarContasReceber();
+            }else{
+                evento = eventoDao.update(evento);
+            }
             RequestContext.getCurrentInstance().closeDialog(evento);
         }else{
             Mensagem.lancarMensagemInfo("Atenção", " esse ambiente ja tem um evento neste dia");
         }
+    }
+    
+    public void lancarContasReceber() {
+        Contasreceber contasreceber = new Contasreceber();
+        contasreceber.setDatalancamento(new Date());
+        contasreceber.setCliente(cliente);
+        contasreceber.setNumeroparcela("1");
+        contasreceber.setValorconta(evento.getValor());
+        contasreceber.setUsuario(usuarioLogadoMB.getUsuario());
+        contasreceber.setEnviado(false);
+        contasreceber.setSituacao("PAGAR");
+        planoconta = planoContaDao.find(4);
+        contasreceber.setPlanoconta(planoconta);
+        contasReceberDao.update(contasreceber);
     }
     
     public void cancelar(){

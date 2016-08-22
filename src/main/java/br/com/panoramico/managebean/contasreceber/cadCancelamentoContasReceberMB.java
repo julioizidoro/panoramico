@@ -12,6 +12,9 @@ import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.model.Crcancelamento;
 import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
@@ -48,6 +51,7 @@ public class cadCancelamentoContasReceberMB implements Serializable{
         }else{
             crcancelamento = new Crcancelamento();
         }
+        retornarHoraAtual();
     }
 
     public ContasReceberDao getContasReceberDao() {
@@ -122,5 +126,11 @@ public class cadCancelamentoContasReceberMB implements Serializable{
             msg = msg + " você não informou o motivo do cancelamento \r\n";
         }
         return msg;
+    }
+    
+    public void retornarHoraAtual() {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        Date hora = Calendar.getInstance().getTime();
+        crcancelamento.setHora(sdf.format(hora));
     }
 }

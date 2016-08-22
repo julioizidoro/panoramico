@@ -53,6 +53,7 @@ public class ContasReceberMB implements Serializable{
     private Date dataInicial;
     private Date dataFinal;
     private String situacao;
+    private List<Contasreceber> listaContasSelecionadas;
     
     
     @PostConstruct
@@ -166,6 +167,14 @@ public class ContasReceberMB implements Serializable{
 
     public void setSituacao(String situacao) {
         this.situacao = situacao;
+    }
+
+    public List<Contasreceber> getListaContasSelecionadas() {
+        return listaContasSelecionadas;
+    }
+
+    public void setListaContasSelecionadas(List<Contasreceber> listaContasSelecionadas) {
+        this.listaContasSelecionadas = listaContasSelecionadas;
     }
     
     
@@ -319,5 +328,28 @@ public class ContasReceberMB implements Serializable{
         gerarListaCliente();
         gerarListaContasReceber();
         gerarListaPlanoConta();
+    }
+    
+    public String consBoleto() {
+        listaContasSelecionadas = new ArrayList<Contasreceber>();
+        for (int i = 0; i < listaContasReceber.size(); i++) {
+            if (listaContasReceber.get(i).isSelecionado()) {
+                listaContasSelecionadas.add(listaContasReceber.get(i));
+            }
+        }
+        FacesContext fc = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+        Map<String, Object> options = new HashMap<String, Object>();
+        options.put("contentWidth", 600);
+        session.setAttribute("listaContasSelecionadas", listaContasSelecionadas);
+        RequestContext.getCurrentInstance().openDialog("boletos", options, null);
+        return "";
+    }
+    
+    public String uploadBoleto() {
+        Map<String, Object> options = new HashMap<String, Object>();
+        options.put("contentWidth", 500);
+        RequestContext.getCurrentInstance().openDialog("uploadBoleto", options, null);
+        return "";
     }
 }

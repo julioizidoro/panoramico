@@ -5,7 +5,6 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="/pages/templates/default.xhtml">
         <ui:define name="corpo">
-             
             <br/> 
             <div class="col-10 boxAzulClaro" style="margin-left:8.5%;width: 83.2%;">   
                 <br/> 
@@ -18,13 +17,13 @@
                             <p:outputLabel class="titTela" value="Situação" style="font-size: 12px;text-align: left;margin-left: 18%;float: left;"/>
                             <br/>
                             <p:selectOneMenu  id="cliente"  style="width: 250px;font-size: 12px;float: left;margin-left: -62%;"  value="#{contasReceberMB.cliente}" converter="ClienteConverter"
-                                          >
+                                              >
                                 <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
                                 <f:selectItems  value="#{contasReceberMB.listaCliente}" var="clienteselecionado" itemLabel="#{clienteselecionado.nome}" itemValue="#{clienteselecionado}"/>
                                 <f:attribute name="listaCliente" value="#{contasReceberMB.listaCliente}"/>
                             </p:selectOneMenu> 
                             <p:selectOneMenu id="planoConta"  style="width: 216px;margin-left: -33%;font-size: 12px;float: left;"  value="#{contasReceberMB.planoconta}" converter="PlanoContaConverter"
-                                         filter="true" filterMatchMode="contains" panelStyle="width:180px" >
+                                             filter="true" filterMatchMode="contains" panelStyle="width:180px" >
                                 <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
                                 <f:selectItems  value="#{contasReceberMB.listaPlanoContas}" var="planocontaselecionado" itemLabel="#{planocontaselecionado.descricao}" itemValue="#{planocontaselecionado}"/>
                                 <f:attribute name="listaPlanoContas" value="#{contasReceberMB.listaPlanoContas}"/>
@@ -52,62 +51,69 @@
                             </p:commandLink>
                         </p:tab> 
                     </p:accordionPanel>
-                            <br/><br/>
-                    <!-- TABELA CADASTROS -->
-                            <div class="col-6 titTela" style="margin-left:-10%;">Consulta Contas a Receber</div>
-                            <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" action="#{contasReceberMB.novoCadastroContasReceber()}">
-                                <div class="icoAdd fa fa-plus-square-o"></div>
-                                <p:ajax event="dialogReturn" listener="#{contasReceberMB.retornoDialogNovo}" update="messages, idConsultaContasReceber"/>
+                    <br/><br/>
+                    <!-- TABELA CADASTROS --> 
+                    <div class="col-6 titTela" style="margin-left:-10%;">Consulta Contas a Receber</div>
+                    <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" title="Baixar" action="#{contasReceberMB.uploadBoleto()}">
+                        <div class="icoAdd fa fa-upload"></div>
+                    </p:commandLink>
+                    <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" title="Remessas" action="#{contasReceberMB.consBoleto()}">
+                        <div class="icoAdd fa fa-download"></div>
+                    </p:commandLink>
+                    <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" title="Lançar nova conta" action="#{contasReceberMB.novoCadastroContasReceber()}">
+                        <div class="icoAdd fa fa-plus-square-o"></div>
+                        <p:ajax event="dialogReturn" listener="#{contasReceberMB.retornoDialogNovo}" update="messages, idConsultaContasReceber"/>
+                    </p:commandLink>
+                    <h:dataTable  id="idConsultaContasReceber" class="table" styleClass="table" value="#{contasReceberMB.listaContasReceber}" var="contaReceber">
+                        <h:column>
+                            <f:facet name="header">Cliente</f:facet> 
+                            <h:outputText value="#{contaReceber.cliente.nome}" styleClass="alinhamento" style="float: left;" />
+                        </h:column>
+                        <h:column >  
+                            <f:facet name="header">Lançamento</f:facet> 
+                            <h:outputText value="#{contaReceber.datalancamento}" styleClass="alinhamento" style="text-align: left !important;margin-right:40%;">
+                                <f:convertDateTime pattern="dd/MM/yyyy"
+                                                   timeZone="America/Sao_Paulo" />
+                            </h:outputText>
+                        </h:column> 
+                        <h:column>
+                            <f:facet name="header">Valor</f:facet> 
+                            <h:outputText value="#{contaReceber.valorconta}" styleClass="alinhamento" style="float: right;">
+                                <f:convertNumber pattern="##,###,###,###.##" minFractionDigits="2" />
+                            </h:outputText>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Parcela</f:facet> 
+                            <h:outputText value="#{contaReceber.numeroparcela}" styleClass="alinhamento" style="margin-right:30%;"/>
+                        </h:column> 
+                        <h:column>
+                            <p:commandLink rendered="#{usuarioLogadoMB.editar}" title="Editar" action="#{contasReceberMB.editar(contaReceber)}" style="text-decoration: none;">
+                                <div class="fa fa-pencil-square-o">
+                                </div>
+                                <p:ajax event="dialogReturn" listener="#{contasReceberMB.retornoDialogAlteracao}" update=":idFormConsultaContasReceber:messages, @form"/>
+                            </p:commandLink> 
+                            <p:commandLink title="Cancelamento" style="text-decoration: none;" rendered="#{usuarioLogadoMB.excluir}"  action="#{contasReceberMB.novoCancelamento(contaReceber)}">
+                                <div class="fa fa-times" >
+                                </div>
+                                <p:ajax event="dialogReturn" listener="#{contasReceberMB.retornoDialogCancelamento}" update=":idFormConsultaContasReceber:messages, @form"/>
                             </p:commandLink>
-                            <h:dataTable  id="idConsultaContasReceber" class="table" styleClass="table" value="#{contasReceberMB.listaContasReceber}" var="contaReceber">
-                                <h:column>
-                                    <f:facet name="header">Cliente</f:facet> 
-                                    <h:outputText value="#{contaReceber.cliente.nome}" styleClass="alinhamento" style="float: left;" />
-                                </h:column>
-                                <h:column >  
-                                    <f:facet name="header">Lançamento</f:facet> 
-                                    <h:outputText value="#{contaReceber.datalancamento}" styleClass="alinhamento" style="text-align: left !important;margin-right:40%;">
-                                        <f:convertDateTime pattern="dd/MM/yyyy"
-                                                                    timeZone="America/Sao_Paulo" />
-                                    </h:outputText>
-                                </h:column> 
-                                <h:column>
-                                    <f:facet name="header">Valor</f:facet> 
-                                    <h:outputText value="#{contaReceber.valorconta}" styleClass="alinhamento" style="float: right;">
-                                        <f:convertNumber pattern="##,###,###,###.##" minFractionDigits="2" />
-                                    </h:outputText>
-                                </h:column>
-                                <h:column>
-                                    <f:facet name="header">Parcela</f:facet> 
-                                    <h:outputText value="#{contaReceber.numeroparcela}" styleClass="alinhamento" style="margin-right:30%;"/>
-                                </h:column>
-                                 <h:column>
-                                     <p:commandLink rendered="#{usuarioLogadoMB.editar}" title="Editar" action="#{contasReceberMB.editar(contaReceber)}" style="text-decoration: none;">
-                                        <div class="fa fa-pencil-square-o">
-                                        </div>
-                                         <p:ajax event="dialogReturn" listener="#{contasReceberMB.retornoDialogAlteracao}" update=":idFormConsultaContasReceber:messages, @form"/>
-                                     </p:commandLink> 
-                                     <p:commandLink title="Cancelamento" style="text-decoration: none;" rendered="#{usuarioLogadoMB.excluir}"  action="#{contasReceberMB.novoCancelamento(contaReceber)}">
-                                        <div class="fa fa-times" >
-                                        </div>
-                                         <p:ajax event="dialogReturn" listener="#{contasReceberMB.retornoDialogCancelamento}" update=":idFormConsultaContasReceber:messages, @form"/>
-                                     </p:commandLink>
-                                     <p:commandLink title="Recebimento" style="text-decoration: none;" rendered="#{usuarioLogadoMB.cadastrar}"  action="#{contasReceberMB.novoRecebimento(contaReceber)}">
-                                        <div class="fa fa-money" >
-                                        </div>
-                                         <p:ajax event="dialogReturn" listener="#{contasReceberMB.retornoDialogRecebimento}" update=":idFormConsultaContasReceber:messages, @form"/>
-                                     </p:commandLink>
-                                     <p:commandLink title="Visualizar Recebimentos" style="text-decoration: none;" rendered="#{usuarioLogadoMB.editar}"  action="#{contasReceberMB.visualizarRecebimento(contaReceber)}">
-                                        <div class="fa fa-eye" >
-                                        </div>
-                                     </p:commandLink>
-                                </h:column> 
-
-
-                            </h:dataTable>
-
+                            <p:commandLink title="Recebimento" style="text-decoration: none;" rendered="#{usuarioLogadoMB.cadastrar}"  action="#{contasReceberMB.novoRecebimento(contaReceber)}">
+                                <div class="fa fa-money" >
+                                </div>
+                                <p:ajax event="dialogReturn" listener="#{contasReceberMB.retornoDialogRecebimento}" update=":idFormConsultaContasReceber:messages, @form"/>
+                            </p:commandLink>
+                            <p:commandLink title="Visualizar Recebimentos" style="text-decoration: none;" rendered="#{usuarioLogadoMB.editar}"  action="#{contasReceberMB.visualizarRecebimento(contaReceber)}">
+                                <div class="fa fa-eye" >
+                                </div>
+                            </p:commandLink>
+                            <h:column>
+                                <f:facet name="header"></f:facet>
+                                <p:selectBooleanCheckbox value="#{contaReceber.selecionado}" style="margin-left: 2%;"/>
+                            </h:column> 
+                        </h:column> 
+                    </h:dataTable>
                 </h:form>
-             </div>
+            </div>
         </ui:define> 
     </ui:composition>
 </html>

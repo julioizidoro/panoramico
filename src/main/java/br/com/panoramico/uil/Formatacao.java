@@ -776,4 +776,24 @@ public class Formatacao {
         }
         return "Erro";
     }
+    
+    public static String ConvercaoDataDDMMAA(Date data) {
+        DateFormat df = new SimpleDateFormat("ddMMyy");
+        String dataFormatada = df.format(data);
+        return dataFormatada;
+    }
+    
+    public static String retirarPontos(String dado){
+        String formatado = "";
+        char c = ' ';
+        if (dado != null) {
+            for (int i = 0; i < dado.length(); i++) {
+                c = dado.charAt(i);
+                if ((c != '.') && (c != ',') && (c != '-') && (c != '/') && (c != '(') && (c != ')')) {
+                    formatado += c;
+                }
+            }
+        }
+        return formatado;
+    }
 }

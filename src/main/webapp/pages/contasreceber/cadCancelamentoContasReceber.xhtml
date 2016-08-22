@@ -30,7 +30,7 @@
                 <p:inputMask mask="99/99/9999" size="15" class="form-control" value="#{cadCancelamentoContasReceberMB.crcancelamento.data}" style="margin-left:20%;font-size: 12px;float: left;">
                     <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
                 </p:inputMask>
-                <p:inputText class="form-control" value="#{cadCancelamentoContasReceberMB.crcancelamento.hora}" size="12" style="margin-left:20%;float: left;"/>
+                <p:inputText class="form-control" readonly="true" value="#{cadCancelamentoContasReceberMB.crcancelamento.hora}" size="12" style="margin-left:20%;float: left;"/>
                 <br/><br/>
                 <p:outputLabel class="titTela" value="Motivo" style="font-size: 12px;text-align: left;margin-left: 20%;"/>
                 <br/>

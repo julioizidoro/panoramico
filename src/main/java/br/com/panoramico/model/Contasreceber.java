@@ -19,6 +19,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 
 @Entity
@@ -53,8 +54,15 @@ public class Contasreceber implements Serializable{
     @JoinColumn(name = "usuario_idusuario", referencedColumnName = "idusuario")
     @ManyToOne(optional = false)
     private Usuario usuario;
+    @Column(name = "situacaoboleto")
+    private String situacaoboleto;
+    @Column(name = "enviado")
+    private boolean enviado;
+    @Transient
+    private boolean selecionado;
 
     public Contasreceber() {
+        situacaoboleto = "Não";
     }
 
     public Integer getIdcontasreceber() {
@@ -136,6 +144,32 @@ public class Contasreceber implements Serializable{
     public void setSituacao(String situacao) {
         this.situacao = situacao;
     }
+
+    public String getSituacaoboleto() {
+        return situacaoboleto;
+    }
+
+    public void setSituacaoboleto(String situacaoboleto) {
+        this.situacaoboleto = situacaoboleto;
+    }
+
+    public boolean isEnviado() {
+        return enviado;
+    }
+
+    public void setEnviado(boolean enviado) {
+        this.enviado = enviado;
+    }
+
+    public boolean isSelecionado() {
+        return selecionado;
+    }
+
+    public void setSelecionado(boolean selecionado) {
+        this.selecionado = selecionado;
+    }
+    
+    
 
     @Override
     public int hashCode() {

@@ -46,11 +46,11 @@
                 </p:inputMask>
                 <br/><br/>
                 <p:outputLabel class="titTela" value="Login" style="font-size: 14px;text-align: left;margin-left: 2%;"/> 
-                <p:outputLabel class="titTela" value="Senha" style="font-size: 14px;text-align: left;margin-left: 26%;"/>
+                <p:outputLabel class="titTela" value="Senha" rendered="#{cadUsuarioMB.habilitarSenha}" style="font-size: 14px;text-align: left;margin-left: 26%;"/>
                
                  <br/>
                  <p:inputText class="form-control" value="#{cadUsuarioMB.usuario.login}"  style="margin-left: 2%;font-size: 12px;border-radius: 4px;"/>
-                <p:inputText class="form-control" value="#{cadUsuarioMB.usuario.senha}" size="10" style="margin-left: 5%;font-size: 12px;border-radius: 4px;"/>
+                 <p:inputText class="form-control" value="#{cadUsuarioMB.usuario.senha}" rendered="#{cadUsuarioMB.habilitarSenha}" size="10" style="margin-left: 5%;font-size: 12px;border-radius: 4px;"/>
                 <br/><br/><br/><br/><br/>
                 <hr/>
                 <br/>  

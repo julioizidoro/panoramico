@@ -186,4 +186,8 @@ public class SolicitacaoExameMB implements Serializable{
             Mensagem.lancarMensagemInfo("", "Acesso Negado!!");
         }
     }
+     
+    public Float calcularTotal(Exame exame){
+        return exame.getValor() - exame.getDesconto();
+    }
 }

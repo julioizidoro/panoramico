@@ -189,6 +189,10 @@ public class CadContasReceberMB implements Serializable{
         contasreceber.setSituacao("PAGAR");
         String mensagem = validarDados(contasreceber);
         if (mensagem.length() < 5) {
+            if (contasreceber.getTipopagamento().equalsIgnoreCase("Boleto")) {
+                contasreceber.setSituacaoboleto("Não enviado");
+                contasreceber.setEnviado(false);
+            }
             contasreceber = contasReceberDao.update(contasreceber);
             RequestContext.getCurrentInstance().closeDialog(contasreceber);
         } else {
@@ -207,6 +211,9 @@ public class CadContasReceberMB implements Serializable{
         }
         if (contasreceber.getValorconta() == null) {
             msg = msg + " Valor da conta não informada \r\n";
+        }
+        if (contasreceber.getTipopagamento().equalsIgnoreCase("")) {
+            msg = msg + " Tipo de pagamento no informado \r\n";
         }
         return msg;
     }

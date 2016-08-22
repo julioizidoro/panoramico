@@ -5,8 +5,11 @@
  */
 package br.com.panoramico.managebean.cadastro;
 
+import br.com.panoramico.dao.NotificacaoDao;
 import br.com.panoramico.dao.PerfilDao;
 import br.com.panoramico.dao.UsuarioDao;
+import br.com.panoramico.managebean.UsuarioLogadoMB;
+import br.com.panoramico.model.Notificacao;
 import br.com.panoramico.model.Perfil;
 import br.com.panoramico.model.Usuario;
 import br.com.panoramico.uil.Criptografia;
@@ -14,7 +17,10 @@ import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,6 +28,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
@@ -42,6 +49,11 @@ public class CadUsuarioMB implements Serializable{
     private PerfilDao perfilDao;
     private Perfil perfil;
     private List<Perfil> listaPerfil;
+    private boolean habilitarSenha;
+    @Inject
+    private UsuarioLogadoMB usuarioLogadoMB;
+    @EJB
+    private NotificacaoDao notificacaoDao;
     
     
     @PostConstruct
@@ -54,8 +66,10 @@ public class CadUsuarioMB implements Serializable{
         if (usuario == null) {
             usuario = new Usuario();
             perfil = new Perfil();
+            habilitarSenha = true;
         }else{
             perfil = usuario.getPerfil();
+            habilitarSenha = false;
         }
         
     }
@@ -99,6 +113,32 @@ public class CadUsuarioMB implements Serializable{
     public void setListaPerfil(List<Perfil> listaPerfil) {
         this.listaPerfil = listaPerfil;
     }
+
+    public boolean isHabilitarSenha() {
+        return habilitarSenha;
+    }
+
+    public void setHabilitarSenha(boolean habilitarSenha) {
+        this.habilitarSenha = habilitarSenha;
+    }
+
+    public UsuarioLogadoMB getUsuarioLogadoMB() {
+        return usuarioLogadoMB;
+    }
+
+    public void setUsuarioLogadoMB(UsuarioLogadoMB usuarioLogadoMB) {
+        this.usuarioLogadoMB = usuarioLogadoMB;
+    }
+
+    public NotificacaoDao getNotificacaoDao() {
+        return notificacaoDao;
+    }
+
+    public void setNotificacaoDao(NotificacaoDao notificacaoDao) {
+        this.notificacaoDao = notificacaoDao;
+    }
+    
+    
     
     public void gerarListaPerfil() {
         listaPerfil = perfilDao.list("Select p from Perfil p");
@@ -117,14 +157,10 @@ public class CadUsuarioMB implements Serializable{
                 Logger.getLogger(CadUsuarioMB.class.getName()).log(Level.SEVERE, null, ex);
             }
             usuario = usuarioDao.update(usuario);
+            boasVindas();
             RequestContext.getCurrentInstance().closeDialog(usuario);
         } else if (usuario.getIdusuario() != null) {
             usuario.setPerfil(perfil);
-            try {
-                usuario.setSenha(Criptografia.encript(usuario.getSenha()));
-            } catch (NoSuchAlgorithmException ex) {
-                Logger.getLogger(CadUsuarioMB.class.getName()).log(Level.SEVERE, null, ex);
-            }
             usuario = usuarioDao.update(usuario);
             RequestContext.getCurrentInstance().closeDialog(usuario);
         } else {
@@ -132,10 +168,27 @@ public class CadUsuarioMB implements Serializable{
         }
         return "";
     }
+    
+    public void boasVindas(){
+        Notificacao notificacao = new Notificacao();
+        notificacao.setAssunto("Seja bem vindo " + usuario.getNome());
+        notificacao.setData(new Date());
+        notificacao.setVisto(false);
+        notificacao.setUsuarioenvia(usuarioLogadoMB.getUsuario());
+        notificacao.setUsuariorecebe(usuario);
+        notificacao.setHora(retornarHoraAtual());
+        notificacaoDao.update(notificacao);
+    }
+    
+    public String retornarHoraAtual() {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        Date hora = Calendar.getInstance().getTime();
+        return sdf.format(hora);
+    }
      
         
     public void cancelar(){
         perfil = perfilDao.find(1);
-        RequestContext.getCurrentInstance().closeDialog(usuario);
+        RequestContext.getCurrentInstance().closeDialog(new Usuario());
     }
 }

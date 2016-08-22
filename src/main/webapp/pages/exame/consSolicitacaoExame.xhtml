@@ -24,7 +24,19 @@
                                 </h:column>
                                 <h:column>
                                     <f:facet name="header">Valor</f:facet> 
-                                    <h:outputText value="#{exame.valor}" styleClass="alinhamento" style="float: right;">
+                                    <h:outputText value="#{exame.valor}" styleClass="alinhamento" style="float: right;margin-right:5%;">
+                                        <f:convertNumber pattern="##,###,###,###.##" minFractionDigits="2" />
+                                    </h:outputText>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">Desconto</f:facet> 
+                                    <h:outputText value="#{exame.desconto}" styleClass="alinhamento" style="float: right;margin-right:5%;">
+                                        <f:convertNumber pattern="##,###,###,###.##" minFractionDigits="2" />
+                                    </h:outputText>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">Total</f:facet> 
+                                    <h:outputText value="#{solicitacaoExameMB.calcularTotal(exame)}" styleClass="alinhamento" style="float: right;margin-right:5%;">
                                         <f:convertNumber pattern="##,###,###,###.##" minFractionDigits="2" />
                                     </h:outputText>
                                 </h:column>
