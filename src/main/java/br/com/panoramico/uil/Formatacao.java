@@ -8,6 +8,10 @@ package br.com.panoramico.uil;
 
 
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.text.*;
 import java.util.Calendar;
 import java.util.Date;
@@ -16,6 +20,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComboBox;
+import org.primefaces.model.UploadedFile;
 
 
 
@@ -795,5 +800,33 @@ public class Formatacao {
             }
         }
         return formatado;
+    }
+    
+     public static BigDecimal converterFloatBigDecimal(Float valor){
+        Double dobuleValor = valor.doubleValue();
+        BigDecimal bigDecimalValor = new BigDecimal(dobuleValor);
+        return bigDecimalValor;
+    }
+     
+      public static String gerarNumeroDocumentoBoleto(String numeroVenda, String numeroParcela){
+        if (numeroParcela.length()==1){
+            numeroParcela = "0" + numeroParcela;
+        }
+        String numero = numeroVenda + numeroParcela;
+        for(int i=0;i<8;i++){
+            if (numero.length()<8){
+                numero= "0" + numero;
+            }else {
+                i=100;
+            }
+        }
+        return numero;
+    }
+      
+    public static BufferedReader converterUploadedFileToFile(UploadedFile uploadedFile) throws Exception {
+        InputStream is = uploadedFile.getInputstream();
+        BufferedReader bfReader = null;
+        bfReader = new BufferedReader(new InputStreamReader(is));
+        return bfReader;
     }
 }

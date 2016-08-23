@@ -50,7 +50,9 @@ public class Cliente implements Serializable {
     private Date datanascimento;
     @Size(max = 20)
     @Column(name = "telefone")
-    private String telefone;
+    private String telefone; @OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente")
+    private List<Associado> associadoList;
+    
     
     public Cliente() {
     }
@@ -106,6 +108,16 @@ public class Cliente implements Serializable {
     public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
+
+    public List<Associado> getAssociadoList() {
+        return associadoList;
+    }
+
+    public void setAssociadoList(List<Associado> associadoList) {
+        this.associadoList = associadoList;
+    }
+    
+    
 
     @Override
     public int hashCode() {

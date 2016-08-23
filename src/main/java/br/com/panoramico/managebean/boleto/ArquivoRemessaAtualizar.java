@@ -5,16 +5,22 @@
  */
 package br.com.panoramico.managebean.boleto;
 
+import br.com.panoramico.dao.EmpresaDao;
 import br.com.panoramico.model.Contasreceber;
+import br.com.panoramico.model.Empresa;
 import br.com.panoramico.uil.Formatacao;
 import java.io.IOException;
 import java.util.Date;
+import javax.ejb.EJB;
 
 
 public class ArquivoRemessaAtualizar {
     
-    private String branco = "                                        ";
+     private String branco = "                                        ";
     private String zeros = "000000000000000000000";
+    @EJB
+    private EmpresaDao empresaDao;
+    private Empresa empresa;
     
     public String gerarHeader(Contasreceber conta, int numeroSequencial) throws IOException{
         String linha="";
@@ -23,22 +29,22 @@ public class ArquivoRemessaAtualizar {
         linha = linha  + ("REMESSA");
         linha = linha  + ("01");
         linha = linha  + ("COBRANCA       ");
-        //linha = linha  + (conta.getVendas().getUnidadenegocio().getBanco().getAgencia());
+        linha = linha  + (empresa.getBanco().getAgencia());
         linha = linha  + ("00");
-       // linha = linha  + (conta.getVendas().getUnidadenegocio().getBanco().getConta());
-       // linha = linha  + (conta.getVendas().getUnidadenegocio().getBanco().getDigitoconta());
+        linha = linha  + (empresa.getBanco().getConta());
+        linha = linha  + (empresa.getBanco().getDigitoconta());
         linha = linha  + (branco.substring(0, 8));
-       // String nomeEmpresa = conta.getVendas().getUnidadenegocio().getRazaoSocial();
-       // nomeEmpresa = nomeEmpresa.toUpperCase();
-       // if (nomeEmpresa.length()<30){
-       //     nomeEmpresa = nomeEmpresa + branco.substring(0, 30 - nomeEmpresa.length());
-       // }else nomeEmpresa = nomeEmpresa.substring(0,30);
-      //  linha = linha  + (nomeEmpresa);
+        String nomeEmpresa = empresa.getRazaosocial();
+        nomeEmpresa = nomeEmpresa.toUpperCase();
+        if (nomeEmpresa.length()<30){
+            nomeEmpresa = nomeEmpresa + branco.substring(0, 30 - nomeEmpresa.length());
+        }else nomeEmpresa = nomeEmpresa.substring(0,30);
+        linha = linha  + (nomeEmpresa);
         linha = linha  + ("341");
         linha = linha  + ("BANCO ITAU S.A.");
         linha = linha  + (Formatacao.ConvercaoDataDDMMAA(new Date()));
         linha = linha  + (branco + branco + branco + branco + branco + branco + branco + branco.substring(0,14));
-        String ns = "";
+        String ns = ""; 
         if (numeroSequencial<10){
             ns = "00000" + String.valueOf(numeroSequencial);
         }else if (numeroSequencial<100){
@@ -53,14 +59,14 @@ public class ArquivoRemessaAtualizar {
         linha = linha  + ("1");
         linha = linha  + ("00");
         linha = linha  + ("00000000000000");
-        //linha = linha  + (conta.getVendas().getUnidadenegocio().getBanco().getAgencia());
+        linha = linha  + (empresa.getBanco().getAgencia());
         linha = linha  + ("00");
-        ///linha = linha  + (conta.getVendas().getUnidadenegocio().getBanco().getConta());
-        //linha = linha  + (conta.getVendas().getUnidadenegocio().getBanco().getDigitoconta());
+        linha = linha  + (empresa.getBanco().getConta());
+        linha = linha  + (empresa.getBanco().getDigitoconta());
         linha = linha  + (branco.substring(0, 4));
         linha = linha  + ("00");
         linha = linha  + (branco.substring(0, 25));
-       // linha = linha  + (conta.getNossonumero());
+        linha = linha  + (conta.getNossonumero());
         linha = linha  + ("0000000000000");
         linha = linha  + ("109");
         linha = linha  + ("000000000000000000000");

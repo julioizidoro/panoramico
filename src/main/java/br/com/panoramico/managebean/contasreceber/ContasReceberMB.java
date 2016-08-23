@@ -9,6 +9,7 @@ import br.com.panoramico.dao.ClienteDao;
 import br.com.panoramico.dao.ContasReceberDao;
 import br.com.panoramico.dao.PlanoContaDao;
 import br.com.panoramico.managebean.UsuarioLogadoMB;
+import br.com.panoramico.managebean.boleto.LerRetornoItauBean;
 import br.com.panoramico.model.Cliente;
 import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.model.Crcancelamento;
@@ -22,15 +23,20 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.UploadedFile;
 
 @Named
 @ViewScoped
@@ -351,5 +357,29 @@ public class ContasReceberMB implements Serializable{
         options.put("contentWidth", 500);
         RequestContext.getCurrentInstance().openDialog("uploadBoleto", options, null);
         return "";
+    }
+    
+     public String uploadRetorno(FileUploadEvent event) {
+        FacesMessage msg = new FacesMessage("Sucesso! ", event.getFile().getFileName() + " carregado");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+        UploadedFile uFile = event.getFile();
+        lerRetorno(uFile);
+        RequestContext.getCurrentInstance().closeDialog(null);
+        return "consContasReceber";
+    }
+    
+    public String lerRetorno(UploadedFile retorno) {
+        try {
+            LerRetornoItauBean lerRetornoItauBean = new LerRetornoItauBean(
+                    Formatacao.converterUploadedFileToFile(retorno));
+        } catch (Exception ex) {
+            Logger.getLogger(ContasReceberMB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }  
+    
+    public String voltar() {
+        RequestContext.getCurrentInstance().closeDialog(null);
+        return "consContasReceber";
     }
 }

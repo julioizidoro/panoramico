@@ -60,6 +60,8 @@ public class Contasreceber implements Serializable{
     private boolean enviado;
     @Transient
     private boolean selecionado;
+    @Column(name = "nossonumero")
+    private String nossonumero;
 
     public Contasreceber() {
         situacaoboleto = "Não";
@@ -167,6 +169,14 @@ public class Contasreceber implements Serializable{
 
     public void setSelecionado(boolean selecionado) {
         this.selecionado = selecionado;
+    }
+
+    public String getNossonumero() {
+        return nossonumero;
+    }
+
+    public void setNossonumero(String nossonumero) {
+        this.nossonumero = nossonumero;
     }
     
     

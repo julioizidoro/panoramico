@@ -6,18 +6,28 @@
 package br.com.panoramico.managebean.boleto;
 
 import br.com.panoramico.dao.ContasReceberDao;
+import br.com.panoramico.dao.RecebimentoDao;
+import br.com.panoramico.managebean.UsuarioLogadoMB;
 import br.com.panoramico.model.Contasreceber;
+import br.com.panoramico.model.Recebimento;
 import br.com.panoramico.uil.Formatacao;
 import java.io.BufferedReader;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
+import javax.inject.Inject;
 
 public class LerRetornoItauBean {
     
     @EJB
     private ContasReceberDao contasReceberDao;
+    @EJB
+    private RecebimentoDao recebimentoDao;
+    private Recebimento recebimento;
+    @Inject
+    private UsuarioLogadoMB usuarioLogadoMB;
+    
     
     public LerRetornoItauBean(BufferedReader retorno) {
         try {
@@ -55,14 +65,18 @@ public class LerRetornoItauBean {
     public void registarRecebimento(String nossoNumero, String dataPagamento, String valorPago, String juros){
         String sql = "Select c from Contasreceber c where c.nossonumero='" + nossoNumero + "'"; 
         Contasreceber conta = contasReceberDao.find(sql);
+        recebimento = new Recebimento();
         if (conta!=null){
             Float vJuros = Formatacao.formatarStringfloat(juros);
             if (vJuros>0){
-            //    conta.setJuros(converterJuros(juros));
+                recebimento.setJuros(vJuros);
             }
-            conta.setValorconta(converterValorPago(valorPago));
-            conta.setDatalancamento(converterData(dataPagamento));
-            contasReceberDao.update(conta);
+            recebimento.setValorrecebido(converterValorPago(valorPago));
+            recebimento.setDatarecebimento(converterData(dataPagamento));
+            recebimento.setContasreceber(conta);
+            recebimento.setFormarecebimento(conta.getTipopagamento());
+            recebimento.setUsuario(usuarioLogadoMB.getUsuario());
+            recebimentoDao.update(recebimento);
         }
     }
     

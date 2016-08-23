@@ -5,9 +5,7 @@
  */
 package br.com.panoramico.managebean.boleto;
 
-import br.com.panoramico.managebean.boleto.ArquivoRemessaEnviar;
-import br.com.panoramico.managebean.boleto.ArquivoRemessaCancelar;
-import br.com.panoramico.managebean.boleto.ArquivoRemessaAtualizar;
+
 import br.com.panoramico.dao.ContasReceberDao;
 import br.com.panoramico.managebean.UsuarioLogadoMB;
 import br.com.panoramico.model.Contasreceber;
@@ -15,17 +13,23 @@ import br.com.panoramico.uil.Formatacao;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
+import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 
 public class GerarArquivoRemessaItau {
     
     private List<Contasreceber> listaContas;
     private FileWriter remessa;
+    @Inject
     private UsuarioLogadoMB usuarioLogadoMB;
     private int numeroSequencial=0;
     @EJB
@@ -37,27 +41,27 @@ public class GerarArquivoRemessaItau {
         iniciarRemessa();
     }
     
-    private void iniciarRemessa(){
-        if (listaContas==null){
-            String sql = "Select c from Contasreceber c";
-            listaContas = contasReceberDao.list(sql);
+     private void iniciarRemessa(){
+        if (this.listaContas==null){
+            String sql = "Select c from Contasreceber c where c.situacaoboleto='Não enviado' and c.enviado=0";
+            this.listaContas = contasReceberDao.list(sql);
         }
-        if (listaContas!=null){
-            String nomeArquivo =  gerarNomeArquivo();
-            //usuarioLogadoMB.getUsuario().getLocalsalvar() + "\\" +
-            try {
-                remessa = new FileWriter(new File(nomeArquivo));
-                try {
-                    lerConta();
-                } catch (Exception ex) {
-                    Logger.getLogger(ArquivoRemessaEnviar.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            } catch (IOException ex) {
-                Logger.getLogger(ArquivoRemessaEnviar.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        if (this.listaContas!=null){
+            InputStream stream = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream("/resources/img/bolaAzul.png");
+            StreamedContent  nomeArquivo = new DefaultStreamedContent(stream, "image/jpg", gerarNomeArquivo());
+            //try {
+              //  remessa = new FileWriter(new File(nomeArquivo));
+             //   try {
+              //      lerConta();
+             //   } catch (Exception ex) {
+             ///       Logger.getLogger(ArquivoRemessaEnviar.class.getName()).log(Level.SEVERE, null, ex);
+             //   }
+           // } catch (IOException ex) {
+           //     Logger.getLogger(ArquivoRemessaEnviar.class.getName()).log(Level.SEVERE, null, ex);
+           // }
         }
     }
-    
+      
     public String gerarNomeArquivo(){
         String data = Formatacao.ConvercaoDataPadrao(new Date());
         data = data.substring(6, 10) + data.substring(3, 5) + data.substring(0, 2);
@@ -67,13 +71,13 @@ public class GerarArquivoRemessaItau {
     
     private void lerConta() throws IOException, Exception{
         for(int i=0;i<listaContas.size();i++){
-       //     if (listaContas.get(i).get()){
-       //         atualizarBoleto(listaContas.get(i));
-       //     }else if (listaContas.get(i).getBoletocancelado()){
-       //          cancelarBoleto(listaContas.get(i));
-       //    }else {
-       //         enviarBoleto(listaContas.get(i));
-        //    }
+            if (listaContas.get(i).getSituacaoboleto().equalsIgnoreCase("Alterado")){
+                atualizarBoleto(listaContas.get(i));
+            }else if (listaContas.get(i).getSituacaoboleto().equalsIgnoreCase("Cancelado")){
+                 cancelarBoleto(listaContas.get(i));
+            }else {
+                enviarBoleto(listaContas.get(i));
+            }
         }
         remessa.close();
         confirmarContas();
@@ -114,7 +118,8 @@ public class GerarArquivoRemessaItau {
     private void confirmarContas(){
         for(int i=0;i<listaContas.size();i++){
             Contasreceber conta = listaContas.get(i);
-            conta.setSituacao("vd");
+            conta.setEnviado(true);
+            conta.setSituacaoboleto("Enviado");
             contasReceberDao.update(conta);
         }
     }

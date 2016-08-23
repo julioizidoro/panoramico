@@ -43,6 +43,11 @@
             <version>1.0.8</version>
         </dependency>
         <dependency>
+            <groupId>org.jrimum</groupId>
+            <artifactId>jrimum-bopepo</artifactId>
+            <version>0.2.3-SNAPSHOT</version><!-- 0.2.3-DEV-SNAPSHOT em desenvolvimento -->
+        </dependency>
+        <dependency> 
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
             <version>7.0</version>
@@ -104,6 +109,13 @@
             <id>unknown-jars-temp-repo</id>
             <name>A temporary repository created by NetBeans for libraries and jars it could not identify. Please replace the dependencies in this repository with correct ones and delete this repository.</name>
             <url>file:${project.basedir}/lib</url>
+        </repository>
+        <repository>
+            <id>jrimum.org</id>
+            <url>http://jrimum.org/maven/content/groups/public/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
     </repositories>
 </project>
