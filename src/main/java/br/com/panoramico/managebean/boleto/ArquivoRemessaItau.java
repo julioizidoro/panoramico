@@ -6,13 +6,14 @@
 package br.com.panoramico.managebean.boleto;
 
 import br.com.panoramico.model.Contasreceber;
+import br.com.panoramico.model.Empresa;
 import java.io.IOException;
 
 
 public interface ArquivoRemessaItau {
     
-    String gerarHeader(Contasreceber conta, int numeroSequencial)throws IOException;
-    String gerarDetalhe(Contasreceber conta, int numeroSequencial)throws IOException, Exception;
-    String gerarMulta(Contasreceber conta, int numeroSequencial)throws IOException, Exception;
+    String gerarHeader(Contasreceber conta, int numeroSequencial, Empresa empresa)throws IOException;
+    String gerarDetalhe(Contasreceber conta, int numeroSequencial, Empresa empresa)throws IOException, Exception;
+    String gerarMulta(Contasreceber conta, int numeroSequencial, Empresa empresa)throws IOException, Exception;
     String gerarTrailer(int numeroSequencial)throws IOException;
 }

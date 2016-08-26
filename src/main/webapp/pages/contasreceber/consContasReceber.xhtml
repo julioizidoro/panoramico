@@ -71,20 +71,20 @@
                         </h:column>
                         <h:column >  
                             <f:facet name="header">Lançamento</f:facet> 
-                            <h:outputText value="#{contaReceber.datalancamento}" styleClass="alinhamento" style="text-align: left !important;margin-right:40%;">
+                            <h:outputText value="#{contaReceber.datalancamento}" styleClass="alinhamento" style="text-align: left !important;margin-right:50%;">
                                 <f:convertDateTime pattern="dd/MM/yyyy"
                                                    timeZone="America/Sao_Paulo" />
                             </h:outputText>
                         </h:column> 
                         <h:column>
                             <f:facet name="header">Valor</f:facet> 
-                            <h:outputText value="#{contaReceber.valorconta}" styleClass="alinhamento" style="float: right;">
+                            <h:outputText value="#{contaReceber.valorconta}" styleClass="alinhamento" style="float: right;margin-right: 30%;">
                                 <f:convertNumber pattern="##,###,###,###.##" minFractionDigits="2" />
                             </h:outputText>
                         </h:column>
                         <h:column>
                             <f:facet name="header">Parcela</f:facet> 
-                            <h:outputText value="#{contaReceber.numeroparcela}" styleClass="alinhamento" style="margin-right:30%;"/>
+                            <h:outputText value="#{contaReceber.numeroparcela}" styleClass="alinhamento" style="margin-right:50%;"/>
                         </h:column> 
                         <h:column>
                             <p:commandLink rendered="#{usuarioLogadoMB.editar}" title="Editar" action="#{contasReceberMB.editar(contaReceber)}" style="text-decoration: none;">

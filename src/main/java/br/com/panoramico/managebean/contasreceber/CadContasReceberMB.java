@@ -12,9 +12,13 @@ import br.com.panoramico.managebean.UsuarioLogadoMB;
 import br.com.panoramico.model.Cliente;
 import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.model.Planoconta;
+import br.com.panoramico.uil.Formatacao;
 import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -62,7 +66,7 @@ public class CadContasReceberMB implements Serializable{
         }
         gerarListaCliente();
         gerarListaPlanoConta();
-    }
+    } 
 
     public Contasreceber getContasreceber() {
         return contasreceber;
@@ -181,24 +185,32 @@ public class CadContasReceberMB implements Serializable{
     }
     
     public void salvar() {
-        contasreceber.setNumeroparcela(numeroParcela);
-        contasreceber.setTipopagamento(tipoPagamento);
-        contasreceber.setCliente(cliente);
-        contasreceber.setPlanoconta(planoconta);
-        contasreceber.setUsuario(usuarioLogadoMB.getUsuario());
-        contasreceber.setSituacao("PAGAR");
-        String mensagem = validarDados(contasreceber);
-        if (mensagem.length() < 5) {
-            if (contasreceber.getTipopagamento().equalsIgnoreCase("Boleto")) {
-                contasreceber.setSituacaoboleto("Não enviado");
-                contasreceber.setEnviado(false);
-            }
-            contasreceber = contasReceberDao.update(contasreceber);
-            RequestContext.getCurrentInstance().closeDialog(contasreceber);
+        Float formataNParcela = Formatacao.formatarStringfloat(numeroParcela);
+        if (formataNParcela > 1) {
+            calculoParcelaMensal(formataNParcela, contasreceber);
         } else {
-            Mensagem.lancarMensagemInfo("", mensagem);
-        }
+            contasreceber.setNumeroparcela(numeroParcela);
+            contasreceber.setTipopagamento(tipoPagamento);
+            contasreceber.setCliente(cliente);
+            contasreceber.setPlanoconta(planoconta);
+            contasreceber.setUsuario(usuarioLogadoMB.getUsuario());
+            contasreceber.setSituacao("PAGAR");
+            String mensagem = validarDados(contasreceber);
+            if (mensagem.length() < 5) {
+                if (contasreceber.getTipopagamento().equalsIgnoreCase("Boleto") && contasreceber.getIdcontasreceber() == null) {
+                    contasreceber.setSituacaoboleto("Novo");
+                    contasreceber.setEnviado(false);
+                }else if(!contasreceber.getTipopagamento().equalsIgnoreCase("Boleto")  && contasreceber.getIdcontasreceber() == null){
+                    contasreceber.setSituacaoboleto("Não");
+                    contasreceber.setEnviado(false);
+                }
+                contasreceber = contasReceberDao.update(contasreceber);
+                RequestContext.getCurrentInstance().closeDialog(contasreceber);
+            } else {
+                Mensagem.lancarMensagemInfo("", mensagem);
+            }
 
+        }
     }
     
     public String validarDados(Contasreceber contasreceber){
@@ -212,9 +224,46 @@ public class CadContasReceberMB implements Serializable{
         if (contasreceber.getValorconta() == null) {
             msg = msg + " Valor da conta não informada \r\n";
         }
-        if (contasreceber.getTipopagamento().equalsIgnoreCase("")) {
+        if (contasreceber.getTipopagamento() == null || contasreceber.getTipopagamento().equalsIgnoreCase("")) {
             msg = msg + " Tipo de pagamento no informado \r\n";
         }
         return msg;
+    }
+    
+    public void calculoParcelaMensal(Float nParcela, Contasreceber contasreceber) {
+        for (int i = 1; i <= nParcela; i++) {
+            Contasreceber copia = new Contasreceber();
+            copia = contasreceber;
+            contasreceber.setNumeroparcela("" + i);
+            contasreceber.setTipopagamento(tipoPagamento);
+            contasreceber.setCliente(cliente);
+            contasreceber.setPlanoconta(planoconta);
+            contasreceber.setUsuario(usuarioLogadoMB.getUsuario());
+            contasreceber.setSituacao("PAGAR");
+            String mensagem = validarDados(contasreceber);
+            if (mensagem.length() < 5) {
+                if (contasreceber.getTipopagamento().equalsIgnoreCase("Boleto") && contasreceber.getIdcontasreceber() == null) {
+                    contasreceber.setSituacaoboleto("Novo");
+                    contasreceber.setEnviado(false);
+                }else if(!contasreceber.getTipopagamento().equalsIgnoreCase("Boleto")  && contasreceber.getIdcontasreceber() == null){
+                    contasreceber.setSituacaoboleto("Não");
+                    contasreceber.setEnviado(false);
+                } 
+                contasreceber = contasReceberDao.update(contasreceber);
+                Calendar c = new GregorianCalendar();
+                c.setTime(copia.getDatalancamento());
+                c.add(Calendar.MONTH, 1);
+                Date data = c.getTime();
+                copia.setDatalancamento(data);
+                if (i < nParcela) {
+                    contasreceber = new Contasreceber();
+                    contasreceber = copia;
+                }
+            } else {
+                Mensagem.lancarMensagemInfo("", mensagem);
+            }
+
+        }
+        RequestContext.getCurrentInstance().closeDialog(contasreceber);
     }
 }

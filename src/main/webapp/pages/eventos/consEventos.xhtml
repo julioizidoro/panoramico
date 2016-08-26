@@ -9,43 +9,43 @@
             <br/> 
             <div class="col-10 boxAzulClaro" style="margin-left:8.5%;width: 83.2%;">   
                 <br/> 
-                <h:form id="idFormConsultaEvento" style="margin-left:5%;width: 90%;">
+                <h:form id="idFormConsultaEvento" style="margin-left:5%;width: 90%;"> 
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:10%;width: 80%;"/>
-                    <p:accordionPanel activeIndex="-1">
+                    <p:accordionPanel activeIndex="-1" style="width:80%;margin-left: 12%;">
                         <p:tab title="Pesquisar">
                             <p:outputLabel class="titTela" value="Responsavel" style="font-size: 12px;text-align: left;margin-left: 2%;float: left;"/>
-                            <p:outputLabel class="titTela" value="Ambiente" style="font-size: 12px;text-align: left;margin-left: 22%;float: left;"/>
-                            <p:outputLabel class="titTela" value="Tipo Evento" style="font-size: 12px;text-align: left; margin-left: 18%;float: left;"/>
-                            <p:outputLabel class="titTela" value="Situação" style="font-size: 12px;text-align: left;margin-left: 18%;float: left;"/>
+                            <p:outputLabel class="titTela" value="Ambiente" style="font-size: 12px;text-align: left;margin-left: 25%;float: left;"/>
+                            <p:outputLabel class="titTela" value="Tipo Evento" style="font-size: 12px;text-align: left; margin-left: 25%;float: left;"/>
                             <br/>
-                            <p:selectOneMenu  id="cliente"  style="width: 250px;font-size: 12px;float: left;margin-left: -84%;"  value="#{eventoMB.cliente}" converter="ClienteConverter"
+                            <p:selectOneMenu  id="cliente"  style="width: 250px;font-size: 12px;float: left;margin-left: -75%;"  value="#{eventoMB.cliente}" converter="ClienteConverter"
                                           >
                                 <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
                                 <f:selectItems  value="#{eventoMB.listaCliente}" var="clienteselecionado" itemLabel="#{clienteselecionado.nome}" itemValue="#{clienteselecionado}"/>
                                 <f:attribute name="listaCliente" value="#{eventoMB.listaCliente}"/>
                             </p:selectOneMenu>
-                            <p:selectOneMenu id="ambiente"  style="width: 216px;margin-left: -55%;font-size: 12px;float: left;"  value="#{eventoMB.ambiente}" converter="AmbienteConverter"
+                            <p:selectOneMenu id="ambiente"  style="width: 216px;margin-left: -41%;font-size: 12px;float: left;"  value="#{eventoMB.ambiente}" converter="AmbienteConverter"
                                          filter="true" filterMatchMode="contains" panelStyle="width:180px" >
                                 <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
                                 <f:selectItems  value="#{eventoMB.listaAmbiente}" var="ambienteselecionado" itemLabel="#{ambienteselecionado.nome}" itemValue="#{ambienteselecionado}"/>
                                 <f:attribute name="listaAmbiente" value="#{eventoMB.listaAmbiente}"/>
                             </p:selectOneMenu>
-                            <p:selectOneMenu id="tipoEvento"  style="width: 210px;margin-left: -30%;font-size: 12px;float: left;"  value="#{eventoMB.tipoenvento}" converter="TipoEventoConverter"
+                            <p:selectOneMenu id="tipoEvento"  style="width: 210px;margin-left: -9%;font-size: 12px;float: left;"  value="#{eventoMB.tipoenvento}" converter="TipoEventoConverter"
                                          filter="true" filterMatchMode="contains" panelStyle="width:180px" >
                                 <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
                                 <f:selectItems  value="#{eventoMB.listaTipoEvento}" var="tipoEventoSelecionado" itemLabel="#{tipoEventoSelecionado.descricao}" itemValue="#{tipoEventoSelecionado}"/>
                                 <f:attribute name="listaTipoEvento" value="#{eventoMB.listaTipoEvento}"/>
-                            </p:selectOneMenu> 
-                            <p:selectOneMenu id="estado" value="#{eventoMB.situacao}"  style="width:180px;margin-left: 81%; font-size: 12px;float: left;">
-                                <f:selectItem itemLabel="Selecione" itemValue="sn" noSelectionOption="true"/> 
-                                <f:selectItem itemLabel="Agendado" itemValue="A" /> 
-                                <f:selectItem itemLabel="Cancelado" itemValue="C" />   
-                                <f:selectItem itemLabel="Realizado" itemValue="R" />
                             </p:selectOneMenu>
                             <br/><br/>
-                            <p:outputLabel class="titTela" value="Periodo" style="font-size: 12px;text-align: left;margin-left: 2%;float: left;"/>
+                            <p:outputLabel class="titTela" value="Situação" style="font-size: 12px;text-align: left;margin-left: 2%;float: left;"/>
+                            <p:outputLabel class="titTela" value="Periodo" style="font-size: 12px;text-align: left;margin-left: 20%;float: left;"/>
                             <br/>
-                            <p:inputMask mask="99/99/9999" size="15"  value="#{eventoMB.dataInicio}" style="margin-left:-5%;font-size: 12px;float: left;">
+                            <p:selectOneMenu id="estado" value="#{eventoMB.situacao}"  style="width:180px;margin-left: -32%; font-size: 12px;float: left;">
+                                <f:selectItem itemLabel="Selecione" itemValue="sn" noSelectionOption="true"/> 
+                                <f:selectItem itemLabel="Agendado" itemValue="A" />  
+                                <f:selectItem itemLabel="Cancelado" itemValue="C" />   
+                                <f:selectItem itemLabel="Realizado" itemValue="R" />  
+                            </p:selectOneMenu>
+                            <p:inputMask mask="99/99/9999" size="15"  value="#{eventoMB.dataInicio}" style="margin-left:-6%;font-size: 12px;float: left;">
                                 <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
                             </p:inputMask>
                             <p:inputMask mask="99/99/9999" size="15" value="#{eventoMB.dataFinal}" style="margin-left:2%;font-size: 12px;float: left;">

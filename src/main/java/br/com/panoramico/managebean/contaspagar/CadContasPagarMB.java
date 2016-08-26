@@ -9,10 +9,15 @@ import br.com.panoramico.dao.ContasPagarDao;
 import br.com.panoramico.dao.PlanoContaDao;
 import br.com.panoramico.managebean.UsuarioLogadoMB;
 import br.com.panoramico.model.Contaspagar;
+import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.model.Planoconta;
+import br.com.panoramico.uil.Formatacao;
 import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -134,18 +139,23 @@ public class CadContasPagarMB implements Serializable{
         }
     }
     
-    public void salvar(){
-        contaspagar.setFormapagamento(tipoPagamento);
-        contaspagar.setNumeroparcela(numeroParcela);
-        contaspagar.setPlanoconta(planoconta);
-        contaspagar.setUsuario(usuarioLogadoMB.getUsuario());
-        String mensagem = validarDados(contaspagar);
-        if (mensagem.length() < 5) {
-            contaspagar = contasPagarDao.update(contaspagar);
-            RequestContext.getCurrentInstance().closeDialog(contaspagar);
-        }else{
-            Mensagem.lancarMensagemInfo("", mensagem);
-        } 
+    public void salvar() {
+        Float formataNParcela = Formatacao.formatarStringfloat(numeroParcela);
+        if (formataNParcela > 1) {
+             calcularParcelamentoMensal(formataNParcela, contaspagar);
+        } else {
+            contaspagar.setFormapagamento(tipoPagamento);
+            contaspagar.setNumeroparcela(numeroParcela);
+            contaspagar.setPlanoconta(planoconta);
+            contaspagar.setUsuario(usuarioLogadoMB.getUsuario());
+            String mensagem = validarDados(contaspagar);
+            if (mensagem.length() < 5) {
+                contaspagar = contasPagarDao.update(contaspagar);
+                RequestContext.getCurrentInstance().closeDialog(contaspagar);
+            } else {
+                Mensagem.lancarMensagemInfo("", mensagem);
+            }
+        }
     }
     
     public String validarDados(Contaspagar contaspagar){
@@ -163,6 +173,33 @@ public class CadContasPagarMB implements Serializable{
             msg = msg + " Valor da conta não informada \r\n";
         }
         return msg;
+    }
+    
+    public void calcularParcelamentoMensal(Float nParcela, Contaspagar contaspagar) {
+        for (int i = 1; i <= nParcela; i++) {
+            Contaspagar copia = new Contaspagar();
+            copia = contaspagar;
+            contaspagar.setFormapagamento(tipoPagamento);
+            contaspagar.setNumeroparcela("" + i);
+            contaspagar.setPlanoconta(planoconta);
+            contaspagar.setUsuario(usuarioLogadoMB.getUsuario());
+            String mensagem = validarDados(contaspagar);
+            if (mensagem.length() < 5) {
+                contaspagar = contasPagarDao.update(contaspagar);
+                Calendar c = new GregorianCalendar();
+                c.setTime(copia.getDatalancamento());
+                c.add(Calendar.MONTH, 1);
+                Date data = c.getTime();
+                copia.setDatalancamento(data);
+                if (i < nParcela) {
+                    contaspagar = new Contaspagar();
+                    contaspagar = copia;
+                }
+            } else {
+                Mensagem.lancarMensagemInfo("", mensagem);
+            }
+        }
+        RequestContext.getCurrentInstance().closeDialog(contaspagar);
     }
 }
  

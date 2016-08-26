@@ -50,7 +50,8 @@ public class Cliente implements Serializable {
     private Date datanascimento;
     @Size(max = 20)
     @Column(name = "telefone")
-    private String telefone; @OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente")
+    private String telefone; 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente")
     private List<Associado> associadoList;
     
     

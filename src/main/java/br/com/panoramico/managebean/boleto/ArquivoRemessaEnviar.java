@@ -10,7 +10,9 @@ import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.model.Empresa;
 import br.com.panoramico.uil.Formatacao;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 
@@ -22,11 +24,11 @@ public class ArquivoRemessaEnviar implements ArquivoRemessaItau{
     @EJB
     private EmpresaDao empresaDao;
     private Empresa empresa;
+    private List<Empresa> listaEmpresa;
     
     @PostConstruct
     public void init(){
-        empresa = empresaDao.find(1);
-    }
+    }  
 
     public String getBranco() {
         return branco;
@@ -54,7 +56,7 @@ public class ArquivoRemessaEnviar implements ArquivoRemessaItau{
     
     
     
-    public String gerarHeader(Contasreceber conta, int numeroSequencial) throws IOException{
+    public String gerarHeader(Contasreceber conta, int numeroSequencial, Empresa empresa) throws IOException{
         String linha="";
         linha = linha  + ("0");
         linha = linha  + ("1");
@@ -63,7 +65,7 @@ public class ArquivoRemessaEnviar implements ArquivoRemessaItau{
         linha = linha  + ("COBRANCA       ");
         linha = linha  + (empresa.getBanco().getAgencia());
         linha = linha  + ("00");
-        linha = linha  + (empresa.getBanco().getConta());
+        linha = linha  + (empresa.getBanco().getConta()); 
         linha = linha  + (empresa.getBanco().getDigitoconta());
         linha = linha  + (branco.substring(0, 8));
         String nomeEmpresa = empresa.getRazaosocial();
@@ -86,7 +88,7 @@ public class ArquivoRemessaEnviar implements ArquivoRemessaItau{
         return linha;
     }
     
-    public String gerarDetalhe(Contasreceber conta, int numeroSequencial) throws IOException, Exception{
+    public String gerarDetalhe(Contasreceber conta, int numeroSequencial, Empresa empresa) throws IOException, Exception{
         String linha="";
         linha = linha  + ("1");
         linha = linha  + ("02");
@@ -173,7 +175,7 @@ public class ArquivoRemessaEnviar implements ArquivoRemessaItau{
         return linha;
     }
     
-    public String gerarMulta(Contasreceber conta, int numeroSequencial) throws IOException, Exception{
+    public String gerarMulta(Contasreceber conta, int numeroSequencial, Empresa empresa) throws IOException, Exception{
         String linha="";
         linha = linha  + ("2");
         linha = linha  + ("1");
@@ -212,5 +214,5 @@ public class ArquivoRemessaEnviar implements ArquivoRemessaItau{
         }
         return valor;
     }
-    
+   
 }

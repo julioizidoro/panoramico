@@ -18,17 +18,17 @@
         <link rel="stylesheet" type="text/css" href="../../resources/css/tabelas.css"/>
     </h:head>
 
-
+  
     <h:body style="background:#A3DAD9; border-color: #CF7000;" > 
         <h:form id="idFormConsultaNotificacao" style="font-size: 12px; background-color:#A3DAD9">
 
             <title>Ler Boleto</title>
             <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
             <p:fileUpload fileUploadListener="#{contasReceberMB.uploadRetorno}" mode="advanced" dragDropSupport="false" label="Carregar"
-                          multiple="true" style="width:97%;"  fileLimit="5" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|txt|docx|xls|xlsx|doc|pptx|cdr|eps|bmp)$/">
+                          multiple="true" style="width:97%;"  fileLimit="5" allowTypes="/(\.|\/)(ret|RET)$/">
             </p:fileUpload>
             <br/><br/><br/>  
-        </h:form>
+        </h:form> 
     </h:body>
 
 </html>

@@ -16,6 +16,7 @@
         <link rel="stylesheet" type="text/css" href="../../resources/css/textos.css"/>
         <link rel="stylesheet" type="text/css" href="../../resources/css/css.css"/>
         <link rel="stylesheet" type="text/css" href="../../resources/css/tabelas.css"/>
+        
     </h:head>
 
 
@@ -25,12 +26,12 @@
             <title>Boletos</title>
             <br/>
             <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-            <p:commandButton value="Gerar Boleto" style="margin-left: 1%;" action="#{boletoMB.gerarBoleto()}"/>
-            <p:commandButton value="Enviar" style="margin-left:3%;" action="#{boletoMB.enviarBoleto()}">
-                <p:fileDownload value="#{fileDownloadView.file}" />
-            </p:commandButton>
+            <p:commandButton value="Gerar Boleto" style="margin-left: 1%;" action="#{boletoMB.gerarBoleto()}" onclick="this.form.target = '_blank'" ajax="false"/>
+            <p:commandButton value="Enviar" style="margin-left:3%;" action="#{boletoMB.enviarBoleto()}" update="idConsultaNotificacao">
+                <p:fileDownload value="#{boletoMB.stream}" />
+            </p:commandButton> 
             <h:dataTable id="idConsultaNotificacao" style="width: 98%;" styleClass="table" value="#{boletoMB.listaContasReceber}" var="contasreceber">
-                <h:column>
+                <h:column> 
                     <f:facet name="header">Cliente</f:facet> 
                     <h:outputText value="#{contasreceber.cliente.nome}" styleClass="alinhamento" style="float: left;"/>
                 </h:column>
@@ -40,8 +41,8 @@
                 </h:column>
                 <h:column>
                     <f:facet name="header">Parcela</f:facet> 
-                    <h:outputText value="#{contasreceber.numeroparcela}" styleClass="alinhamento" />
-                </h:column>
+                    <h:outputText value="#{contasreceber.numeroparcela}" styleClass="alinhamento" style="margin-left: 50%;"/>
+                </h:column>  
                 <h:column>
                     <f:facet name="header">Valor</f:facet> 
                     <h:outputText value="#{contasreceber.valorconta}" styleClass="alinhamento" style="float: right;">
@@ -59,15 +60,6 @@
             </h:dataTable>
             <br/><br/>
         </h:form>
-        <script type="text/javascript">
-            function start() {
-                PF('statusDialog').show();
-            }
-
-            function stop() {
-                PF('statusDialog').hide();
-            }
-        </script>
     </h:body>
 
 </html>

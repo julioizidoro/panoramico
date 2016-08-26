@@ -251,6 +251,7 @@ public class CadEventoMB implements Serializable{
         contasreceber.setDatalancamento(new Date());
         contasreceber.setCliente(cliente);
         contasreceber.setNumeroparcela("1");
+        contasreceber.setNumerodocumento(""+evento.getIdevento());
         contasreceber.setValorconta(evento.getValor());
         contasreceber.setUsuario(usuarioLogadoMB.getUsuario());
         contasreceber.setEnviado(false);

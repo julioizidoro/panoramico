@@ -370,8 +370,8 @@ public class CadSolicitacaoExameMB implements Serializable{
         exame.setDesconto(descontoExame);
         String mensagem = validarDados();
         if (mensagem.length() < 5) {
-            lancarContaReceber();
             exame = exameDao.update(exame);
+            lancarContaReceber();
             if (associadoDependente.equalsIgnoreCase("Associado") && exame.getIdexame() != null) {
                 exameassociado.setExame(exame);
                 exameassociado.setAssociado(associado);
@@ -401,6 +401,11 @@ public class CadSolicitacaoExameMB implements Serializable{
          contasreceber.setSituacao("PAGAR");
          contasreceber.setValorconta(totalPagar);
          contasreceber.setTipopagamento(exame.getFormapagamento());
+         if (exame.getFormapagamento().equalsIgnoreCase("Boleto")) {
+             contasreceber.setSituacaoboleto("Novo");
+         }else{
+             contasreceber.setSituacaoboleto("Não");
+         }
          contasreceber.setUsuario(usuarioLogadoMB.getUsuario());
          contasreceber.setNumerodocumento(""+exame.getIdexame());
          planoconta = planoContaDao.find(4);

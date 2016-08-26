@@ -5,12 +5,15 @@
  */
 package br.com.panoramico.managebean.boleto;
 
+import br.com.panoramico.dao.AssociadoDao;
 import br.com.panoramico.dao.ContasReceberDao;
 import br.com.panoramico.dao.EmpresaDao;
 import br.com.panoramico.managebean.UsuarioLogadoMB;
+import br.com.panoramico.model.Associado;
 import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.model.Empresa;
 import br.com.panoramico.uil.Formatacao;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,6 +27,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import org.jrimum.bopepo.Boleto;
 import org.jrimum.domkee.comum.pessoa.endereco.Endereco;
+import org.jrimum.domkee.comum.pessoa.endereco.UnidadeFederativa;
+import org.primefaces.model.StreamedContent;
 
 @Named
 @ViewScoped
@@ -40,6 +45,12 @@ public class BoletoMB implements Serializable{
     @EJB
     private EmpresaDao empresaDao;
     private Empresa empresa;
+    private List<Empresa> listaEmpresa;
+    private StreamedContent stream;
+    private Associado associado;
+    private List<Associado> listaAssociado;
+    @EJB 
+    private AssociadoDao associadoDao;
     
     
     @PostConstruct
@@ -111,7 +122,47 @@ public class BoletoMB implements Serializable{
     public void setEmpresa(Empresa empresa) {
         this.empresa = empresa;
     }
-    
+
+    public List<Empresa> getListaEmpresa() {
+        return listaEmpresa;
+    }
+
+    public void setListaEmpresa(List<Empresa> listaEmpresa) {
+        this.listaEmpresa = listaEmpresa;
+    }
+
+    public StreamedContent getStream() {
+        return stream;
+    }
+
+    public void setStream(StreamedContent stream) {
+        this.stream = stream;
+    }
+
+    public Associado getAssociado() {
+        return associado;
+    }
+
+    public void setAssociado(Associado associado) {
+        this.associado = associado;
+    }
+
+    public List<Associado> getListaAssociado() {
+        return listaAssociado;
+    }
+
+    public void setListaAssociado(List<Associado> listaAssociado) {
+        this.listaAssociado = listaAssociado;
+    }
+
+    public AssociadoDao getAssociadoDao() {
+        return associadoDao;
+    }
+
+    public void setAssociadoDao(AssociadoDao associadoDao) {
+        this.associadoDao = associadoDao;
+    }
+
     
     
     public void selecionarTodasLista(){
@@ -150,11 +201,12 @@ public class BoletoMB implements Serializable{
             DadosBoletoBean dadosBoletoBean = new DadosBoletoBean();
             dadosBoletoBean.gerarPDFS(listaBoletos);
         }
-        return "";
+        return ""; 
     } 
     
-    
+     
     public Boleto gerarClasseBoleto(Contasreceber conta) {
+        associado = pegarEndereco(conta);
         DadosBoletoBean dadosBoletoBean = new DadosBoletoBean();
         dadosBoletoBean.setAgencias(empresa.getBanco().getAgencia());
         dadosBoletoBean.setCarteiras(empresa.getBanco().getCarteira());
@@ -170,13 +222,16 @@ public class BoletoMB implements Serializable{
         dadosBoletoBean.setValor(Formatacao.converterFloatBigDecimal(conta.getValorconta()));
         dadosBoletoBean.setNossoNumeros(dadosBoletoBean.getNumeroDocumentos());
         dadosBoletoBean.setEnderecoSacado(new Endereco());
-        //dadosBoletoBean.getEnderecoSacado().setBairro(conta.getVendas().getCliente().getBairro());
-        //dadosBoletoBean.getEnderecoSacado().setCep(conta.getVendas().getCliente().getCep());
-        //dadosBoletoBean.getEnderecoSacado().setComplemento(conta.getVendas().getCliente().getComplemento());
-        //dadosBoletoBean.getEnderecoSacado().setLocalidade(conta.getVendas().getCliente().getCidade());
-       // dadosBoletoBean.getEnderecoSacado().setLogradouro(conta.getVendas().getCliente().getTipologradouro() + " " + conta.getVendas().getCliente().getLogradouro());
-       // dadosBoletoBean.getEnderecoSacado().setNumero(conta.getVendas().getCliente().getNumero());
-       // dadosBoletoBean.getEnderecoSacado().setUF(UnidadeFederativa.valueOfSigla(conta.getVendas().getCliente().getEstado()));
+        if (associado == null) {
+        }else{
+            dadosBoletoBean.getEnderecoSacado().setBairro(associado.getBairro());
+            dadosBoletoBean.getEnderecoSacado().setCep(associado.getCep());
+            dadosBoletoBean.getEnderecoSacado().setComplemento(associado.getComplemento());
+            dadosBoletoBean.getEnderecoSacado().setLocalidade(associado.getCidade());
+            dadosBoletoBean.getEnderecoSacado().setLogradouro(associado.getTipologradouro() + " " + associado.getLogradouro());
+            dadosBoletoBean.getEnderecoSacado().setNumero(associado.getNumero());
+            dadosBoletoBean.getEnderecoSacado().setUF(UnidadeFederativa.valueOfSigla(associado.getEstado()));
+        }
         dadosBoletoBean.criarBoleto();
         conta.setNossonumero(dadosBoletoBean.getNossoNumeros());
         conta.setSituacaoboleto("enviado");
@@ -187,19 +242,20 @@ public class BoletoMB implements Serializable{
      
      public String enviarBoleto(){
        List<Contasreceber> lista = new ArrayList<Contasreceber>();
-       for(int i=0;i<listaSelecionadas.size();i++){
-           if(listaSelecionadas.get(i).isSelecionado()){
-               lista.add(listaSelecionadas.get(i));
+       for(int i=0;i<listaContasReceber.size();i++){
+           if(listaContasReceber.get(i).isSelecionado()){
+               lista.add(listaContasReceber.get(i));
            }
        }
        if(lista.size()==0){
-           lista=listaSelecionadas;
+           lista=listaContasReceber;
        }
        if(lista.size()>0){
-             GerarArquivoRemessaItau arquivoRemessaItau = new GerarArquivoRemessaItau(lista, usuarioLogadoMB);
+             GerarArquivoRemessaItau arquivoRemessaItau = new GerarArquivoRemessaItau(lista, usuarioLogadoMB, empresa, stream, lista);
+             confirmarContas(lista);
              FacesMessage msg = new FacesMessage("Sucesso! ", "Arquivo Remessa Gerado");
             FacesContext.getCurrentInstance().addMessage(null, msg);
-       }else{
+       }else{ 
             FacesMessage msg = new FacesMessage("Erro! ", "Nenhuma Conta Selecionada");
             FacesContext.getCurrentInstance().addMessage(null, msg);
        }
@@ -211,4 +267,39 @@ public class BoletoMB implements Serializable{
         String scalculo = Formatacao.foramtarFloatString(calculo);
         return scalculo;
     }
+    
+     
+    public void gerarListaEmpresa() {
+        listaEmpresa = empresaDao.list("Select e from Empresa e");
+        if (listaEmpresa == null) {
+            listaEmpresa = new ArrayList<Empresa>();
+        }
+        for (int i = 0; i < listaEmpresa.size(); i++) {
+            if (listaEmpresa.get(i).getIdempresa() == 1) {
+                empresa = new Empresa();
+                empresa = listaEmpresa.get(i);
+            }
+        }
+    }
+    
+    private void confirmarContas(List<Contasreceber> lista) {
+        for (int i = 0; i < lista.size(); i++) {
+            Contasreceber conta = lista.get(i);
+            conta.setEnviado(true);
+            conta.setSituacaoboleto("Enviado");
+            contasReceberDao.update(conta);
+            listaContasReceber.remove(conta);
+        }
+    }
+    
+    public Associado pegarEndereco(Contasreceber contasreceber){
+        Associado associadoo;
+        listaAssociado = associadoDao.list("Select a from Associado a where a.cliente.idcliente=" + contasreceber.getCliente().getIdcliente());
+        for (int i = 0; i < listaAssociado.size(); i++) {
+            associadoo = listaAssociado.get(i);
+            return associadoo;
+        }
+        return null;
+    }
 }
+ 

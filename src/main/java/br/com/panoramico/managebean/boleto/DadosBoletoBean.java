@@ -7,12 +7,17 @@ package br.com.panoramico.managebean.boleto;
 
 import br.com.panoramico.uil.GerarDacNossoNumero;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import org.jrimum.bopepo.BancosSuportados;
 import org.jrimum.bopepo.Boleto;
@@ -26,6 +31,7 @@ import org.jrimum.domkee.financeiro.banco.febraban.NumeroDaConta;
 import org.jrimum.domkee.financeiro.banco.febraban.Sacado;
 import org.jrimum.domkee.financeiro.banco.febraban.TipoDeTitulo;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
+import org.primefaces.context.RequestContext;
 
 
 public class DadosBoletoBean {
@@ -248,7 +254,7 @@ public class DadosBoletoBean {
         boleto.setInstrucao4("APÓS O VENCIMENTO PAGUE SOMENTE NO ITAÚ");
         
     } 
-    
+     
     
     private ContaBancaria criarContaBancaria() {
         ContaBancaria contaBancaria = new ContaBancaria(BancosSuportados.BANCO_ITAU.create());
@@ -271,24 +277,23 @@ public class DadosBoletoBean {
         titulo.setTipoDeDocumento(TipoDeTitulo.DM_DUPLICATA_MERCANTIL);
         titulo.setAceite(Titulo.Aceite.N);
         return titulo;
-    }
+    } 
     
-    private void enviarBoleto(byte[] pdf) {
+    private void enviarBoleto(byte[] pdf) throws IOException {
         HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
-
         response.setContentType("application/pdf");
         response.setContentLength(pdf.length);
-        response.setHeader("Content-Disposition", "attachment; filename=boletoItau.pdf");
+        response.setHeader("Content-Disposition", "inline; filename=boletoItau.pdf");
          OutputStream output = null;
 
         try {
             output = response.getOutputStream();
-            output.write(pdf, 0, pdf.length);
+            output.write(pdf);
             output.flush();
             response.flushBuffer();
         } catch (Exception e) {
             throw new RuntimeException("Erro gerando boleto", e);
-        }
+        } 
 
         FacesContext.getCurrentInstance().responseComplete();
     }
@@ -296,16 +301,24 @@ public class DadosBoletoBean {
 
     public void emitir() {
         byte[] pdf = gerarBoleto();
-        enviarBoleto(pdf);
+        try {
+            enviarBoleto(pdf);
+        } catch (IOException ex) {
+            Logger.getLogger(DadosBoletoBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public void gerarPDFS(List<Boleto> listaBoletos){
         FacesContext facesContext = FacesContext.getCurrentInstance();  
         ServletContext servletContext = (ServletContext)facesContext.getExternalContext().getContext();
-        String caminho = "/reports/itau/boletotemplatetravelmate.pdf";
+        String caminho = "/reports/itau/boletotemplatepanoramicoo.pdf";
         caminho = servletContext.getRealPath(caminho); 
         byte[] pdf = BoletoViewer.groupInOnePdfWithTemplate(listaBoletos, caminho);
-        enviarBoleto(pdf);
-    }
+        try {
+            enviarBoleto(pdf); 
+        } catch (IOException ex) {  
+            Logger.getLogger(DadosBoletoBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    } 
     
-}
+} 
