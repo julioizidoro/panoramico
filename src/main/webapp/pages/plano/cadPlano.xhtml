@@ -24,14 +24,14 @@
             <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
             
             <p:outputLabel class="titTela" value="Descricao" style="font-size: 12px;text-align: left;margin-left:2%;"/>
-            <p:outputLabel value="Valor" class="titTela" style="font-size: 12px;text-align: left;margin-left:65%;"/>
+            <p:outputLabel value="Valor" class="titTela" style="font-size: 12px;text-align: left;margin-left:52%;"/>
             <br/> 
-            <p:inputText class="form-control" value="#{cadPlanoMB.plano.descricao}" size="60" style="margin-left:2%;font-size: 12px;"/>
+            <p:inputText class="form-control" value="#{cadPlanoMB.plano.descricao}" size="40" style="margin-left:2%;font-size: 12px;"/>
             <p:inputText value="#{cadPlanoMB.plano.valor}" class="form-control" size="15" style="margin-left:4%;font-size: 12px;">
                 <f:convertNumber pattern="##,###,###,###.##"/> 
             </p:inputText>
             
-            <br/>
+            <br/> 
             <hr/>
             <br/>
             <p:commandLink style="text-decoration: none;" actionListener="#{cadPlanoMB.salvar()}" ajax="false">

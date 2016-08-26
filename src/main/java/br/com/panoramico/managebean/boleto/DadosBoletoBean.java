@@ -5,6 +5,7 @@
  */
 package br.com.panoramico.managebean.boleto;
 
+import br.com.panoramico.uil.Formatacao;
 import br.com.panoramico.uil.GerarDacNossoNumero;
 import java.io.File;
 import java.io.IOException;
@@ -218,19 +219,21 @@ public class DadosBoletoBean {
   
     
     public byte[] gerarBoleto() {
-        criarBoleto();
+        criarBoleto("", "");
         BoletoViewer boletoViewer = new BoletoViewer(boleto);
         return boletoViewer.getPdfAsByteArray();
     }
     
     
     public File gerarBoletoEmArquivo(String arquivo) {
-        criarBoleto();
+        criarBoleto("","");
         BoletoViewer boletoViewer = new BoletoViewer(boleto);
         return boletoViewer.getPdfAsFile(arquivo);
     }
     
-    public void criarBoleto() {
+    public void criarBoleto(String juros, String multa) {
+        valorJuros = juros;
+        valorMulta = multa;
         GerarDacNossoNumero dac = new GerarDacNossoNumero(nossoNumeros,carteiras, agencias, numeroContas);
         this.digitoNossoNumeros = dac.getDac();
         ContaBancaria contaBancaria = criarContaBancaria();
@@ -311,7 +314,7 @@ public class DadosBoletoBean {
     public void gerarPDFS(List<Boleto> listaBoletos){
         FacesContext facesContext = FacesContext.getCurrentInstance();  
         ServletContext servletContext = (ServletContext)facesContext.getExternalContext().getContext();
-        String caminho = "/reports/itau/boletotemplatepanoramicoo.pdf";
+        String caminho = "/reports/itau/boletotemplatepanoramico.pdf";
         caminho = servletContext.getRealPath(caminho); 
         byte[] pdf = BoletoViewer.groupInOnePdfWithTemplate(listaBoletos, caminho);
         try {
@@ -320,5 +323,5 @@ public class DadosBoletoBean {
             Logger.getLogger(DadosBoletoBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     } 
-    
+       
 } 

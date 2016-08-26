@@ -1,0 +1,57 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/pages/templates/default.xhtml">
+        <ui:define name="corpo">
+
+            <br/>  
+            <div class="col-10 boxAzulClaro" style="margin-left:8.5%;width: 83.2%;">   
+                <br/> 
+                <h:form id="idFormConsultaBanco" style="margin-left:5%;width: 90%;">
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:10%;width: 80%;"/>
+
+                    <!-- TABELA CADASTROS -->
+                    <div class="col-6 titTela" style="margin-left:-7%;">Consulta Bancos</div>
+                    <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" action="#{bancoMB.novoBanco()}">
+                        <div class="icoAdd fa fa-plus-square-o" style="margin-right: 4%;"></div>
+                        <p:ajax event="dialogReturn" listener="#{bancoMB.retornoDialogNovo}" update="messages, idConsultaBanco"/>
+                    </p:commandLink>
+                    <h:dataTable  id="idConsultaBanco" style="width:85%;margin-left:10%;" styleClass="table" value="#{bancoMB.listaBanco}" var="banco">
+                        <h:column>
+                            <f:facet name="header">Nome</f:facet> 
+                            <h:outputText value="#{banco.nome}" styleClass="alinhamento" style="float: left;" />
+                        </h:column>
+                        <h:column >  
+                            <f:facet name="header">Agência</f:facet> 
+                            <h:outputText value="#{banco.agencia}" styleClass="alinhamento" style="float: right;margin-right: 50%;"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Conta</f:facet> 
+                            <h:outputText value="#{banco.conta}" styleClass="alinhamento" style="float: right; margin-right: 50%;"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Gerente</f:facet> 
+                            <h:outputText value="#{banco.gerente}" styleClass="alinhamento" style="float: left;"/>
+                        </h:column>
+                        <h:column>
+                            <p:commandLink rendered="#{usuarioLogadoMB.editar}" title="Editar" action="#{bancoMB.editar(banco)}" style="text-decoration: none;">
+                                <div class="fa fa-pencil-square-o">
+                                </div>
+                                <p:ajax event="dialogReturn" listener="#{contasPagarMB.retornoDialogAlteracao}" update=":idFormConsultaBanco:messages, @form"/>
+                            </p:commandLink> 
+                            <p:commandLink title="Excluir" style="text-decoration: none;" update=":idFormConsultaBanco:messages, @form" rendered="#{usuarioLogadoMB.excluir}"  action="#{bancoMB.excluir(banco)}">
+                                <div class="fa fa-trash" >
+                                </div>
+                            </p:commandLink>
+                        </h:column> 
+
+
+                    </h:dataTable>
+
+                </h:form>
+            </div>
+        </ui:define> 
+    </ui:composition>
+</html>

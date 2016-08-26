@@ -17,6 +17,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComboBox;
@@ -828,5 +829,11 @@ public class Formatacao {
         BufferedReader bfReader = null;
         bfReader = new BufferedReader(new InputStreamReader(is));
         return bfReader;
+    }
+    
+    public static String converterValorFloatReal(Float valor){
+        Locale ptBr = new Locale("pt", "BR");
+        String valores = NumberFormat.getCurrencyInstance(ptBr).format(valor);
+        return valores;
     }
 }

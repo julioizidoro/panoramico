@@ -25,11 +25,6 @@ import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 
-/**
- *
- * @author Julio
- */
-
 
 @Named
 @ViewScoped
@@ -94,7 +89,7 @@ public class PlanoMB implements Serializable{
     
     public String novoCadastroPlano() {
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put("contentWidth", 580);
+        options.put("contentWidth", 450);
         RequestContext.getCurrentInstance().openDialog("cadPlano", options, null);
         return "";
     }
@@ -123,7 +118,7 @@ public class PlanoMB implements Serializable{
             FacesContext fc = FacesContext.getCurrentInstance();
             HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
             session.setAttribute("plano", plano);
-            options.put("contentWidth", 580);
+            options.put("contentWidth", 450);
             RequestContext.getCurrentInstance().openDialog("cadPlano", options, null);
         }
     }

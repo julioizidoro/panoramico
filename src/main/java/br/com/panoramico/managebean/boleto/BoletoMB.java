@@ -15,9 +15,11 @@ import br.com.panoramico.model.Empresa;
 import br.com.panoramico.uil.Formatacao;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -232,7 +234,9 @@ public class BoletoMB implements Serializable{
             dadosBoletoBean.getEnderecoSacado().setNumero(associado.getNumero());
             dadosBoletoBean.getEnderecoSacado().setUF(UnidadeFederativa.valueOfSigla(associado.getEstado()));
         }
-        dadosBoletoBean.criarBoleto();
+        String juros = Formatacao.converterValorFloatReal(empresa.getBanco().getValorjuros());
+        String multa = Formatacao.converterValorFloatReal(empresa.getBanco().getValormulta());
+        dadosBoletoBean.criarBoleto(juros, multa);
         conta.setNossonumero(dadosBoletoBean.getNossoNumeros());
         conta.setSituacaoboleto("enviado");
         contasReceberDao.update(conta);
