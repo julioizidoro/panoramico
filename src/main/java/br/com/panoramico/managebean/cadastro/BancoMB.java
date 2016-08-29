@@ -84,16 +84,16 @@ public class BancoMB implements Serializable{
             FacesContext fc = FacesContext.getCurrentInstance();
             HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
             session.setAttribute("banco", banco);
-            options.put("contentWidth", 570);
-            RequestContext.getCurrentInstance().openDialog("cadBanco");
+            options.put("contentWidth", 500);
+            RequestContext.getCurrentInstance().openDialog("cadBanco", options, null);
         }
         return "";
     }
     
     public String novoBanco() {
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put("contentWidth", 570);
-        RequestContext.getCurrentInstance().openDialog("cadBanco");
+        options.put("contentWidth", 500); 
+        RequestContext.getCurrentInstance().openDialog("cadBanco", options, null);
         return "";
     }
     

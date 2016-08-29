@@ -44,7 +44,6 @@ public class Banco implements Serializable{
     @Size(max = 30)
     @Column(name = "chave")
     private String chave;
-    @Size(max = 20)
     @Column(name = "senha")
     private String senha;
     @Size(max = 50)
@@ -219,9 +218,9 @@ public class Banco implements Serializable{
         return true;
     }
 
-    @Override
+   @Override
     public String toString() {
-    	 return getNome();
+        return "br.com.panoramico.model.Banco[ idbanco=" + idbanco + " ]";
     }
 
     

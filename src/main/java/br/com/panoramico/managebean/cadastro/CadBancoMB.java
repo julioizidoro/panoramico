@@ -10,8 +10,10 @@ import br.com.panoramico.model.Banco;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
 
 
@@ -26,7 +28,13 @@ public class CadBancoMB implements Serializable{
    
     @PostConstruct
     public void init(){
-        
+        FacesContext fc = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+        banco = (Banco) session.getAttribute("banco");
+        session.removeAttribute("banco");
+        if (banco == null) {
+            banco = new Banco();
+        }
     }
 
     public Banco getBanco() {
@@ -51,7 +59,7 @@ public class CadBancoMB implements Serializable{
         if (msg.length() < 5) {
             banco = bancoDao.update(banco);
             RequestContext.getCurrentInstance().closeDialog(banco);
-        }
+        } 
     }
     
     public void cancelar(){

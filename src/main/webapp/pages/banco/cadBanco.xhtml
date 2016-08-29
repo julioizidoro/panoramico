@@ -21,53 +21,52 @@
     <h:body style="background:#A3DAD9; border-color: #CF7000;" > 
         <h:form id="idFormCadastroBanco" style="font-size: 12px; background-color:#A3DAD9">
                 
-            <title>Nova Empresa</title>
+            <title>Novo Banco</title>
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                 
                 <p:outputLabel class="titTela" value="Nome" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
-                <p:outputLabel class="titTela" value="Agência" style="font-size: 12px;text-align: left;margin-left: 38%;"/>
+                <p:outputLabel class="titTela" value="Agência" style="font-size: 12px;text-align: left;margin-left: 40%;"/>
+                <p:outputLabel class="titTela" value="Conta" style="font-size: 12px;text-align: left; margin-left: 16%;"/>
                 <br/>
-                <p:inputText class="form-control" value="#{cadBancoMB.banco.nome}" size="40" style="margin-left: 2%;font-size: 12px;float: left;"/>
-                <p:inputText class="form-control" value="#{cadBancoMB.banco.agencia}" size="12" style="margin-left: 2%;font-size: 12px;float: left;"/>
+                <p:inputText class="form-control" value="#{cadBancoMB.banco.nome}" size="30" style="margin-left: 2%;font-size: 12px;float: left;"/>
+                <p:inputText class="form-control" value="#{cadBancoMB.banco.agencia}" size="12" style="margin-left: 4%;font-size: 12px;float: left;"/>
+                <p:inputText class="form-control" value="#{cadBancoMB.banco.conta}" size="12" style="margin-left:6%; font-size: 12px;"/>
+                <br/><br/>
+                <p:outputLabel class="titTela" value="Chave" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
+                <p:outputLabel class="titTela" value="Senha" style="font-size: 12px;text-align: left;margin-left: 19%;"/>
+                <p:outputLabel class="titTela" value="Digito Agência" style="font-size: 12px;text-align: left;margin-left:16%;"/>
+                <p:outputLabel class="titTela" value="Digito Conta" style="font-size: 12px;text-align: left;margin-left: 6%;"/>
                 <br/>
-                <p:outputLabel class="titTela" value="Conta" style="font-size: 12px;text-align: left; margin-left: 2%;"/>
-                <p:outputLabel class="titTela" value="Chave" style="font-size: 12px;text-align: left;margin-left: 44%;"/>
-                <br/>
-                <p:inputText class="form-control" value="#{cadBancoMB.banco.conta}" size="36" style="margin-left:8%; font-size: 12px;"/>
-                <p:inputText class="form-control" value="#{cadBancoMB.banco.chave}" size="36" style="margin-left:8%; font-size: 12px;"/>
-                </h:panelGrid>
-                <br/>
-                <p:outputLabel class="titTela" value="Senha" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
-                <p:outputLabel class="titTela" value="Digito Agência" style="font-size: 12px;text-align: left;margin-left:20%;"/>
-                <p:outputLabel class="titTela" value="Digito Conta" style="font-size: 12px;text-align: left;margin-left: 6.6%;"/>
-                <br/>
-                <p:inputText class="form-control" value="#{cadBancoMB.banco.senha}" size="15" style="margin-left: 2%;font-size: 12px;float: left"/>
-                <p:inputText class="form-control" value="#{cadBancoMB.banco.digitoagencia}" size="15" style="margin-left:5.5%;font-size: 12px;float: left"/>
-                <p:inputText class="form-control" value="#{cadBancoMB.banco.digitoconta}" size="36" style="margin-left: 4.5%;font-size: 12px;float: left"/>
-                <br/><br/><br/>
-                 
+                <p:inputText class="form-control" value="#{cadBancoMB.banco.chave}" size="12" style="margin-left:2%; font-size: 12px;"/>
+                <p:inputText class="form-control" value="#{cadBancoMB.banco.senha}" size="15" style="margin-left: 2.9%;font-size: 12px;float: left"/>
+                <p:inputText class="form-control" value="#{cadBancoMB.banco.digitoagencia}" size="12" style="margin-left:2.9%;font-size: 12px;float: left"/>
+                <p:inputText class="form-control" value="#{cadBancoMB.banco.digitoconta}" size="12" style="margin-left: 2.9%;font-size: 12px;float: left"/>
+                <br/><br/>
                 <p:outputLabel class="titTela" value="Carteira" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
-                <p:outputLabel class="titTela" value="Gerente" style="font-size: 12px;text-align: left;margin-left: 12%;"/>
-                <p:outputLabel class="titTela" value="Email Gerente" style="font-size: 12px;text-align: left;margin-left: 8%;"/>
-                 <p:outputLabel class="titTela" value="Número" style="font-size: 12px;text-align: right;margin-left: 19%;"/>
+                 <p:outputLabel class="titTela" value="Número" style="font-size: 12px;text-align: right;margin-left: 10%;"/>
+                <p:outputLabel class="titTela" value="Gerente" style="font-size: 12px;text-align: left;margin-left: 16%;"/>
                 <br/>
                 <p:inputText class="form-control" value="#{cadBancoMB.banco.carteira}" size="10" style="margin-left: 2%;font-size: 12px;float: left;"/>
-                <p:inputText class="form-control" value="#{cadBancoMB.banco.gerente}" size="10" style="margin-left: 5%; float: left;"/> 
-                <p:inputMask class="form-control" mask="99999-999" value="#{cadBancoMB.banco.emailgerente}" size="10" style="margin-left: 5%; float: left;"/>
-                <p:inputText class="form-control" value="#{cadBancoMB.banco.numero}" size="19" style="margin-left:6%;text-align: right;float: left"/>
+                <p:inputText class="form-control" value="#{cadBancoMB.banco.numero}" size="12" style="margin-left:2%;text-align: right;float: left"/>
+                <p:inputText class="form-control" value="#{cadBancoMB.banco.gerente}" size="29" style="margin-left: 2.8%; float: left;"/> 
+                <br/><br/><br/>
+                <p:outputLabel class="titTela" value="Email do Gerente" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
+                <p:outputLabel class="titTela" value="Valor Juros" style="font-size: 12px;text-align: left;margin-left: 31%;"/>
+                <p:outputLabel class="titTela" value="Valor Multa" style="font-size: 12px;text-align: left;margin-left: 7%;"/>
+                <br/> 
+                <p:inputText class="form-control"  value="#{cadBancoMB.banco.emailgerente}" size="30" style="margin-left: 2%; float: left;"/>
+                <p:inputText class="form-control" value="#{cadBancoMB.banco.valorjuros}" size="10" style="margin-left: 2.8%;font-size: 12px;text-align: right;float: left;">
+                    <f:convertNumber pattern="##,###,###,###.##"/>  
+                </p:inputText>
+                <p:inputText class="form-control" value="#{cadBancoMB.banco.valormulta}" size="10" style="margin-left: 2.8%; float: left;text-align: right;">
+                    <f:convertNumber pattern="##,###,###,###.##"/>  
+                </p:inputText>
                  <br/> 
-                 
-                 <p:outputLabel class="titTela" value="Valor Juros" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
-                <p:outputLabel class="titTela" value="Valor Multa" style="font-size: 12px;text-align: left;margin-left: 12%;"/>
                 <br/>
-                <p:inputText class="form-control" value="#{cadBancoMB.banco.valorjuros}" size="10" style="margin-left: 2%;font-size: 12px;float: left;"/>
-                <p:inputText class="form-control" value="#{cadBancoMB.banco.valormulta}" size="10" style="margin-left: 5%; float: left;"/> 
-                 <br/><br/>
-                 
                  <br/><br/>
                  <hr style="color: #367587; background: #367587"/>
                 <br/>  
-                <p:commandLink style="text-decoration: none;" actionListener="#{cadEmpresaMB.salvar()}" ajax="false">
+                <p:commandLink style="text-decoration: none;" actionListener="#{cadBancoMB.salvar()}" ajax="false">
                     <div style="font-size: 16px;margin-left: 32%;" class="cadastrar">Cadastrar</div>
                 </p:commandLink>
                 <p:commandLink style="text-decoration: none;" action="#{cadEmpresaMB.cancelar()}" ajax="false">

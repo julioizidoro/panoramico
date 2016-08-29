@@ -5,8 +5,10 @@
  */
 package br.com.panoramico.managebean.cadastro;
 
+import br.com.panoramico.dao.BancoDao;
 import br.com.panoramico.dao.EmpresaDao;
 import br.com.panoramico.dao.PlanoDao;
+import br.com.panoramico.model.Banco;
 import br.com.panoramico.model.Empresa;
 import br.com.panoramico.model.Plano;
 import br.com.panoramico.uil.Mensagem;
@@ -38,6 +40,10 @@ public class CadEmpresaMB implements  Serializable{
     private List<Plano> listaPlano;
     @EJB
     private PlanoDao planoDao;
+    private Banco banco;
+    private List<Banco> listaBanco;
+    @EJB
+    private BancoDao bancoDao;
     
     
     @PostConstruct
@@ -50,8 +56,10 @@ public class CadEmpresaMB implements  Serializable{
             empresa = new Empresa();
         }else{
             plano = empresa.getPlano();
+            banco = empresa.getBanco();
         }
         gerarListaPlano();
+        gerarListaBanco();
     }
 
     public EmpresaDao getEmpresaDao() {
@@ -93,6 +101,30 @@ public class CadEmpresaMB implements  Serializable{
     public void setPlanoDao(PlanoDao planoDao) {
         this.planoDao = planoDao;
     }
+
+    public Banco getBanco() {
+        return banco;
+    }
+
+    public void setBanco(Banco banco) {
+        this.banco = banco;
+    }
+
+    public List<Banco> getListaBanco() {
+        return listaBanco;
+    }
+
+    public void setListaBanco(List<Banco> listaBanco) {
+        this.listaBanco = listaBanco;
+    }
+
+    public BancoDao getBancoDao() {
+        return bancoDao;
+    }
+
+    public void setBancoDao(BancoDao bancoDao) {
+        this.bancoDao = bancoDao;
+    }
     
     
     
@@ -101,6 +133,7 @@ public class CadEmpresaMB implements  Serializable{
          String msg = validarDaodos();
          if (msg.length() < 5) {
             empresa.setPlano(plano);
+            empresa.setBanco(banco);
             empresa = empresaDao.update(empresa);
             RequestContext.getCurrentInstance().closeDialog(empresa);
          }else{
@@ -109,15 +142,12 @@ public class CadEmpresaMB implements  Serializable{
     }
      
      public void cancelar(){
-         RequestContext.getCurrentInstance().closeDialog(empresa);
+         RequestContext.getCurrentInstance().closeDialog(new Empresa());
      }
      
      
      public String validarDaodos(){
          String mensagem = "";
-         if (empresa.getCnpj().equalsIgnoreCase("")) {
-             mensagem = mensagem + " Você não digitou o cnpj \r\n";
-         }
          
          if (empresa.getRazaosocial().equalsIgnoreCase("")) {
              mensagem = mensagem + " Você não informou a razão social \r\n";
@@ -129,6 +159,13 @@ public class CadEmpresaMB implements  Serializable{
          listaPlano = planoDao.list("Select p from Plano p");
          if (listaPlano == null || listaPlano.isEmpty()) {
              listaPlano = new ArrayList<Plano>();
+         }
+     }
+     
+     public void gerarListaBanco(){
+         listaBanco = bancoDao.list("Select b from Banco b");
+         if (listaBanco == null || listaBanco.isEmpty()) {
+             listaBanco = new ArrayList<Banco>();
          }
      }
     

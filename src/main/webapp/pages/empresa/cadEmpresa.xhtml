@@ -8,106 +8,124 @@
 
         <link href="../../resources/css/css.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" type="text/css" href="../../resources/fonts/font-awesome-4.6.3/css/font-awesome.min.css"/>
-        
+
         <link type="text/javascript" href="../../resources/js/jquery-3.1.0.js"></link>
         <link type="text/javascript" src="../../resources/js/modal.js"/> 
         <link rel="stylesheet" type="text/css" href="../../resources/css/modal.css"/>
-	<link rel="stylesheet" type="text/css" href="../../resources/css/buttons.css"/>
-	<link rel="stylesheet" type="text/css" href="../../resources/css/textos.css"/>
+        <link rel="stylesheet" type="text/css" href="../../resources/css/buttons.css"/>
+        <link rel="stylesheet" type="text/css" href="../../resources/css/textos.css"/>
         <link rel="stylesheet" type="text/css" href="../../resources/css/css.css"/>
     </h:head>
-     
+
 
     <h:body style="background:#A3DAD9; border-color: #CF7000;" > 
         <h:form id="idFormCadastroEmpresa" style="font-size: 12px; background-color:#A3DAD9">
-                
+
             <title>Nova Empresa</title>
-                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                
-                <p:outputLabel class="titTela" value="Razão Social" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
-                <p:outputLabel class="titTela" value="Plano" style="font-size: 12px;text-align: left;margin-left: 38%;"/>
-                 <br/>
-                 <h:panelGrid columns="2">
-                    <p:inputText class="form-control" value="#{cadEmpresaMB.empresa.razaosocial}" size="40" style="margin-left: 2%;font-size: 12px;float: left;"/>
-                    <p:selectOneMenu  class="form-control" id="plano"  style="width: 216px;margin-left: 6%;font-size: 12px;"  value="#{cadEmpresaMB.plano}" converter="PlanoConverter"
-                                 filter="true" filterMatchMode="contains" panelStyle="width:180px" >
-                        <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
-                        <f:selectItems  value="#{cadEmpresaMB.listaPlano}" var="planoselecionado" itemLabel="#{planoselecionado.descricao}" itemValue="#{planoselecionado}"/>
-                        <f:attribute name="listaPlano" value="#{cadEmpresaMB.listaPlano}"/>
-                    </p:selectOneMenu>
-                </h:panelGrid>
-                <br/>
-                <p:outputLabel class="titTela" value="Estado" style="font-size: 12px;text-align: left; margin-left: 2%;"/>
-                <p:outputLabel class="titTela" value="Cidade" style="font-size: 12px;text-align: left;margin-left: 44%;"/>
-                <br/>
-                <h:panelGrid columns="2">
-                    <p:selectOneMenu class="form-control" id="estado" value="#{cadEmpresaMB.empresa.estado}"  style="width:235px;margin-left: 2%; font-size: 12px;">
-                                <f:selectItem itemLabel="Selecione" itemValue="sn" noSelectionOption="true"/> 
-                                <f:selectItem itemLabel="Acre" itemValue="AC" /> 
-                                <f:selectItem itemLabel="Alagoas" itemValue="AL" />  
-                                <f:selectItem itemLabel="Amapá" itemValue="AP" />  
-                                <f:selectItem itemLabel="Amazonas" itemValue="AM" />  
-                                <f:selectItem itemLabel="Bahia" itemValue="BA" />  
-                                <f:selectItem itemLabel="Ceará" itemValue="CE" />  
-                                <f:selectItem itemLabel="Distrito Federal" itemValue="DF" />  
-                                <f:selectItem itemLabel="Espirito Santo" itemValue="ES" />  
-                                <f:selectItem itemLabel="Goiás" itemValue="GO" />  
-                                <f:selectItem itemLabel="Maranhão" itemValue="MA" />  
-                                <f:selectItem itemLabel="Mato Grosso" itemValue="MT" />  
-                                <f:selectItem itemLabel="Mato Grosso do Sul" itemValue="MS" />  
-                                <f:selectItem itemLabel="Minas Gerais" itemValue="MG" />  
-                                <f:selectItem itemLabel="Pará" itemValue="PA" />  
-                                <f:selectItem itemLabel="Paraíba" itemValue="PB" />  
-                                <f:selectItem itemLabel="Paraná" itemValue="PR" />  
-                                <f:selectItem itemLabel="Pernambuco" itemValue="PE" />  
-                                <f:selectItem itemLabel="Piauí" itemValue="PI" />  
-                                <f:selectItem itemLabel="Rio de Janeiro" itemValue="RJ" />  
-                                <f:selectItem itemLabel="Rio Grande do Norte" itemValue="RN" />  
-                                <f:selectItem itemLabel="Rio Grande do Sul" itemValue="RS" />  
-                                <f:selectItem itemLabel="Rondônia" itemValue="RO" />  
-                                <f:selectItem itemLabel="Roraima" itemValue="RR" />  
-                                <f:selectItem itemLabel="Santa Catarina" itemValue="SC" />  
-                                <f:selectItem itemLabel="São Paulo" itemValue="SP" />  
-                                <f:selectItem itemLabel="Sergipe" itemValue="SE" />  
-                                <f:selectItem itemLabel="Tocantins" itemValue="TO" />  
-                    </p:selectOneMenu>
-                    <p:inputText class="form-control" value="#{cadEmpresaMB.empresa.cidade}" size="36" style="margin-left:8%; font-size: 12px;"/>
-                </h:panelGrid>
-                <br/>
-                <p:outputLabel class="titTela" value="Bairro" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
-                <p:outputLabel class="titTela" value="Tipo de Logadouro" style="font-size: 12px;text-align: left;margin-left:20%;"/>
-                <p:outputLabel class="titTela" value="Logadouro" style="font-size: 12px;text-align: left;margin-left: 6.6%;"/>
-                <br/>
-                <p:inputText class="form-control" value="#{cadEmpresaMB.empresa.bairro}" size="15" style="margin-left: 2%;font-size: 12px;float: left"/>
-                <p:inputText class="form-control" value="#{cadEmpresaMB.empresa.tipologradouro}" size="15" style="margin-left:5.5%;font-size: 12px;float: left"/>
-                <p:inputText class="form-control" value="#{cadEmpresaMB.empresa.logradouro}" size="36" style="margin-left: 4.5%;font-size: 12px;float: left"/>
-                <br/><br/><br/>
-                 
-                <p:outputLabel class="titTela" value="Número" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
-                <p:outputLabel class="titTela" value="Complemento" style="font-size: 12px;text-align: left;margin-left: 12%;"/>
-                <p:outputLabel class="titTela" value="Cep" style="font-size: 12px;text-align: left;margin-left: 8%;"/>
-                 <p:outputLabel class="titTela" value="Desconto de Mensalidade" style="font-size: 12px;text-align: right;margin-left: 19%;"/>
-                <br/>
-                <p:inputText class="form-control" value="#{cadEmpresaMB.empresa.numero}" size="10" style="margin-left: 2%;font-size: 12px;float: left;"/>
-                <p:inputText class="form-control" value="#{cadEmpresaMB.empresa.complemento}" size="10" style="margin-left: 5%; float: left;"/> 
-                <p:inputMask class="form-control" mask="99999-999" value="#{cadEmpresaMB.empresa.cep}" size="10" style="margin-left: 5%; float: left;"/>
-                <p:inputText class="form-control" value="#{cadEmpresaMB.empresa.valormensalidade}" size="19" style="margin-left:6%;text-align: right;float: left">
-                    <f:convertNumber pattern="##,###,###,###.##"/>  
-                </p:inputText> 
-                 <br/> 
-                
-                 <br/><br/>
-                 
-                 <br/><br/>
-                 <hr style="color: #367587; background: #367587"/>
-                <br/>  
-                <p:commandLink style="text-decoration: none;" actionListener="#{cadEmpresaMB.salvar()}" ajax="false">
-                    <div style="font-size: 16px;margin-left: 32%;" class="cadastrar">Cadastrar</div>
-                </p:commandLink>
-                <p:commandLink style="text-decoration: none;" action="#{cadEmpresaMB.cancelar()}" ajax="false">
-                    <div style="font-size: 16px" class="cancelar">Cancelar</div>
-                </p:commandLink>
+            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+
+            <p:outputLabel class="titTela" value="Razão Social" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
+            <p:outputLabel class="titTela" value="Nome Fantasia" style="font-size: 12px;text-align: left;margin-left: 37%;"/>
+            <br/>
+            <p:inputText class="form-control" value="#{cadEmpresaMB.empresa.razaosocial}" size="40" style="margin-left: 2%;font-size: 12px;float: left;"/>
+            <p:inputText class="form-control" value="#{cadEmpresaMB.empresa.nomefantasia}" size="37" style="margin-left: 2%;font-size: 12px;float: left;"/>
+            <br/><br/>
+            <p:outputLabel class="titTela" value="Estado" style="font-size: 12px;text-align: left; margin-left: 2%;"/>
+            <p:outputLabel class="titTela" value="Plano" style="font-size: 12px;text-align: left;margin-left: 44%;"/>
+            <br/>
+            <h:panelGrid columns="2">
+                <p:selectOneMenu class="form-control" id="estado" value="#{cadEmpresaMB.empresa.estado}"  style="width:235px;margin-left: 2%; font-size: 12px;">
+                    <f:selectItem itemLabel="Selecione" itemValue="sn" noSelectionOption="true"/> 
+                    <f:selectItem itemLabel="Acre" itemValue="AC" /> 
+                    <f:selectItem itemLabel="Alagoas" itemValue="AL" />  
+                    <f:selectItem itemLabel="Amapá" itemValue="AP" />  
+                    <f:selectItem itemLabel="Amazonas" itemValue="AM" />  
+                    <f:selectItem itemLabel="Bahia" itemValue="BA" />  
+                    <f:selectItem itemLabel="Ceará" itemValue="CE" />  
+                    <f:selectItem itemLabel="Distrito Federal" itemValue="DF" />  
+                    <f:selectItem itemLabel="Espirito Santo" itemValue="ES" />  
+                    <f:selectItem itemLabel="Goiás" itemValue="GO" />  
+                    <f:selectItem itemLabel="Maranhão" itemValue="MA" />  
+                    <f:selectItem itemLabel="Mato Grosso" itemValue="MT" />  
+                    <f:selectItem itemLabel="Mato Grosso do Sul" itemValue="MS" />  
+                    <f:selectItem itemLabel="Minas Gerais" itemValue="MG" />  
+                    <f:selectItem itemLabel="Pará" itemValue="PA" />  
+                    <f:selectItem itemLabel="Paraíba" itemValue="PB" />  
+                    <f:selectItem itemLabel="Paraná" itemValue="PR" />  
+                    <f:selectItem itemLabel="Pernambuco" itemValue="PE" />  
+                    <f:selectItem itemLabel="Piauí" itemValue="PI" />  
+                    <f:selectItem itemLabel="Rio de Janeiro" itemValue="RJ" />  
+                    <f:selectItem itemLabel="Rio Grande do Norte" itemValue="RN" />  
+                    <f:selectItem itemLabel="Rio Grande do Sul" itemValue="RS" />  
+                    <f:selectItem itemLabel="Rondônia" itemValue="RO" />  
+                    <f:selectItem itemLabel="Roraima" itemValue="RR" />  
+                    <f:selectItem itemLabel="Santa Catarina" itemValue="SC" />  
+                    <f:selectItem itemLabel="São Paulo" itemValue="SP" />  
+                    <f:selectItem itemLabel="Sergipe" itemValue="SE" />  
+                    <f:selectItem itemLabel="Tocantins" itemValue="TO" />  
+                </p:selectOneMenu>
+                <p:selectOneMenu  class="form-control" id="plano"  style="width: 216px;margin-left: 6%;font-size: 12px;"  value="#{cadEmpresaMB.plano}" converter="PlanoConverter"
+                                  filter="true" filterMatchMode="contains" panelStyle="width:180px" >
+                    <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
+                    <f:selectItems  value="#{cadEmpresaMB.listaPlano}" var="planoselecionado" itemLabel="#{planoselecionado.descricao}" itemValue="#{planoselecionado}"/>
+                    <f:attribute name="listaPlano" value="#{cadEmpresaMB.listaPlano}"/>
+                </p:selectOneMenu>
+            </h:panelGrid>
+            <p:outputLabel class="titTela" value="Cidade" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
+            <p:outputLabel class="titTela" value="Bairro" style="font-size: 12px;text-align: left;margin-left: 42%;"/> 
+            <p:outputLabel class="titTela" value="Tipo de Logadouro" style="font-size: 12px;text-align: left;margin-left:19%;"/>
+            <br/>
+            <p:inputText class="form-control" value="#{cadEmpresaMB.empresa.cidade}" size="36" style="margin-left:2%; font-size: 12px;"/>
+            <p:inputText class="form-control" value="#{cadEmpresaMB.empresa.bairro}" size="15" style="margin-left: 5%;font-size: 12px;"/>
+            <p:inputText class="form-control" value="#{cadEmpresaMB.empresa.tipologradouro}" size="15" style="margin-left:5%;font-size: 12px;"/>
+            <br/><br/>
+
+            <p:outputLabel class="titTela" value="Logadouro" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
+            <p:outputLabel class="titTela" value="Número" style="font-size: 12px;text-align: left;margin-left: 43%;"/>
+            <p:outputLabel class="titTela" value="Complemento" style="font-size: 12px;text-align: left;margin-left: 16%;"/>
+            <br/>
+            <p:inputText class="form-control" value="#{cadEmpresaMB.empresa.logradouro}" size="36" style="margin-left: 2%;font-size: 12px;"/>
+            <p:inputText class="form-control" value="#{cadEmpresaMB.empresa.numero}" size="10" style="margin-left: 10%;font-size: 12px;"/>
+            <p:inputText class="form-control" value="#{cadEmpresaMB.empresa.complemento}" size="10" style="margin-left: 9%;"/> 
+            <br/><br/>
+
+            <p:outputLabel class="titTela" value="E-mail" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
+            <p:outputLabel class="titTela" value="Cep" style="font-size: 12px;text-align: left;margin-left: 36%;"/>
+            <p:outputLabel class="titTela" value="Desconto de Mensalidade" style="font-size: 12px;text-align: right;margin-left: 20%;"/>
+            <br/>
+            <p:inputText class="form-control" value="#{cadEmpresaMB.empresa.email}" size="30" style="margin-left: 2%;font-size: 12px;"/>
+            <p:inputMask class="form-control" mask="99999-999" value="#{cadEmpresaMB.empresa.cep}" size="10" style="margin-left: 6%;"/>
+            <p:inputText class="form-control" value="#{cadEmpresaMB.empresa.valormensalidade}" size="19" style="margin-left:6%;text-align: right;">
+                <f:convertNumber pattern="##,###,###,###.##"/>  
+            </p:inputText>
+            <br/> <br/>
+
+            <p:outputLabel class="titTela" value="Cnpj" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
+            <p:outputLabel class="titTela" value="Pessoa Contato" style="font-size: 12px;text-align: left;margin-left: 18%;"/>
+            <p:outputLabel class="titTela" value="Banco" style="font-size: 12px;text-align: right;margin-left: 13%;"/>
+            <br/>
+            <h:panelGrid columns="3">
+                <p:inputMask class="form-control" mask="99.999.999/9999-99" value="#{cadEmpresaMB.empresa.cnpj}" size="15" style="margin-left: 5%;font-size: 12px;"/>
+                <p:inputText class="form-control" value="#{cadEmpresaMB.empresa.pessoacontato}" size="20" style="margin-left: 4.5%;font-size: 12px;float: left"/>
+                <p:selectOneMenu  class="form-control" id="idbanco"  style="width: 216px;margin-left: 4%;font-size: 12px;"  value="#{cadEmpresaMB.banco}" converter="BancoConverter"
+                                  filter="true" filterMatchMode="contains" panelStyle="width:180px" >
+                    <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
+                    <f:selectItems  value="#{cadEmpresaMB.listaBanco}" var="bancoselecionado" itemLabel="#{bancoselecionado.nome}" itemValue="#{bancoselecionado}"/>
+                    <f:attribute name="listaBanco" value="#{cadEmpresaMB.listaBanco}"/>
+                </p:selectOneMenu>
+            </h:panelGrid>
+            <br/><br/>
+ 
+            <br/><br/>
+            <hr style="color: #367587; background: #367587"/>
+            <br/>  
+            <p:commandLink style="text-decoration: none;" actionListener="#{cadEmpresaMB.salvar()}" ajax="false">
+                <div style="font-size: 16px;margin-left: 32%;" class="cadastrar">Cadastrar</div>
+            </p:commandLink>
+            <p:commandLink style="text-decoration: none;" action="#{cadEmpresaMB.cancelar()}" ajax="false">
+                <div style="font-size: 16px" class="cancelar">Cancelar</div>
+            </p:commandLink>
         </h:form>
- </h:body>
-  
+    </h:body>
+
 </html>
