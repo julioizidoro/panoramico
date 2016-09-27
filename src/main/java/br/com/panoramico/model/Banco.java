@@ -5,8 +5,8 @@
  */
 package br.com.panoramico.model;
 
+
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,7 +14,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
@@ -66,8 +66,8 @@ public class Banco implements Serializable{
     private Float valorjuros;
     @Column(name = "valormulta")
     private Float valormulta;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "banco")
-    private List<Empresa> empresaList;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "banco")
+    private Proprietario proprietario;
 
     public Banco() {
     }
@@ -188,13 +188,16 @@ public class Banco implements Serializable{
         this.valormulta = valormulta;
     }
 
-    public List<Empresa> getEmpresaList() {
-        return empresaList;
+    public Proprietario getProprietario() {
+        return proprietario;
     }
 
-    public void setEmpresaList(List<Empresa> empresaList) {
-        this.empresaList = empresaList;
+    public void setProprietario(Proprietario proprietario) {
+        this.proprietario = proprietario;
     }
+
+    
+    
 
     
 
