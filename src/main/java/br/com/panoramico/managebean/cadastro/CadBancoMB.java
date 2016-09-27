@@ -6,7 +6,9 @@
 package br.com.panoramico.managebean.cadastro;
 
 import br.com.panoramico.dao.BancoDao;
+import br.com.panoramico.dao.ProprietarioDao;
 import br.com.panoramico.model.Banco;
+import br.com.panoramico.model.Proprietario;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -24,6 +26,8 @@ public class CadBancoMB implements Serializable{
     private Banco banco;
     @EJB
     private BancoDao bancoDao;
+    @EJB
+    private ProprietarioDao proprietarioDao;
     
    
     @PostConstruct
@@ -34,6 +38,8 @@ public class CadBancoMB implements Serializable{
         session.removeAttribute("banco");
         if (banco == null) {
             banco = new Banco();
+            Proprietario proprietario = proprietarioDao.find("Select p FROM Proprierario p");
+            banco.setProprietario(proprietario);
         }
     }
 
