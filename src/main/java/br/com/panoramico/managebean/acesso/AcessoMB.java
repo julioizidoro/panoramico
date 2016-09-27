@@ -19,10 +19,13 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import org.primefaces.context.RequestContext;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -341,6 +344,14 @@ public class AcessoMB implements Serializable{
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         Date hora = Calendar.getInstance().getTime();
         return (sdf.format(hora));
+    }
+    
+    
+    public String novoPassaporte(){
+        Map<String, Object> options = new HashMap<String, Object>();
+        options.put("contentWidth", 550);
+        RequestContext.getCurrentInstance().openDialog("cadPassaporte", options, null);
+        return "";
     }
     
 }

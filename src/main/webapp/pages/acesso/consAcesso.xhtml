@@ -23,6 +23,9 @@
                         <p:commandLink disabled="false" style="float: left;" ajax="false" action="#{acessoMB.pesquisar()}" update="messages, panelResultado, idCampoNome, idbotaoLiberado, idrespostaNegado, idCampoDataExame"> 
                             <div style="font-size: 20px;margin-left: 25%;padding: 3%;" class="pesquisarAcesso">Pesquisar</div>
                         </p:commandLink>
+                        <p:commandLink disabled="false" style="float: left;"  action="#{acessoMB.novoPassaporte()}" rendered="false"> 
+                            <div style="font-size: 18px;margin-left: 10%;padding: 3%;" class="pesquisarAcesso">Novo Passaporte</div>
+                        </p:commandLink>
                         <br/><br/><br/>
                     </fieldset> 
                     <h:panelGroup rendered="#{acessoMB.habilitarResultado}" id="panelResultado">
@@ -47,15 +50,15 @@
                                     <h:outputText value="Status" style="float: left;font-size: 16px;"/>
                                      <br/>
                                      <hr/>
-                                    <p:commandLink  id="idbotaoLiberado" action="#{acessoMB.controleAcesso()}" update=":idFormConsultaAmbiente:messages"> 
+                                    <p:commandLink  id="idbotaoLiberado" action="#{acessoMB.controleAcesso()}" update="@all">  
                                         <div style="font-size: 18px;padding: 3%;" class="#{acessoMB.tipoClasse}">
                                             <h:outputText value="#{acessoMB.nomeStatus}"/>
                                         </div>
-                                    </p:commandLink>
+                                    </p:commandLink>   
                                 </div>
-                            </div>
+                            </div>    
                             <br/><br/>
-                        </fieldset> 
+               1         </fieldset> 
                     </h:panelGroup>
                 </h:form>
              </div>
