@@ -1,0 +1,64 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/pages/templates/default.xhtml">
+        <ui:define name="corpo"> 
+            <br/>
+             <div class="col-10 boxAzulClaro" style="margin-left:8.5%;width: 83.2%;">   
+                <br/>
+                <h:form id="idFormConsultaAmbiente" style="margin-left:10%; width:78%;">
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:10%;width: 80%;"/>
+                    
+                    <fieldset>
+                        <legend>Acesso</legend>
+                        <h:outputText value="Código do Associado" style="float: left;font-size: 16px;"/>
+                        <h:outputText value="Código do Dependente" style="float: left;font-size: 16px;margin-left:5%;"/>
+                        <h:outputText value="Código do Passaporte" style="float: left;font-size: 16px;margin-left:5%;"/>
+                        <br/><br/>
+                        <p:inputText value="#{acessoMB.codigoAssociado}" style="float: left;text-align: right;font-size: 14px;" size="15" title="Código do Associado"/>
+                        <p:inputText value="#{acessoMB.codigoDependente}" style="float: left;text-align: right;margin-left:7%;" size="20" title="Código de Dependente"/>
+                        <p:inputText value="#{acessoMB.codigoPassaporte}" style="float: left;text-align: right;margin-left:8%;" size="20" title="Código de Passaporte"/>
+                        <p:commandLink disabled="false" style="float: left;" ajax="false" action="#{acessoMB.pesquisar()}" update="messages, panelResultado, idCampoNome, idbotaoLiberado, idrespostaNegado, idCampoDataExame"> 
+                            <div style="font-size: 20px;margin-left: 25%;padding: 3%;" class="pesquisarAcesso">Pesquisar</div>
+                        </p:commandLink>
+                        <br/><br/><br/>
+                    </fieldset> 
+                    <h:panelGroup rendered="#{acessoMB.habilitarResultado}" id="panelResultado">
+                        <fieldset>
+                            <legend></legend>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h:outputText value="Nome" style="float: left;font-size: 16px;"/>
+                                    <br/>
+                                    <hr/>
+                                    <h:outputText value="#{acessoMB.nome}" style="float: left;font-size: 18px;" title="Nome" id="idCampoNome"/>
+                                </div>
+                                 <div class="col-sm-4">
+                                    <h:outputText value="Validade do exame" style="font-size: 16px;"/>
+                                     <br/>
+                                     <hr/>
+                                    <h:outputText value="#{acessoMB.dataExame}" style="font-size: 16px;#{acessoMB.corDataExame}" id="idCampoDataExame">
+                                        <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/> 
+                                    </h:outputText>
+                                </div>
+                                 <div class="col-sm-2">
+                                    <h:outputText value="Status" style="float: left;font-size: 16px;"/>
+                                     <br/>
+                                     <hr/>
+                                    <p:commandLink  id="idbotaoLiberado" action="#{acessoMB.controleAcesso()}" update=":idFormConsultaAmbiente:messages"> 
+                                        <div style="font-size: 18px;padding: 3%;" class="#{acessoMB.tipoClasse}">
+                                            <h:outputText value="#{acessoMB.nomeStatus}"/>
+                                        </div>
+                                    </p:commandLink>
+                                </div>
+                            </div>
+                            <br/><br/>
+                        </fieldset> 
+                    </h:panelGroup>
+                </h:form>
+             </div>
+        </ui:define>
+    </ui:composition>
+</html>
