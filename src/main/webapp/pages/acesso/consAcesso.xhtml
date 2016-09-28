@@ -23,11 +23,11 @@
                         <p:commandLink disabled="false" style="float: left;" ajax="false" action="#{acessoMB.pesquisar()}" update="messages, panelResultado, idCampoNome, idbotaoLiberado, idrespostaNegado, idCampoDataExame"> 
                             <div style="font-size: 20px;margin-left: 25%;padding: 3%;" class="pesquisarAcesso">Pesquisar</div>
                         </p:commandLink>
-                        <p:commandLink disabled="false" style="float: left;"  action="#{acessoMB.novoPassaporte()}" rendered="false"> 
+                        <p:commandLink disabled="false" style="float: left;"  action="#{acessoMB.novoPassaporte()}" rendered="true"> 
                             <div style="font-size: 18px;margin-left: 10%;padding: 3%;" class="pesquisarAcesso">Novo Passaporte</div>
                         </p:commandLink>
-                        <br/><br/><br/>
-                    </fieldset> 
+                        <br/><br/><br/>  
+                    </fieldset>
                     <h:panelGroup rendered="#{acessoMB.habilitarResultado}" id="panelResultado">
                         <fieldset>
                             <legend></legend>

@@ -352,6 +352,6 @@ public class AcessoMB implements Serializable{
         options.put("contentWidth", 550);
         RequestContext.getCurrentInstance().openDialog("cadPassaporte", options, null);
         return "";
-    }
+    }   
     
 }

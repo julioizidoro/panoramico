@@ -11,8 +11,8 @@ import br.com.panoramico.dao.PassaporteValorDao;
 import br.com.panoramico.model.Cliente;
 import br.com.panoramico.model.Passaporte;
 import br.com.panoramico.model.Passaportevalor;
-import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -30,16 +30,20 @@ public class CadPassaporteMB implements Serializable{
     @EJB
     private ClienteDao clienteDao;
     private Cliente cliente;
-    private Integer adultos;
-    private Integer criancas;
-    private Float valorTotal;
+    private Integer adultos = 0;
+    private Integer criancas = 0;
+    private Float valorTotal = 0.0f;
     private Passaporte passaporte;
     private String cpfCliente;
     @EJB
     private PassaporteDao passaporteDao;
     private Passaportevalor passaportevalor;
+    private List<Passaportevalor> listaPassaporteValor;
     @EJB
     private PassaporteValorDao passaporteValorDao;
+    private float totalValorAdulto;
+    private float totalValorCrianca;
+    private String formaPagamento;
     
     
     @PostConstruct
@@ -107,6 +111,62 @@ public class CadPassaporteMB implements Serializable{
         this.cpfCliente = cpfCliente;
     }
 
+    public PassaporteDao getPassaporteDao() {
+        return passaporteDao;
+    }
+
+    public void setPassaporteDao(PassaporteDao passaporteDao) {
+        this.passaporteDao = passaporteDao;
+    }
+
+    public Passaportevalor getPassaportevalor() {
+        return passaportevalor;
+    }
+
+    public void setPassaportevalor(Passaportevalor passaportevalor) {
+        this.passaportevalor = passaportevalor;
+    }
+
+    public PassaporteValorDao getPassaporteValorDao() {
+        return passaporteValorDao;
+    }
+
+    public void setPassaporteValorDao(PassaporteValorDao passaporteValorDao) {
+        this.passaporteValorDao = passaporteValorDao;
+    }
+
+    public float getTotalValorAdulto() {
+        return totalValorAdulto;
+    }
+
+    public void setTotalValorAdulto(float totalValorAdulto) {
+        this.totalValorAdulto = totalValorAdulto;
+    }
+
+    public float getTotalValorCrianca() {
+        return totalValorCrianca;
+    }
+
+    public void setTotalValorCrianca(float totalValorCrianca) {
+        this.totalValorCrianca = totalValorCrianca;
+    }
+
+    public List<Passaportevalor> getListaPassaporteValor() {
+        return listaPassaporteValor;
+    }
+
+    public void setListaPassaporteValor(List<Passaportevalor> listaPassaporteValor) {
+        this.listaPassaporteValor = listaPassaporteValor;
+    }
+
+    public String getFormaPagamento() {
+        return formaPagamento;
+    }
+
+    public void setFormaPagamento(String formaPagamento) {
+        this.formaPagamento = formaPagamento;
+    }
+
     
  
     public String pesquisarCliente(){
@@ -120,9 +180,8 @@ public class CadPassaporteMB implements Serializable{
             for (int i = 0; i < listaCliente.size(); i++) {
                 cliente = listaCliente.get(i);
             }
-            Mensagem.lancarMensagemInfo("Cliente: ", cliente.getNome() + " encontrado");
             return "";
-        }
+        }  
     }
     
     
@@ -130,12 +189,22 @@ public class CadPassaporteMB implements Serializable{
         if (passaportevalor == null || passaportevalor.getIdpassaportevalor() == null) {
             valorTotal = 0.0f;
         }else{
-            valorTotal = ((passaportevalor.getValoradulto() * adultos) + (passaportevalor.getValorcrianca() * criancas));
+            totalValorAdulto = passaportevalor.getValoradulto() * adultos;
+            totalValorCrianca = passaportevalor.getValorcrianca() * criancas;
+            valorTotal = totalValorAdulto + totalValorCrianca;
         }
     }
     
     public void getValoresPassaporte(){
-        passaportevalor = passaporteValorDao.find("Select pv From Passaportevalor pv Where pv.situacao=1");
+        listaPassaporteValor = passaporteValorDao.list("Select pv From Passaportevalor pv Where pv.situacao=1");
+        if (listaPassaporteValor == null || listaPassaporteValor.isEmpty()) {
+            listaPassaporteValor = new ArrayList<Passaportevalor>();
+        }
+    }
+    
+    
+    public void pegar(){
+        passaportevalor.setValoradulto(passaportevalor.getValoradulto());
     }
     
 }
