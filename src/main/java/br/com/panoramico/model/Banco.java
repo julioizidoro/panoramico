@@ -5,10 +5,8 @@
  */
 package br.com.panoramico.model;
 
-
 import java.io.Serializable;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,14 +14,19 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+
+
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
+/**
+ *
+ * @author Wolverine
+ */
 @Entity
 @Table(name = "banco")
 public class Banco implements Serializable{
-    
+
     
     private static final long serialVersionUID = 1L;
     @Id
@@ -32,7 +35,7 @@ public class Banco implements Serializable{
     @Column(name = "idbanco")
     private Integer idbanco;
     @Size(max = 3)
-    @Column(name = "numero") 
+    @Column(name = "numero")
     private String numero;
     @Size(max = 50)
     @Column(name = "nome")
@@ -158,7 +161,7 @@ public class Banco implements Serializable{
     public void setDigitoagencia(String digitoagencia) {
         this.digitoagencia = digitoagencia;
     }
-    
+
     public String getDigitoconta() {
         return digitoconta;
     }
@@ -199,11 +202,6 @@ public class Banco implements Serializable{
         this.proprietario = proprietario;
     }
 
-    
-    
-
-    
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -213,7 +211,7 @@ public class Banco implements Serializable{
 
     @Override
     public boolean equals(Object object) {
-        
+        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Banco)) {
             return false;
         }
@@ -224,11 +222,9 @@ public class Banco implements Serializable{
         return true;
     }
 
-   @Override
+    @Override
     public String toString() {
         return "br.com.panoramico.model.Banco[ idbanco=" + idbanco + " ]";
     }
-
-    
     
 }
