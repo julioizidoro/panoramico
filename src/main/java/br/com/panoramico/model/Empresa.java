@@ -67,9 +67,6 @@ public class Empresa implements Serializable {
     @JoinColumn(name = "plano_idplano", referencedColumnName = "idplano")
     @ManyToOne(optional = false)
     private Plano plano;
-    @JoinColumn(name = "banco_idbanco", referencedColumnName = "idbanco")
-    @ManyToOne(optional = false)
-    private Banco banco;
 
     public Empresa() {
     }
@@ -205,16 +202,6 @@ public class Empresa implements Serializable {
     public void setPlano(Plano plano) {
         this.plano = plano;
     }
-
-    public Banco getBanco() {
-        return banco;
-    }
-
-    public void setBanco(Banco banco) {
-        this.banco = banco;
-    }
-
-    
 
     public List<Associadoempresa> getAssociadoempresaList() {
         return associadoempresaList;

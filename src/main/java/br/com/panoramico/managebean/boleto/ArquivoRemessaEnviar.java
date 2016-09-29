@@ -6,8 +6,10 @@
 package br.com.panoramico.managebean.boleto;
 
 import br.com.panoramico.dao.EmpresaDao;
+import br.com.panoramico.dao.ProprietarioDao;
 import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.model.Empresa;
+import br.com.panoramico.model.Proprietario;
 import br.com.panoramico.uil.Formatacao;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,8 +24,8 @@ public class ArquivoRemessaEnviar implements ArquivoRemessaItau{
     private String branco = "                                        ";
     private String zeros = "000000000000000000000";
     @EJB
-    private EmpresaDao empresaDao;
-    private Empresa empresa;
+    private ProprietarioDao proprietarioDao;
+    private Proprietario proprietario;
     private List<Empresa> listaEmpresa;
     
     @PostConstruct
@@ -38,37 +40,56 @@ public class ArquivoRemessaEnviar implements ArquivoRemessaItau{
         this.branco = branco;
     }
 
-    public EmpresaDao getEmpresaDao() {
-        return empresaDao;
+    public String getZeros() {
+        return zeros;
     }
 
-    public void setEmpresaDao(EmpresaDao empresaDao) {
-        this.empresaDao = empresaDao;
+    public void setZeros(String zeros) {
+        this.zeros = zeros;
     }
 
-    public Empresa getEmpresa() {
-        return empresa;
+    public ProprietarioDao getProprietarioDao() {
+        return proprietarioDao;
     }
 
-    public void setEmpresa(Empresa empresa) {
-        this.empresa = empresa;
+    public void setProprietarioDao(ProprietarioDao proprietarioDao) {
+        this.proprietarioDao = proprietarioDao;
     }
+
+    public Proprietario getProprietario() {
+        return proprietario;
+    }
+
+    public void setProprietario(Proprietario proprietario) {
+        this.proprietario = proprietario;
+    }
+
+    public List<Empresa> getListaEmpresa() {
+        return listaEmpresa;
+    }
+
+    public void setListaEmpresa(List<Empresa> listaEmpresa) {
+        this.listaEmpresa = listaEmpresa;
+    }
+
+    
+
     
     
     
-    public String gerarHeader(Contasreceber conta, int numeroSequencial, Empresa empresa) throws IOException{
+    public String gerarHeader(Contasreceber conta, int numeroSequencial, Proprietario proprietario) throws IOException{
         String linha="";
         linha = linha  + ("0");
         linha = linha  + ("1");
         linha = linha  + ("REMESSA");
         linha = linha  + ("01");
         linha = linha  + ("COBRANCA       ");
-        linha = linha  + (empresa.getBanco().getAgencia());
+        linha = linha  + (proprietario.getBancoList().get(0).getAgencia());
         linha = linha  + ("00");
-        linha = linha  + (empresa.getBanco().getConta()); 
-        linha = linha  + (empresa.getBanco().getDigitoconta());
+        linha = linha  + (proprietario.getBancoList().get(0).getConta()); 
+        linha = linha  + (proprietario.getBancoList().get(0).getDigitoconta());
         linha = linha  + (branco.substring(0, 8));
-        String nomeEmpresa = empresa.getRazaosocial();
+        String nomeEmpresa = proprietario.getRazaosocial();
         nomeEmpresa = nomeEmpresa.toUpperCase();
         if (nomeEmpresa.length()<30){
             nomeEmpresa = nomeEmpresa + branco.substring(0, 30 - nomeEmpresa.length());
@@ -88,15 +109,15 @@ public class ArquivoRemessaEnviar implements ArquivoRemessaItau{
         return linha;
     }
     
-    public String gerarDetalhe(Contasreceber conta, int numeroSequencial, Empresa empresa) throws IOException, Exception{
+    public String gerarDetalhe(Contasreceber conta, int numeroSequencial, Proprietario proprietario) throws IOException, Exception{
         String linha="";
         linha = linha  + ("1");
         linha = linha  + ("02");
-        linha = linha  + (Formatacao.retirarPontos(empresa.getCnpj()));
-        linha = linha  + (empresa.getBanco().getAgencia());
+        linha = linha  + (Formatacao.retirarPontos(proprietario.getCnpj()));
+        linha = linha  + (proprietario.getBancoList().get(0).getAgencia());
         linha = linha  + ("00");
-        linha = linha  + (empresa.getBanco().getConta());
-        linha = linha  + (empresa.getBanco().getDigitoconta());
+        linha = linha  + (proprietario.getBancoList().get(0).getConta());
+        linha = linha  + (proprietario.getBancoList().get(0).getDigitoconta());
         linha = linha  + (branco.substring(0, 4));
         linha = linha  + ("0000");
         linha = linha  + (branco.substring(0, 25));
@@ -106,7 +127,7 @@ public class ArquivoRemessaEnviar implements ArquivoRemessaItau{
         linha = linha  + ("000000000000000000000");
         linha = linha  + ("I");
         linha = linha  + ("01");
-        linha = linha  + (empresa.getNumero() + "  ");
+        linha = linha  + (proprietario.getNumero() + "  ");
         linha = linha  + (Formatacao.ConvercaoDataDDMMAA(conta.getDatalancamento()));
         String valor = Formatacao.foramtarFloatString(conta.getValorconta());
         valor = Formatacao.retirarPontos(valor);
@@ -121,7 +142,7 @@ public class ArquivoRemessaEnviar implements ArquivoRemessaItau{
         linha = linha  + (Formatacao.ConvercaoDataDDMMAA(new Date()));
         linha = linha  + ("00");
         linha = linha  + ("00");
-        linha = linha  + (valorJuros(conta.getValorconta(), empresa.getBanco().getValorjuros()));
+        linha = linha  + (valorJuros(conta.getValorconta(), proprietario.getBancoList().get(0).getValorjuros()));
         linha = linha  + (Formatacao.ConvercaoDataDDMMAA(new Date()));
         linha = linha  + (zeros.substring(0, 13));
         linha = linha  + (zeros.substring(0, 13));
@@ -175,12 +196,12 @@ public class ArquivoRemessaEnviar implements ArquivoRemessaItau{
         return linha;
     }
     
-    public String gerarMulta(Contasreceber conta, int numeroSequencial, Empresa empresa) throws IOException, Exception{
+    public String gerarMulta(Contasreceber conta, int numeroSequencial, Proprietario proprietario) throws IOException, Exception{
         String linha="";
         linha = linha  + ("2");
         linha = linha  + ("1");
         linha = linha  + (Formatacao.SubtarirDatas(conta.getDatalancamento(), -1, "ddMMyyyy"));
-        linha = linha  + (valorJuros(conta.getValorconta(), empresa.getBanco().getValormulta()));
+        linha = linha  + (valorJuros(conta.getValorconta(), proprietario.getBancoList().get(0).getValormulta()));
         linha = linha  + (branco + branco + branco + branco + branco + branco + branco + branco + branco + branco.substring(0,11));
         String ns;
         if (numeroSequencial<10){
@@ -214,5 +235,6 @@ public class ArquivoRemessaEnviar implements ArquivoRemessaItau{
         }
         return valor;
     }
+
    
 }

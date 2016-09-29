@@ -56,7 +56,6 @@ public class CadEmpresaMB implements  Serializable{
             empresa = new Empresa();
         }else{
             plano = empresa.getPlano();
-            banco = empresa.getBanco();
         }
         gerarListaPlano();
         gerarListaBanco();
@@ -133,7 +132,6 @@ public class CadEmpresaMB implements  Serializable{
          String msg = validarDaodos();
          if (msg.length() < 5) {
             empresa.setPlano(plano);
-            empresa.setBanco(banco);
             empresa = empresaDao.update(empresa);
             RequestContext.getCurrentInstance().closeDialog(empresa);
          }else{

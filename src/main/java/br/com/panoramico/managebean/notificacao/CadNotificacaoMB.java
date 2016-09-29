@@ -115,6 +115,9 @@ public class CadNotificacaoMB implements Serializable{
     }
     
     public void salvar(){
+        if (usuarioEnviar==null){
+            usuarioEnviar = new Usuario();
+        }
         notificacao.setUsuarioenvia(usuarioEnviar);
         notificacao.setUsuariorecebe(usuario);
         notificacao.setVisto(false);
@@ -130,10 +133,10 @@ public class CadNotificacaoMB implements Serializable{
     public String validarDados(){
         String mensagem = "";
         if (notificacao.getAssunto().equalsIgnoreCase("")) {
-            mensagem = mensagem + " você não escreveu nenhum assunto \r\n";
+            mensagem = mensagem + " você não digitou o assunto \r\n";
         }
-        if (notificacao.getUsuariorecebe() == null) {
-            mensagem = mensagem + " você não escolheu o destinário \r\n";
+        if (notificacao.getUsuariorecebe().getIdusuario() == null) {
+            mensagem = mensagem + " você não selecionou um destinário \r\n";
         }
         return mensagem;
     }

@@ -7,9 +7,11 @@ package br.com.panoramico.managebean.boleto;
 
 import br.com.panoramico.dao.ContasReceberDao;
 import br.com.panoramico.dao.EmpresaDao;
+import br.com.panoramico.dao.ProprietarioDao;
 import br.com.panoramico.managebean.UsuarioLogadoMB;
 import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.model.Empresa;
+import br.com.panoramico.model.Proprietario;
 import br.com.panoramico.uil.Formatacao;
 import java.io.File;
 import java.io.FileWriter;
@@ -36,15 +38,15 @@ public class GerarArquivoRemessaItau {
     @EJB
     private ContasReceberDao contasReceberDao;
     @EJB
-    private EmpresaDao empresaDao;
-    private Empresa empresa;
+    private ProprietarioDao proprietarioDao;
+    private Proprietario proprietario;
     private List<Empresa> listaEmpresa;
     private StreamedContent stream;
 
-    public GerarArquivoRemessaItau(List<Contasreceber> lista, UsuarioLogadoMB usuarioLogadoMB, Empresa empresa, StreamedContent stream, List<Contasreceber> listaContas) {
+    public GerarArquivoRemessaItau(List<Contasreceber> lista, UsuarioLogadoMB usuarioLogadoMB, Proprietario proprietario, StreamedContent stream, List<Contasreceber> listaContas) {
         this.listaContas = lista;
         this.usuarioLogadoMB = usuarioLogadoMB;
-        this.empresa = empresa;
+        this.proprietario = proprietario;
         this.stream = stream;
         this.listaContas = listaContas;
         iniciarRemessa();
@@ -90,21 +92,25 @@ public class GerarArquivoRemessaItau {
         this.contasReceberDao = contasReceberDao;
     }
 
-    public EmpresaDao getEmpresaDao() {
-        return empresaDao;
+    public ProprietarioDao getProprietarioDao() {
+        return proprietarioDao;
     }
 
-    public void setEmpresaDao(EmpresaDao empresaDao) {
-        this.empresaDao = empresaDao;
+    public void setProprietarioDao(ProprietarioDao proprietarioDao) {
+        this.proprietarioDao = proprietarioDao;
     }
 
-    public Empresa getEmpresa() {
-        return empresa;
+    public Proprietario getProprietario() {
+        return proprietario;
     }
 
-    public void setEmpresa(Empresa empresa) {
-        this.empresa = empresa;
+    public void setProprietario(Proprietario proprietario) {
+        this.proprietario = proprietario;
     }
+
+    
+
+   
 
     public List<Empresa> getListaEmpresa() {
         return listaEmpresa;
@@ -188,11 +194,11 @@ public class GerarArquivoRemessaItau {
     private void enviarBoleto(Contasreceber conta) throws IOException, Exception {
         numeroSequencial++;
         ArquivoRemessaEnviar arquivoRemessaNormal = new ArquivoRemessaEnviar();
-        remessa.write(arquivoRemessaNormal.gerarHeader(conta, numeroSequencial, empresa));
+        remessa.write(arquivoRemessaNormal.gerarHeader(conta, numeroSequencial, proprietario));
         numeroSequencial++;
-        remessa.write(arquivoRemessaNormal.gerarDetalhe(conta, numeroSequencial, empresa));
+        remessa.write(arquivoRemessaNormal.gerarDetalhe(conta, numeroSequencial, proprietario));
         numeroSequencial++;
-        remessa.write(arquivoRemessaNormal.gerarMulta(conta, numeroSequencial, empresa));
+        remessa.write(arquivoRemessaNormal.gerarMulta(conta, numeroSequencial, proprietario));
         numeroSequencial++;
         remessa.write(arquivoRemessaNormal.gerarTrailer(numeroSequencial));
     }  

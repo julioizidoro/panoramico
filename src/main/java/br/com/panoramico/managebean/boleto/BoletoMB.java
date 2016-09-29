@@ -8,10 +8,12 @@ package br.com.panoramico.managebean.boleto;
 import br.com.panoramico.dao.AssociadoDao;
 import br.com.panoramico.dao.ContasReceberDao;
 import br.com.panoramico.dao.EmpresaDao;
+import br.com.panoramico.dao.ProprietarioDao;
 import br.com.panoramico.managebean.UsuarioLogadoMB;
 import br.com.panoramico.model.Associado;
 import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.model.Empresa;
+import br.com.panoramico.model.Proprietario;
 import br.com.panoramico.uil.Formatacao;
 import java.io.InputStream;
 import java.io.Serializable;
@@ -45,20 +47,22 @@ public class BoletoMB implements Serializable{
     @Inject
     private UsuarioLogadoMB usuarioLogadoMB;
     @EJB
-    private EmpresaDao empresaDao;
-    private Empresa empresa;
+    private ProprietarioDao proprietarioDao;
+    private Proprietario proprietario;
     private List<Empresa> listaEmpresa;
     private StreamedContent stream;
     private Associado associado;
     private List<Associado> listaAssociado;
     @EJB 
     private AssociadoDao associadoDao;
+    @EJB
+    private EmpresaDao empresaDao;
     
     
     @PostConstruct
     public void init(){
         gerarListaContasReceber();
-        empresa = empresaDao.find(1);
+        proprietario = proprietarioDao.find(1);
     }
 
     public Contasreceber getContasreceber() {
@@ -109,21 +113,25 @@ public class BoletoMB implements Serializable{
         this.usuarioLogadoMB = usuarioLogadoMB;
     }
 
-    public EmpresaDao getEmpresaDao() {
-        return empresaDao;
+    public ProprietarioDao getProprietarioDao() {
+        return proprietarioDao;
     }
 
-    public void setEmpresaDao(EmpresaDao empresaDao) {
-        this.empresaDao = empresaDao;
+    public void setProprietarioDao(ProprietarioDao proprietarioDao) {
+        this.proprietarioDao = proprietarioDao;
     }
 
-    public Empresa getEmpresa() {
-        return empresa;
+    public Proprietario getProprietario() {
+        return proprietario;
     }
 
-    public void setEmpresa(Empresa empresa) {
-        this.empresa = empresa;
+    public void setProprietario(Proprietario proprietario) {
+        this.proprietario = proprietario;
     }
+
+    
+
+    
 
     public List<Empresa> getListaEmpresa() {
         return listaEmpresa;
@@ -210,16 +218,16 @@ public class BoletoMB implements Serializable{
     public Boleto gerarClasseBoleto(Contasreceber conta) {
         associado = pegarEndereco(conta);
         DadosBoletoBean dadosBoletoBean = new DadosBoletoBean();
-        dadosBoletoBean.setAgencias(empresa.getBanco().getAgencia());
-        dadosBoletoBean.setCarteiras(empresa.getBanco().getCarteira());
-        dadosBoletoBean.setCnpjCedente(empresa.getCnpj());
+        dadosBoletoBean.setAgencias(proprietario.getBancoList().get(0).getAgencia());
+        dadosBoletoBean.setCarteiras(proprietario.getBancoList().get(0).getCarteira());
+        dadosBoletoBean.setCnpjCedente(proprietario.getCnpj());
         dadosBoletoBean.setDataDocumento(new Date());
-        dadosBoletoBean.setDigitoAgencias(empresa.getBanco().getDigitoagencia());
-        dadosBoletoBean.setDigitoContas(empresa.getBanco().getDigitoconta());
+        dadosBoletoBean.setDigitoAgencias(proprietario.getBancoList().get(0).getDigitoagencia());
+        dadosBoletoBean.setDigitoContas(proprietario.getBancoList().get(0).getDigitoconta());
         dadosBoletoBean.setDataVencimento(conta.getDatalancamento());
-        dadosBoletoBean.setNomeCedente(empresa.getRazaosocial());
+        dadosBoletoBean.setNomeCedente(proprietario.getRazaosocial());
         dadosBoletoBean.setNomeSacado(conta.getCliente().getNome());
-        dadosBoletoBean.setNumeroContas(empresa.getBanco().getConta());
+        dadosBoletoBean.setNumeroContas(proprietario.getBancoList().get(0).getConta());
         dadosBoletoBean.setNumeroDocumentos(Formatacao.gerarNumeroDocumentoBoleto(conta.getNumerodocumento(), String.valueOf(conta.getNumeroparcela())));
         dadosBoletoBean.setValor(Formatacao.converterFloatBigDecimal(conta.getValorconta()));
         dadosBoletoBean.setNossoNumeros(dadosBoletoBean.getNumeroDocumentos());
@@ -234,8 +242,8 @@ public class BoletoMB implements Serializable{
             dadosBoletoBean.getEnderecoSacado().setNumero(associado.getNumero());
             dadosBoletoBean.getEnderecoSacado().setUF(UnidadeFederativa.valueOfSigla(associado.getEstado()));
         }
-        String juros = Formatacao.converterValorFloatReal(empresa.getBanco().getValorjuros());
-        String multa = Formatacao.converterValorFloatReal(empresa.getBanco().getValormulta());
+        String juros = Formatacao.converterValorFloatReal(proprietario.getBancoList().get(0).getValorjuros());
+        String multa = Formatacao.converterValorFloatReal(proprietario.getBancoList().get(0).getValormulta());
         dadosBoletoBean.criarBoleto(juros, multa);
         conta.setNossonumero(dadosBoletoBean.getNossoNumeros());
         conta.setSituacaoboleto("enviado");
@@ -255,7 +263,7 @@ public class BoletoMB implements Serializable{
            lista=listaContasReceber;
        }
        if(lista.size()>0){
-             GerarArquivoRemessaItau arquivoRemessaItau = new GerarArquivoRemessaItau(lista, usuarioLogadoMB, empresa, stream, lista);
+             GerarArquivoRemessaItau arquivoRemessaItau = new GerarArquivoRemessaItau(lista, usuarioLogadoMB, proprietario, stream, lista);
              confirmarContas(lista);
              FacesMessage msg = new FacesMessage("Sucesso! ", "Arquivo Remessa Gerado");
             FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -280,8 +288,7 @@ public class BoletoMB implements Serializable{
         }
         for (int i = 0; i < listaEmpresa.size(); i++) {
             if (listaEmpresa.get(i).getIdempresa() == 1) {
-                empresa = new Empresa();
-                empresa = listaEmpresa.get(i);
+                
             }
         }
     }

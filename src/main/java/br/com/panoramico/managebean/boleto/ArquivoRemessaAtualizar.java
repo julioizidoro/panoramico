@@ -5,9 +5,9 @@
  */
 package br.com.panoramico.managebean.boleto;
 
-import br.com.panoramico.dao.EmpresaDao;
+import br.com.panoramico.dao.ProprietarioDao;
 import br.com.panoramico.model.Contasreceber;
-import br.com.panoramico.model.Empresa;
+import br.com.panoramico.model.Proprietario;
 import br.com.panoramico.uil.Formatacao;
 import java.io.IOException;
 import java.util.Date;
@@ -16,11 +16,11 @@ import javax.ejb.EJB;
 
 public class ArquivoRemessaAtualizar {
     
-     private String branco = "                                        ";
+    private String branco = "                                        ";
     private String zeros = "000000000000000000000";
     @EJB
-    private EmpresaDao empresaDao;
-    private Empresa empresa;
+    private ProprietarioDao proprietarioDao;
+    private Proprietario proprietario;
     
     public String gerarHeader(Contasreceber conta, int numeroSequencial) throws IOException{
         String linha="";
@@ -29,12 +29,12 @@ public class ArquivoRemessaAtualizar {
         linha = linha  + ("REMESSA");
         linha = linha  + ("01");
         linha = linha  + ("COBRANCA       ");
-        linha = linha  + (empresa.getBanco().getAgencia());
+        linha = linha  + (proprietario.getBancoList().get(0).getAgencia());
         linha = linha  + ("00");
-        linha = linha  + (empresa.getBanco().getConta());
-        linha = linha  + (empresa.getBanco().getDigitoconta());
+        linha = linha  + (proprietario.getBancoList().get(0).getConta());
+        linha = linha  + (proprietario.getBancoList().get(0).getDigitoconta());
         linha = linha  + (branco.substring(0, 8));
-        String nomeEmpresa = empresa.getRazaosocial();
+        String nomeEmpresa = proprietario.getRazaosocial();
         nomeEmpresa = nomeEmpresa.toUpperCase();
         if (nomeEmpresa.length()<30){
             nomeEmpresa = nomeEmpresa + branco.substring(0, 30 - nomeEmpresa.length());
@@ -59,10 +59,10 @@ public class ArquivoRemessaAtualizar {
         linha = linha  + ("1");
         linha = linha  + ("00");
         linha = linha  + ("00000000000000");
-        linha = linha  + (empresa.getBanco().getAgencia());
+        linha = linha  + (proprietario.getBancoList().get(0).getAgencia());
         linha = linha  + ("00");
-        linha = linha  + (empresa.getBanco().getConta());
-        linha = linha  + (empresa.getBanco().getDigitoconta());
+        linha = linha  + (proprietario.getBancoList().get(0).getConta());
+        linha = linha  + (proprietario.getBancoList().get(0).getDigitoconta());
         linha = linha  + (branco.substring(0, 4));
         linha = linha  + ("00");
         linha = linha  + (branco.substring(0, 25));
