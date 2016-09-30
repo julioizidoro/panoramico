@@ -86,7 +86,7 @@
                 <p:outputLabel class="titTela" value="Total" style="font-size: 16px;text-align: left;margin-left:27.5%;"/>
                 <br/>
                 <p:spinner id="minMaxAdulto" value="#{cadPassaporteMB.adultos}" min="0" max="100"  size="10" style="margin-left: 2%;font-size: 14px;">
-                    <p:ajax listener="#{cadPassaporteMB.calcularValorTotal()}"  update="idvalorTotal, idvalorTotaladulto"/>
+                    <p:ajax event="change" listener="#{cadPassaporteMB.calcularValorTotal()}"  update="idvalorTotal, idvalorTotaladulto"/>
                 </p:spinner>
                 <p:inputText class="form-control" id="idvaloradulto" value="#{cadPassaporteMB.valorAdulto}" size="15" style="margin-left:10.5%;font-size: 14px;text-align: right;">
                     <f:convertNumber pattern="##,###,###,###.##"/> 
@@ -100,7 +100,7 @@
                 <p:outputLabel class="titTela" value="Total" style="font-size: 16px;text-align: left;margin-left:27.5%;"/>
                 <br/>
                 <p:spinner id="minMaxCrianca" value="#{cadPassaporteMB.criancas}" min="0" max="100" size="10" style="margin-left:2%;">
-                    <p:ajax listener="#{cadPassaporteMB.calcularValorTotal()}"  update="idvalorTotal, idvalorTotalcrianca"/>
+                    <p:ajax event="change" listener="#{cadPassaporteMB.calcularValorTotal()}"  update="idvalorTotal, idvalorTotalcrianca"/>
                 </p:spinner>
                 <p:inputText class="form-control" id="idvalorcrianca" value="#{cadPassaporteMB.valorCrianca}" size="15" style="margin-left:10.5%;font-size: 14px;text-align: right;">
                     <f:convertNumber pattern="##,###,###,###.##"/> 
