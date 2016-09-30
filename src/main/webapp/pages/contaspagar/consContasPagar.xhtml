@@ -43,6 +43,9 @@
                                 <div class="icoAdd fa fa-plus-square-o"></div>
                                 <p:ajax event="dialogReturn" listener="#{contasPagarMB.retornoDialogNovo}" update="messages, idConsultaContasPagar"/>
                             </p:commandLink>
+                            <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" action="#" title="Relatórios">
+                                <div class="icoAdd fa fa-bar-chart"></div>
+                            </p:commandLink>
                             <h:dataTable  id="idConsultaContasPagar" class="table" styleClass="table" value="#{contasPagarMB.listaContasPagar}" var="contapagar">
                                 <h:column>
                                     <f:facet name="header">Credor</f:facet> 

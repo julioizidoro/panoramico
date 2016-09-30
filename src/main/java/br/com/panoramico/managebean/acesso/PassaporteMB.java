@@ -9,9 +9,11 @@ import br.com.panoramico.dao.ClienteDao;
 import br.com.panoramico.dao.PassaporteDao;
 import br.com.panoramico.model.Cliente;
 import br.com.panoramico.model.Passaporte;
+import br.com.panoramico.uil.Formatacao;
 import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +38,12 @@ public class PassaporteMB implements Serializable {
     @EJB
     private ClienteDao clienteDao;
     private List<Passaporte> listaPassaporte;
+    private Date dataInicioCompra;
+    private Date dataFinalCompra;
+    private Date dataInicialUso;
+    private Date dataFinalUso;
+    private String localCompra;
+    private String passaporteUtilizado;
 
     @PostConstruct
     public void init() {
@@ -90,6 +98,56 @@ public class PassaporteMB implements Serializable {
     public void setListaCliente(List<Cliente> listaCliente) {
         this.listaCliente = listaCliente;
     }
+
+    public Date getDataInicioCompra() {
+        return dataInicioCompra;
+    }
+
+    public void setDataInicioCompra(Date dataInicioCompra) {
+        this.dataInicioCompra = dataInicioCompra;
+    }
+
+    public Date getDataFinalCompra() {
+        return dataFinalCompra;
+    }
+
+    public void setDataFinalCompra(Date dataFinalCompra) {
+        this.dataFinalCompra = dataFinalCompra;
+    }
+
+    public Date getDataInicialUso() {
+        return dataInicialUso;
+    }
+
+    public void setDataInicialUso(Date dataInicialUso) {
+        this.dataInicialUso = dataInicialUso;
+    }
+
+    public Date getDataFinalUso() {
+        return dataFinalUso;
+    }
+
+    public void setDataFinalUso(Date dataFinalUso) {
+        this.dataFinalUso = dataFinalUso;
+    }
+
+    public String getLocalCompra() {
+        return localCompra;
+    }
+
+    public void setLocalCompra(String localCompra) {
+        this.localCompra = localCompra;
+    }
+
+    public String getPassaporteUtilizado() {
+        return passaporteUtilizado;
+    }
+
+    public void setPassaporteUtilizado(String passaporteUtilizado) {
+        this.passaporteUtilizado = passaporteUtilizado;
+    }
+    
+    
 
     public void gerarListaPassaporte() {
         String sql = "Select p From Passaporte p Where p.dataacesso is null";
@@ -148,5 +206,57 @@ public class PassaporteMB implements Serializable {
             options.put("contentWidth", 550);
             RequestContext.getCurrentInstance().openDialog("cadPassaporte", options, null);
         }
+    }
+    
+    
+    public void filtrar(){
+        String sql = "Select p From Passaporte p";
+        if ((cliente != null && cliente.getIdcliente() != null) || dataInicialUso != null || dataFinalUso != null || dataInicioCompra != null || dataFinalCompra != null
+                || passaporteUtilizado.equalsIgnoreCase("sn") || localCompra.equalsIgnoreCase("sn")) {
+            sql = sql + " Where";
+        }
+        if (cliente != null && cliente.getIdcliente() != null) {
+            sql = sql + " p.cliente.idcliente=" + cliente.getIdcliente();
+             if (dataInicialUso != null || dataFinalUso != null || dataInicioCompra != null || dataFinalCompra != null
+                || !passaporteUtilizado.equalsIgnoreCase("sn") || !localCompra.equalsIgnoreCase("sn")) {
+                sql = sql + " and";
+            }
+        }
+        if (dataInicialUso != null && dataFinalUso != null) {
+             sql = sql + " p.dataacesso>='" + Formatacao.ConvercaoDataSql(dataInicialUso) + "' and p.dataacesso<='" + 
+                     Formatacao.ConvercaoDataSql(dataFinalUso) + "'";
+             if (dataInicioCompra != null || dataFinalCompra != null
+                || !passaporteUtilizado.equalsIgnoreCase("sn") || !localCompra.equalsIgnoreCase("sn")) {
+                sql = sql + " and";
+            }
+        }
+        if (dataInicioCompra != null && dataFinalCompra != null) {
+             sql = sql + " p.datacompra>='" + Formatacao.ConvercaoDataSql(dataInicioCompra) + "' and p.datacompra<='" + 
+                     Formatacao.ConvercaoDataSql(dataFinalCompra) + "'";
+             if (!passaporteUtilizado.equalsIgnoreCase("sn") || !localCompra.equalsIgnoreCase("sn")) {
+                sql = sql + " and";
+            }
+        }
+        if (!localCompra.equalsIgnoreCase("sn")) {
+            if (localCompra.equalsIgnoreCase("site")) {
+                sql = sql + " p.localizador='PPA'";
+            }else if(localCompra.equalsIgnoreCase("clube")){
+                sql = sql + " p.localizador like 'PPA%'";
+            }
+        }
+        listaPassaporte = new ArrayList<Passaporte>();
+        listaPassaporte = passaporteDao.list(sql);
+        Mensagem.lancarMensagemInfo("filtrado com sucesso", "");
+    }
+    
+    public void limparFiltro(){
+        cliente = null;
+        dataFinalCompra = null;
+        dataFinalUso = null;
+        dataInicialUso = null;
+        dataInicioCompra = null;
+        localCompra = "";
+        passaporteUtilizado = "";
+        gerarListaPassaporte();
     }
 }

@@ -11,38 +11,49 @@
                 <br/> 
                 <h:form id="idFormConsultaPassaporte" style="margin-left:5%;width: 90%;"> 
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:10%;width: 80%;"/>
-                    <p:accordionPanel activeIndex="-1" style="width:80%;margin-left: 12%;" rendered="false">
+                    <p:accordionPanel activeIndex="-1" style="width:85%;margin-left: 11%;" rendered="true">
                         <p:tab title="Pesquisar">
-                            <p:outputLabel class="titTela" value="Cliente" style="font-size: 12px;text-align: left;margin-left: 2%;float: left;"/>
-                            <p:outputLabel class="titTela" value="Ambiente" style="font-size: 12px;text-align: left;margin-left: 25%;float: left;"/>
-                            <p:outputLabel class="titTela" value="Tipo Evento" style="font-size: 12px;text-align: left; margin-left: 25%;float: left;"/>
+                            <p:outputLabel class="titTela" value="Cliente" style="font-size: 12px;text-align: left;margin-left: 1%;float: left;"/>
+                            <p:outputLabel class="titTela" value="Data Compra" style="font-size: 12px;text-align: left;margin-left: 38%;float: left;"/>
+                            <p:outputLabel class="titTela" value="Data Uso" style="font-size: 12px;text-align: left; margin-left: 25%;float: left;"/>
                             <br/>
-                            <p:selectOneMenu  id="cliente"  style="width: 250px;font-size: 12px;float: left;margin-left: -75%;"  value="#{passaporteMB.cliente}" converter="ClienteConverter"
+                            <p:selectOneMenu  id="cliente"  style="width: 250px;font-size: 12px;float: left;"  value="#{passaporteMB.cliente}" converter="ClienteConverter"
                                           >
                                 <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
                                 <f:selectItems  value="#{passaporteMB.listaCliente}" var="clienteselecionado" itemLabel="#{clienteselecionado.nome}" itemValue="#{clienteselecionado}"/>
                                 <f:attribute name="listaCliente" value="#{passaporteMB.listaCliente}"/>
                             </p:selectOneMenu>
+                            <p:inputMask mask="99/99/9999" size="15"  value="#{passaporteMB.dataInicioCompra}" style="margin-left:2%;font-size: 12px;float: left;">
+                                <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+                            </p:inputMask>
+                            <p:inputMask mask="99/99/9999" size="15" value="#{passaporteMB.dataFinalCompra}" style="margin-left:1%;font-size: 12px;float: left;">
+                                <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+                            </p:inputMask>
+                            <p:inputMask mask="99/99/9999" size="15"  value="#{passaporteMB.dataInicialUso}" style="margin-left:2%;font-size: 12px;float: left;">
+                                <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+                            </p:inputMask>
+                            <p:inputMask mask="99/99/9999" size="15" value="#{passaporteMB.dataFinalUso}" style="margin-left:1%;font-size: 12px;float: left;">
+                                <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+                            </p:inputMask>
                             <br/><br/>
-                            <p:outputLabel class="titTela" value="Situação" style="font-size: 12px;text-align: left;margin-left: 2%;float: left;"/>
-                            <p:outputLabel class="titTela" value="Periodo" style="font-size: 12px;text-align: left;margin-left: 20%;float: left;"/>
+                            <p:outputLabel class="titTela" value="Passaporte utilizado" style="font-size: 12px;text-align: left;margin-left: 1%;float: left;"/>
+                            <p:outputLabel class="titTela" value="Local da venda" style="font-size: 12px;text-align: left;margin-left: 20%;float: left;"/>
                             <br/>
-                            <p:selectOneMenu id="estado" value="#"  style="width:180px;margin-left: -32%; font-size: 12px;float: left;">
+                            <p:selectOneMenu id="idpassaporteutilizado" value="#{passaporteMB.passaporteUtilizado}"  style="width:180px;margin-left: -46%; font-size: 12px;float: left;">
                                 <f:selectItem itemLabel="Selecione" itemValue="sn" noSelectionOption="true"/> 
-                                <f:selectItem itemLabel="Agendado" itemValue="A" />  
-                                <f:selectItem itemLabel="Cancelado" itemValue="C" />   
-                                <f:selectItem itemLabel="Realizado" itemValue="R" />  
+                                <f:selectItem itemLabel="Sim" itemValue="sim" />  
+                                <f:selectItem itemLabel="Não" itemValue="nao" />   
                             </p:selectOneMenu>
-                            <p:inputMask mask="99/99/9999" size="15"  value="30/09/2016" style="margin-left:-6%;font-size: 12px;float: left;">
-                                <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
-                            </p:inputMask>
-                            <p:inputMask mask="99/99/9999" size="15" value="30/09/2016" style="margin-left:2%;font-size: 12px;float: left;">
-                                <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
-                            </p:inputMask>
-                            <p:commandLink style="text-decoration: none; margin-top: 10%;" actionListener="#" ajax="false" update="idConsultaEvento, messages">
+                            <p:selectOneMenu id="idlocalvenda" value="#{passaporteMB.localCompra}"  style="width:180px;margin-left: -11%; font-size: 12px;float: left;">
+                                <f:selectItem itemLabel="Selecione" itemValue="sn" noSelectionOption="true"/> 
+                                <f:selectItem itemLabel="Site" itemValue="site" />  
+                                <f:selectItem itemLabel="Clube" itemValue="clube" />   
+                            </p:selectOneMenu>
+                            
+                            <p:commandLink style="text-decoration: none; margin-top: 10%;" actionListener="#{passaporteMB.filtrar()}" ajax="false" update="idConsultaPassaporte, messages">
                                 <div style="font-size: 16px;margin-left: 2%;" class="adicionar">Filtrar</div>
                             </p:commandLink>
-                            <p:commandLink style="text-decoration: none; margin-top: 2%;" actionListener="#" ajax="false" update="@form">
+                            <p:commandLink style="text-decoration: none; margin-top: 2%;" actionListener="#{passaporteMB.limparFiltro()}" ajax="false" update="@form">
                                 <div style="font-size: 16px;margin-left: 2%;" class="limpar">Limpar</div>
                             </p:commandLink>
                         </p:tab>
