@@ -6,11 +6,13 @@
 package br.com.panoramico.managebean.boleto;
 
 import br.com.panoramico.dao.AssociadoDao;
+import br.com.panoramico.dao.BancoDao;
 import br.com.panoramico.dao.ContasReceberDao;
 import br.com.panoramico.dao.EmpresaDao;
 import br.com.panoramico.dao.ProprietarioDao;
 import br.com.panoramico.managebean.UsuarioLogadoMB;
 import br.com.panoramico.model.Associado;
+import br.com.panoramico.model.Banco;
 import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.model.Empresa;
 import br.com.panoramico.model.Proprietario;
@@ -57,12 +59,16 @@ public class BoletoMB implements Serializable{
     private AssociadoDao associadoDao;
     @EJB
     private EmpresaDao empresaDao;
+    @EJB
+    private BancoDao bancoDao;
+    private Banco banco;
     
     
     @PostConstruct
     public void init(){
         gerarListaContasReceber();
         proprietario = proprietarioDao.find(1);
+        banco = bancoDao.find("Select b From Banco b Where b.proprietario.idproprietario=" + proprietario.getIdproprietario());
     }
 
     public Contasreceber getContasreceber() {
@@ -218,16 +224,16 @@ public class BoletoMB implements Serializable{
     public Boleto gerarClasseBoleto(Contasreceber conta) {
         associado = pegarEndereco(conta);
         DadosBoletoBean dadosBoletoBean = new DadosBoletoBean();
-        dadosBoletoBean.setAgencias(proprietario.getBancoList().get(0).getAgencia());
-        dadosBoletoBean.setCarteiras(proprietario.getBancoList().get(0).getCarteira());
+        dadosBoletoBean.setAgencias(banco.getAgencia());
+        dadosBoletoBean.setCarteiras(banco.getCarteira());
         dadosBoletoBean.setCnpjCedente(proprietario.getCnpj());
         dadosBoletoBean.setDataDocumento(new Date());
-        dadosBoletoBean.setDigitoAgencias(proprietario.getBancoList().get(0).getDigitoagencia());
-        dadosBoletoBean.setDigitoContas(proprietario.getBancoList().get(0).getDigitoconta());
+        dadosBoletoBean.setDigitoAgencias(banco.getDigitoagencia());
+        dadosBoletoBean.setDigitoContas(banco.getDigitoconta());
         dadosBoletoBean.setDataVencimento(conta.getDatalancamento());
         dadosBoletoBean.setNomeCedente(proprietario.getRazaosocial());
         dadosBoletoBean.setNomeSacado(conta.getCliente().getNome());
-        dadosBoletoBean.setNumeroContas(proprietario.getBancoList().get(0).getConta());
+        dadosBoletoBean.setNumeroContas(banco.getConta());
         dadosBoletoBean.setNumeroDocumentos(Formatacao.gerarNumeroDocumentoBoleto(conta.getNumerodocumento(), String.valueOf(conta.getNumeroparcela())));
         dadosBoletoBean.setValor(Formatacao.converterFloatBigDecimal(conta.getValorconta()));
         dadosBoletoBean.setNossoNumeros(dadosBoletoBean.getNumeroDocumentos());
@@ -242,8 +248,8 @@ public class BoletoMB implements Serializable{
             dadosBoletoBean.getEnderecoSacado().setNumero(associado.getNumero());
             dadosBoletoBean.getEnderecoSacado().setUF(UnidadeFederativa.valueOfSigla(associado.getEstado()));
         }
-        String juros = Formatacao.converterValorFloatReal(proprietario.getBancoList().get(0).getValorjuros());
-        String multa = Formatacao.converterValorFloatReal(proprietario.getBancoList().get(0).getValormulta());
+        String juros = Formatacao.converterValorFloatReal(banco.getValorjuros());
+        String multa = Formatacao.converterValorFloatReal(banco.getValormulta());
         dadosBoletoBean.criarBoleto(juros, multa);
         conta.setNossonumero(dadosBoletoBean.getNossoNumeros());
         conta.setSituacaoboleto("enviado");

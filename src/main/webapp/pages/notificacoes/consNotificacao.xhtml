@@ -43,16 +43,16 @@
                      </h:column>
                      <h:column>
                          <f:facet name="header"></f:facet>
-                         <p:commandLink  title="Excluir" action="#{notificacaoMB.vistoMensagem(notificacao)}" style="text-decoration: none;" update=":idFormConsultaNotificacao:messages, @form">
+                         <p:commandLink  title="Excluir" action="#{notificacaoMB.vistoMensagem(notificacao)}" style="text-decoration: none;" update="@form">
                             <div class="fa fa-check-square-o">
                             </div>
                         </p:commandLink>
                      </h:column> 
                  </h:dataTable>
-                 <br/><br/>
                  <p:commandLink style="text-decoration: none;" action="#{notificacaoMB.fechar()}" ajax="false">
                     <div style="font-size: 16px; margin-left:40%;" class="cancelar">Fechar</div>
                 </p:commandLink>
+                 <br/><br/>
         </h:form>
  </h:body>
   

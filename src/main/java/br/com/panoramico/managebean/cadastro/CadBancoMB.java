@@ -10,6 +10,7 @@ import br.com.panoramico.dao.ProprietarioDao;
 import br.com.panoramico.model.Banco;
 import br.com.panoramico.model.Proprietario;
 import java.io.Serializable;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
@@ -38,7 +39,11 @@ public class CadBancoMB implements Serializable{
         session.removeAttribute("banco");
         if (banco == null) {
             banco = new Banco();
-            Proprietario proprietario = proprietarioDao.find("Select p FROM Proprierario p");
+            Proprietario proprietario = null;
+            List<Proprietario> lista = proprietarioDao.list("Select p From Proprietario p");
+            for (int i = 0; i < lista.size(); i++) {
+                proprietario = lista.get(i);
+            }
             banco.setProprietario(proprietario);
         }
     }

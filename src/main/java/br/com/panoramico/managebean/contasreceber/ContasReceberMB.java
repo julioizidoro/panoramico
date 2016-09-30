@@ -8,12 +8,14 @@ package br.com.panoramico.managebean.contasreceber;
 import br.com.panoramico.dao.ClienteDao;
 import br.com.panoramico.dao.ContasReceberDao;
 import br.com.panoramico.dao.PlanoContaDao;
+import br.com.panoramico.dao.ProprietarioDao;
 import br.com.panoramico.managebean.UsuarioLogadoMB;
 import br.com.panoramico.managebean.boleto.LerRetornoItauBean;
 import br.com.panoramico.model.Cliente;
 import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.model.Crcancelamento;
 import br.com.panoramico.model.Planoconta;
+import br.com.panoramico.model.Proprietario;
 import br.com.panoramico.model.Recebimento;
 import br.com.panoramico.uil.Formatacao;
 import br.com.panoramico.uil.Mensagem;
@@ -60,6 +62,9 @@ public class ContasReceberMB implements Serializable{
     private Date dataFinal;
     private String situacao;
     private List<Contasreceber> listaContasSelecionadas;
+    @EJB
+    private ProprietarioDao proprietarioDao;
+    private Proprietario proprietario;
     
     
     @PostConstruct
@@ -67,6 +72,9 @@ public class ContasReceberMB implements Serializable{
         gerarListaContasReceber();
         gerarListaCliente();
         gerarListaPlanoConta();
+        proprietario = proprietarioDao.find(1);
+        proprietario.setCnpj("20.350.192/0001-73");
+        proprietarioDao.update(proprietario);
     }
 
     public Cliente getCliente() {

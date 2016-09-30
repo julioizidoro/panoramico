@@ -1,0 +1,53 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+        <link href="../../resources/css/css.css" rel="stylesheet" type="text/css" />
+        <link type="text/javascript" href="../../resources/js/jquery-3.1.0.js"></link>
+        <link type="text/javascript" src="../../resources/js/modal.js"/> 
+        <link rel="stylesheet" type="text/css" href="../../resources/css/modal.css"/>
+        <link rel="stylesheet" type="text/css" href="../../resources/css/buttons.css"/>
+        <link rel="stylesheet" type="text/css" href="../../resources/css/tabelas.css"/>
+        <link rel="stylesheet" type="text/css" href="../../resources/css/textos.css"/>
+    </h:head>
+
+
+    <h:body style="background:#A3DAD9; border-color: #CF7000;border: 2px;" > 
+        <h:form id="idFormCadastroPassaporte" style="font-size: 12px;" enctype="multipart/form-data">
+
+            <title>Acesso ao parque</title>
+            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+
+            
+          <br/><br/>
+            <p:outputLabel class="titTela" value="N° Adulto" style="font-size: 16px;text-align: left;margin-left:2%;"/>
+            <p:outputLabel class="titTela" value="N° Criança" style="font-size: 16px;text-align: left;margin-left:40%;"/>
+            <br/>
+            <p:spinner id="minMaxAdulto" value="#{utilizadoPassaporteMB.passaporte.acessoadulto}" min="0" max="100"  size="10" style="margin-left: 2%;font-size: 14px;"/>
+            <p:spinner id="minMaxCrianca" value="#{utilizadoPassaporteMB.passaporte.acessocrianca}" min="0" max="100" size="10" style="margin-left:30%;"/>
+            <br/><br/> 
+            <br/><br/>
+            <p:outputLabel class="titTela" value="Hora do Acesso" style="font-size: 16px;text-align: left;margin-left:2%;"/>
+            <p:outputLabel class="titTela" value="Data do Acesso" style="font-size: 16px;text-align: left;margin-left:25%;"/>
+            <br/>
+            <p:inputText class="form-control" id="idvalorTotal" value="#{utilizadoPassaporteMB.passaporte.horaacesso}" size="15" style="margin-left:2%;font-size: 14px;text-align: right;"/>
+            <p:inputMask mask="99/99/9999" size="15" class="form-control" value="#{utilizadoPassaporteMB.passaporte.dataacesso}" style="margin-left:20%;font-size: 14px;">
+                <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+            </p:inputMask>
+            <br/>
+            <hr/>
+            <br/>
+            <p:commandLink update="messages" ajax="false"  actionListener="#{utilizadoPassaporteMB.salvar()}" >
+                <div style="font-size: 16px;margin-left: 32%;" class="cadastrar">Cadastrar</div>
+            </p:commandLink>
+            <p:commandLink actionListener="#{utilizadoPassaporteMB.cancelar()}" ajax="false">
+                <div style="font-size: 16px" class="cancelar">Cancelar</div>
+            </p:commandLink>
+        </h:form>    
+    </h:body>
+</html>

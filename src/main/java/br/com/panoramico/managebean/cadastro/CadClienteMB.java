@@ -30,6 +30,8 @@ public class CadClienteMB implements  Serializable{
     @EJB
     private ClienteDao clienteDao;
     private Cliente cliente;
+    private Boolean ePassaporte;
+    private String cpfCliente;
     
     
     @PostConstruct
@@ -37,11 +39,17 @@ public class CadClienteMB implements  Serializable{
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         cliente = (Cliente) session.getAttribute("cliente");
+        ePassaporte = (Boolean) session.getAttribute("ePassaporte");
+        cpfCliente = (String) session.getAttribute("cpfCliente");
+        session.removeAttribute("cpfCliente");
+        session.removeAttribute("ePassaporte");
         session.removeAttribute("cliente");
         if (cliente == null) {
             cliente = new Cliente();
         }
-        
+        if (ePassaporte == null) {
+            ePassaporte = false;
+        }
     }
 
     public ClienteDao getClienteDao() {
@@ -62,11 +70,20 @@ public class CadClienteMB implements  Serializable{
     
     
     public void salvar(){
+        if (ePassaporte) {
+            FacesContext fc = FacesContext.getCurrentInstance();
+            HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+            session.setAttribute("cliente", cliente);
+        }
         cliente = clienteDao.update(cliente);
         RequestContext.getCurrentInstance().closeDialog(cliente);
     }
     
-    public void cancelar(){
+    public String cancelar(){
+        if (ePassaporte) {
+            return "cadPassaporte";
+        }
         RequestContext.getCurrentInstance().closeDialog(cliente);
+        return "";
     }
 }

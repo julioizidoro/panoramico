@@ -22,81 +22,112 @@
 
             <title>Novo Passaporte</title>
             <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+            
+            <h:panelGroup id="idpanelCliente" rendered="#{cadPassaporteMB.cadastrocliente}">
+                <p:outputLabel class="titTela" value="Nome" style="font-size: 12px;text-align: left;margin-left:2%;"/>
+                <p:outputLabel value="CPF" class="titTela" style="font-size: 12px;text-align: left;margin-left:39%;"/> 
+                <p:outputLabel value="Data de Nascimento" class="titTela" style="font-size: 12px;text-align: left;margin-left:26.9%;"/>
+                <br/> 
+                <p:inputText class="form-control" value="#{cadPassaporteMB.cliente.nome}" size="30" style="margin-left:2%;font-size: 12px;"/>
+                <p:inputMask mask="999.999.999-99" class="form-control" value="#{cadPassaporteMB.cliente.cpf}" style="margin-left:6%;font-size: 12px;"/>    
+                <p:inputMask mask="99/99/9999" size="15" class="form-control" value="#{cadPassaporteMB.cliente.datanascimento}" style="margin-left:5%;font-size: 12px;">
+                    <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+                </p:inputMask>
+                <br/><br/>
 
-            <p:outputLabel class="titTela" value="CPF do CLiente" style="font-size: 16px;text-align: left;margin-left:2%;"/>
-            <p:outputLabel class="titTela" value="Cliente" style="font-size: 16px;text-align: left;margin-left:23%;"/>
-            <br/>
-            <p:inputMask mask="999.999.999-99" size="15" class="form-control" value="#{cadPassaporteMB.cpfCliente}" style="margin-left:2%;font-size: 14px;float: left;"/>
-            <p:commandLink  actionListener="#{cadPassaporteMB.pesquisarCliente()}" ajax="false" update="idnomeCliente">
-                <div style="font-size: 16px;margin-left: 2%;margin-top:-0.5%;" class="pesquisarAcesso">Pesquisar</div> 
-            </p:commandLink>
-            <p:inputText class="form-control" id="idnomeCliente" value="#{cadPassaporteMB.cliente.nome}" size="32" readonly="true" style="margin-left:2%;font-size: 14px;"/>
-            <br/><br/><br/>
-            <p:outputLabel class="titTela" value="Valores do Passaporte" style="font-size: 16px;text-align: left;margin-left:2%;"/>
-            <p:outputLabel class="titTela" value="Forma de Pagamento" style="font-size: 16px;text-align: left;margin-left:18.5%;"/>
-            <br/>
-            <p:selectOneMenu  class="form-control" id="idcombovalorespassaporte"  style="width: 216px;margin-left: 2%;font-size: 14px;"  value="#{cadPassaporteMB.passaportevalor}" converter="PassaporteValorConverter"
-                             filter="true" filterMatchMode="contains" panelStyle="width:180px" >
-                    <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
-                    <f:selectItems  value="#{cadPassaporteMB.listaPassaporteValor}" var="passaportevalor" itemLabel="#{passaportevalor.descriccao}" itemValue="#{passaportevalor}"/>
-                    <f:attribute name="listaPlanoContas" value="#{cadPassaporteMB.listaPassaporteValor}"/>
-                    <p:ajax event="change" listener="#{cadPassaporteMB.pegar()}"  update="idvaloradulto, idvalorcrianca"/>
-            </p:selectOneMenu>
-            <p:selectOneMenu id="tipoPagamento" class="form-control" style="width:194px;font-size: 14px; margin-left: 2%;" value="#{cadPassaporteMB.formaPagamento}">
-                <f:selectItem itemLabel="Selecione" itemValue="" noSelectionOption="true"/> 
-                <f:selectItem itemLabel="Dinheiro" itemValue="Dinheiro" /> 
-                <f:selectItem itemLabel="Cartão" itemValue="cartao" />  
-                <f:selectItem itemLabel="Cheque" itemValue="Cheque" />
-                <f:selectItem itemLabel="Debito" itemValue="Debito" />  
-                <f:selectItem itemLabel="Crédito" itemValue="Credito" />
-            </p:selectOneMenu>
-            <br/><br/>
-            <p:outputLabel class="titTela" value="Q° Adulto(s)" style="font-size: 16px;text-align: left;margin-left:2%;"/>
-            <p:outputLabel class="titTela" value="Valor" style="font-size: 16px;text-align: left;margin-left:14.2%;"/>
-            <p:outputLabel class="titTela" value="Total" style="font-size: 16px;text-align: left;margin-left:27.5%;"/>
-            <br/>
-            <p:spinner id="minMaxAdulto" value="#{cadPassaporteMB.adultos}" min="0" max="100"  size="10" style="margin-left: 2%;font-size: 14px;">
-                <p:ajax listener="#{cadPassaporteMB.calcularValorTotal()}"  update="idvalorTotal, idvalorTotaladulto"/>
-            </p:spinner>
-            <p:inputText class="form-control" id="idvaloradulto" value="#{cadPassaporteMB.passaportevalor.valoradulto}" size="15" style="margin-left:10.5%;font-size: 14px;text-align: right;">
-                <f:convertNumber pattern="##,###,###,###.##"/> 
-            </p:inputText>
-            <p:inputText class="form-control" id="idvalorTotaladulto" value="#{cadPassaporteMB.totalValorAdulto}" size="15" style="margin-left:10.5%;font-size: 14px;text-align: right;">
-                <f:convertNumber pattern="##,###,###,###.##"/> 
-            </p:inputText>
-            <br/><br/> 
-            <p:outputLabel class="titTela" value="Q° Criança(s)" style="font-size: 16px;text-align: left;margin-left:2%;"/>
-            <p:outputLabel class="titTela" value="Valor" style="font-size: 16px;text-align: left;margin-left:13%;"/>
-            <p:outputLabel class="titTela" value="Total" style="font-size: 16px;text-align: left;margin-left:27.5%;"/>
-            <br/>
-            <p:spinner id="minMaxCrianca" value="#{cadPassaporteMB.criancas}" min="0" max="100" size="10" style="margin-left:2%;">
-                <p:ajax listener="#{cadPassaporteMB.calcularValorTotal()}"  update="idvalorTotal, idvalorTotalcrianca"/>
-            </p:spinner>
-            <p:inputText class="form-control" id="idvalorcrianca" value="#{cadPassaporteMB.passaportevalor.valorcrianca}" size="15" style="margin-left:10.5%;font-size: 14px;text-align: right;">
-                <f:convertNumber pattern="##,###,###,###.##"/> 
-            </p:inputText>
-            <p:inputText class="form-control" id="idvalorTotalcrianca" value="#{cadPassaporteMB.totalValorCrianca}" size="15" style="margin-left:10.5%;font-size: 14px;text-align: right;">
-                <f:convertNumber pattern="##,###,###,###.##"/> 
-            </p:inputText>
-            <br/><br/>
-            <p:outputLabel class="titTela" value="Valor Total" style="font-size: 16px;text-align: left;margin-left:2%;"/>
-            <p:outputLabel class="titTela" value="Data" style="font-size: 16px;text-align: left;margin-left:17%;"/>
-            <br/>
-            <p:inputText class="form-control" id="idvalorTotal" value="#{cadPassaporteMB.valorTotal}" size="15" style="margin-left:2%;font-size: 14px;text-align: right;">
-                <f:convertNumber pattern="##,###,###,###.##"/> 
-            </p:inputText>
-            <p:inputMask mask="99/99/9999" size="15" class="form-control" value="#{cadPassaporteMB.passaporte.datacompra}" style="margin-left:7%;font-size: 14px;">
-                <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
-            </p:inputMask>
-            <br/>
-            <hr/>
-            <br/>
-            <p:commandLink  actionListener="#{cadAmbienteMB.salvar()}" ajax="false">
-                <div style="font-size: 16px;margin-left: 32%;" class="cadastrar">Cadastrar</div>
-            </p:commandLink>
-            <p:commandLink actionListener="#{cadAmbienteMB.cancelar()}" ajax="false">
-                <div style="font-size: 16px" class="cancelar">Cancelar</div>
-            </p:commandLink>
-        </h:form>  
+
+                <p:outputLabel class="titTela" value="E-mail" style="font-size: 12px;text-align: left;margin-left:2%;"/> 
+                <p:outputLabel value="Telefone" class="titTela" style="font-size: 12px;text-align: left;margin-left:38.5%;"/>
+                <br/> 
+                <p:inputText class="form-control" value="#{cadPassaporteMB.cliente.email}" size="30" style="margin-left:2%;font-size: 12px;"/>
+                <p:inputMask mask="(99)99999999" class="form-control" value="#{cadPassaporteMB.cliente.telefone}" style="margin-left:6%;font-size: 12px;"/> 
+
+                <br/>
+                <hr/>
+                <br/>
+                <p:commandLink style="text-decoration: none;" update="idpanelCliente, idpanelPassaporte" actionListener="#{cadPassaporteMB.salvarCliente()}" ajax="false">
+                    <div style="font-size: 16px;margin-left: 32%;" class="cadastrar">Cadastrar</div>
+                </p:commandLink>
+                <p:commandLink style="text-decoration: none;" actionListener="#{cadPassaporteMB.cancelarCliente()}" ajax="false" update="idpanelCliente, idpanelPassaporte">
+                   <div style="font-size: 16px" class="cancelar">Cancelar</div>
+                </p:commandLink>   
+            </h:panelGroup>
+            <h:panelGroup id="idpanelPassaporte" rendered="#{cadPassaporteMB.cadastropassaporte}">
+                <p:outputLabel class="titTela" value="CPF do CLiente" style="font-size: 16px;text-align: left;margin-left:2%;"/>
+                <p:outputLabel class="titTela" value="Cliente" style="font-size: 16px;text-align: left;margin-left:23%;"/>
+                <br/>
+                <p:inputMask mask="999.999.999-99" size="15" class="form-control" value="#{cadPassaporteMB.cpfCliente}" style="margin-left:2%;font-size: 14px;float: left;"/>
+                <p:commandLink ajax="false"  actionListener="#{cadPassaporteMB.pesquisarCliente()}" update="idnomeCliente, idpanelCliente, idpanelPassaporte">
+                    <div style="font-size: 16px;margin-left: 2%;margin-top:-0.5%;" class="pesquisarAcesso">Pesquisar</div> 
+                </p:commandLink>
+                <p:inputText class="form-control" id="idnomeCliente" value="#{cadPassaporteMB.cliente.nome}" size="32" readonly="true" style="margin-left:2%;font-size: 14px;"/>
+                <br/><br/><br/>
+                <p:outputLabel class="titTela" value="Valores do Passaporte" style="font-size: 16px;text-align: left;margin-left:2%;"/>
+                <p:outputLabel class="titTela" value="Forma de Pagamento" style="font-size: 16px;text-align: left;margin-left:18.5%;"/>
+                <br/>
+                <p:selectOneMenu  class="form-control" id="idcombovalorespassaporte"  style="width: 216px;margin-left: 2%;font-size: 14px;"  value="#{cadPassaporteMB.passaportevalor}" converter="PassaporteValorConverter"
+                                 filter="true" filterMatchMode="contains" panelStyle="width:180px" >
+                        <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
+                        <f:selectItems  value="#{cadPassaporteMB.listaPassaporteValor}" var="passaportevalor" itemLabel="#{passaportevalor.descriccao}" itemValue="#{passaportevalor}"/>
+                        <f:attribute name="listaPassaporteValor" value="#{cadPassaporteMB.listaPassaporteValor}"/>
+                        <p:ajax event="change" process="@this" listener="#{cadPassaporteMB.pegar()}"  update="idvaloradulto, idvalorcrianca"/>
+                </p:selectOneMenu>
+                <p:selectOneMenu id="tipoPagamento" class="form-control" style="width:194px;font-size: 14px; margin-left: 2%;" value="#{cadPassaporteMB.formaPagamento}">
+                    <f:selectItem itemLabel="Selecione" itemValue="" noSelectionOption="true"/> 
+                    <f:selectItem itemLabel="Dinheiro" itemValue="Dinheiro" /> 
+                    <f:selectItem itemLabel="Cartão" itemValue="cartao" />  
+                    <f:selectItem itemLabel="Cheque" itemValue="Cheque" />
+                    <f:selectItem itemLabel="Debito" itemValue="Debito" />  
+                    <f:selectItem itemLabel="Crédito" itemValue="Credito" />
+                </p:selectOneMenu>
+                <br/><br/>
+                <p:outputLabel class="titTela" value="Q° Adulto(s)" style="font-size: 16px;text-align: left;margin-left:2%;"/>
+                <p:outputLabel class="titTela" value="Valor" style="font-size: 16px;text-align: left;margin-left:14.2%;"/>
+                <p:outputLabel class="titTela" value="Total" style="font-size: 16px;text-align: left;margin-left:27.5%;"/>
+                <br/>
+                <p:spinner id="minMaxAdulto" value="#{cadPassaporteMB.adultos}" min="0" max="100"  size="10" style="margin-left: 2%;font-size: 14px;">
+                    <p:ajax listener="#{cadPassaporteMB.calcularValorTotal()}"  update="idvalorTotal, idvalorTotaladulto"/>
+                </p:spinner>
+                <p:inputText class="form-control" id="idvaloradulto" value="#{cadPassaporteMB.valorAdulto}" size="15" style="margin-left:10.5%;font-size: 14px;text-align: right;">
+                    <f:convertNumber pattern="##,###,###,###.##"/> 
+                </p:inputText>
+                <p:inputText class="form-control" id="idvalorTotaladulto" value="#{cadPassaporteMB.totalValorAdulto}" size="15" style="margin-left:10.5%;font-size: 14px;text-align: right;">
+                    <f:convertNumber pattern="##,###,###,###.##"/> 
+                </p:inputText>
+                <br/><br/> 
+                <p:outputLabel class="titTela" value="Q° Criança(s)" style="font-size: 16px;text-align: left;margin-left:2%;"/>
+                <p:outputLabel class="titTela" value="Valor" style="font-size: 16px;text-align: left;margin-left:13%;"/>
+                <p:outputLabel class="titTela" value="Total" style="font-size: 16px;text-align: left;margin-left:27.5%;"/>
+                <br/>
+                <p:spinner id="minMaxCrianca" value="#{cadPassaporteMB.criancas}" min="0" max="100" size="10" style="margin-left:2%;">
+                    <p:ajax listener="#{cadPassaporteMB.calcularValorTotal()}"  update="idvalorTotal, idvalorTotalcrianca"/>
+                </p:spinner>
+                <p:inputText class="form-control" id="idvalorcrianca" value="#{cadPassaporteMB.valorCrianca}" size="15" style="margin-left:10.5%;font-size: 14px;text-align: right;">
+                    <f:convertNumber pattern="##,###,###,###.##"/> 
+                </p:inputText>
+                <p:inputText class="form-control" id="idvalorTotalcrianca" value="#{cadPassaporteMB.totalValorCrianca}" size="15" style="margin-left:10.5%;font-size: 14px;text-align: right;">
+                    <f:convertNumber pattern="##,###,###,###.##"/> 
+                </p:inputText>
+                <br/><br/>
+                <p:outputLabel class="titTela" value="Valor Total" style="font-size: 16px;text-align: left;margin-left:2%;"/>
+                <p:outputLabel class="titTela" value="Data" style="font-size: 16px;text-align: left;margin-left:17%;"/>
+                <br/>
+                <p:inputText class="form-control" id="idvalorTotal" value="#{cadPassaporteMB.valorTotal}" size="15" style="margin-left:2%;font-size: 14px;text-align: right;">
+                    <f:convertNumber pattern="##,###,###,###.##"/> 
+                </p:inputText>
+                <p:inputMask mask="99/99/9999" size="15" class="form-control" value="#{cadPassaporteMB.passaporte.datacompra}" style="margin-left:7%;font-size: 14px;">
+                    <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+                </p:inputMask>
+                <br/>
+                <hr/>
+                <br/>
+                <p:commandLink update="messages"  actionListener="#{cadPassaporteMB.salvar()}" >
+                    <div style="font-size: 16px;margin-left: 32%;" class="cadastrar">Cadastrar</div>
+                </p:commandLink>
+                <p:commandLink actionListener="#{cadPassaporteMB.cancelar()}" ajax="false">
+                    <div style="font-size: 16px" class="cancelar">Cancelar</div>
+                </p:commandLink>
+            </h:panelGroup>
+        </h:form>    
     </h:body>
 </html>
