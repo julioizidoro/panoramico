@@ -54,6 +54,9 @@
                     <br/><br/>
                     <!-- TABELA CADASTROS --> 
                     <div class="col-6 titTela" style="margin-left:-10%;">Consulta Contas a Receber</div>
+                    <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" action="#" title="Relatórios">
+                        <div class="icoAdd fa fa-bar-chart"></div>
+                    </p:commandLink>
                     <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" title="Remessas" action="#{contasReceberMB.uploadBoleto()}">
                         <div class="icoAdd fa fa-upload"></div>
                     </p:commandLink>

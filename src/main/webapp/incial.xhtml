@@ -40,7 +40,7 @@
                                     <div class="dropdown" style="float: left;">
                                         <i class="fa fa-file" aria-hidden="true"></i>
                                         Cadastro <div class="fa fa-sort-desc"></div>
-                                        <div class="dropdown-content">
+                                        <div class="dropdown-content" style="z-index: 9999;">
                                             <p><h:link outcome="/pages/empresa/consEmpresa.xhtml" value="Empresa"></h:link></p>
                                             <p><h:link outcome="/pages/associado/consAssociado.xhtml" value="Associado"></h:link></p>
                                             <p><h:link outcome="/pages/cliente/consCliente.xhtml" value="Cliente"></h:link></p>
@@ -55,7 +55,7 @@
                                     <div class="dropdown" style="float: left;">
                                         <i class="fa fa-ticket" aria-hidden="true"></i>
                                         Acesso <div class="fa fa-sort-desc"></div>
-                                        <div class="dropdown-content">
+                                        <div class="dropdown-content" style="z-index: 9999;">
                                             <p><h:link outcome="/pages/acesso/consAcesso.xhtml" value="Acesso"></h:link></p>
                                             <p><h:link outcome="/pages/acesso/consPassaporte.xhtml" value="Passaportes"></h:link></p>
                                         </div>
@@ -65,7 +65,7 @@
                                     <div class="dropdown" style="float: left;">
                                         <i class="fa fa-glass" aria-hidden="true"></i>
                                         Ambientes | Planos <div class="fa fa-sort-desc"></div>
-                                        <div class="dropdown-content">
+                                        <div class="dropdown-content" style="z-index: 9999;">
                                             <p><h:link outcome="/pages/ambiente/consAmbiente.xhtml" value="Ambiente"></h:link></p>
                                             <p><h:link outcome="/pages/banco/consBanco.xhtml" value="Banco"></h:link></p>
                                             <p><h:link outcome="/pages/plano/consPlano.xhtml" value="Plano"></h:link></p>
@@ -79,7 +79,7 @@
                                     <div class="dropdown" style="float: left;">
                                         <i class="fa fa-calendar" aria-hidden="true"></i>
                                         Eventos <div class="fa fa-sort-desc"></div>
-                                        <div class="dropdown-content">
+                                        <div class="dropdown-content" style="z-index: 9999;">
                                             <p><h:link outcome="/pages/eventos/consEventos.xhtml" value="Eventos"></h:link></p>
                                         </div>
                                     </div> 
@@ -88,7 +88,7 @@
                                     <div class="dropdown" style="float: left;">
                                         <i class="fa fa-money" aria-hidden="true"></i>
                                         Financeiro <div class="fa fa-sort-desc"></div>
-                                        <div class="dropdown-content">
+                                        <div class="dropdown-content" style="z-index: 9999;">
                                             <p><h:link outcome="/pages/contaspagar/consContasPagar.xhtml" value="Contas a Pagar"></h:link></p>
                                             <p><h:link outcome="/pages/contasreceber/consContasReceber.xhtml" value="Contas a Receber"></h:link></p>
                                         </div>
@@ -98,14 +98,14 @@
                                     <div class="dropdown" style="float: left;">
                                         <i class="fa fa-user-md" aria-hidden="true"></i>
                                         Exame Medico <div class="fa fa-sort-desc"></div>
-                                        <div class="dropdown-content">
+                                        <div class="dropdown-content" style="z-index: 9999;">
                                             <p><h:link  outcome="/pages/exame/consExame.xhtml" value="Exames"></h:link></p>
                                             <p><h:link  outcome="/pages/exame/consSolicitacaoExame.xhtml" value="Solicitações de Exame"></h:link></p>
                                         </div>
                                     </div> 
                                 </li>
                                 <li> 
-                                    <div class="dropdown" style="float: right;">
+                                    <div class="dropdown" style="float: right;z-index: 9999">
                                         <i class="fa fa-user" aria-hidden="true"></i>
                                         #{usuarioLogadoMB.usuario.nome}
                                         <h:panelGroup rendered="#{menuMB.desabilitarNumeroMensagem}">
@@ -114,7 +114,7 @@
                                             </span>
                                         </h:panelGroup>
                                         <div class="fa fa-sort-desc"></div>
-                                        <div class="dropdown-content">
+                                        <div class="dropdown-content" style="z-index: 9999;">
                                             <p><p:menuitem style="float:left;">
                                                     <p:commandLink action="#{menuMB.adicionarNotificacao()}" class="dropdown-toggle" style="text-decoration: none;">
                                                         <i class="fa fa-plus"></i> Nova Notificação
