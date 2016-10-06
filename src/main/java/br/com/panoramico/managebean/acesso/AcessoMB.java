@@ -468,4 +468,12 @@ public class AcessoMB implements Serializable{
         }
     }
     
+    
+    public String novoRelatorio() {
+        Map<String, Object> options = new HashMap<String, Object>();
+        options.put("contentWidth", 580);
+        RequestContext.getCurrentInstance().openDialog("imprimirAcesso", options, null);
+        return "";
+    }
+    
 }

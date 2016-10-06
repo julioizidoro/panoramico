@@ -429,4 +429,12 @@ public class EventoMB implements Serializable{
             eventoDao.update(evento);
         }
     }
+    
+    
+    public String novoRelatorio() {
+        Map<String, Object> options = new HashMap<String, Object>();
+        options.put("contentWidth", 580);
+        RequestContext.getCurrentInstance().openDialog("imprimirEvento", options, null);
+        return "";
+    }
 }

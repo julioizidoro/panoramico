@@ -390,4 +390,12 @@ public class ContasReceberMB implements Serializable{
         RequestContext.getCurrentInstance().closeDialog(null);
         return "consContasReceber";
     }
+    
+    
+    public String novoRelatorio() { 
+        Map<String, Object> options = new HashMap<String, Object>();
+        options.put("contentWidth", 580);
+        RequestContext.getCurrentInstance().openDialog("imprimirContasRecebidas", options, null);
+        return "";
+    }
 }
