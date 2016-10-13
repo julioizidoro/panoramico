@@ -40,17 +40,30 @@ public class AssociadoMB implements Serializable{
     
     @EJB
     private AssociadoDao associadoDao;
-    private Associado associado;
     private List<Associado> listaAssociado;
     @EJB
     private AssociadoEmpresaDao associadoEmpresaDao;
     private Associadoempresa associadoempresa;
     @EJB
     private DependenteDao dependenteDao;
+    private String nome;
+    private String cpf;
+    private String email;
+    private String telefone;
+    private String sql;
+    private String matricula;
     
     @PostConstruct
     public void init(){
-        gerarListaAssociado();
+       FacesContext fc = FacesContext.getCurrentInstance();
+       HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+       sql = (String) session.getAttribute("sql");
+       if (sql==null){
+           gerarListaAssociado();
+       }else {
+           sql = "Select a from Associado a";
+       }
+       session.removeAttribute("sql");
     }
 
     public AssociadoDao getAssociadoDao() {
@@ -59,14 +72,6 @@ public class AssociadoMB implements Serializable{
 
     public void setAssociadoDao(AssociadoDao associadoDao) {
         this.associadoDao = associadoDao;
-    }
-
-    public Associado getAssociado() {
-        return associado;
-    }
-
-    public void setAssociado(Associado associado) {
-        this.associado = associado;
     }
 
     public List<Associado> getListaAssociado() {
@@ -100,20 +105,67 @@ public class AssociadoMB implements Serializable{
     public void setDependenteDao(DependenteDao dependenteDao) {
         this.dependenteDao = dependenteDao;
     }
-    
-    
-    
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public String getSql() {
+        return sql;
+    }
+
+    public void setSql(String sql) {
+        this.sql = sql;
+    }
+
+    public String getMatricula() {
+        return matricula;
+    }
+
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
+    }
     
     
     public void gerarListaAssociado(){
-        listaAssociado = associadoDao.list("Select a from Associado a");
+        listaAssociado = associadoDao.list(sql);
         if (listaAssociado == null) {
             listaAssociado = new ArrayList<Associado>();
         }
     }
     
-    
     public String novoCadastroAssociado() {
+        FacesContext fc = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+        session.setAttribute("sql", sql);
         Map<String, Object> options = new HashMap<String, Object>();
         options.put("contentWidth", 580);
         RequestContext.getCurrentInstance().openDialog("cadAssociado", options, null);
@@ -122,6 +174,10 @@ public class AssociadoMB implements Serializable{
     
     
     public void retornoDialogNovo(SelectEvent event){
+        FacesContext fc = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+        sql = (String) session.getAttribute("sql");
+        session.removeAttribute("sql");
         Associado associado = (Associado) event.getObject();
         if (associado.getIdassociado()!= null) {
             Mensagem.lancarMensagemInfo("Salvou", "Cadastro de Associado realizado com sucesso");
@@ -130,6 +186,10 @@ public class AssociadoMB implements Serializable{
     }
     
      public void retornoDialogAlteracao(SelectEvent event){
+        FacesContext fc = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+        sql = (String) session.getAttribute("sql");
+        session.removeAttribute("sql");
         Associado associado = (Associado) event.getObject();
         if (associado.getIdassociado()!= null) {
             Mensagem.lancarMensagemInfo("Salvou", "Alteração do Associado realizado com sucesso");
@@ -144,6 +204,7 @@ public class AssociadoMB implements Serializable{
             FacesContext fc = FacesContext.getCurrentInstance();
             HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
             session.setAttribute("associado", associado);
+            session.setAttribute("sql", sql);
             options.put("contentWidth", 580);
             RequestContext.getCurrentInstance().openDialog("cadAssociado", options, null);
         }
@@ -176,5 +237,29 @@ public class AssociadoMB implements Serializable{
         }else{
             Mensagem.lancarMensagemInfo("Atenção", "este associado não pode ser excluido");
         }
+    }
+    
+    public String limpar(){
+        sql = "Select a from Associado a";
+        gerarListaAssociado();
+        return "";
+    }
+    
+    public String pesquisar(){
+        sql = "Select a from Associado a where a.cliente.nome like '%" + nome + "%' ";
+        if (cpf.length()>0){
+            sql = sql + " and a.cliente.cpf='" + cpf + "' ";
+        }
+        if (email.length()>0){
+            sql = sql + " and a.cliente.email='" + email + "' ";
+        }
+        if (telefone.length()>0){
+            sql = sql + " and a.cliente.telefone='" + telefone + "' ";
+        }
+        if (matricula.length()>0){
+            sql = sql + " and a.matricula='" + matricula + "' ";
+        }
+        sql = sql + " order by a.cliente.nome";
+        return "";
     }
 }
