@@ -86,6 +86,15 @@
                             </div> 
                         </li>
                         <li> 
+                            <div class="dropdown" style="float: left;">
+                                <i class="fa fa-file-text" aria-hidden="true"></i>
+                                Relatórios <div class="fa fa-sort-desc"></div>
+                                <div class="dropdown-content" style="z-index: 9999;">
+                                    <p><p:commandLink action="#{menuMB.gerarRelatorioClientes()}" value="Aniversariantes"/></p>
+                                </div>
+                            </div> 
+                        </li>
+                        <li> 
                             <div class="dropdown" style="float: right;z-index: 9999;">
                                 <i class="fa fa-user" aria-hidden="true"></i>
                                 #{usuarioLogadoMB.usuario.nome}
