@@ -836,4 +836,25 @@ public class Formatacao {
         String valores = NumberFormat.getCurrencyInstance(ptBr).format(valor);
         return valores;
     }
+    
+    public static int getAnoData(Date data){
+    	GregorianCalendar calendar = new GregorianCalendar();
+    	calendar.setTime(data);
+    	int ano = calendar.get(GregorianCalendar.YEAR);
+    	return ano;
+    }
+    
+    public static int getMesData(Date data){
+    	GregorianCalendar calendar = new GregorianCalendar();
+    	calendar.setTime(data);
+    	int mes = calendar.get(GregorianCalendar.MONTH);
+    	return mes;
+    }
+    
+    public static int getDiaData(Date data){
+    	GregorianCalendar calendar = new GregorianCalendar();
+    	calendar.setTime(data);
+    	int dia = calendar.get(GregorianCalendar.DAY_OF_MONTH);
+    	return dia;
+    }
 }
