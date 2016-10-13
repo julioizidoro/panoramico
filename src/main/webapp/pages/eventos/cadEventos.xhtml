@@ -64,13 +64,14 @@
                 </p:inputText>
                 <p:inputMask mask="99/99/9999" size="15" class="form-control" value="#{cadEventoMB.evento.data}" style="margin-left:4%;font-size: 12px;">
                     <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
-                </p:inputMask>
-                <br/>
-                 <br/><br/>
-                 
+                </p:inputMask>   
+                <p:selectBooleanCheckbox id="utilizaPiscina"
+                                         value="#{cadEventoMB.evento.piscina}" style="margin-left:8%;"/> 
+                <h:outputText value="Evento com piscina"
+                        class="titTela" style="font-size: 15px;text-align: left;margin-left:1%;"/> 
                  <br/><br/>
                  <hr style="color: #367587; background: #367587"/>
-                <br/>  
+                <br/> 
                 <p:commandLink style="text-decoration: none;" actionListener="#{cadEventoMB.salvar()}" ajax="false">
                     <div style="font-size: 16px;margin-left: 32%;" class="cadastrar">Cadastrar</div>
                 </p:commandLink>
