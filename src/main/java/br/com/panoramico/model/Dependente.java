@@ -54,6 +54,9 @@ public class Dependente implements Serializable {
     @Size(max = 20)
     @Column(name = "telefone")
     private String telefone;
+    @Size(max = 20)
+    @Column(name = "matricula")
+    private String matricula;
     @JoinColumn(name = "associado_idassociado", referencedColumnName = "idassociado")
     @ManyToOne(optional = false)
     private Associado associado;
@@ -121,6 +124,14 @@ public class Dependente implements Serializable {
 
     public void setAssociado(Associado associado) {
         this.associado = associado;
+    }
+
+    public String getMatricula() {
+        return matricula;
+    }
+
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
     }
 
     @Override

@@ -7,7 +7,6 @@ package br.com.panoramico.managebean.cadastro;
 
 import br.com.panoramico.dao.AmbienteDao;
 import br.com.panoramico.model.Ambiente;
-import br.com.panoramico.model.Cliente;
 import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
 import java.util.ArrayList;

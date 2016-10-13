@@ -35,11 +35,24 @@ public class ClienteMB implements Serializable{
     private ClienteDao clienteDao;
     private Cliente cliente;
     private List<Cliente> listaCliente;
+    private String nome;
+    private String cpf;
+    private String email;
+    private String telefone;
+    private String sql;
     
     
     @PostConstruct
     public void init(){
-       gerarListaCliente();
+       FacesContext fc = FacesContext.getCurrentInstance();
+       HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+       sql = (String) session.getAttribute("sql");
+       if (sql==null){
+           gerarListaCliente();
+       }else {
+           sql = "Select c from Cliente c";
+       }
+       session.removeAttribute("sql");
     }
 
     public ClienteDao getClienteDao() {
@@ -66,10 +79,42 @@ public class ClienteMB implements Serializable{
         this.listaCliente = listaCliente;
     }
 
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
     
     
     public void gerarListaCliente(){
-        listaCliente = clienteDao.list("Select c from Cliente c");
+        listaCliente = clienteDao.list(sql);
         if (listaCliente == null) {
             listaCliente = new ArrayList<Cliente>();
         }
@@ -77,6 +122,9 @@ public class ClienteMB implements Serializable{
     
     
     public String novoCadastroCliente() {
+        FacesContext fc = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+        session.setAttribute("sql", sql);
         Map<String, Object> options = new HashMap<String, Object>();
         options.put("contentWidth", 550);
         RequestContext.getCurrentInstance().openDialog("cadCliente", options, null);
@@ -85,6 +133,10 @@ public class ClienteMB implements Serializable{
     
       
     public void retornoDialogNovo(SelectEvent event){
+        FacesContext fc = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+        sql = (String) session.getAttribute("sql");
+        session.removeAttribute("sql");
         Cliente cliente = (Cliente) event.getObject();
         if (cliente.getIdcliente() != null) {
             Mensagem.lancarMensagemInfo("Salvou", "Cadastro de cliente realizado com sucesso");
@@ -93,6 +145,10 @@ public class ClienteMB implements Serializable{
     }
     
     public void retornoDialogAlteracao(SelectEvent event){
+        FacesContext fc = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+        sql = (String) session.getAttribute("sql");
+        session.removeAttribute("sql");
         Cliente cliente = (Cliente) event.getObject();
         if (cliente.getIdcliente() != null) {
             Mensagem.lancarMensagemInfo("Salvou", "Alteração do cliente realizado com sucesso");
@@ -107,15 +163,36 @@ public class ClienteMB implements Serializable{
             FacesContext fc = FacesContext.getCurrentInstance();
             HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
             session.setAttribute("cliente", cliente);
+            session.setAttribute("sql", sql);
             options.put("contentWidth", 550);
             RequestContext.getCurrentInstance().openDialog("cadCliente", options, null);
         }
     }
     
-   
     public void excluir(Cliente cliente){
         clienteDao.remove(cliente.getIdcliente());
         Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
         gerarListaCliente();
+    }
+    
+    public String limpar(){
+        sql = "Select c from Cliente c";
+        gerarListaCliente();
+        return "";
+    }
+    
+    public String pesquisar(){
+        sql = "Select c from Cliente c where c.nome like '%" + nome + "%' ";
+        if (cpf.length()>0){
+            sql = sql + " and c.cpf='" + cpf + "' ";
+        }
+        if (email.length()>0){
+            sql = sql + " and c.email='" + email + "' ";
+        }
+        if (telefone.length()>0){
+            sql = sql + " and c.telefone='" + telefone + "' ";
+        }
+        sql = sql + " order by c.nome";
+        return "";
     }
 }
