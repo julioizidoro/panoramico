@@ -38,6 +38,8 @@ public class Eventoconvidados implements Serializable{
     private String email;
     @Column(name = "acompanhante")
     private Integer acompanhante;
+    @Column(name = "situacao")
+    private String situacao;
     @JoinColumn(name = "evento_idevento", referencedColumnName = "idevento")
     @ManyToOne(optional = false)
     private Evento evento;
@@ -91,6 +93,14 @@ public class Eventoconvidados implements Serializable{
 
     public void setEvento(Evento evento) {
         this.evento = evento;
+    }
+
+    public String getSituacao() {
+        return situacao;
+    }
+
+    public void setSituacao(String situacao) {
+        this.situacao = situacao;
     }
     
     

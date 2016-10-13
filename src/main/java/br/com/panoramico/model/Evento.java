@@ -44,6 +44,8 @@ public class Evento implements Serializable{
     @Size(max = 30)
     @Column(name = "situacao")
     private String situacao;
+    @Column(name = "piscina")
+    private boolean piscina;
     @JoinColumn(name = "ambiente_idambiente", referencedColumnName = "idambiente")
     @ManyToOne(optional = false)
     private Ambiente ambiente;
@@ -133,6 +135,10 @@ public class Evento implements Serializable{
 
     public void setBolinhas(BolinhaBean bolinhas) {
         this.bolinhas = bolinhas;
+    }
+
+    public boolean isPiscina() {
+        return piscina;
     }
     
     
