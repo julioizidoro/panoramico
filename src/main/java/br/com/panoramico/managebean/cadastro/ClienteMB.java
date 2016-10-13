@@ -47,10 +47,11 @@ public class ClienteMB implements Serializable{
        FacesContext fc = FacesContext.getCurrentInstance();
        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
        sql = (String) session.getAttribute("sql");
-       if (sql==null){
+       if (sql!=null){
            gerarListaCliente();
        }else {
            sql = "Select c from Cliente c";
+           gerarListaCliente();
        }
        session.removeAttribute("sql");
     }
@@ -178,6 +179,10 @@ public class ClienteMB implements Serializable{
     public String limpar(){
         sql = "Select c from Cliente c";
         gerarListaCliente();
+        nome="";
+        cpf="";
+        email="";
+        telefone="";
         return "";
     }
     
@@ -193,6 +198,7 @@ public class ClienteMB implements Serializable{
             sql = sql + " and c.telefone='" + telefone + "' ";
         }
         sql = sql + " order by c.nome";
+        gerarListaCliente();
         return "";
     }
 }

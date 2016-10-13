@@ -10,24 +10,30 @@
                 <br/> 
                 <h:form id="idFormConsultaAssociado" style="margin-left:10%; width:78%;">
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:10%;width: 80%;"/>
-                    <h:panelGrid columns="7" columnClasses="tamanho12, tamanho20, tamanho12, tamanho20, tamanho12, tamanho7, tamanho12" style="margin-left:4%;width:91%;">
-                        <p:outputLabel value="Matrícula" />
-                        <p:outputLabel value="Nome" />
-                        <p:outputLabel value="CPF" />
-                        <p:outputLabel value="Email" />
-                        <p:outputLabel value="Telefone" />
-                        <p:outputLabel/>
-                        <p:outputLabel/>
-                        
-                        <p:inputText id="matricula" value="#{associadoMB.matricula}" style="width:80%;"/>
-                        <p:inputText id="nome" value="#{associadoMB.nome}" style="width:90%;"/>
-                        <p:inputMask id="cpf" mask="999.999.999-99" value="#{associadoMB.cpf}" style="width:80%;"/>
-                        <p:inputText id="email" value="#{associadoMB.email}" style="width:90%;"/>
-                        <p:inputText id="telefone" value="#{associadoMB.telefone}" style="width:80%;"/>
-                        <p:commandButton id="btnPesquisar" value="#{associadoMB.pesquisar()}" update="idConsultaCliente"/>
-                        <p:commandButton id="btnLimpar" value="#{associadoMB.limpar()}" update="idConsultaCliente, nome, cpf, email, telefone"/>
-                    </h:panelGrid>
-
+                    <p:accordionPanel activeIndex="-1" style="width:85%;margin-left: 8%;z-index:1">
+                        <p:tab title="Pesquisar">
+                            <p:outputLabel value="Matrícula" class="titTela" style="font-size: 12px;text-align: left;margin-left: 2%;float: left;"/>
+                            <p:outputLabel value="Nome" class="titTela" style="font-size: 12px;text-align: left;margin-left:12%;float: left;"/>
+                            <p:outputLabel value="CPF" class="titTela" style="font-size: 12px;text-align: left;margin-left:29.4%;float: left;"/>
+                            
+                            <br/>
+                            <p:inputText id="matricula" value="#{associadoMB.matricula}"  style="width:115px;margin-left:-56.6%;font-size: 12px;float: left;"/>
+                            <p:inputText id="nome" value="#{associadoMB.nome}"  style="width: 216px;margin-left:-37%;font-size: 12px;float: left;"/>
+                            <p:inputMask id="cpf" mask="999.999.999-99" value="#{associadoMB.cpf}"  style="width:115px;margin-left:-3%;font-size: 12px;float: left;"/>
+                            <br/><br/>
+                            <p:outputLabel value="Email" class="titTela" style="font-size: 12px;text-align: left;margin-left:2%;float: left;"/>
+                            <p:outputLabel value="Telefone" class="titTela" style="font-size: 12px;text-align: left;margin-left:31.6%;float: left;"/>
+                            <br/>
+                            <p:inputText id="email" value="#{associadoMB.email}"  style="width: 216px;margin-left:-43%;font-size: 12px;float: left;"/>
+                            <p:inputText id="telefone" value="#{associadoMB.telefone}"  style="width:120px;margin-left:-7%;font-size: 12px;float: left;"/>
+                            <p:commandLink style="text-decoration: none; margin-top: 10%;" actionListener="#{associadoMB.pesquisar()}" ajax="false" update=":idFormConsultaAssociado:idConsultaAssociado, messages">
+                                <div style="font-size: 16px;margin-left:5%;" class="adicionar">Filtrar</div>
+                            </p:commandLink>
+                            <p:commandLink style="text-decoration: none; margin-top: 2%;" actionListener="#{associadoMB.limpar()}" ajax="false" update=":idFormConsultaAssociado:idConsultaAssociado, matricula, nome, email, cpf, telefone, matricula">
+                                <div style="font-size: 16px;margin-left: 2%;" class="limpar">Limpar</div>
+                            </p:commandLink>
+                        </p:tab>
+                   </p:accordionPanel>  
                             <!-- TABELA CADASTROS -->
                             <div class="col-6 titTela" style="margin-left:-13%;">Consulta Associado</div>
                             <p:commandLink action="#{associadoMB.novoCadastroAssociado()}" rendered="#{usuarioLogadoMB.cadastrar}">

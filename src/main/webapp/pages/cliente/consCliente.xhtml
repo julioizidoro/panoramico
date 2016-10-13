@@ -9,22 +9,28 @@
              <div class="col-10 boxAzulClaro" style="margin-left:8.5%;width: 83.2%;">   
                 <br/>
                 <h:form id="idFormConsultaCliente" style="margin-left:10%; width:78%;">
-                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:10%;width: 80%;"/>
-                    <h:panelGrid columns="6" columnClasses="tamanho20, tamanho12, tamanho20, tamanho12, tamanho7, tamanho12" style="margin-left:4%;width:91%;">
-                        <p:outputLabel value="Nome" />
-                        <p:outputLabel value="CPF" />
-                        <p:outputLabel value="Email" />
-                        <p:outputLabel value="Telefone" />
-                        <p:outputLabel/>
-                        <p:outputLabel/>
-                        
-                        <p:inputText id="nome" value="#{clienteMB.nome}" style="width:90%;"/>
-                        <p:inputMask id="cpf" mask="999.999.999-99" value="#{clienteMB.cpf}" style="width:90%;"/>
-                        <p:inputText id="email" value="#{clienteMB.email}" style="width:90%;"/>
-                        <p:inputText id="telefone" value="#{clienteMB.telefone}" style="width:90%;"/>
-                        <p:commandButton id="btnPesquisar" value="#{clienteMB.pesquisar()}" update="idConsultaCliente"/>
-                        <p:commandButton id="btnLimpar" value="#{clienteMB.limpar()}" update="idConsultaCliente, nome, cpf, email, telefone"/>
-                    </h:panelGrid>
+                   <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:10%;width: 80%;"/>
+                   <p:accordionPanel activeIndex="-1" style="z-index:1">
+                        <p:tab title="Pesquisar">
+                            <p:outputLabel value="Nome" class="titTela" style="font-size: 12px;text-align: left;margin-left: 2%;float: left;"/>
+                            <p:outputLabel value="CPF" class="titTela" style="font-size: 12px;text-align: left;margin-left: 25%;float: left;"/>
+                            <p:outputLabel value="Email" class="titTela" style="font-size: 12px;text-align: left;margin-left: 15%;float: left;"/>
+                            <p:outputLabel value="Telefone" class="titTela" style="font-size: 12px;text-align: left;margin-left: 27%;float: left;"/>
+                            <br/>
+
+                            <p:inputText id="nome" value="#{clienteMB.nome}"  style="width: 216px;margin-left:2%;font-size: 12px;float: left;"/>
+                            <p:inputMask id="cpf" mask="999.999.999-99" value="#{clienteMB.cpf}"  style="width:115px;margin-left:3%;font-size: 12px;float: left;"/>
+                            <p:inputText id="email" value="#{clienteMB.email}"  style="width: 216px;margin-left:4%;font-size: 12px;float: left;"/>
+                            <p:inputText id="telefone" value="#{clienteMB.telefone}"  style="width:120px;margin-left:5%;font-size: 12px;float: left;"/>
+                            <br/><br/>
+                            <p:commandLink style="text-decoration: none; margin-top: 10%;" actionListener="#{clienteMB.pesquisar()}" ajax="false" update=":idFormConsultaCliente:idConsultaCliente, messages">
+                                <div style="font-size: 16px;margin-left:79%;" class="adicionar">Filtrar</div>
+                            </p:commandLink>
+                            <p:commandLink style="text-decoration: none; margin-top: 2%;" actionListener="#{clienteMB.limpar()}" ajax="false" update=":idFormConsultaCliente:idConsultaCliente, nome, cpf, email, telefone">
+                                <div style="font-size: 16px;margin-left: 2%;" class="limpar">Limpar</div>
+                            </p:commandLink>
+                        </p:tab>
+                   </p:accordionPanel>  
                      <!-- TABELA CADASTROS -->
                             <div class="col-6 titTela" style="margin-left:-17%;">Consulta Cliente</div>
                             <p:commandLink action="#{clienteMB.novoCadastroCliente()}" rendered="#{usuarioLogadoMB.cadastrar}">

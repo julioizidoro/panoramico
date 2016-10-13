@@ -58,10 +58,11 @@ public class AssociadoMB implements Serializable{
        FacesContext fc = FacesContext.getCurrentInstance();
        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
        sql = (String) session.getAttribute("sql");
-       if (sql==null){
+       if (sql!=null){
            gerarListaAssociado();
        }else {
            sql = "Select a from Associado a";
+           gerarListaAssociado();
        }
        session.removeAttribute("sql");
     }
@@ -242,6 +243,11 @@ public class AssociadoMB implements Serializable{
     public String limpar(){
         sql = "Select a from Associado a";
         gerarListaAssociado();
+        matricula="";
+        nome="";
+        cpf="";
+        email="";
+        telefone="";
         return "";
     }
     
@@ -260,6 +266,7 @@ public class AssociadoMB implements Serializable{
             sql = sql + " and a.matricula='" + matricula + "' ";
         }
         sql = sql + " order by a.cliente.nome";
+        gerarListaAssociado();
         return "";
     }
 }
