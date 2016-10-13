@@ -10,7 +10,21 @@
                 <br/>
                 <h:form id="idFormConsultaCliente" style="margin-left:10%; width:78%;">
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:10%;width: 80%;"/>
-
+                    <h:panelGrid columns="6" columnClasses="tamanho20, tamanho12, tamanho20, tamanho12, tamanho7, tamanho12" style="margin-left:4%;width:91%;">
+                        <p:outputLabel value="Nome" />
+                        <p:outputLabel value="CPF" />
+                        <p:outputLabel value="Email" />
+                        <p:outputLabel value="Telefone" />
+                        <p:outputLabel/>
+                        <p:outputLabel/>
+                        
+                        <p:inputText id="nome" value="#{clienteMB.nome}" style="width:90%;"/>
+                        <p:inputMask id="cpf" mask="999.999.999-99" value="#{clienteMB.cpf}" style="width:90%;"/>
+                        <p:inputText id="email" value="#{clienteMB.email}" style="width:90%;"/>
+                        <p:inputText id="telefone" value="#{clienteMB.telefone}" style="width:90%;"/>
+                        <p:commandButton id="btnPesquisar" value="#{clienteMB.pesquisar()}" update="idConsultaCliente"/>
+                        <p:commandButton id="btnLimpar" value="#{clienteMB.limpar()}" update="idConsultaCliente, nome, cpf, email, telefone"/>
+                    </h:panelGrid>
                      <!-- TABELA CADASTROS -->
                             <div class="col-6 titTela" style="margin-left:-17%;">Consulta Cliente</div>
                             <p:commandLink action="#{clienteMB.novoCadastroCliente()}" rendered="#{usuarioLogadoMB.cadastrar}">

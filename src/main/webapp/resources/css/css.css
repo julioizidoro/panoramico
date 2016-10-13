@@ -58,3 +58,15 @@ body{
 .acordion{
     background: black !important;
 }
+
+.tamanho20{
+    width:20%;
+}
+
+.tamanho12{
+    width:12%;
+}
+
+.tamanho7{
+    width:7%;
+}
