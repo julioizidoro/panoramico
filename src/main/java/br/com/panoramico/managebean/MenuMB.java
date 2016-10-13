@@ -136,7 +136,7 @@ public class MenuMB implements Serializable{
     
     public void gerarRelatorioClientes(){ 
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put("contentWidth", 310);
+        options.put("contentWidth", 340);
         options.put("closable", false);
         RequestContext.getCurrentInstance().openDialog("relatorioAniversariantes", options, null);
     }

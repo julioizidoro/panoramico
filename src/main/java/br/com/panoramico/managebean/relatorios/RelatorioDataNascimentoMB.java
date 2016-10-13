@@ -7,22 +7,26 @@ package br.com.panoramico.managebean.relatorios;
 
 import br.com.panoramico.dao.ClienteDao;
 import br.com.panoramico.model.Cliente;
+import br.com.panoramico.uil.Formatacao;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 
 /**
  *
  * @author Kamila
  */
+@Named
+@ViewScoped
 public class RelatorioDataNascimentoMB {
     
     @EJB
     private ClienteDao clienteDao;
     private String mes;
-    private boolean selassociado;
-    private boolean seldependente;
-    private boolean selpassaporte;
-    
+    private String tipo;  
+    private RelatorioDataNascimentoFactory relatorioData;
 
     public String getMes() {
         return mes;
@@ -32,38 +36,32 @@ public class RelatorioDataNascimentoMB {
         this.mes = mes;
     }
 
-    public boolean isSelassociado() {
-        return selassociado;
+    public String getTipo() {
+        return tipo;
     }
 
-    public void setSelassociado(boolean selassociado) {
-        this.selassociado = selassociado;
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
-
-    public boolean isSeldependente() {
-        return seldependente;
-    }
-
-    public void setSeldependente(boolean seldependente) {
-        this.seldependente = seldependente;
-    }
-
-    public boolean isSelpassaporte() {
-        return selpassaporte;
-    }
-
-    public void setSelpassaporte(boolean selpassaporte) {
-        this.selpassaporte = selpassaporte;
-    }
-    
+ 
     public void iniciarConsulta(){
+        relatorioData = new RelatorioDataNascimentoFactory();
+        relatorioData.setLista(new ArrayList<RelatorioDataNascimnetoBean>());
         String sqlCliente="";
-        if(mes.equalsIgnoreCase("todos")){
-            sqlCliente = "SELECT c Cliente FROM c order by c.datanascimento, c.nome";
-        }else {
-            sqlCliente = "SELECT c Cliente FROM c where MONTH(c.datanascimento order by c.datanascimento, c.nome";
+        if(tipo.equalsIgnoreCase("Passaporte")){
+            if(mes.equalsIgnoreCase("todos")){
+                sqlCliente = "SELECT c Cliente FROM c order by c.datanascimento, c.nome";
+            }else {
+                sqlCliente = "SELECT c Cliente FROM c where MONTH(c.datanascimento) order by c.datanascimento, c.nome";
+            }
         }
         List<Cliente> listaCliente = clienteDao.list(sqlCliente);
+        if (listaCliente!=null){
+            for(int i=0;i<listaCliente.size();i++){
+                RelatorioDataNascimnetoBean relatorio = new RelatorioDataNascimnetoBean();
+                relatorio.setDatanascimento(Formatacao.ConvercaoDataPadrao(listaCliente.get(i).getDatanascimento()));
+            }
+        }
     }
     
     

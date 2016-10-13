@@ -8,51 +8,58 @@
 
         <link href="../../resources/css/css.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" type="text/css" href="../../resources/fonts/font-awesome-4.6.3/css/font-awesome.min.css"/>
-        
+
         <link type="text/javascript" href="../../resources/js/jquery-3.1.0.js"></link>
         <link type="text/javascript" src="../../resources/js/modal.js"/> 
         <link rel="stylesheet" type="text/css" href="../../resources/css/modal.css"/>
-	<link rel="stylesheet" type="text/css" href="../../resources/css/buttons.css"/>
-	<link rel="stylesheet" type="text/css" href="../../resources/css/textos.css"/>
+        <link rel="stylesheet" type="text/css" href="../../resources/css/buttons.css"/>
+        <link rel="stylesheet" type="text/css" href="../../resources/css/textos.css"/>
         <link rel="stylesheet" type="text/css" href="../../resources/css/css.css"/>
     </h:head>
-     
+
 
     <h:body style="background:#A3DAD9; border-color: #CF7000;" > 
         <h:form id="idFormCadastroNotificacao" style="font-size: 12px; background-color:#A3DAD9">
-                
+
             <title>Relatório de Aniversariantes</title>
-                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                <br/>
-                <p:outputLabel class="titTela" value="Mês" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
-                <br/> 
-                <p:selectOneMenu class="form-control"  id="mes"  style="width:180px;margin-left:2%;font-size: 12px;"  value="#{cadNotificacaoMB.usuario}" 
-                        filter="true" filterMatchMode="contains" panelStyle="width:180px" >
-                    <f:selectItem  itemLabel="Todos" itemValue="todos"/> 
-                    <f:selectItem  itemLabel="Janeiro" itemValue="Janeiro"/> 
-                    <f:selectItem  itemLabel="Fevereiro" itemValue="Fevereiro"/> 
-                    <f:selectItem  itemLabel="Março" itemValue="Março"/> 
-                    <f:selectItem  itemLabel="Abril" itemValue="Abril"/>
-                    <f:selectItem  itemLabel="Maio" itemValue="Maio"/> 
-                    <f:selectItem  itemLabel="Junho" itemValue="Junho"/> 
-                    <f:selectItem  itemLabel="Julho" itemValue="Julho"/> 
-                    <f:selectItem  itemLabel="Agosto" itemValue="Agosto"/> 
-                    <f:selectItem  itemLabel="Setembro" itemValue="Setembro"/> 
-                    <f:selectItem  itemLabel="Outubro" itemValue="Outubro"/>
-                    <f:selectItem  itemLabel="Novembro" itemValue="Novembro"/> 
-                    <f:selectItem  itemLabel="Dezembro" itemValue="Dezembro"/> 
-                </p:selectOneMenu> 
-                <br/><br/><br/><br/>
-                <hr style="color: #367587; background: #367587"/> 
-                <br/>   
-                <p:commandLink style="text-decoration: none;" action="#" ajax="false">
-                    <div style="font-size: 16px;margin-left:12%;" class="cadastrar">Gerar Relatório</div>
-                </p:commandLink> 
-                <p:commandLink style="text-decoration: none;" action="#" ajax="false">
-                    <div style="font-size: 16px" class="cancelar">Cancelar</div>
-                </p:commandLink>
-                <br/>
+            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+            <br/>
+            <p:selectOneRadio value="#{relatorioDataNascimentoMB.tipo}" 
+                              style="width:94%;margin-left:2%;">
+                <f:selectItem itemLabel="Associado" itemValue="Associado" class="titTela"/>
+                <f:selectItem itemLabel="Dependente" itemValue="Dependente"  class="titTela"/> 
+                <f:selectItem itemLabel="Passaporte" itemValue="Passaporte"  class="titTela"/> 
+            </p:selectOneRadio>
+             <br/> 
+            <p:outputLabel class="titTela" value="Mês" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
+            <br/> 
+            <p:selectOneMenu class="form-control"  id="mes"  style="width:180px;margin-left:2%;font-size: 12px;"  value="#{relatorioDataNascimentoMB.mes}" 
+                             filter="true" filterMatchMode="contains" panelStyle="width:180px" >
+                <f:selectItem  itemLabel="Todos" itemValue="todos"/> 
+                <f:selectItem  itemLabel="Janeiro" itemValue="Janeiro"/> 
+                <f:selectItem  itemLabel="Fevereiro" itemValue="Fevereiro"/> 
+                <f:selectItem  itemLabel="Março" itemValue="Março"/> 
+                <f:selectItem  itemLabel="Abril" itemValue="Abril"/>
+                <f:selectItem  itemLabel="Maio" itemValue="Maio"/> 
+                <f:selectItem  itemLabel="Junho" itemValue="Junho"/> 
+                <f:selectItem  itemLabel="Julho" itemValue="Julho"/> 
+                <f:selectItem  itemLabel="Agosto" itemValue="Agosto"/> 
+                <f:selectItem  itemLabel="Setembro" itemValue="Setembro"/> 
+                <f:selectItem  itemLabel="Outubro" itemValue="Outubro"/>
+                <f:selectItem  itemLabel="Novembro" itemValue="Novembro"/> 
+                <f:selectItem  itemLabel="Dezembro" itemValue="Dezembro"/> 
+            </p:selectOneMenu> 
+            <br/><br/><br/><br/>
+            <hr style="color: #367587; background: #367587"/> 
+            <br/>   
+            <p:commandLink style="text-decoration: none;" action="#" ajax="false">
+                <div style="font-size: 16px;margin-left:12%;" class="cadastrar">Gerar Relatório</div>
+            </p:commandLink> 
+            <p:commandLink style="text-decoration: none;" action="#" ajax="false">
+                <div style="font-size: 16px" class="cancelar">Cancelar</div>
+            </p:commandLink>
+            <br/>
         </h:form>  
- </h:body>
-  
+    </h:body>
+
 </html>
