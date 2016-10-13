@@ -16,6 +16,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -51,8 +52,8 @@ public class Cliente implements Serializable {
     @Size(max = 20)
     @Column(name = "telefone")
     private String telefone; 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente")
-    private List<Associado> associadoList;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "cliente")
+    private Associado associado;
     
     
     public Cliente() {
@@ -110,13 +111,15 @@ public class Cliente implements Serializable {
         this.telefone = telefone;
     }
 
-    public List<Associado> getAssociadoList() {
-        return associadoList;
+    public Associado getAssociado() {
+        return associado;
     }
 
-    public void setAssociadoList(List<Associado> associadoList) {
-        this.associadoList = associadoList;
+    public void setAssociado(Associado associado) {
+        this.associado = associado;
     }
+
+    
     
     
 

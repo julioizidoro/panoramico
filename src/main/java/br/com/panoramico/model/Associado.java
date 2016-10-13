@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
@@ -65,7 +66,7 @@ public class Associado implements Serializable {
     @Column(name = "descotomensalidade")
     private Float descotomensalidade;
     @JoinColumn(name = "cliente_idcliente", referencedColumnName = "idcliente")
-    @ManyToOne(optional = false)
+    @OneToOne(optional = false)
     private Cliente cliente;
     @JoinColumn(name = "plano_idplano", referencedColumnName = "idplano")
     @ManyToOne(optional = false)
