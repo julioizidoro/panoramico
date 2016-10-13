@@ -195,6 +195,14 @@ public class ContasPagarMB implements Serializable{
         return "";
     }
     
+    
+    public String novoRelatorio() {
+        Map<String, Object> options = new HashMap<String, Object>();
+        options.put("contentWidth", 580);
+        RequestContext.getCurrentInstance().openDialog("imprimirContasPagar", options, null);
+        return "";
+    }
+    
     public String visualizarPagamento(Contaspagar contaspagar) {
         if (contaspagar != null) {
            Map<String, Object> options = new HashMap<String, Object>();

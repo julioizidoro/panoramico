@@ -277,10 +277,10 @@ public class DadosBoletoBean {
         titulo.setValor(valor);
         titulo.setDataDoDocumento(dataDocumento);
         titulo.setDataDoVencimento(dataVencimento);
-        titulo.setTipoDeDocumento(TipoDeTitulo.DM_DUPLICATA_MERCANTIL);
+        titulo.setTipoDeDocumento(TipoDeTitulo.DS_DUPLICATA_DE_SERVICO);
         titulo.setAceite(Titulo.Aceite.N);
         return titulo;
-    } 
+    }  
     
     private void enviarBoleto(byte[] pdf) throws IOException {
         HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();

@@ -6,13 +6,19 @@
     <ui:composition template="/pages/templates/default.xhtml">
         <ui:define name="corpo"> 
             <br/>
-             <div class="col-10 boxAzulClaro" style="margin-left:8.5%;width: 83.2%;">   
+            <div class="col-10 boxAzulClaro" style="margin-left:8.5%;width: 83.2%;">   
                 <br/>
                 <h:form id="idFormConsultaAmbiente" style="margin-left:10%; width:78%;">
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:10%;width: 80%;"/>
-                    
+
                     <fieldset>
-                        <legend>Acesso</legend>
+                        <legend>
+                            Acesso
+                            <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" action="#{acessoMB.novoRelatorio()}" title="Relatórios">
+                                <div class="fa fa-bar-chart"></div>
+                            </p:commandLink>
+
+                        </legend>
                         <h:outputText value="Código do Associado" style="float: left;font-size: 16px;"/>
                         <h:outputText value="Código do Dependente" style="float: left;font-size: 16px;margin-left:5%;"/>
                         <h:outputText value="Código do Passaporte" style="float: left;font-size: 16px;margin-left:5%;"/>
@@ -38,18 +44,18 @@
                                     <hr/>
                                     <h:outputText value="#{acessoMB.nome}" style="float: left;font-size: 18px;" title="Nome" id="idCampoNome"/>
                                 </div>
-                                 <div class="col-sm-4">
+                                <div class="col-sm-4">
                                     <h:outputText value="Validade do exame" style="font-size: 16px;"/>
-                                     <br/>
-                                     <hr/>
+                                    <br/>
+                                    <hr/>
                                     <h:outputText value="#{acessoMB.dataExame}" style="font-size: 16px;#{acessoMB.corDataExame}" id="idCampoDataExame">
                                         <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/> 
                                     </h:outputText>
                                 </div>
-                                 <div class="col-sm-2">
+                                <div class="col-sm-2">
                                     <h:outputText value="Status" style="float: left;font-size: 16px;"/>
-                                     <br/>
-                                     <hr/>
+                                    <br/>
+                                    <hr/>
                                     <p:commandLink  id="idbotaoLiberado" action="#{acessoMB.controleAcesso()}" update="@all">  
                                         <div style="font-size: 18px;padding: 3%;" class="#{acessoMB.tipoClasse}">
                                             <h:outputText value="#{acessoMB.nomeStatus}"/>
@@ -61,7 +67,7 @@
                         </fieldset> 
                     </h:panelGroup>
                 </h:form>
-             </div>
+            </div>
         </ui:define>
     </ui:composition>
 </html>

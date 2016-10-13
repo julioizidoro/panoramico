@@ -66,7 +66,7 @@
                                 <div class="icoAdd fa fa-plus-square-o"></div>
                                 <p:ajax event="dialogReturn" listener="#{eventoMB.retornoDialogNovo}" update="messages, idConsultaEvento"/>
                             </p:commandLink>
-                            <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" action="#" title="Relatórios">
+                            <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" action="#{eventoMB.novoRelatorio()}" title="Relatórios">
                                 <div class="icoAdd fa fa-bar-chart"></div>
                             </p:commandLink>
                             <h:dataTable  id="idConsultaEvento" class="table" styleClass="table" value="#{eventoMB.listaEvento}" var="evento">
