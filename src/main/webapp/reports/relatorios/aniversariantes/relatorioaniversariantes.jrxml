@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relatorioAniversariantes" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="feecb075-5a7f-42f6-832b-1a654a7aa009">
 	<property name="ireport.zoom" value="1.3660269107301424"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="62"/>
 	<property name="ireport.y" value="0"/>
 	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
 	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
@@ -11,16 +11,26 @@
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
-	<field name="escola" class="java.lang.String"/>
-	<field name="pais" class="java.lang.String"/>
-	<field name="premium" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+	<field name="datanascimento" class="java.lang.String">
+		<fieldDescription><![CDATA[datanascimento]]></fieldDescription>
 	</field>
-	<field name="express" class="java.lang.Double">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+	<field name="email" class="java.lang.String">
+		<fieldDescription><![CDATA[email]]></fieldDescription>
 	</field>
-	<field name="idpais" class="java.lang.Integer">
-		<fieldDescription><![CDATA[]]></fieldDescription>
+	<field name="mes" class="java.lang.String">
+		<fieldDescription><![CDATA[mes]]></fieldDescription>
+	</field>
+	<field name="nome" class="java.lang.String">
+		<fieldDescription><![CDATA[nome]]></fieldDescription>
+	</field>
+	<field name="numeromes" class="java.lang.Integer">
+		<fieldDescription><![CDATA[numeromes]]></fieldDescription>
+	</field>
+	<field name="telefone" class="java.lang.String">
+		<fieldDescription><![CDATA[telefone]]></fieldDescription>
+	</field>
+	<field name="tipo" class="java.lang.String">
+		<fieldDescription><![CDATA[tipo]]></fieldDescription>
 	</field>
 	<group name="mes" isReprintHeaderOnEachPage="true">
 		<groupHeader>
@@ -59,12 +69,6 @@
 					<reportElement x="476" y="46" width="77" height="14" uuid="f001aa1e-6411-4f82-987c-39eb1c4eea18"/>
 					<text><![CDATA[Tipo]]></text>
 				</staticText>
-				<componentElement>
-					<reportElement x="89" y="62" width="71" height="14" uuid="ad3d78c2-01c5-438a-8b48-c435bf3fc160"/>
-					<sr:sort xmlns:sr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-						<sr:symbol handlerColor="#000000" handlerHorizontalAlign="Center" handlerVerticalAlign="Middle"/>
-					</sr:sort>
-				</componentElement>
 			</band>
 		</groupHeader>
 		<groupFooter>
@@ -99,14 +103,14 @@
 				<textElement>
 					<font size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA["nome"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
 				<reportElement x="160" y="1" width="106" height="15" uuid="4e98e239-d483-4f79-b399-ee5f68ac2172"/>
 				<textElement textAlignment="Center">
 					<font size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA["data"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{datanascimento}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="0" y="15" width="554" height="1" uuid="b9ec124e-9b34-4014-ab2b-9909cd600f6c"/>
@@ -116,21 +120,21 @@
 				<textElement textAlignment="Left">
 					<font size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA["telefone"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{telefone}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="343" y="0" width="133" height="16" uuid="0bc4b626-0565-4d3a-9151-f2aaa9077c29"/>
 				<textElement>
 					<font size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Email"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{email}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
 				<reportElement x="476" y="0" width="77" height="15" uuid="a6754353-bae4-41d6-86e8-9602222d2849"/>
 				<textElement textAlignment="Left">
 					<font size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA["tipo"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{tipo}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
