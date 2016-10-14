@@ -857,4 +857,34 @@ public class Formatacao {
     	int dia = calendar.get(GregorianCalendar.DAY_OF_MONTH);
     	return dia;
     }
+    
+    
+    public static int numeroMes(String mes){
+      if (mes.equalsIgnoreCase("Janeiro")){
+          return 1;
+      }else if (mes.equalsIgnoreCase("Fevereiro")){
+          return 2;
+      }else if (mes.equalsIgnoreCase("Fevereiro")){
+          return 3;
+      }else if (mes.equalsIgnoreCase("Fevereiro")){
+          return 4;
+      }else if (mes.equalsIgnoreCase("Fevereiro")){
+          return 5;
+      }else if (mes.equalsIgnoreCase("Fevereiro")){
+          return 6;
+      }else if (mes.equalsIgnoreCase("Fevereiro")){
+          return 7;
+      }else if (mes.equalsIgnoreCase("Fevereiro")){
+          return 8;
+      }else if (mes.equalsIgnoreCase("Fevereiro")){
+          return 9;
+      }else if (mes.equalsIgnoreCase("Fevereiro")){
+          return 10;
+      }else if (mes.equalsIgnoreCase("Fevereiro")){
+          return 11;
+      }else if (mes.equalsIgnoreCase("Fevereiro")){
+          return 12;
+      }else return 0; 
+  }
+  
 }

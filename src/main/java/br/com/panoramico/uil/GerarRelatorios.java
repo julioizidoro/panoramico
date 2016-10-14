@@ -13,9 +13,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Map;
 import javax.faces.context.FacesContext;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import javax.persistence.EntityManager; 
 import javax.persistence.PersistenceContext;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletOutputStream;
@@ -34,19 +32,26 @@ public class GerarRelatorios {
     EntityManager em;
 
     public void gerarRelatorioDSPDF(String caminhoRelatorio, Map parameters, JRDataSource jrds, String nomeArquivo) throws JRException, IOException {
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();
-        caminhoRelatorio = servletContext.getRealPath(caminhoRelatorio);
-
-        JasperPrint arquivoPrint = null;
+        FacesContext facesContext = FacesContext.getCurrentInstance();  
+        ServletContext servletContext = (ServletContext)facesContext.getExternalContext().getContext();
+        InputStream reportStream = facesContext.getExternalContext()  
+                .getResourceAsStream(caminhoRelatorio);  
+        JasperPrint arquivoPrint=null;
         HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
+        response.reset();
         response.setContentType("application/pdf");
-        response.addHeader("Content-disposition", "attachment; filename=\"" + nomeArquivo + ".pdf\"");
-        arquivoPrint = JasperFillManager.fillReport(caminhoRelatorio, parameters, jrds);
-        JasperExportManager.exportReportToPdfStream(arquivoPrint, response.getOutputStream());
-        facesContext.getApplication().getStateManager().saveView(facesContext);
-        facesContext.renderResponse();
-        facesContext.responseComplete();
+        response.setHeader("Content-disposition", "inline; filename=\"" + nomeArquivo +"\"");
+        ServletOutputStream servletOutputStream = response.getOutputStream();  
+        RequestContext.getCurrentInstance().closeDialog(null);
+      
+        // envia para o navegador o PDF gerado  
+        JasperRunManager.runReportToPdfStream(reportStream,  
+                servletOutputStream, parameters,jrds);  
+          
+        servletOutputStream.flush();  
+        servletOutputStream.close();  
+  
+        facesContext.responseComplete(); 
     }
 
     public void gerarRelatorioSqlPDF(String caminhoRelatorio, Map<String, Object> parameters, String nomeArquivo, String subDir) throws JRException, IOException, SQLException {
