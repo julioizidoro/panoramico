@@ -138,6 +138,7 @@ public class CadAssociadoMB implements Serializable{
     public void salvar(){
         associado.setPlano(plano);
         associado.setCliente(cliente);
+        associado.setSituacao("Ativo");
         associado = associadoDao.update(associado);
         RequestContext.getCurrentInstance().closeDialog(associado);
     }

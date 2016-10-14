@@ -94,7 +94,17 @@ public class CadDependenteMB implements Serializable{
     
     
     public void salvar(){
-        dependente.setAssociado(associado);
+        dependente.setAssociado(associado);  
+        if(dependente.getIddependente()==null){
+            dependente.setSituacao("Ativo");
+            String matricula = associado.getMatricula()+"/";
+            if(associado.getDependenteList()!=null && associado.getDependenteList().size()>0){
+                int numeroDepente = associado.getDependenteList().size()+1;
+                dependente.setMatricula(matricula+numeroDepente);
+            }else{
+                dependente.setMatricula(matricula+"1");
+            }
+        }
         dependente = dependenteDao.update(dependente);
         RequestContext.getCurrentInstance().closeDialog(dependente);
     }

@@ -24,8 +24,11 @@
                 
             <title>Novo Associado</title>
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                
-                <p:outputLabel class="titTela" value="Cliente" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
+                <p:outputLabel class="titTela" value="Matrícula" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
+                <br/> 
+                <p:inputText class="form-control" value="#{cadAssociadoMB.associado.matricula}" size="18" style="margin-left: 2%;font-size: 12px;float: left"/>
+                <br/><br/>
+                <p:outputLabel class="titTela" value="Associado" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
                 <p:outputLabel class="titTela" value="Plano" style="font-size: 12px;text-align: left;margin-left: 43%;"/>
                  <br/>
                 <p:selectOneMenu class="form-control"  id="cliente"  style="width: 250px;margin-left: 2%;font-size: 12px;"  value="#{cadAssociadoMB.cliente}" converter="ClienteConverter"
