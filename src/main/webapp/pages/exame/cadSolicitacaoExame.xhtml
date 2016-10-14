@@ -28,13 +28,13 @@
                 <p:outputLabel class="titTela" value="Associado ou Dependente" style="font-size: 12px;text-align: left;margin-left: 46%;"/>
                 <br/>
                 <h:panelGrid columns="2">
-                    <p:selectOneMenu class="form-control"  id="cliente"  style="width: 250px;margin-left: 2%;font-size: 12px;"  value="#{cadSolicitacaoExameMB.medico}" converter="MedicoConverter"
+                    <p:selectOneMenu class="form-control"  id="cliente"  style="width: 40%;margin-left: 4%;font-size: 12px;"  value="#{cadSolicitacaoExameMB.medico}" converter="MedicoConverter"
                                  filter="true" filterMatchMode="contains" panelStyle="width:180px" >
                         <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
                         <f:selectItems  value="#{cadSolicitacaoExameMB.listaMedico}" var="medicoselecionado" itemLabel="#{medicoselecionado.nome}" itemValue="#{medicoselecionado}"/>
                         <f:attribute name="listaMedico" value="#{cadSolicitacaoExameMB.listaMedico}"/>
                     </p:selectOneMenu>
-                    <p:selectOneMenu id="respostaAssociadoDependente" class="form-control" style="width:194px;font-size: 12px; margin-left: 3%;" value="#{cadSolicitacaoExameMB.associadoDependente}">
+                    <p:selectOneMenu id="respostaAssociadoDependente" class="form-control" style="width:40%;font-size: 12px; margin-left: 4%;" value="#{cadSolicitacaoExameMB.associadoDependente}">
                         <f:selectItem itemLabel="Selecione" itemValue="" noSelectionOption="true"/> 
                         <f:selectItem itemLabel="Dependente" itemValue="Dependente" />  
                         <f:selectItem itemLabel="Associado" itemValue="Associado" />
@@ -42,7 +42,7 @@
                     </p:selectOneMenu>
                 </h:panelGrid> 
                 <br/>
-                
+                 
                 
                 <h:panelGroup id="idPanel2" >
                     <p:outputLabel id="idnomeDependenteAssociado" class="titTela" value="#{cadSolicitacaoExameMB.exibirNome}" rendered="#{cadSolicitacaoExameMB.habilitarNome}" style="font-size: 12px;text-align: left; margin-left: 2%;"/>

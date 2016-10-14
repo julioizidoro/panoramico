@@ -32,13 +32,15 @@ import javax.faces.view.ViewScoped;
 import javax.imageio.ImageIO;
 import javax.inject.Named;
 import javax.servlet.ServletContext;
+import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.primefaces.context.RequestContext;
 
 @Named
 @ViewScoped
-public class ImprimirAcessoMB implements Serializable{
-    
+public class ImprimirAcessoMB implements Serializable {
+
     private Controleacesso controleacesso;
     @EJB
     private ControleAcessoDao controleAcessoDao;
@@ -50,11 +52,10 @@ public class ImprimirAcessoMB implements Serializable{
     private List<InformacoesFrequenciaBean> listaFrequenciaBean;
     @EJB
     private DependenteDao dependenteDao;
-    
-    
+
     @PostConstruct
-    public void init(){
-        
+    public void init() {
+
     }
 
     public Controleacesso getControleacesso() {
@@ -112,16 +113,12 @@ public class ImprimirAcessoMB implements Serializable{
     public void setTipoRelatorio(String tipoRelatorio) {
         this.tipoRelatorio = tipoRelatorio;
     }
-    
-    
-    
-    
-     public String gerarRelatorio() throws SQLException, IOException {
+
+    public String gerarRelatorio() throws SQLException, IOException {
         ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
         String caminhoRelatorio = "";
+        String nomeRelatorio = "";
         Map<String, Object> parameters = new HashMap<String, Object>();
-        caminhoRelatorio = "reports/relatorios/acesso/reportNumeroAcesso.jasper"; 
-        parameters.put("sql", gerarSql());
         File f = new File(servletContext.getRealPath("resources/img/logo.png"));
         BufferedImage logo = ImageIO.read(f);
         parameters.put("logo", logo);
@@ -131,47 +128,57 @@ public class ImprimirAcessoMB implements Serializable{
                     + "    " + Formatacao.ConvercaoDataPadrao(dataFinal);
         }
         parameters.put("periodo", periodo);
-        gerarTotalAcesso(); 
-        parameters.put("total", totalNAcesso);
         GerarRelatorios gerarRelatorio = new GerarRelatorios();
-        try {
-            gerarRelatorio.gerarRelatorioSqlPDF(caminhoRelatorio, parameters, "fluxocaixa", null);
-        } catch (JRException ex) {
-            Logger.getLogger(ImprimirAcessoMB.class.getName()).log(Level.SEVERE, null, ex);
+        if (tipoRelatorio.equalsIgnoreCase("frequencia")) {
+            caminhoRelatorio = "reports/relatorios/acesso/reportFrequenciaAcesso.jasper";
+            nomeRelatorio = "FrenquênciaAcessoParque";
+            List<InformacoesFrequenciaBean> lista = gerarListaFrequencia();
+            JRDataSource jrds = new JRBeanCollectionDataSource(lista);
+            try {
+                gerarRelatorio.gerarRelatorioDSPDF(caminhoRelatorio, parameters, jrds, nomeRelatorio);
+            } catch (JRException ex) {
+                Logger.getLogger(ImprimirAcessoMB.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            caminhoRelatorio = "reports/relatorios/acesso/reportNumeroAcesso.jasper";
+            parameters.put("sql", gerarSql());
+            gerarTotalAcesso();
+            parameters.put("total", totalNAcesso);
+            try {
+                gerarRelatorio.gerarRelatorioSqlPDF(caminhoRelatorio, parameters, "fluxocaixa", null);
+            } catch (JRException ex) {
+                Logger.getLogger(ImprimirAcessoMB.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+
         return "";
-    }  
+    }
 
     public String gerarSql() {
         String sql = "";
         sql = "Select distinct controleacesso.data, controleacesso.hora, controleacesso.tipo, controleacesso.idcontroleacesso From controleacesso Where "
                 + " controleacesso.situacao='LIBERADO' ";
-        
+
         if ((dataInicio != null) && (dataFinal != null)) {
             sql = sql + " and controleacesso.data>='" + Formatacao.ConvercaoDataSql(dataInicio)
                     + "' and controleacesso.data<='" + Formatacao.ConvercaoDataSql(dataFinal) + "' ";
-            
+
         }
-        
+
         if (tipoAcesso == null) {
             tipoAcesso = "";
-        }else{
-            if (!tipoAcesso.equalsIgnoreCase("")) {
-                sql = sql + " and controleacesso.tipo='" + tipoAcesso + "' ";
-            }
+        } else if (!tipoAcesso.equalsIgnoreCase("")) {
+            sql = sql + " and controleacesso.tipo='" + tipoAcesso + "' ";
         }
-        
 
         return sql;
-    }  
-    
-    
-    public void cancelar(){
+    }
+
+    public void cancelar() {
         RequestContext.getCurrentInstance().closeDialog(null);
     }
-    
-    
-    public void gerarTotalAcesso(){
+
+    public void gerarTotalAcesso() {
         String sql = "Select c From Controleacesso c Where c.situacao='LIBERADO'";
         if (dataInicio != null && dataFinal != null) {
             sql = sql + " and c.data>='" + Formatacao.ConvercaoDataSql(dataInicio)
@@ -186,8 +193,8 @@ public class ImprimirAcessoMB implements Serializable{
             totalNAcesso = totalNAcesso + 1;
         }
     }
-    
-    public List<InformacoesFrequenciaBean> gerarListaFrequencia(){
+
+    public List<InformacoesFrequenciaBean> gerarListaFrequencia() {
         List<InformacoesFrequenciaBean> lista = new ArrayList<>();
         List<Associado> listaAssociados = new ArrayList<>();
         List<Controleacesso> listaControleAcesso = new ArrayList<>();
@@ -195,31 +202,46 @@ public class ImprimirAcessoMB implements Serializable{
         if ((dataInicio != null) && (dataFinal != null)) {
             sql = sql + " and c.data>='" + Formatacao.ConvercaoDataSql(dataInicio)
                     + "' and c.data<='" + Formatacao.ConvercaoDataSql(dataFinal) + "' ";
-            
+
         }
         listaControleAcesso = controleAcessoDao.list(sql);
         for (int i = 0; i < listaControleAcesso.size(); i++) {
+            InformacoesFrequenciaBean frequenciaBean = new InformacoesFrequenciaBean();
             if (listaControleAcesso.get(i).getIddependente() > 0) {
-                InformacoesFrequenciaBean frequenciaBean = new InformacoesFrequenciaBean();
                 Dependente dependente = buscarDependente(listaControleAcesso.get(i).getIddependente());
-                frequenciaBean.setIdAcessoDependente(listaControleAcesso.get(i).getIdcontroleacesso());
+                frequenciaBean.setIdAcessoDependente(quantidadeFrequencia(listaControleAcesso.get(i)));
                 frequenciaBean.setNomeDependente(dependente.getNome());
                 frequenciaBean.setTipo(listaControleAcesso.get(i).getTipo());
                 frequenciaBean.setIdAssociado(dependente.getAssociado().getIdassociado());
-                frequenciaBean.setIdAcessoAssocioado(0);
-            }else{
-                InformacoesFrequenciaBean frequenciaBean = new InformacoesFrequenciaBean();
+            } else {
                 frequenciaBean.setIdAssociado(listaControleAcesso.get(i).getAssociado().getIdassociado());
                 frequenciaBean.setNomeAssociado(listaControleAcesso.get(i).getAssociado().getCliente().getNome());
-                
+                frequenciaBean.setTipo(listaControleAcesso.get(i).getTipo());
+                frequenciaBean.setIdAcessoAssocioado(quantidadeFrequencia(listaControleAcesso.get(i)));
             }
+            lista.add(frequenciaBean);
         }
         return lista;
     }
-    
-    
-    public Dependente buscarDependente(int iddependente){
+
+    public Dependente buscarDependente(int iddependente) {
         Dependente dependente = dependenteDao.find(iddependente);
         return dependente;
+    }
+
+    public Integer quantidadeFrequencia(Controleacesso controleacesso) {
+        String sql = "";
+        if (controleacesso.getIddependente() > 0) {
+            sql = " Select count(c.iddependente) From Controleacesso Where c.iddependente=" + controleacesso.getIddependente();
+        } else {
+            sql = " Select count(c.associado.idassociado) From Controleacesso Where c.associado.idassociado=" + controleacesso.getAssociado().getIdassociado();
+        }
+        try {
+            Integer numeroFrequencia = controleAcessoDao.numeroFrequencia(sql);
+            return numeroFrequencia;
+        } catch (SQLException ex) {
+            Logger.getLogger(ImprimirAcessoMB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
     }
 }
