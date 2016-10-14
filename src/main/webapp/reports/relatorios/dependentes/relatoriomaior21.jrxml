@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relatorioAniversariantes" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="feecb075-5a7f-42f6-832b-1a654a7aa009">
 	<property name="ireport.zoom" value="1.3660269107301424"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.x" value="69"/>
+	<property name="ireport.y" value="23"/>
 	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
 	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
 	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
@@ -29,11 +29,11 @@ order by cliente.nome, dependente.nome]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="161" splitType="Stretch">
+		<band height="142" splitType="Stretch">
 			<textField>
-				<reportElement style="Detail" x="1" y="106" width="553" height="33" uuid="7ab278a3-567e-4655-aabb-0e815544389f"/>
+				<reportElement style="Detail" x="3" y="94" width="553" height="33" uuid="7ab278a3-567e-4655-aabb-0e815544389f"/>
 				<textElement textAlignment="Center">
-					<font size="23" isBold="true"/>
+					<font fontName="SansSerif" size="23" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Relatório Dependentes Maior 21 Anos"]]></textFieldExpression>
 			</textField>
@@ -55,13 +55,13 @@ order by cliente.nome, dependente.nome]]>
 			</staticText>
 			<staticText>
 				<reportElement x="373" y="0" width="177" height="14" uuid="f001aa1e-6411-4f82-987c-39eb1c4eea18"/>
-				<text><![CDATA[Asosciado]]></text>
+				<text><![CDATA[Associado]]></text>
 			</staticText>
 			<line>
 				<reportElement x="0" y="14" width="554" height="1" uuid="5b24f4af-8a73-4b8f-aa6b-ec4f5a5b1e07"/>
 			</line>
 			<staticText>
-				<reportElement x="266" y="0" width="88" height="14" uuid="46b70367-fa30-46c5-bcc7-5fda2429e67d"/>
+				<reportElement x="277" y="0" width="88" height="14" uuid="46b70367-fa30-46c5-bcc7-5fda2429e67d"/>
 				<text><![CDATA[Data Nascimento]]></text>
 			</staticText>
 		</band>
@@ -76,7 +76,7 @@ order by cliente.nome, dependente.nome]]>
 				<textFieldExpression><![CDATA[$F{matricula}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement x="78" y="1" width="178" height="15" uuid="4e98e239-d483-4f79-b399-ee5f68ac2172"/>
+				<reportElement x="78" y="1" width="188" height="15" uuid="4e98e239-d483-4f79-b399-ee5f68ac2172"/>
 				<textElement textAlignment="Left">
 					<font size="10"/>
 				</textElement>
@@ -86,7 +86,7 @@ order by cliente.nome, dependente.nome]]>
 				<reportElement x="0" y="15" width="554" height="1" uuid="b9ec124e-9b34-4014-ab2b-9909cd600f6c"/>
 			</line>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement x="266" y="1" width="88" height="15" uuid="32baa722-33a3-4cc1-ad52-48c0f11e4aaf"/>
+				<reportElement x="276" y="0" width="88" height="15" uuid="32baa722-33a3-4cc1-ad52-48c0f11e4aaf"/>
 				<textElement textAlignment="Left">
 					<font size="10"/>
 				</textElement>
