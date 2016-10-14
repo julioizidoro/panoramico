@@ -11,6 +11,7 @@ import br.com.panoramico.uil.GerarRelatorios;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
@@ -19,7 +20,9 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.imageio.ImageIO;
+import javax.inject.Named;
 import javax.servlet.ServletContext;
 import net.sf.jasperreports.engine.JRException;
 
@@ -27,7 +30,9 @@ import net.sf.jasperreports.engine.JRException;
  *
  * @author Wolverine
  */
-public class RelatorioDependentesMB {
+@Named
+@ViewScoped
+public class RelatorioDependentesMB implements Serializable{
     
     public String iniciarRelatorioMaior21(){
         Calendar c = Calendar.getInstance();
