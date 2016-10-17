@@ -124,10 +124,10 @@ public class ImprimieContasRecebidasMB implements Serializable {
             sql = sql + "contasreceber.idcontasreceber, contasreceber.valorconta, contasreceber.numeroparcela, "
                     + "cliente.nome, recebimento.juros, recebimento.desagio, recebimento.valorrecebido, recebimento.datarecebimento, "
                     + "contasreceber.numerodocumento From recebimento Join contasreceber on recebimento.contasreceber_idcontasreceber"
-                    + "= contasreceber.idcontasreceber Join cliente on contasreceber.cliente_idcliente= cliente.idcliente Where ";
+                    + "= contasreceber.idcontasreceber Join cliente on contasreceber.cliente_idcliente= cliente.idcliente";
 
             if ((dataInicio != null) && (dataFinal != null)) {
-                sql = sql + "recebimento.datarecebimento>='" + Formatacao.ConvercaoDataSql(dataInicio)
+                sql = sql + " Where recebimento.datarecebimento>='" + Formatacao.ConvercaoDataSql(dataInicio)
                         + "' and recebimento.datarecebimento<='" + Formatacao.ConvercaoDataSql(dataFinal) + "' ";
             }
         } else if (tipoRelatorio.equalsIgnoreCase("inadimplentes")) {
