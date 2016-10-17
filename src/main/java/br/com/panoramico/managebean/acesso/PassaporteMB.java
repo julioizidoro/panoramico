@@ -212,7 +212,7 @@ public class PassaporteMB implements Serializable {
     public void filtrar(){
         String sql = "Select p From Passaporte p";
         if ((cliente != null && cliente.getIdcliente() != null) || dataInicialUso != null || dataFinalUso != null || dataInicioCompra != null || dataFinalCompra != null
-                || passaporteUtilizado.equalsIgnoreCase("sn") || localCompra.equalsIgnoreCase("sn")) {
+                || !passaporteUtilizado.equalsIgnoreCase("sn") || !localCompra.equalsIgnoreCase("sn")) {
             sql = sql + " Where";
         }
         if (cliente != null && cliente.getIdcliente() != null) {
@@ -244,9 +244,15 @@ public class PassaporteMB implements Serializable {
                 sql = sql + " p.localizador like 'PPA%'";
             }
         }
+        if (!passaporteUtilizado.equalsIgnoreCase("sn")) {
+            if (passaporteUtilizado.equalsIgnoreCase("sim")) {
+                sql = sql + " p.dataacesso>='1900-01-01'";
+            }else if(passaporteUtilizado.equalsIgnoreCase("nao")){
+                sql = sql + " p.dataacesso is null";
+            }
+        }
         listaPassaporte = new ArrayList<Passaporte>();
-        listaPassaporte = passaporteDao.list(sql);
-        Mensagem.lancarMensagemInfo("filtrado com sucesso", "");
+        listaPassaporte = passaporteDao.list(sql); 
     }
     
     public void limparFiltro(){
