@@ -1,0 +1,75 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+        <link href="../../resources/css/css.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" type="text/css" href="../../resources/fonts/font-awesome-4.6.3/css/font-awesome.min.css"/>
+
+        <link type="text/javascript" href="../../resources/js/jquery-3.1.0.js"></link>
+        <link type="text/javascript" src="../../resources/js/modal.js"/> 
+        <link rel="stylesheet" type="text/css" href="../../resources/css/modal.css"/>
+        <link rel="stylesheet" type="text/css" href="../../resources/css/buttons.css"/>
+        <link rel="stylesheet" type="text/css" href="../../resources/css/textos.css"/>
+        <link rel="stylesheet" type="text/css" href="../../resources/css/css.css"/>
+        <link rel="stylesheet" type="text/css" href="../../resources/css/tabelas.css"/>
+    </h:head>
+
+
+    <h:body style="background:#A3DAD9; border-color: #CF7000;" > 
+        <h:form id="idFormCadastroConvidados" style="font-size: 12px; background-color:#A3DAD9">
+
+            <title>Lista de convidados</title>
+            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" /> 
+            <p:outputLabel class="titTela" value="Nome" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
+            <br/>
+            <p:inputText class="form-control" value="#{listaConvidadosEventoMB.nome}" size="40" style="margin-left:2%;font-size: 12px;float: left;"/>
+            <p:commandLink style="text-decoration: none; margin-top: -2%;" actionListener="#{listaConvidadosEventoMB.gerarListaConvidados()}" update="idConsultaConvidados, messages">
+                <div style="font-size: 16px;margin-left: 2%;" class="adicionar">Pesquisar</div>
+            </p:commandLink>
+            <br/><br/>
+            <p:commandLink id="btnPresentes"  rendered="#{listaConvidadosEventoMB.pendentes}"   style="text-decoration: none;" action="#{listaConvidadosEventoMB.botaoMudarLista()}" update="@all">
+                <div style="font-size: 16px;float:right" class="cadastrar">Convidados Presentes</div>
+            </p:commandLink>
+            <p:commandLink id="btnPendentes"  rendered="#{listaConvidadosEventoMB.presentes}"   style="text-decoration: none;" action="#{listaConvidadosEventoMB.botaoMudarLista()}" update="@all">
+                <div style="font-size: 16px;float:right" class="cancelar">Convidados Pendentes</div>
+            </p:commandLink>
+            <h:dataTable id="idConsultaConvidados" style="width: 98%;" styleClass="table" value="#{listaConvidadosEventoMB.listaConvidados}" var="convidados">
+                <h:column>
+                    <f:facet name="header">Nome</f:facet> 
+                    <h:outputText value="#{convidados.nome}" styleClass="alinhamento" style="float: left;" />
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Telefone</f:facet> 
+                    <h:outputText value="#{convidados.telefone}" styleClass="alinhamento"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Acompanhantes</f:facet> 
+                    <h:outputText value="#{convidados.acompanhante}" styleClass="alinhamento" />
+                </h:column>
+                <h:column> 
+                    <p:commandLink title="Convidado Presente" style="text-decoration: none;"   rendered="#{listaConvidadosEventoMB.pendentes}" action="#{listaConvidadosEventoMB.confirmarPresencaConvidado(convidados)}" update="@all">
+                        <div class="fa fa-check" >
+                        </div>
+                    </p:commandLink>
+
+                    <p:commandLink title="Cancelamento" style="text-decoration: none;"  rendered="#{listaConvidadosEventoMB.presentes}"   action="#{listaConvidadosEventoMB.cancelarConvidado(convidados)}"  update="@all">
+                        <div class="fa fa-times" >
+                        </div> 
+                    </p:commandLink> 
+                </h:column> 
+                <h:column> 
+                </h:column>  
+            </h:dataTable>
+            <br/><br/> 
+            <p:commandLink style="text-decoration: none;" action="#{listaConvidadosEventoMB.fechar()}" ajax="false">
+                <div style="font-size: 16px;margin-left:42%;" class="cancelar">Fechar</div>
+            </p:commandLink> 
+             <br/><br/>  <br/><br/>  <br/><br/> 
+        </h:form>
+    </h:body>
+
+</html>

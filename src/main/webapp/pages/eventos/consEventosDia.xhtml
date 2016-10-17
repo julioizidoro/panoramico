@@ -1,0 +1,51 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/pages/templates/default.xhtml">
+        <ui:define name="corpo">
+
+            <br/> 
+            <div class="col-10 boxAzulClaro" style="margin-left:8.5%;width: 83.2%;"> 
+                <h:form id="idFormConsultaEventoDia" style="margin-left:5%;width: 90%;"> 
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:10%;width: 80%;"/>
+                    
+                    <div class="col-6 titTela" style="margin-left:-15%;">Eventos do Dia</div>
+                    
+                    <h:dataTable  id="idConsultaEvento" class="table" styleClass="table" value="#{eventoDiaMB.listaEvento}" var="evento">
+                        <h:column>
+                            <f:facet name="header">Responsavel</f:facet> 
+                            <h:outputText value="#{evento.cliente.nome}" styleClass="alinhamento" style="float: left;" />
+                        </h:column>
+                        <h:column >  
+                            <f:facet name="header">Data</f:facet> 
+                            <h:outputText value="#{evento.data}" styleClass="alinhamento" style="text-align: left !important;margin-right:40%;">
+                                <f:convertDateTime pattern="dd/MM/yyyy"
+                                                   timeZone="America/Sao_Paulo" />
+                            </h:outputText>
+                        </h:column> 
+                        <h:column>
+                            <f:facet name="header">Ambiente</f:facet> 
+                            <h:outputText value="#{evento.ambiente.nome}" styleClass="alinhamento" style="float: left;"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Tipo Evento</f:facet> 
+                            <h:outputText value="#{evento.tipoenvento.descricao}" styleClass="alinhamento" style="float: left;" />
+                        </h:column> 
+                        <h:column>
+                            <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" title="Lista de Convidados" action="#{eventoDiaMB.listaConvidados(evento)}">
+                                <div class="fa fa-list">
+                                </div>
+                            </p:commandLink> 
+                            <p:commandLink title="Concluir Evento" style="text-decoration: none;" update=":idFormConsultaEventoDia:messages, @form" rendered="#{usuarioLogadoMB.excluir}"  action="#{eventoDiaMB.realizadoEvento(evento)}">
+                                <div class="fa fa-check" >
+                                </div>
+                            </p:commandLink>
+                        </h:column>  
+                    </h:dataTable> 
+                </h:form>
+            </div>
+        </ui:define> 
+    </ui:composition>
+</html>
