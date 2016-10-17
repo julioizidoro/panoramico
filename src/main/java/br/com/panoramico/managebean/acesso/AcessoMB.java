@@ -367,7 +367,7 @@ public class AcessoMB implements Serializable {
             if (associado == null) {
                 Mensagem.lancarMensagemInfo("Não encontrado", "");
             } else {
-                nome = associado.getCliente().getNome();
+                nome = "";
                 exameassociado = null;
                 dataExame = null;
                 List<Exameassociado> listaExameAssociado = exameAssociadoDao.list("Select ea From Exameassociado ea Where associado.idassociado=" + associado.getIdassociado());
@@ -377,6 +377,7 @@ public class AcessoMB implements Serializable {
                 if (exameassociado == null || exameassociado.getIdexameassociado() == null) {
                     Mensagem.lancarMensagemInfo("Não encontrado", "");
                 } else {
+                    nome = associado.getCliente().getNome();
                     dataExame = exameassociado.getExame().getDatavalidade();
                     if ((dataExame.compareTo(new Date()) == 1)
                             || (dataExame.compareTo(new Date()) == 0)) {
@@ -410,7 +411,7 @@ public class AcessoMB implements Serializable {
             if (dependente == null) {
                 Mensagem.lancarMensagemInfo("Não encontrado", "");
             } else {
-                nome = dependente.getNome();
+                nome = "";
                 examedependente = null;
                 dataExame = null;
                 List<Examedependente> listaExameDependente = exameDependenteDao.list("Select ed From Examedependente ed Where dependente.iddependente=" + dependente.getIddependente());
@@ -420,6 +421,7 @@ public class AcessoMB implements Serializable {
                 if (examedependente == null || examedependente.getIdexamedependente() == null) {
                     Mensagem.lancarMensagemInfo("Não encontrado", "");
                 } else {
+                    nome = dependente.getNome();
                     dataExame = examedependente.getExame().getDatavalidade();
                     if ((dataExame.compareTo(new Date()) == 1)
                             || (dataExame.compareTo(new Date()) == 0)) {
@@ -490,8 +492,12 @@ public class AcessoMB implements Serializable {
             controleacesso.setAssociado(dependente.getAssociado());
             controleacesso.setTipo("D");
             controleacesso = controleAcessoDao.update(controleacesso);
+        }else if(guardaPassaporte.length() >= 1){
+            passaporte.setDataacesso(new Date());
+            passaporte.setHoraacesso(retornarHoraAtual());
+            passaporteDao.update(passaporte);
         }
-        Mensagem.lancarMensagemInfo(controleacesso.getSituacao() + " com sucesso", "");
+        Mensagem.lancarMensagemInfo(" Salvo " + " com sucesso", "");
     }
 
     public String retornarHoraAtual() {
