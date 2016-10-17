@@ -34,6 +34,10 @@
                             <h:outputText value="#{evento.tipoenvento.descricao}" styleClass="alinhamento" style="float: left;" />
                         </h:column> 
                         <h:column>
+                            <f:facet name="header">Possui Piscina</f:facet> 
+                            <h:outputText value="#{eventoDiaMB.possuiPiscina(evento)}" styleClass="alinhamento" style="float: left;" />
+                        </h:column> 
+                        <h:column>
                             <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" title="Lista de Convidados" action="#{eventoDiaMB.listaConvidados(evento)}">
                                 <div class="fa fa-list">
                                 </div>

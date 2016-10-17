@@ -101,4 +101,10 @@ public class EventoDiaMB implements Serializable{
             gerarListaEventos();
         }
     } 
+    
+    public String possuiPiscina(Evento evento){
+        if(evento.isPiscina()){
+            return "Sim";
+        }else return "Não";
+    }
 }
