@@ -9,6 +9,7 @@ import br.com.panoramico.dao.ExameAssociadoDao;
 import br.com.panoramico.dao.ExameDao;
 import br.com.panoramico.dao.ExameDependenteDao;
 import br.com.panoramico.dao.MedicoDao;
+import br.com.panoramico.managebean.UsuarioLogadoMB;
 import br.com.panoramico.model.Associado;
 import br.com.panoramico.model.Dependente;
 import br.com.panoramico.model.Exame;
@@ -25,6 +26,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
@@ -46,6 +48,8 @@ public class CadExameMB implements Serializable{
     private ExameAssociadoDao exameAssociadoDao;
     @EJB
     private ExameDependenteDao exameDependenteDao;
+    @Inject
+    private UsuarioLogadoMB usuarioLogadoMB;
     
     
     @PostConstruct
@@ -57,7 +61,8 @@ public class CadExameMB implements Serializable{
         if (exame == null) {
             exame = new Exame();
         }else{
-            medico = exame.getMedico();
+            medico = (Medico) session.getAttribute("medico");
+            session.removeAttribute("medico");
         }
         gerarListaMedicos();
     }

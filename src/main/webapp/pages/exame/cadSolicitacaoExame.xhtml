@@ -24,26 +24,17 @@
             <title>Nova Solicitação</title>
             <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
 
-            <p:outputLabel class="titTela" value="Medico" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
-            <p:outputLabel class="titTela" value="Associado ou Dependente" style="font-size: 12px;text-align: left;margin-left: 47%;"/>
+            <p:outputLabel class="titTela" value="Associado ou Dependente" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
+            <p:outputLabel id="idnomeDependenteAssociado" class="titTela" value="#{cadSolicitacaoExameMB.exibirNome}" rendered="#{cadSolicitacaoExameMB.habilitarNome}" style="font-size: 12px;text-align: left; margin-left: 16%;"/>
             <br/> 
-            <p:selectOneMenu class="form-control"  id="cliente"  style="width:250px;margin-left:2%;font-size: 12px;"  value="#{cadSolicitacaoExameMB.medico}" converter="MedicoConverter"
-                             filter="true" filterMatchMode="contains" panelStyle="width:180px" >
-                <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
-                <f:selectItems  value="#{cadSolicitacaoExameMB.listaMedico}" var="medicoselecionado" itemLabel="#{medicoselecionado.nome}" itemValue="#{medicoselecionado}"/>
-                <f:attribute name="listaMedico" value="#{cadSolicitacaoExameMB.listaMedico}"/>
-            </p:selectOneMenu>
+
             <p:selectOneMenu id="respostaAssociadoDependente" class="form-control" style="width:195px;font-size: 12px; margin-left:2%;" value="#{cadSolicitacaoExameMB.associadoDependente}">
                 <f:selectItem itemLabel="Selecione" itemValue="" noSelectionOption="true"/> 
                 <f:selectItem itemLabel="Dependente" itemValue="Dependente" />  
                 <f:selectItem itemLabel="Associado" itemValue="Associado" />
-                <p:ajax event="change" listener="#{cadSolicitacaoExameMB.gerarListaAssociadoDependente()}" update="idPanel2, associadoDependente, associadoDependente2, idnomeDependenteAssociado"/>
+                <p:ajax event="change" listener="#{cadSolicitacaoExameMB.gerarListaAssociadoDependente()}" update="idPanel3, associadoDependente, associadoDependente2, idnomeDependenteAssociado"/>
             </p:selectOneMenu>
-            <br/><br/>
-            <h:panelGroup id="idPanel2" >
-                <p:outputLabel id="idnomeDependenteAssociado" class="titTela" value="#{cadSolicitacaoExameMB.exibirNome}" rendered="#{cadSolicitacaoExameMB.habilitarNome}" style="font-size: 12px;text-align: left; margin-left: 2%;"/>
-                <p:outputLabel class="titTela" value="Forma Pagamento" style="font-size: 12px;text-align: left; margin-left: 42%;"/>
-                <br/>
+            <h:panelGroup id="idPanel3" >
                 <p:selectOneMenu rendered="#{cadSolicitacaoExameMB.habilitarDependente}" class="form-control"  id="associadoDependente"  style="width: 250px;margin-left: 2%;font-size: 12px;"  value="#{cadSolicitacaoExameMB.dependente}" converter="DependenteConverter"
                                  filter="true" filterMatchMode="contains" panelStyle="width:180px" >
                     <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
@@ -56,31 +47,36 @@
                     <f:selectItems  value="#{cadSolicitacaoExameMB.listaAssociado}" var="associadoselecionado" itemLabel="#{associadoselecionado.cliente.nome}" itemValue="#{associadoselecionado}"/>
                     <f:attribute name="listaAssociado" value="#{cadSolicitacaoExameMB.listaAssociado}"/>
                 </p:selectOneMenu>
-                <p:selectOneMenu id="formaPagamento" class="form-control" style="width:194px;font-size: 12px; margin-right: 2%;float: right;" value="#{cadSolicitacaoExameMB.exame.formapagamento}">
-                    <f:selectItem itemLabel="Selecione" itemValue="" noSelectionOption="true"/> 
-                    <f:selectItem itemLabel="Boleto" itemValue="Boleto" />  
-                    <f:selectItem itemLabel="Dinheiro" itemValue="Dinheiro" /> 
-                    <f:selectItem itemLabel="Debito" itemValue="Debito" />  
-                    <f:selectItem itemLabel="Crédito" itemValue="Credito" />
-                    <f:selectItem itemLabel="Transferência" itemValue="transferencia" />
-                </p:selectOneMenu>
             </h:panelGroup>
             <br/><br/>
-            <p:outputLabel class="titTela" value="Valor" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
-            <p:outputLabel class="titTela" value="Desconto" style="font-size: 12px;text-align: left;margin-left: 21%;"/>
-            <p:outputLabel class="titTela" value="Total" style="font-size: 12px;text-align: left;margin-left: 17%;"/>
-            <br/>
-            <p:inputText class="form-control" value="#{cadSolicitacaoExameMB.valorExame}" size="15" style="margin-left:2%;font-size: 12px;text-align: right;">
-                <f:convertNumber pattern="##,###,###,###.##"/>
-                <p:ajax event="change" listener="#{cadSolicitacaoExameMB.calcularTotal()}" update="totalRecebimento"/>
-            </p:inputText>
-            <p:inputText class="form-control" value="#{cadSolicitacaoExameMB.descontoExame}" size="15" style="margin-left:5%;text-align: right;font-size: 12px;">
-                <f:convertNumber pattern="##,###,###,###.##"/>
-                <p:ajax event="change" listener="#{cadSolicitacaoExameMB.calcularTotal()}" update="totalRecebimento"/>
-            </p:inputText>
-            <p:inputText readonly="true" id="totalRecebimento" class="form-control" value="#{cadSolicitacaoExameMB.totalPagar}" size="15" style="margin-left:5%;font-size: 12px;text-align: right;">
-                <f:convertNumber pattern="##,###,###,###.##"/>
-            </p:inputText>    
+            <h:panelGroup id="idPanel2" >
+                <p:outputLabel class="titTela" value="Valor" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
+                <p:outputLabel class="titTela" value="Desconto" style="font-size: 12px;text-align: left;margin-left: 32%;"/>
+                <p:outputLabel class="titTela" value="Total" style="font-size: 12px;text-align: left;margin-left: 28%;"/>
+                <br/>
+                <p:inputText class="form-control" value="#{cadSolicitacaoExameMB.valorExame}" size="15" style="margin-left:2%;font-size: 12px;text-align: right;">
+                    <f:convertNumber pattern="##,###,###,###.##"/>
+                    <p:ajax event="change" listener="#{cadSolicitacaoExameMB.calcularTotal()}" update="totalRecebimento"/>
+                </p:inputText>
+                <p:inputText class="form-control" value="#{cadSolicitacaoExameMB.descontoExame}" size="15" style="margin-left:16%;text-align: right;font-size: 12px;">
+                    <f:convertNumber pattern="##,###,###,###.##"/>
+                    <p:ajax event="change" listener="#{cadSolicitacaoExameMB.calcularTotal()}" update="totalRecebimento"/>
+                </p:inputText>
+                <p:inputText readonly="true" id="totalRecebimento" class="form-control" value="#{cadSolicitacaoExameMB.totalPagar}" size="15" style="margin-left:16%;font-size: 12px;text-align: right;">
+                    <f:convertNumber pattern="##,###,###,###.##"/>
+                </p:inputText> 
+            </h:panelGroup>
+            <br/><br/>
+            <p:outputLabel class="titTela" value="Forma Pagamento" style="font-size: 12px;text-align: left; margin-left: 2%;"/>
+            <br/>   
+            <p:selectOneMenu id="formaPagamento" class="form-control" style="width:194px;font-size: 12px; margin-right: 4%;" value="#{cadSolicitacaoExameMB.exame.formapagamento}">
+                <f:selectItem itemLabel="Selecione" itemValue="" noSelectionOption="true"/> 
+                <f:selectItem itemLabel="Boleto" itemValue="Boleto" />  
+                <f:selectItem itemLabel="Dinheiro" itemValue="Dinheiro" /> 
+                <f:selectItem itemLabel="Debito" itemValue="Debito" />  
+                <f:selectItem itemLabel="Crédito" itemValue="Credito" />
+                <f:selectItem itemLabel="Transferência" itemValue="transferencia" />
+            </p:selectOneMenu>
             <br/><br/> 
             <br/><br/>
             <hr style="color: #367587; background: #367587"/> 

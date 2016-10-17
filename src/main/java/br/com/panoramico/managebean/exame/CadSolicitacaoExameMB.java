@@ -12,6 +12,7 @@ import br.com.panoramico.dao.ExameAssociadoDao;
 import br.com.panoramico.dao.ExameDao;
 import br.com.panoramico.dao.ExameDependenteDao;
 import br.com.panoramico.dao.MedicoDao;
+import br.com.panoramico.dao.ParametrosDao;
 import br.com.panoramico.dao.PlanoContaDao;
 import br.com.panoramico.managebean.UsuarioLogadoMB;
 import br.com.panoramico.model.Associado;
@@ -21,6 +22,7 @@ import br.com.panoramico.model.Exame;
 import br.com.panoramico.model.Exameassociado;
 import br.com.panoramico.model.Examedependente;
 import br.com.panoramico.model.Medico;
+import br.com.panoramico.model.Parametros;
 import br.com.panoramico.model.Planoconta;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -79,6 +81,9 @@ public class CadSolicitacaoExameMB implements Serializable{
     private Planoconta planoconta;
     @EJB
     private PlanoContaDao planoContaDao;
+    private Parametros parametros;
+    @EJB
+    private ParametrosDao parametrosDao;
     
     @PostConstruct
     public void init(){
@@ -87,6 +92,7 @@ public class CadSolicitacaoExameMB implements Serializable{
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         exame = (Exame) session.getAttribute("exame");
         session.removeAttribute("exame");
+        getMedicoDefault();
         if (exame == null) {
             exame = new Exame();
             exameassociado = new Exameassociado();
@@ -347,6 +353,22 @@ public class CadSolicitacaoExameMB implements Serializable{
     public void setPlanoContaDao(PlanoContaDao planoContaDao) {
         this.planoContaDao = planoContaDao;
     }
+
+    public Parametros getParametros() {
+        return parametros;
+    }
+
+    public void setParametros(Parametros parametros) {
+        this.parametros = parametros;
+    }
+
+    public ParametrosDao getParametrosDao() {
+        return parametrosDao;
+    }
+
+    public void setParametrosDao(ParametrosDao parametrosDao) {
+        this.parametrosDao = parametrosDao;
+    }
     
     
     
@@ -471,5 +493,10 @@ public class CadSolicitacaoExameMB implements Serializable{
                 exameassociado = listaExameAssociado.get(i);
             }
         }
+    }
+    
+    public void getMedicoDefault(){
+        parametros = parametrosDao.find(1);
+        medico  = medicoDao.find(parametros.getMedico());
     }
 }

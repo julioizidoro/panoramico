@@ -8,10 +8,12 @@ package br.com.panoramico.managebean.exame;
 import br.com.panoramico.dao.ExameAssociadoDao;
 import br.com.panoramico.dao.ExameDao;
 import br.com.panoramico.dao.ExameDependenteDao;
+import br.com.panoramico.dao.MedicoDao;
 import br.com.panoramico.managebean.UsuarioLogadoMB;
 import br.com.panoramico.model.Exame;
 import br.com.panoramico.model.Exameassociado;
 import br.com.panoramico.model.Examedependente;
+import br.com.panoramico.model.Medico;
 import br.com.panoramico.uil.Formatacao;
 import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
@@ -49,6 +51,9 @@ public class ExameMB implements Serializable{
     private String situacao;
     @Inject
     private UsuarioLogadoMB usuarioLogadoMB;
+    private Medico medico;
+    @EJB
+    private MedicoDao medicoDao;
     
     @PostConstruct
     public void init(){
@@ -178,15 +183,17 @@ public class ExameMB implements Serializable{
     
     
     public void editar(Exame exame){
-        if (exame.getMedico().getIdusuario() == usuarioLogadoMB.getUsuario().getIdusuario()) {
+        pesquisarMedico(usuarioLogadoMB.getUsuario().getIdusuario());
+        if (medico == null) {
+            Mensagem.lancarMensagemInfo("", "Acesso Negado!!");
+        }else{
             Map<String, Object> options = new HashMap<String, Object>();
             FacesContext fc = FacesContext.getCurrentInstance();
             HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
             session.setAttribute("exame", exame);
+            session.setAttribute("medico", medico);
             options.put("contentWidth", 545);
             RequestContext.getCurrentInstance().openDialog("cadExame", options, null);
-        }else{
-            Mensagem.lancarMensagemInfo("", "Acesso Negado!!");
         }
     }
     
@@ -252,5 +259,13 @@ public class ExameMB implements Serializable{
         dataInicio = null;
         dataFinal = null;
         gerarListaExame();
+    }
+    
+    public void pesquisarMedico(int idusuario){
+        List<Medico> listaMedico = medicoDao.list("Select m From Medico m Where m.idusuario=" + idusuario
+          + " and m.situacao='Ativo'");
+        for (int i = 0; i < listaMedico.size(); i++) {
+            medico = listaMedico.get(i);
+        }
     }
 }

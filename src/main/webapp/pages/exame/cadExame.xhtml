@@ -23,38 +23,28 @@
                 
             <title>Novo Exame</title>
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                
-                <p:outputLabel class="titTela" value="Medico" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
-                <p:outputLabel class="titTela" value="Data" style="font-size: 12px;text-align: left;margin-left: 46%;"/>
-                <p:outputLabel class="titTela" value="Validade" style="font-size: 12px;text-align: left;margin-left: 18%;"/>
-                <br/>
-                <h:panelGrid columns="3">
-                    <p:selectOneMenu class="form-control"  id="cliente"  style="width: 250px;margin-left: 2%;font-size: 12px;"  value="#{cadExameMB.medico}" converter="MedicoConverter"
-                                 filter="true" filterMatchMode="contains" panelStyle="width:180px" >
-                        <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
-                        <f:selectItems  value="#{cadExameMB.listaMedico}" var="medicoselecionado" itemLabel="#{medicoselecionado.nome}" itemValue="#{medicoselecionado}"/>
-                        <f:attribute name="listaMedico" value="#{cadExameMB.listaMedico}"/>
-                    </p:selectOneMenu>
-                    <p:inputMask mask="99/99/9999" size="15" class="form-control" value="#{cadExameMB.exame.data}" style="margin-left:4%;font-size: 12px;">
-                        <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
-                        <p:ajax event="change" listener="#{cadExameMB.calcularValidade()}" update="idValidade"/>
-                    </p:inputMask> 
-                    <p:inputMask id="idValidade" mask="99/99/9999" readonly="true" size="15" class="form-control" value="#{cadExameMB.exame.datavalidade}" style="margin-left:4%;font-size: 12px;">
-                        <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
-                    </p:inputMask>
-                </h:panelGrid>
-                <br/>
                 <p:outputLabel class="titTela" value="Diagnostico" style="font-size: 12px;text-align: left; margin-left: 2%;"/>
                 <br/>
                 <p:inputTextarea  class="form-control" value="#{cadExameMB.exame.diagnostico}" style="width:98%;margin-left:2%;font-size: 12px;"/>
                 <br/><br/>
                 <p:outputLabel class="titTela" value="Situação" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
+                <p:outputLabel class="titTela" value="Data" style="font-size: 12px;text-align: left;margin-left: 35%;"/>
+                <p:outputLabel class="titTela" value="Validade" style="font-size: 12px;text-align: left;margin-left: 28%;"/>
                 <br/>
-                <p:selectOneMenu class="form-control" id="situacao" value="#{cadExameMB.exame.situacao}"  style="width:150px;margin-left:2%; font-size: 12px;">
-                    <f:selectItem itemLabel="Selecione" itemValue="sn" noSelectionOption="true"/> 
-                    <f:selectItem itemLabel="Apto" itemValue="Apto" /> 
-                    <f:selectItem itemLabel="Inapto" itemValue="Inapto" /> 
-                </p:selectOneMenu>
+                <h:panelGrid columns="3">
+                    <p:selectOneMenu class="form-control" id="situacao" value="#{cadExameMB.exame.situacao}"  style="width:150px;margin-left:2%; font-size: 12px;">
+                        <f:selectItem itemLabel="Selecione" itemValue="sn" noSelectionOption="true"/> 
+                        <f:selectItem itemLabel="Apto" itemValue="Apto" /> 
+                        <f:selectItem itemLabel="Inapto" itemValue="Inapto" /> 
+                    </p:selectOneMenu>
+                    <p:inputMask mask="99/99/9999" size="15" class="form-control" value="#{cadExameMB.exame.data}" style="margin-left:33%;font-size: 12px;">
+                        <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+                        <p:ajax event="change" listener="#{cadExameMB.calcularValidade()}" update="idValidade"/>
+                    </p:inputMask> 
+                    <p:inputMask id="idValidade" mask="99/99/9999" readonly="true" size="15" class="form-control" value="#{cadExameMB.exame.datavalidade}" style="margin-left:33%;font-size: 12px;">
+                        <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+                    </p:inputMask>
+                </h:panelGrid>
                 <br/><br/><br/>
                 <hr style="color: #367587; background: #367587"/>
                 <br/>  
