@@ -136,28 +136,43 @@ public class CadRecebimentoMB implements Serializable{
     
     public void salvar(){
         Float totalRecebido = 0.0f;
-        if (valorTotalRecebido > contasreceber.getValorconta() && juros == 0.0f) {
-            Mensagem.lancarMensagemInfo("Atenção", "valor total a receber acima do valor da conta sem constar o valor de juros");
-        }else{
-            if (valorTotalRecebido >= contasreceber.getValorconta()) {
-                List<Recebimento> listaRecebimento = recebimentoDao.list("Select r from Recebimento r where r.contasreceber.idcontasreceber="+ contasreceber.getIdcontasreceber());
-                for (int i = 0; i < listaRecebimento.size(); i++) {
-                    totalRecebido = totalRecebido + listaRecebimento.get(i).getValorrecebido();
-                }
-                contasreceber.setValorconta(totalRecebido);
-                contasreceber.setSituacao("PAGO");
+        boolean dados = validarDados();
+        if(dados){
+            if (valorTotalRecebido > contasreceber.getValorconta() && juros == 0.0f) {
+                Mensagem.lancarMensagemInfo("Atenção", "valor total a receber acima do valor da conta sem constar o valor de juros");
             }else{
-                contasreceber.setValorconta(contasreceber.getValorconta() - valorTotalRecebido);
+                if (valorTotalRecebido >= contasreceber.getValorconta()) {
+                    List<Recebimento> listaRecebimento = recebimentoDao.list("Select r from Recebimento r where r.contasreceber.idcontasreceber="+ contasreceber.getIdcontasreceber());
+                    for (int i = 0; i < listaRecebimento.size(); i++) {
+                        totalRecebido = totalRecebido + listaRecebimento.get(i).getValorrecebido();
+                    }
+                    contasreceber.setValorconta(totalRecebido);
+                    contasreceber.setSituacao("PAGO");
+                }else{
+                    contasreceber.setValorconta(contasreceber.getValorconta() - valorTotalRecebido);
+                }
+                conasReceberDao.update(contasreceber);
+                recebimento.setJuros(juros);
+                recebimento.setDesagio(desagio);
+                recebimento.setValorrecebido(valorTotalRecebido);
+                recebimento.setUsuario(usuarioLogadoMB.getUsuario());
+                recebimento.setContasreceber(contasreceber);
+                recebimento = recebimentoDao.update(recebimento);
+                RequestContext.getCurrentInstance().closeDialog(recebimento);
             }
-            conasReceberDao.update(contasreceber);
-            recebimento.setJuros(juros);
-            recebimento.setDesagio(desagio);
-            recebimento.setValorrecebido(valorTotalRecebido);
-            recebimento.setUsuario(usuarioLogadoMB.getUsuario());
-            recebimento.setContasreceber(contasreceber);
-            recebimento = recebimentoDao.update(recebimento);
-            RequestContext.getCurrentInstance().closeDialog(recebimento);
         }
+    }
+    
+    public boolean validarDados(){ 
+        if(recebimento.getFormarecebimento()==null || recebimento.getFormarecebimento().length()==0){
+            Mensagem.lancarMensagemInfo("Atenção", "Forma de Recebimento não informada.");
+            return false;
+        }
+        if(recebimento.getDatarecebimento()==null){
+            Mensagem.lancarMensagemInfo("Atenção", "Data não informada.");
+            return false;
+        }
+        return true;
     }
     
     public void cancelar(){
