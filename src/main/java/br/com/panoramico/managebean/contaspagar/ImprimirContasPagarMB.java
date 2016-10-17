@@ -148,15 +148,16 @@ public class ImprimirContasPagarMB implements Serializable {
 
     public String gerarSql() {
         String sql = "";
-        sql = "Select distinct contaspagar.datavencimento, contaspagar.credor, ";
-        sql = sql + "contaspagar.idcontaspagar, contaspagar.valor, contaspagar.numeroparcela from contaspagar where ";
+        sql = "Select distinct pagamento.datapagamento, contaspagar.credor, ";
+        sql = sql + "contaspagar.idcontaspagar, pagamento.valorpago, contaspagar.numeroparcela from pagamento Join"
+                + " contaspagar on pagamento.contaspagar_idcontaspagar=contaspagar.idcontaspagar Where ";
         
         if ((dataInicio != null) && (dataFinal != null)) {
-            sql = sql + "contaspagar.datavencimento>='" + Formatacao.ConvercaoDataSql(dataInicio)
-                    + "' and contaspagar.datavencimento<='" + Formatacao.ConvercaoDataSql(dataFinal) + "' ";
+            sql = sql + "pagamento.datapagamento>='" + Formatacao.ConvercaoDataSql(dataInicio)
+                    + "' and pagamento.datapagamento<='" + Formatacao.ConvercaoDataSql(dataFinal) + "' ";
             if (planocontas != null && planocontas.getIdplanoconta() != null) {
                 sql = sql + " and ";
-            }
+            } 
         }  
         if (planocontas != null && planocontas.getIdplanoconta() != null) {
             sql = sql + " contaspagar.planoconta_idplanoconta=" + planocontas.getIdplanoconta();

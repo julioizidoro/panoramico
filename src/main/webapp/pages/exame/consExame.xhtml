@@ -51,6 +51,13 @@
                             <h:outputText value="#{exame.diagnostico}" styleClass="alinhamento" style="float: left;"/>
                         </h:column>
                         <h:column>
+                            <f:facet name="header">Lançamento</f:facet> 
+                            <h:outputText value="#{exame.data}" styleClass="alinhamento" style="float: left;">
+                                <f:convertDateTime pattern="dd/MM/yyyy"
+                                                   timeZone="America/Sao_Paulo" />
+                            </h:outputText>
+                        </h:column>
+                        <h:column>
                             <f:facet name="header">Validade</f:facet> 
                             <h:outputText value="#{exame.datavalidade}" styleClass="alinhamento" style="float: left;">
                                 <f:convertDateTime pattern="dd/MM/yyyy"
@@ -58,7 +65,6 @@
                             </h:outputText>
                         </h:column>
                         <h:column>
-                            <f:facet name="header">Situação</f:facet> 
                             <h:outputText value="#{exame.situacao}" styleClass="alinhamento" style="float: left;" />
                         </h:column>
                         <h:column>

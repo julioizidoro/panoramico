@@ -142,7 +142,7 @@ public class ContasPagarMB implements Serializable{
     public void retornoDialogNovo(SelectEvent event){
         Contaspagar conta = (Contaspagar) event.getObject();
         if (conta.getIdcontaspagar()!= null) {
-            Mensagem.lancarMensagemInfo("Salvou", "Cadastro de uma conta a receber realizado com sucesso");
+            Mensagem.lancarMensagemInfo("Salvou", "Cadastro de uma conta a pagar realizado com sucesso");
         }
         gerarListaContasPagar();
     }
