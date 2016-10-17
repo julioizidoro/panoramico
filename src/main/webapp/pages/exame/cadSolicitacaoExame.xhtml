@@ -8,94 +8,90 @@
 
         <link href="../../resources/css/css.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" type="text/css" href="../../resources/fonts/font-awesome-4.6.3/css/font-awesome.min.css"/>
-        
+
         <link type="text/javascript" href="../../resources/js/jquery-3.1.0.js"></link>
         <link type="text/javascript" src="../../resources/js/modal.js"/> 
         <link rel="stylesheet" type="text/css" href="../../resources/css/modal.css"/>
-	<link rel="stylesheet" type="text/css" href="../../resources/css/buttons.css"/>
-	<link rel="stylesheet" type="text/css" href="../../resources/css/textos.css"/>
+        <link rel="stylesheet" type="text/css" href="../../resources/css/buttons.css"/>
+        <link rel="stylesheet" type="text/css" href="../../resources/css/textos.css"/>
         <link rel="stylesheet" type="text/css" href="../../resources/css/css.css"/>
     </h:head>
-     
+
 
     <h:body style="background:#A3DAD9; border-color: #CF7000;" > 
         <h:form id="idFormSolicitacaoExame" style="font-size: 12px; background-color:#A3DAD9">
-                
+
             <title>Nova Solicitação</title>
-                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                
-                <p:outputLabel class="titTela" value="Medico" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
-                <p:outputLabel class="titTela" value="Associado ou Dependente" style="font-size: 12px;text-align: left;margin-left: 46%;"/>
+            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+
+            <p:outputLabel class="titTela" value="Medico" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
+            <p:outputLabel class="titTela" value="Associado ou Dependente" style="font-size: 12px;text-align: left;margin-left: 47%;"/>
+            <br/> 
+            <p:selectOneMenu class="form-control"  id="cliente"  style="width:250px;margin-left:2%;font-size: 12px;"  value="#{cadSolicitacaoExameMB.medico}" converter="MedicoConverter"
+                             filter="true" filterMatchMode="contains" panelStyle="width:180px" >
+                <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
+                <f:selectItems  value="#{cadSolicitacaoExameMB.listaMedico}" var="medicoselecionado" itemLabel="#{medicoselecionado.nome}" itemValue="#{medicoselecionado}"/>
+                <f:attribute name="listaMedico" value="#{cadSolicitacaoExameMB.listaMedico}"/>
+            </p:selectOneMenu>
+            <p:selectOneMenu id="respostaAssociadoDependente" class="form-control" style="width:195px;font-size: 12px; margin-left:2%;" value="#{cadSolicitacaoExameMB.associadoDependente}">
+                <f:selectItem itemLabel="Selecione" itemValue="" noSelectionOption="true"/> 
+                <f:selectItem itemLabel="Dependente" itemValue="Dependente" />  
+                <f:selectItem itemLabel="Associado" itemValue="Associado" />
+                <p:ajax event="change" listener="#{cadSolicitacaoExameMB.gerarListaAssociadoDependente()}" update="idPanel2, associadoDependente, associadoDependente2, idnomeDependenteAssociado"/>
+            </p:selectOneMenu>
+            <br/><br/>
+            <h:panelGroup id="idPanel2" >
+                <p:outputLabel id="idnomeDependenteAssociado" class="titTela" value="#{cadSolicitacaoExameMB.exibirNome}" rendered="#{cadSolicitacaoExameMB.habilitarNome}" style="font-size: 12px;text-align: left; margin-left: 2%;"/>
+                <p:outputLabel class="titTela" value="Forma Pagamento" style="font-size: 12px;text-align: left; margin-left: 42%;"/>
                 <br/>
-                <h:panelGrid columns="2">
-                    <p:selectOneMenu class="form-control"  id="cliente"  style="width: 40%;margin-left: 4%;font-size: 12px;"  value="#{cadSolicitacaoExameMB.medico}" converter="MedicoConverter"
+                <p:selectOneMenu rendered="#{cadSolicitacaoExameMB.habilitarDependente}" class="form-control"  id="associadoDependente"  style="width: 250px;margin-left: 2%;font-size: 12px;"  value="#{cadSolicitacaoExameMB.dependente}" converter="DependenteConverter"
                                  filter="true" filterMatchMode="contains" panelStyle="width:180px" >
-                        <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
-                        <f:selectItems  value="#{cadSolicitacaoExameMB.listaMedico}" var="medicoselecionado" itemLabel="#{medicoselecionado.nome}" itemValue="#{medicoselecionado}"/>
-                        <f:attribute name="listaMedico" value="#{cadSolicitacaoExameMB.listaMedico}"/>
-                    </p:selectOneMenu>
-                    <p:selectOneMenu id="respostaAssociadoDependente" class="form-control" style="width:40%;font-size: 12px; margin-left: 4%;" value="#{cadSolicitacaoExameMB.associadoDependente}">
-                        <f:selectItem itemLabel="Selecione" itemValue="" noSelectionOption="true"/> 
-                        <f:selectItem itemLabel="Dependente" itemValue="Dependente" />  
-                        <f:selectItem itemLabel="Associado" itemValue="Associado" />
-                        <p:ajax event="change" listener="#{cadSolicitacaoExameMB.gerarListaAssociadoDependente()}" update="idPanel2, associadoDependente, associadoDependente2, idnomeDependenteAssociado"/>
-                    </p:selectOneMenu>
-                </h:panelGrid> 
-                <br/>
-                 
-                
-                <h:panelGroup id="idPanel2" >
-                    <p:outputLabel id="idnomeDependenteAssociado" class="titTela" value="#{cadSolicitacaoExameMB.exibirNome}" rendered="#{cadSolicitacaoExameMB.habilitarNome}" style="font-size: 12px;text-align: left; margin-left: 2%;"/>
-                    <p:outputLabel class="titTela" value="Forma Pagamento" style="font-size: 12px;text-align: left; margin-left: 42%;"/>
-                    <br/>
-                    <p:selectOneMenu rendered="#{cadSolicitacaoExameMB.habilitarDependente}" class="form-control"  id="associadoDependente"  style="width: 250px;margin-left: 2%;font-size: 12px;"  value="#{cadSolicitacaoExameMB.dependente}" converter="DependenteConverter"
-                                     filter="true" filterMatchMode="contains" panelStyle="width:180px" >
-                        <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
-                        <f:selectItems  value="#{cadSolicitacaoExameMB.listaDependente}" var="dependenteselecionado" itemLabel="#{dependenteselecionado.nome}" itemValue="#{dependenteselecionado}"/>
-                        <f:attribute name="listaDependente" value="#{cadSolicitacaoExameMB.listaDependente}"/>
-                    </p:selectOneMenu>
-                    <p:selectOneMenu rendered="#{cadSolicitacaoExameMB.habilitarAssociado}" class="form-control"  id="associadoDependente2"  style="width: 250px;margin-left: 2%;font-size: 12px;"  value="#{cadSolicitacaoExameMB.associado}" converter="AssociadoConverter"
-                                     filter="true" filterMatchMode="contains" panelStyle="width:180px" >
-                        <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
-                        <f:selectItems  value="#{cadSolicitacaoExameMB.listaAssociado}" var="associadoselecionado" itemLabel="#{associadoselecionado.cliente.nome}" itemValue="#{associadoselecionado}"/>
-                        <f:attribute name="listaAssociado" value="#{cadSolicitacaoExameMB.listaAssociado}"/>
-                    </p:selectOneMenu>
-                    <p:selectOneMenu id="formaPagamento" class="form-control" style="width:194px;font-size: 12px; margin-right: 2%;float: right;" value="#{cadSolicitacaoExameMB.exame.formapagamento}">
-                        <f:selectItem itemLabel="Selecione" itemValue="" noSelectionOption="true"/> 
-                        <f:selectItem itemLabel="Boleto" itemValue="Boleto" />  
-                        <f:selectItem itemLabel="Dinheiro" itemValue="Dinheiro" /> 
-                        <f:selectItem itemLabel="Debito" itemValue="Debito" />  
-                        <f:selectItem itemLabel="Crédito" itemValue="Credito" />
-                        <f:selectItem itemLabel="Transferência" itemValue="transferencia" />
-                    </p:selectOneMenu>
-                </h:panelGroup>
-                <br/><br/>
-                <p:outputLabel class="titTela" value="Valor" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
-                <p:outputLabel class="titTela" value="Desconto" style="font-size: 12px;text-align: left;margin-left: 21%;"/>
-                <p:outputLabel class="titTela" value="Total" style="font-size: 12px;text-align: left;margin-left: 17%;"/>
-                <br/>
-                <p:inputText class="form-control" value="#{cadSolicitacaoExameMB.valorExame}" size="15" style="margin-left:2%;font-size: 12px;text-align: right;">
-                     <f:convertNumber pattern="##,###,###,###.##"/>
-                    <p:ajax event="change" listener="#{cadSolicitacaoExameMB.calcularTotal()}" update="totalRecebimento"/>
-                </p:inputText>
-                <p:inputText class="form-control" value="#{cadSolicitacaoExameMB.descontoExame}" size="15" style="margin-left:5%;text-align: right;font-size: 12px;">
-                    <f:convertNumber pattern="##,###,###,###.##"/>
-                    <p:ajax event="change" listener="#{cadSolicitacaoExameMB.calcularTotal()}" update="totalRecebimento"/>
-                </p:inputText>
-                <p:inputText readonly="true" id="totalRecebimento" class="form-control" value="#{cadSolicitacaoExameMB.totalPagar}" size="15" style="margin-left:5%;font-size: 12px;text-align: right;">
-                    <f:convertNumber pattern="##,###,###,###.##"/>
-                </p:inputText>    
-                <br/><br/> 
-                <br/><br/>
-                <hr style="color: #367587; background: #367587"/> 
-                <br/>  
-                <p:commandLink style="text-decoration: none;" update="messages" actionListener="#{cadSolicitacaoExameMB.salvar()}" ajax="false">
-                    <div style="font-size: 16px;margin-left: 32%;" class="cadastrar">Cadastrar</div>
-                </p:commandLink>
-                <p:commandLink style="text-decoration: none;" action="#{cadSolicitacaoExameMB.cancelar()}" ajax="false">
-                    <div style="font-size: 16px" class="cancelar">Cancelar</div>
-                </p:commandLink>
+                    <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
+                    <f:selectItems  value="#{cadSolicitacaoExameMB.listaDependente}" var="dependenteselecionado" itemLabel="#{dependenteselecionado.nome}" itemValue="#{dependenteselecionado}"/>
+                    <f:attribute name="listaDependente" value="#{cadSolicitacaoExameMB.listaDependente}"/>
+                </p:selectOneMenu>
+                <p:selectOneMenu rendered="#{cadSolicitacaoExameMB.habilitarAssociado}" class="form-control"  id="associadoDependente2"  style="width: 250px;margin-left: 2%;font-size: 12px;"  value="#{cadSolicitacaoExameMB.associado}" converter="AssociadoConverter"
+                                 filter="true" filterMatchMode="contains" panelStyle="width:180px" >
+                    <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
+                    <f:selectItems  value="#{cadSolicitacaoExameMB.listaAssociado}" var="associadoselecionado" itemLabel="#{associadoselecionado.cliente.nome}" itemValue="#{associadoselecionado}"/>
+                    <f:attribute name="listaAssociado" value="#{cadSolicitacaoExameMB.listaAssociado}"/>
+                </p:selectOneMenu>
+                <p:selectOneMenu id="formaPagamento" class="form-control" style="width:194px;font-size: 12px; margin-right: 2%;float: right;" value="#{cadSolicitacaoExameMB.exame.formapagamento}">
+                    <f:selectItem itemLabel="Selecione" itemValue="" noSelectionOption="true"/> 
+                    <f:selectItem itemLabel="Boleto" itemValue="Boleto" />  
+                    <f:selectItem itemLabel="Dinheiro" itemValue="Dinheiro" /> 
+                    <f:selectItem itemLabel="Debito" itemValue="Debito" />  
+                    <f:selectItem itemLabel="Crédito" itemValue="Credito" />
+                    <f:selectItem itemLabel="Transferência" itemValue="transferencia" />
+                </p:selectOneMenu>
+            </h:panelGroup>
+            <br/><br/>
+            <p:outputLabel class="titTela" value="Valor" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
+            <p:outputLabel class="titTela" value="Desconto" style="font-size: 12px;text-align: left;margin-left: 21%;"/>
+            <p:outputLabel class="titTela" value="Total" style="font-size: 12px;text-align: left;margin-left: 17%;"/>
+            <br/>
+            <p:inputText class="form-control" value="#{cadSolicitacaoExameMB.valorExame}" size="15" style="margin-left:2%;font-size: 12px;text-align: right;">
+                <f:convertNumber pattern="##,###,###,###.##"/>
+                <p:ajax event="change" listener="#{cadSolicitacaoExameMB.calcularTotal()}" update="totalRecebimento"/>
+            </p:inputText>
+            <p:inputText class="form-control" value="#{cadSolicitacaoExameMB.descontoExame}" size="15" style="margin-left:5%;text-align: right;font-size: 12px;">
+                <f:convertNumber pattern="##,###,###,###.##"/>
+                <p:ajax event="change" listener="#{cadSolicitacaoExameMB.calcularTotal()}" update="totalRecebimento"/>
+            </p:inputText>
+            <p:inputText readonly="true" id="totalRecebimento" class="form-control" value="#{cadSolicitacaoExameMB.totalPagar}" size="15" style="margin-left:5%;font-size: 12px;text-align: right;">
+                <f:convertNumber pattern="##,###,###,###.##"/>
+            </p:inputText>    
+            <br/><br/> 
+            <br/><br/>
+            <hr style="color: #367587; background: #367587"/> 
+            <br/>  
+            <p:commandLink style="text-decoration: none;" update="messages" actionListener="#{cadSolicitacaoExameMB.salvar()}" ajax="false">
+                <div style="font-size: 16px;margin-left: 32%;" class="cadastrar">Cadastrar</div>
+            </p:commandLink>
+            <p:commandLink style="text-decoration: none;" action="#{cadSolicitacaoExameMB.cancelar()}" ajax="false">
+                <div style="font-size: 16px" class="cancelar">Cancelar</div>
+            </p:commandLink>
         </h:form>
- </h:body>
-  
+    </h:body>
+
 </html>
