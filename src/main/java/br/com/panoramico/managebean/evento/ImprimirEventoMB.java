@@ -78,7 +78,6 @@ public class ImprimirEventoMB implements Serializable {
         this.ambiente = ambiente;
     }
 
-
     public AmbienteDao getAmbienteDao() {
         return ambienteDao;
     }
@@ -127,10 +126,6 @@ public class ImprimirEventoMB implements Serializable {
         this.totalFaturmento = totalFaturmento;
     }
 
-    
-    
-    
-
     public String gerarRelatorio() throws SQLException, IOException {
         String nomeAmbiente = "";
         ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
@@ -140,13 +135,13 @@ public class ImprimirEventoMB implements Serializable {
             caminhoRelatorio = "reports/relatorios/eventos/reportFaturamentoEvento.jasper";
             gerarValorTotal();
             parameters.put("total", totalFaturmento);
-        }else{
+        } else {
             caminhoRelatorio = "reports/relatorios/eventos/reportAgendaEventos.jasper";
         }
         parameters.put("sql", gerarSql());
         if (ambiente == null || ambiente.getIdambiente() == null) {
             nomeAmbiente = "Todos";
-        }else{
+        } else {
             nomeAmbiente = ambiente.getNome();
         }
         parameters.put("ambiente", nomeAmbiente);
@@ -157,7 +152,7 @@ public class ImprimirEventoMB implements Serializable {
         if (dataInicio != null && dataFinal != null) {
             periodo = "Periodo : " + Formatacao.ConvercaoDataPadrao(dataInicio)
                     + "    " + Formatacao.ConvercaoDataPadrao(dataFinal);
-        }else{
+        } else {
             periodo = " Sem Periodo";
         }
         parameters.put("periodo", periodo);
@@ -175,13 +170,12 @@ public class ImprimirEventoMB implements Serializable {
         if (tipoRelatorio.equalsIgnoreCase("faturamentoEvento")) {
             sql = " Select distinct evento.data, evento.valor, ambiente.nome, evento.idevento From evento "
                     + " Join ambiente on evento.ambiente_idambiente=ambiente.idambiente ";
-            if ((dataInicio != null) && (dataFinal != null) || ambiente != null && ambiente.getIdambiente() != null) {
+            if (((dataInicio != null) && (dataFinal != null)) || (ambiente != null && ambiente.getIdambiente() != null)) {
                 sql = sql + " Where ";
             }
             if ((dataInicio != null) && (dataFinal != null)) {
                 sql = sql + "evento.data>='" + Formatacao.ConvercaoDataSql(dataInicio)
                         + "' and evento.data<='" + Formatacao.ConvercaoDataSql(dataFinal) + "' ";
-
                 if (ambiente != null && ambiente.getIdambiente() != null) {
                     sql = sql + " and ";
                 }
@@ -191,40 +185,42 @@ public class ImprimirEventoMB implements Serializable {
                 sql = sql + " evento.ambiente_idambiente=" + ambiente.getIdambiente();
             }
             sql = sql + " order by evento.data";
-        }else{
+        } else {
             sql = "Select distinct evento.data, ambiente.nome, tipoenvento.descricao, evento.idevento from evento "
                     + " Join ambiente on evento.ambiente_idambiente= ambiente.idambiente "
-                    + " Join tipoenvento on evento.tipoenvento_idtipoenvento= tipoenvento.idtipoenvento Where ";
-
-            if ((dataInicio != null) && (dataFinal != null)) {
-                sql = sql + " and evento.data>='" + Formatacao.ConvercaoDataSql(dataInicio)
-                        + "' and evento.data<='" + Formatacao.ConvercaoDataSql(dataFinal) + "' ";
-
-                
+                    + " Join tipoenvento on evento.tipoenvento_idtipoenvento= tipoenvento.idtipoenvento ";
+            if (((dataInicio != null) && (dataFinal != null)) || (ambiente != null && ambiente.getIdambiente() != null)) {
+                sql = sql + " Where ";
             }
-
+            if ((dataInicio != null) && (dataFinal != null)) {
+                sql = sql + " evento.data>='" + Formatacao.ConvercaoDataSql(dataInicio)
+                        + "' and evento.data<='" + Formatacao.ConvercaoDataSql(dataFinal) + "' ";
+                if (ambiente != null && ambiente.getIdambiente() != null) {
+                    sql = sql + " and ";
+                }
+            } 
             if (ambiente != null && ambiente.getIdambiente() != null) {
-                sql = sql + " and evento.ambiente_idambiente=" + ambiente.getIdambiente();
+                sql = sql + " evento.ambiente_idambiente=" + ambiente.getIdambiente();
             }
             sql = sql + " order by evento.data";
         }
         return sql;
     }
-    
-    public void cancelar(){
+
+    public void cancelar() {
         RequestContext.getCurrentInstance().closeDialog(null);
     }
-    
-    public void gerarListaAmbiente(){
+
+    public void gerarListaAmbiente() {
         listaAmbientes = ambienteDao.list("Select a From Ambiente a");
         if (listaAmbientes == null || listaAmbientes.isEmpty()) {
             listaAmbientes = new ArrayList<Ambiente>();
         }
     }
-    
+
     public void gerarValorTotal() {
         String sql = " Select e From Evento e ";
-        if ((dataInicio != null) && (dataFinal != null) || ambiente != null && ambiente.getIdambiente() != null) {
+        if (((dataInicio != null) && (dataFinal != null)) || (ambiente != null && ambiente.getIdambiente() != null)) {
             sql = sql + " Where ";
         }
         if ((dataInicio != null) && (dataFinal != null)) {
@@ -243,6 +239,6 @@ public class ImprimirEventoMB implements Serializable {
         List<Evento> lista = eventoDao.list(sql);
         for (int i = 0; i < lista.size(); i++) {
             totalFaturmento = totalFaturmento + lista.get(i).getValor();
-        } 
+        }
     }
 }
