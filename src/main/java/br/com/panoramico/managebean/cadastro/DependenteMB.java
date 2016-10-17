@@ -6,9 +6,7 @@
 package br.com.panoramico.managebean.cadastro;
 
 import br.com.panoramico.dao.AssociadoDao;
-import br.com.panoramico.dao.DependenteDao;
-import br.com.panoramico.model.Associado;
-import br.com.panoramico.model.Cliente;
+import br.com.panoramico.dao.DependenteDao; 
 import br.com.panoramico.model.Dependente;
 import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
@@ -40,9 +38,11 @@ public class DependenteMB implements Serializable{
     private List<Dependente> listaDependente;
     @EJB
     private AssociadoDao associadoDao;
-    
-   
-    
+    private String nome;
+    private String associado;
+    private String matricula;
+    private String email;
+    private String telefone;
     
     @PostConstruct
     public void init(){
@@ -79,6 +79,46 @@ public class DependenteMB implements Serializable{
 
     public void setAssociadoDao(AssociadoDao associadoDao) {
         this.associadoDao = associadoDao;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getAssociado() {
+        return associado;
+    }
+
+    public void setAssociado(String associado) {
+        this.associado = associado;
+    }
+
+    public String getMatricula() {
+        return matricula;
+    }
+
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
+    } 
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
 
@@ -130,6 +170,37 @@ public class DependenteMB implements Serializable{
     public void excluir(Dependente dependente){
         dependenteDao.remove(dependente.getIddependente());
         Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
+        gerarListaDependente();
+    }
+    
+    
+    public void pesquisar(){
+        String sql = "Select c from Dependente c where c.nome like '"+nome+"%'";
+        if(associado!=null && associado.length()>0){
+            sql = sql + " and c.associado.cliente.nome like '"+associado+"%'";
+        }
+        if(email!=null && email.length()>0){
+            sql = sql + " and c.email like '"+email+"%'";
+        }
+        if(telefone!=null && telefone.length()>0){
+            sql = sql + " and c.telefone='"+telefone+"'"; 
+        }
+        if(matricula!=null && matricula.length()>0){
+            sql = sql + " and c.matricula='"+matricula+"'"; 
+        }
+        sql = sql + " order by c.nome";
+        listaDependente = dependenteDao.list(sql);
+        if (listaDependente == null) {
+            listaDependente = new ArrayList<Dependente>();
+        }
+    }
+    
+    public void limpar(){
+        nome = "";
+        email = null;
+        telefone = null;
+        associado = null;
+        matricula = null;
         gerarListaDependente();
     }
 }

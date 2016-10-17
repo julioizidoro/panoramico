@@ -6,52 +6,75 @@
     <ui:composition template="/pages/templates/default.xhtml">
         <ui:define name="corpo">
             <br/> 
-             <div class="col-10 boxAzulClaro" style="margin-left:8.5%;width: 83.2%;">   
+            <div class="col-10 boxAzulClaro" style="margin-left:8.5%;width: 83.2%;">   
                 <br/>
                 <h:form id="idFormConsultaDependente" style="margin-left:10%;width: 78%;">
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:10%;width: 80%;"/>
+                    <p:accordionPanel activeIndex="-1" style="width:85%;margin-left: 8%;z-index:1">
+                        <p:tab title="Pesquisar">
+                            <p:outputLabel value="Matrícula" class="titTela" style="font-size: 12px;text-align: left;margin-left: 2%;float: left;"/>
+                            <p:outputLabel value="Nome" class="titTela" style="font-size: 12px;text-align: left;margin-left:12%;float: left;"/>
+                            <p:outputLabel value="Email" class="titTela" style="font-size: 12px;text-align: left;margin-left:29.4%;float: left;"/>
 
-                    <!-- TABELA CADASTROS -->
-                            <div class="col-6 titTela" style="margin-left:-14%;">Consulta Dependente</div>
-                            <p:commandLink action="#{dependenteMB.novoCadastroDependente()}" rendered="#{usuarioLogadoMB.cadastrar}">
-                                <div class="icoAdd fa fa-plus-square-o"></div>
-                                <p:ajax event="dialogReturn" update="messages, idConsultaDependente" listener="#{dependenteMB.retornoDialogNovo}"/>
+                            <br/>
+                            <p:inputText id="matricula" value="#{dependenteMB.matricula}"  style="width:115px;margin-left:-59%;font-size: 12px;float: left;"/>
+                            <p:inputText id="nome" value="#{dependenteMB.nome}"  style="width: 216px;margin-left:-39%;font-size: 12px;float: left;"/>
+                            <p:inputText id="email" value="#{dependenteMB.email}"  style="width:216px;margin-left:-4.6%;font-size: 12px;float: left;"/>
+                            <br/><br/>
+                            <p:outputLabel value="Associado" class="titTela" style="font-size: 12px;text-align: left;margin-left:2%;float: left;"/>
+                            <p:outputLabel value="Telefone" class="titTela" style="font-size: 12px;text-align: left;margin-left:31.6%;float: left;"/>
+                            <br/>
+                            <p:inputText id="associado" value="#{dependenteMB.associado}"  style="width: 216px;margin-left:-47.4%;font-size: 12px;float: left;"/>
+                            <p:inputText id="telefone" value="#{dependenteMB.telefone}"  style="width:120px;margin-left:-7.3%;font-size: 12px;float: left;"/>
+                            <p:commandLink style="text-decoration: none; margin-top: 10%;" actionListener="#{dependenteMB.pesquisar()}" ajax="false" update=":idFormConsultaDependente:idConsultaDependente, messages">
+                                <div style="font-size: 16px;margin-left:5%;" class="adicionar">Filtrar</div>
                             </p:commandLink>
-                            <h:dataTable id="idConsultaDependente" styleClass="table" value="#{dependenteMB.listaDependente}" var="dependente">
-                                <h:column>
-                                    <f:facet name="header">Nome</f:facet> 
-                                    <h:outputText value="#{dependente.nome}" styleClass="alinhamento" style="float: left;" />
-                                </h:column>
-                                <h:column>
-                                    <f:facet name="header">Data Nascimento</f:facet> 
-                                    <h:outputText value="#{dependente.datanascimento}" styleClass="alinhamento" style="text-align: left !important;margin-right:40%;">
-                                        <f:convertDateTime pattern="dd/MM/yyyy"
-                                                                    timeZone="America/Sao_Paulo" />
-                                    </h:outputText>
-                                </h:column>
-                                <h:column>
-                                    <f:facet name="header">Email</f:facet> 
-                                    <h:outputText value="#{dependente.email}" styleClass="alinhamento" style="float: left;"/>
-                                </h:column>
-                                <h:column>
-                                    <f:facet name="header">Telefone</f:facet> 
-                                    <h:outputText value="#{dependente.telefone}" styleClass="alinhamento" style="text-align: left !important;margin-right:40%;" />
-                                </h:column>
-                                 <h:column>
-                                     <p:commandLink action="#{dependenteMB.editar(dependente)}" rendered="#{usuarioLogadoMB.editar}">
-                                        <div class="fa fa-pencil-square-o">
-                                        </div>
-                                         <p:ajax event="dialogReturn" listener="#{dependenteMB.retornoDialogAlteracao}" update=":idFormConsultaDependente:messages, @form"/>
-                                     </p:commandLink>
-                                     <p:commandLink rendered="#{usuarioLogadoMB.excluir}" style="text-decoration: none;" action="#{dependenteMB.excluir(dependente)}" update=":idFormConsultaDependente:messages, @form">
-                                        <div class="fa fa-trash-o"></div>
-                                     </p:commandLink>
-                                </h:column>
+                            <p:commandLink style="text-decoration: none; margin-top: 2%;" actionListener="#{dependenteMB.limpar()}" ajax="false" update=":idFormConsultaDependente:idConsultaDependente, matricula, nome, associado, email, telefone, matricula">
+                                <div style="font-size: 16px;margin-left: 2%;" class="limpar">Limpar</div>
+                            </p:commandLink>
+                        </p:tab>
+                    </p:accordionPanel>  
+                    <!-- TABELA CADASTROS -->
+                    <div class="col-6 titTela" style="margin-left:-14%;">Consulta Dependente</div>
+                    <p:commandLink action="#{dependenteMB.novoCadastroDependente()}" rendered="#{usuarioLogadoMB.cadastrar}">
+                        <div class="icoAdd fa fa-plus-square-o"></div>
+                        <p:ajax event="dialogReturn" update="messages, idConsultaDependente" listener="#{dependenteMB.retornoDialogNovo}"/>
+                    </p:commandLink>
+                    <h:dataTable id="idConsultaDependente" styleClass="table" value="#{dependenteMB.listaDependente}" var="dependente">
+                        <h:column>
+                            <f:facet name="header">Nome</f:facet> 
+                            <h:outputText value="#{dependente.nome}" styleClass="alinhamento" style="float: left;" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Data Nascimento</f:facet> 
+                            <h:outputText value="#{dependente.datanascimento}" styleClass="alinhamento" style="text-align: left !important;margin-right:40%;">
+                                <f:convertDateTime pattern="dd/MM/yyyy"
+                                                   timeZone="America/Sao_Paulo" />
+                            </h:outputText>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Email</f:facet> 
+                            <h:outputText value="#{dependente.email}" styleClass="alinhamento" style="float: left;"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Telefone</f:facet> 
+                            <h:outputText value="#{dependente.telefone}" styleClass="alinhamento" style="text-align: left !important;margin-right:40%;" />
+                        </h:column>
+                        <h:column>
+                            <p:commandLink action="#{dependenteMB.editar(dependente)}" rendered="#{usuarioLogadoMB.editar}">
+                                <div class="fa fa-pencil-square-o">
+                                </div>
+                                <p:ajax event="dialogReturn" listener="#{dependenteMB.retornoDialogAlteracao}" update=":idFormConsultaDependente:messages, @form"/>
+                            </p:commandLink>
+                            <p:commandLink rendered="#{usuarioLogadoMB.excluir}" style="text-decoration: none;" action="#{dependenteMB.excluir(dependente)}" update=":idFormConsultaDependente:messages, @form">
+                                <div class="fa fa-trash-o"></div>
+                            </p:commandLink>
+                        </h:column>
 
 
-                            </h:dataTable>
+                    </h:dataTable>
                 </h:form>
-             </div>
+            </div>
         </ui:define>
     </ui:composition>
 </html>
