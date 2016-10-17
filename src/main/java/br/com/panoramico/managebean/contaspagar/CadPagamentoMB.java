@@ -45,6 +45,7 @@ public class CadPagamentoMB implements Serializable{
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         contaspagar = (Contaspagar) session.getAttribute("contaspagar");
+        session.removeAttribute("contaspagar");
         if (pagamento == null) {
             pagamento = new Pagamento();
         }
@@ -137,7 +138,7 @@ public class CadPagamentoMB implements Serializable{
      public void salvar(){
         Float totalPago = 0.0f;
         if (valorTotalPago > contaspagar.getValor() && juros == 0.0f) {
-            Mensagem.lancarMensagemInfo("Atenção", "valor total a receber acima do valor da conta sem constar o valor de juros");
+            Mensagem.lancarMensagemInfo("Atenção", "valor total a pagar acima do valor da conta sem constar o valor de juros");
         }else{
             if (valorTotalPago >= contaspagar.getValor()) {
                 List<Pagamento> listaPagamento = pagamentoDao.list("Select p from Pagamento p where p.contaspagar.idcontaspagar="+ contaspagar.getIdcontaspagar());
@@ -145,6 +146,7 @@ public class CadPagamentoMB implements Serializable{
                     totalPago = totalPago + listaPagamento.get(i).getValorpago();
                 }
                 contaspagar.setValor(totalPago);
+                contaspagar.setSituacao("PAGO");
             }else{
                 contaspagar.setValor(contaspagar.getValor() - valorTotalPago);
             }

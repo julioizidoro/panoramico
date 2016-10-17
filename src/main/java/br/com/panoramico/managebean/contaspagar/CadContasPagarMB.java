@@ -148,6 +148,7 @@ public class CadContasPagarMB implements Serializable{
             contaspagar.setNumeroparcela(numeroParcela);
             contaspagar.setPlanoconta(planoconta);
             contaspagar.setUsuario(usuarioLogadoMB.getUsuario());
+            contaspagar.setSituacao("PAGAR");
             String mensagem = validarDados(contaspagar);
             if (mensagem.length() < 5) {
                 contaspagar = contasPagarDao.update(contaspagar);
@@ -183,6 +184,7 @@ public class CadContasPagarMB implements Serializable{
             contaspagar.setNumeroparcela("" + i);
             contaspagar.setPlanoconta(planoconta);
             contaspagar.setUsuario(usuarioLogadoMB.getUsuario());
+            contaspagar.setSituacao("PAGAR");
             String mensagem = validarDados(contaspagar);
             if (mensagem.length() < 5) {
                 contaspagar = contasPagarDao.update(contaspagar);
@@ -190,7 +192,7 @@ public class CadContasPagarMB implements Serializable{
                 c.setTime(copia.getDatalancamento());
                 c.add(Calendar.MONTH, 1);
                 Date data = c.getTime();
-                copia.setDatalancamento(data);
+                copia.setDatavencimento(data);
                 if (i < nParcela) {
                     contaspagar = new Contaspagar();
                     contaspagar = copia;

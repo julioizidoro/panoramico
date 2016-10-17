@@ -126,7 +126,7 @@ public class ContasPagarMB implements Serializable{
     }
     
     public void gerarListaContasPagar(){
-        listaContasPagar = contasPagarDao.list("Select c from Contaspagar c");
+        listaContasPagar = contasPagarDao.list("Select c from Contaspagar c Where c.situacao='PAGAR'");
         if (listaContasPagar == null) {
             listaContasPagar = new ArrayList<Contaspagar>();
         }
@@ -150,6 +150,7 @@ public class ContasPagarMB implements Serializable{
     public void retornoDialogPagamento(SelectEvent event){
         Pagamento pagamento = (Pagamento) event.getObject();
         if (pagamento.getIdpagamento()!= null) {
+            listaContasPagar = null;
             Mensagem.lancarMensagemInfo("Salvou", "Pagamento de uma conta a pagar realizado com sucesso");
         }
         gerarListaContasPagar();
@@ -218,7 +219,7 @@ public class ContasPagarMB implements Serializable{
     public void excluir(Contaspagar contaspagar){
         contasPagarDao.remove(contaspagar.getIdcontaspagar());
         Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
-        gerarListaContasPagar();
+        listaContasPagar.remove(contaspagar);
     }
     
     public void filtrar(){

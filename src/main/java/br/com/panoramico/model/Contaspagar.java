@@ -51,6 +51,8 @@ public class Contaspagar implements Serializable{
     private Float valor;
     @Column(name = "formapagamento")
     private String formapagamento;
+    @Column(name = "situacao")
+    private String situacao;
     @JoinColumn(name = "planoconta_idplanoconta", referencedColumnName = "idplanoconta")
     @ManyToOne(optional = false)
     private Planoconta planoconta;
@@ -140,6 +142,16 @@ public class Contaspagar implements Serializable{
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
+
+    public String getSituacao() {
+        return situacao;
+    }
+
+    public void setSituacao(String situacao) {
+        this.situacao = situacao;
+    }
+    
+    
     
     
     @Override
