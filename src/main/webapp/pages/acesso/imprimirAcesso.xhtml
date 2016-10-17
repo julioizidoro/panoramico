@@ -24,8 +24,8 @@
             <title>Imprimir Relatório</title>
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                 
-                <p:outputLabel class="titTela" value="Relatório" style="font-size: 12px;text-align: left;margin-left: 18%;"/>
-                <p:outputLabel class="titTela" value="Tipo de Acesso" style="font-size: 12px;text-align: left;margin-left: 28%;"/>
+                <p:outputLabel class="titTela" value="Relatório" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
+                <p:outputLabel class="titTela" value="Tipo de Acesso" style="font-size: 12px;text-align: left;margin-left: 40%;"/>
                 <br/>
                  <h:panelGrid columns="2">
                      <p:selectOneMenu id="tiporelatorio" class="form-control" style="width:194px;font-size: 12px; margin-left: 2%;" value="#{imprimirAcessoMB.tipoRelatorio}">
@@ -56,7 +56,7 @@
                  <hr style="color: #367587; background: #367587"/>
                 <br/>  
                 <p:commandLink style="text-decoration: none;" target="_blank" action="#{imprimirAcessoMB.gerarRelatorio()}" ajax="false">
-                    <div style="font-size: 16px;margin-left: 32%;" class="cadastrar">Cadastrar</div>
+                    <div style="font-size: 16px;margin-left: 32%;" class="cadastrar">Imprimir</div>
                 </p:commandLink>
                 <p:commandLink style="text-decoration: none;" action="#{imprimirAcessoMB.cancelar()}">
                     <div style="font-size: 16px" class="cancelar">Cancelar</div>

@@ -70,7 +70,7 @@ public class MedicoMB implements Serializable {
     }
 
     public void gerarListaMedico() {
-        listaMedicos = medicoDao.list("Select m from Medico m order by m.nome");
+        listaMedicos = medicoDao.list("Select m from Medico m where m.idusuario>0 order by m.nome");
         if (listaMedicos == null) {
             listaMedicos = new ArrayList<Medico>();
         }

@@ -140,6 +140,12 @@ public class Evento implements Serializable{
     public boolean isPiscina() {
         return piscina;
     }
+
+    public void setPiscina(boolean piscina) {
+        this.piscina = piscina;
+    }
+
+    
     
     
     

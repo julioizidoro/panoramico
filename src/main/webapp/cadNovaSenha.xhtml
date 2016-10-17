@@ -42,13 +42,13 @@ and open the template in the editor.
             <br />
              <h:panelGrid columns="2">
                     <p:outputLabel value="Confirmar Senha" for="confirmaSenha" style="font-size: 16px;" class="titTela" />
-                    <h:inputSecret class="form-control"  size="19" id="confirmaSenha"   style="margin-left: 14.55%;" value="#{usuarioLogadoMB.confirmaNovaSenha}"/>
+                    <h:inputSecret class="form-control"  size="15" id="confirmaSenha"   style="margin-left: 6%;" value="#{usuarioLogadoMB.confirmaNovaSenha}"/>
              </h:panelGrid>
               <br/>
               <hr />
               <br />
               <p:commandLink style="text-decoration: none;" action="#{usuarioLogadoMB.confirmaTrocaSenha()}" ajax="false">
-                <div style="font-size: 16px;margin-left: 32%;" class="cadastrar">Cadastrar</div>
+                <div style="font-size: 16px;margin-left: 32%;" class="cadastrar">Confirmar</div>
               </p:commandLink>
               <p:commandLink style="text-decoration: none;" action="#{usuarioLogadoMB.cancelarTrocaSenha()}" ajax="false">
                 <div style="font-size: 16px" class="cancelar">Cancelar</div>
