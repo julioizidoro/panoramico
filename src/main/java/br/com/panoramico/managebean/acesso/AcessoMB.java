@@ -81,6 +81,7 @@ public class AcessoMB implements Serializable {
     private String guardaPassaporte = "";
     private int adultos;
     private int criancas;
+    private boolean habilitarAcessoPassaporte = false;
 
     @PostConstruct
     public void init() {
@@ -354,11 +355,22 @@ public class AcessoMB implements Serializable {
     public void setGuardaPassaporte(String guardaPassaporte) {
         this.guardaPassaporte = guardaPassaporte;
     }
+
+    public boolean isHabilitarAcessoPassaporte() {
+        return habilitarAcessoPassaporte;
+    }
+
+    public void setHabilitarAcessoPassaporte(boolean habilitarAcessoPassaporte) {
+        this.habilitarAcessoPassaporte = habilitarAcessoPassaporte;
+    }
     
     
 
     public void pesquisar() {
         boolean habilitarcampo = false;
+        associado = null;
+        dependente = null;
+        passaporte = null;
         if (codigoAssociado.length() >= 1) {
             List<Associado> listaAssociado = associadoDao.list("Select a From Associado a Where a.matricula='" + codigoAssociado + "'");
             for (int i = 0; i < listaAssociado.size(); i++) {
@@ -464,6 +476,8 @@ public class AcessoMB implements Serializable {
                 Mensagem.lancarMensagemInfo("Não encontrado", "");
             } else {
                 nome = passaporte.getCliente().getNome();
+                adultos = passaporte.getAdultos();
+                criancas = passaporte.getCriancas();
                 if (passaporte.getDataacesso() == null) {
                     tipoClasse = "cadastrar";
                     nomeStatus = "LIBERADO";
@@ -472,16 +486,19 @@ public class AcessoMB implements Serializable {
                 } else {
                     tipoClasse = "cancelar";
                     nomeStatus = "NEGADO";
-                    Mensagem.lancarMensagemInfo("Validade do exame expirada", "");
+                    Mensagem.lancarMensagemInfo("Passaporte ja foi utilizado", "");
                     corDataExame = "color:#FB4C4C;";
                 }
                 guardaPassaporte = codigoPassaporte;
                 codigoPassaporte = "";
-                habilitarcampo = true;
+                habilitarcampo = false;
+                habilitarResultado = false;
+                habilitarAcessoPassaporte = true;
             }
         }
         if (habilitarcampo) {
             habilitarResultado = true;
+            habilitarAcessoPassaporte = false;
         }
     }
 

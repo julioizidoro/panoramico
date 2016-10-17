@@ -140,7 +140,7 @@ public class ImprimieContasRecebidasMB implements Serializable {
                     if (dataFinal.before(new Date())) {
                        sql = sql + " and contasreceber.datalancamento<='" + Formatacao.ConvercaoDataSql(dataFinal) + "' ";
                     }else{
-                        sql = sql + " and contasreceber.datalancamento<='" + Formatacao.ConvercaoDataSql(new Date()) + "' ";
+                        sql = sql + " and contasreceber.datalancamento<'" + Formatacao.ConvercaoDataSql(new Date()) + "' ";
                     }
                 }
             }

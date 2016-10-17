@@ -26,7 +26,7 @@
                         <p:inputText value="#{acessoMB.codigoAssociado}" style="float: left;text-align: right;font-size: 14px;" size="15" title="Código do Associado"/>
                         <p:inputText value="#{acessoMB.codigoDependente}" style="float: left;text-align: right;margin-left:7%;" size="20" title="Código de Dependente"/>
                         <p:inputText value="#{acessoMB.codigoPassaporte}" style="float: left;text-align: right;margin-left:8%;" size="20" title="Código de Passaporte"/>
-                        <p:commandLink disabled="false" style="float: left;" ajax="false" action="#{acessoMB.pesquisar()}" update="messages, panelResultado, idCampoNome, idbotaoLiberado, idrespostaNegado, idCampoDataExame"> 
+                        <p:commandLink disabled="false" style="float: left;" ajax="false" action="#{acessoMB.pesquisar()}" update="messages, panelResultado, idCampoNome, idbotaoLiberado, idrespostaNegado, idCampoDataExame, panelResultadoPassaporte, idCampoNomePass, idCampoAdultosPass, idCampoCriancaPass, idbotaoLiberadoPass"> 
                             <div style="font-size: 20px;margin-left: 25%;padding: 3%;" class="pesquisarAcesso">Pesquisar</div>
                         </p:commandLink>
                         <p:commandLink disabled="false" style="float: left;"  action="#{acessoMB.novoPassaporte()}" rendered="true"> 
@@ -57,6 +57,42 @@
                                     <br/>
                                     <hr/>
                                     <p:commandLink  id="idbotaoLiberado" action="#{acessoMB.controleAcesso()}" update="@all">  
+                                        <div style="font-size: 18px;padding: 3%;" class="#{acessoMB.tipoClasse}">
+                                            <h:outputText value="#{acessoMB.nomeStatus}"/>
+                                        </div>
+                                    </p:commandLink>   
+                                </div>
+                            </div>    
+                            <br/><br/>
+                        </fieldset> 
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{acessoMB.habilitarAcessoPassaporte}" id="panelResultadoPassaporte">
+                        <fieldset>
+                            <legend></legend>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h:outputText value="Nome" style="float: left;font-size: 16px;"/>
+                                    <br/>
+                                    <hr/>
+                                    <h:outputText value="#{acessoMB.nome}" style="float: left;font-size: 18px;" title="Nome" id="idCampoNomePass"/>
+                                </div>
+                                <div class="col-sm-2">
+                                    <h:outputText value="N° Adultos" style="font-size: 16px;"/>
+                                    <br/>
+                                    <hr/>
+                                    <h:outputText value="#{acessoMB.adultos}" style="font-size: 18px;" title="Nome" id="idCampoAdultosPass"/>
+                                </div>
+                                <div class="col-sm-2">
+                                    <h:outputText value="N° Crianças" style="font-size: 16px;"/>
+                                    <br/>
+                                    <hr/>
+                                    <h:outputText value="#{acessoMB.criancas}" style="font-size: 18px;" title="Nome" id="idCampoCriancaPass"/>
+                                </div>
+                                <div class="col-sm-2">  
+                                    <h:outputText value="Status" style="float: left;font-size: 16px;"/>
+                                    <br/>
+                                    <hr/>
+                                    <p:commandLink  id="idbotaoLiberadoPass" action="#{acessoMB.controleAcesso()}" update="@all">  
                                         <div style="font-size: 18px;padding: 3%;" class="#{acessoMB.tipoClasse}">
                                             <h:outputText value="#{acessoMB.nomeStatus}"/>
                                         </div>

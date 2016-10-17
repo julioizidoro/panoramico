@@ -85,15 +85,15 @@
                                 </h:column>
                                 <h:column>
                                     <f:facet name="header">N° Adultos</f:facet> 
-                                    <h:outputText value="#{passaporte.adultos}" styleClass="alinhamento" />
+                                    <h:outputText value="#{passaporte.adultos}" styleClass="alinhamento" style="margin-right: 50%;" />
                                 </h:column>
                                 <h:column>
                                     <f:facet name="header">N° Criança</f:facet> 
-                                    <h:outputText value="#{passaporte.criancas}" styleClass="alinhamento"  />
+                                    <h:outputText value="#{passaporte.criancas}" styleClass="alinhamento" style="margin-right: 50%;" />
                                 </h:column>
                                 <h:column>
                                     <f:facet name="header">Localizador</f:facet> 
-                                    <h:outputText value="#{passaporte.localizador}" styleClass="alinhamento"  />
+                                    <h:outputText value="#{passaporte.localizador}" styleClass="alinhamento" style="float: left;" />
                                 </h:column>
                                  <h:column>
                                      <p:commandLink title="Utilizar passaporte" style="text-decoration: none;" rendered="#{usuarioLogadoMB.excluir}"  action="#{passaporteMB.utilizarPassaporte(passaporte)}">
