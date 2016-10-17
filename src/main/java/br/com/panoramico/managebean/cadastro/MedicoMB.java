@@ -24,16 +24,16 @@ import org.primefaces.event.SelectEvent;
 
 @Named
 @ViewScoped
-public class MedicoMB implements Serializable{
-    
+public class MedicoMB implements Serializable {
+
     private Medico medico;
     private List<Medico> listaMedicos;
     @EJB
     private MedicoDao medicoDao;
-    
-    
+    private String nome;
+
     @PostConstruct
-    public void init(){
+    public void init() {
         gerarListaMedico();
     }
 
@@ -60,40 +60,46 @@ public class MedicoMB implements Serializable{
     public void setMedicoDao(MedicoDao medicoDao) {
         this.medicoDao = medicoDao;
     }
-    
-    
-    public void gerarListaMedico(){
-        listaMedicos = medicoDao.list("Select m from Medico m");
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void gerarListaMedico() {
+        listaMedicos = medicoDao.list("Select m from Medico m order by m.nome");
         if (listaMedicos == null) {
             listaMedicos = new ArrayList<Medico>();
         }
     }
-    
+
     public String novoCadastroMedico() {
         Map<String, Object> options = new HashMap<String, Object>();
         options.put("contentWidth", 545);
         RequestContext.getCurrentInstance().openDialog("cadMedico", options, null);
         return "";
     }
-    
-    public void retornoDialogNovo(SelectEvent event){
+
+    public void retornoDialogNovo(SelectEvent event) {
         Medico medico = (Medico) event.getObject();
-        if (medico.getIdmedico()!= null) {
+        if (medico.getIdmedico() != null) {
             Mensagem.lancarMensagemInfo("Salvou", "Cadastro de medico realizado com sucesso");
         }
         gerarListaMedico();
     }
-    
-    public void retornoDialogAlteracao(SelectEvent event){
-         Medico medico = (Medico) event.getObject();
-        if (medico.getIdmedico()!= null) {
+
+    public void retornoDialogAlteracao(SelectEvent event) {
+        Medico medico = (Medico) event.getObject();
+        if (medico.getIdmedico() != null) {
             Mensagem.lancarMensagemInfo("Salvou", "Alteração de medico realizado com sucesso");
         }
         gerarListaMedico();
     }
-    
-    
-    public void editar(Medico medico){
+
+    public void editar(Medico medico) {
         if (medico != null) {
             Map<String, Object> options = new HashMap<String, Object>();
             FacesContext fc = FacesContext.getCurrentInstance();
@@ -103,10 +109,22 @@ public class MedicoMB implements Serializable{
             RequestContext.getCurrentInstance().openDialog("cadMedico", options, null);
         }
     }
-    
-    public void excluir(Medico medico){
+
+    public void excluir(Medico medico) {
         medicoDao.remove(medico.getIdmedico());
         Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
         gerarListaMedico();
     }
-} 
+
+    public void pesquisar() {
+        listaMedicos = medicoDao.list("Select m from Medico m where m.nome like '" + nome + "%' order by m.nome");
+        if (listaMedicos == null) {
+            listaMedicos = new ArrayList<Medico>();
+        }
+    }
+
+    public void limpar() {
+        nome = "";
+        gerarListaMedico();
+    }
+}

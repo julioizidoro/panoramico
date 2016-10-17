@@ -10,7 +10,22 @@
                 <br/> 
                 <h:form id="idFormConsultaUsuario" style="margin-left:10%;width: 78%;">
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:10%;width: 80%;"/>
-
+                    <p:accordionPanel activeIndex="-1" style="width:85%;margin-left: 8%;z-index:1">
+                        <p:tab title="Pesquisar">
+                            <p:outputLabel class="titTela" value="Nome" style="font-size: 12px;text-align: left;margin-left:7%;float: left;"/>
+                            <p:outputLabel class="titTela" value="Login" style="font-size: 12px;text-align: left;margin-left:30%;float: left;"/>
+                            <br/>
+                            <p:inputText id="nome" value="#{usuarioMB.nome}"  style="width:220px;margin-left:-39.5%;font-size: 12px;float: left;"/>
+                            <p:inputText id="login" value="#{usuarioMB.login}"  style="width:170px;margin-left:-4.5%;font-size: 12px;float: left;"/>
+                              
+                            <p:commandLink style="text-decoration: none; margin-top: 10%;" actionListener="#{usuarioMB.pesquisar()}" ajax="false" update=":idFormConsultaUsuario:idConsultaUsuario, messages">
+                                <div style="font-size: 16px;margin-left: 2%;" class="adicionar">Filtrar</div>
+                            </p:commandLink>
+                            <p:commandLink style="text-decoration: none; margin-top: 2%;" actionListener="#{usuarioMB.limpar()}" ajax="false" update=":idFormConsultaUsuario:idConsultaUsuario, nome, login">
+                                <div style="font-size: 16px;margin-left: 2%;" class="limpar">Limpar</div>
+                            </p:commandLink>
+                        </p:tab> 
+                    </p:accordionPanel>
                     <!-- TABELA CADASTROS -->
                             <div class="col-6 titTela" style="margin-left:-15%;">Consulta Usuário</div>
                             <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" action="#{usuarioMB.novoCadastroUsuario()}">

@@ -10,9 +10,22 @@
                 <br/> 
                 <h:form id="idFormConsultaMedico" style="margin-left:10%;width: 78%;">
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:10%;width: 80%;"/>
-
+                    <p:accordionPanel activeIndex="-1" style="width:85%;margin-left: 8%;z-index:1">
+                        <p:tab title="Pesquisar">
+                            <p:outputLabel value="Nome" class="titTela" style="font-size: 12px;text-align: left;margin-left: 2%;float: left;"/>
+                            
+                            <br/>
+                            <p:inputText id="nome" value="#{medicoMB.nome}"  style="width:215px;margin-left:-5%;font-size: 12px;float: left;"/>
+                            <p:commandLink style="text-decoration: none; margin-top: 10%;" actionListener="#{medicoMB.pesquisar()}" ajax="false" update=":idFormConsultaMedico:idConsultaMedico, messages">
+                                <div style="font-size: 16px;margin-left:5%;" class="adicionar">Filtrar</div>
+                            </p:commandLink>
+                            <p:commandLink style="text-decoration: none; margin-top: 2%;" actionListener="#{medicoMB.limpar()}" ajax="false" update=":idFormConsultaMedico:idConsultaMedico, nome">
+                                <div style="font-size: 16px;margin-left: 2%;" class="limpar">Limpar</div>
+                            </p:commandLink>
+                        </p:tab>
+                    </p:accordionPanel>  
                     <!-- TABELA CADASTROS -->
-                            <div class="col-6 titTela" style="margin-left:-15%;">Consulta Medico</div>
+                            <div class="col-6 titTela" style="margin-left:-15%;">Consulta Médico</div>
                             <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" action="#{medicoMB.novoCadastroMedico()}">
                                 <div class="icoAdd fa fa-plus-square-o"></div>
                                 <p:ajax event="dialogReturn" update="messages, idConsultaMedico" listener="#{medicoMB.retornoDialogNovo}"/>
