@@ -23,11 +23,11 @@
     <h:body style="background:#A3DAD9; border-color: #CF7000;" > 
         <h:form id="idFormConsultaNotificacao" style="font-size: 12px; background-color:#A3DAD9">
             <title>Boletos</title>
-            <br/>
             <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-            <p:commandButton value="Gerar Boleto" id="botaoGerarBoleto" update="messages, botaoGerarBoleto, botao2Via, botaoGerar2Via, botao1Via, botaoEnviar, idFormConsultaNotificacao, idConsultaNotificacao" style="margin-left: 1%;" rendered="#{boletoMB.habilitarGerarBoleto}" actionListener="#{boletoMB.gerarBoleto()}" action="#{boletoMB.gerarListaContasReceber()}" onclick="this.form.target = '_blank'" ajax="false"/>
+            <br/>
+            <p:commandButton value="Gerar Boleto" id="botaoGerarBoleto" update="messages, botaoGerarBoleto, botao2Via, botaoGerar2Via, botao1Via, botaoEnviar, idFormConsultaNotificacao, idConsultaNotificacao" style="margin-left: 1%;" rendered="#{boletoMB.habilitarGerarBoleto}" actionListener="#{boletoMB.solicitarBoleto()}" action="#{boletoMB.gerarListaContasReceber()}" onclick="this.form.target = '_blank'" ajax="false"/>
             <p:commandButton value="2° via" style="margin-left: 3%;" id="botao2Via" action="#{boletoMB.gerarContas2via()}" rendered="#{boletoMB.habilitarGerarBoleto}" update="idConsultaNotificacao, botaoGerarBoleto, botao2Via, botaoGerar2Via, botao1Via, botaoEnviar, idFormConsultaNotificacao"/>
-            <p:commandButton value="Gerar 2° via" id="botaoGerar2Via" style="margin-left: 1%;" rendered="#{boletoMB.habilitar2via}" action="#{boletoMB.gerarBoleto()}" onclick="this.form.target = '_blank'" ajax="false" update="messages, botaoGerarBoleto, botao2Via, botaoGerar2Via, botao1Via, botaoEnviar"/>
+            <p:commandButton value="Gerar 2° via" id="botaoGerar2Via" style="margin-left: 1%;" rendered="#{boletoMB.habilitar2via}" action="#{boletoMB.solicitarBoleto()}" onclick="this.form.target = '_blank'" ajax="false" update="messages, botaoGerarBoleto, botao2Via, botaoGerar2Via, botao1Via, botaoEnviar"/>
             <p:commandButton value="Boletos 1° via" id="botao1Via" style="margin-left: 3%;" action="#{boletoMB.habilitarContas1via()}" rendered="#{boletoMB.habilitar2via}" update="idConsultaNotificacao, botaoGerarBoleto, botao2Via, botaoGerar2Via, botao1Via, botaoEnviar, idFormConsultaNotificacao"/>
             <p:commandButton value="Enviar" id="botaoEnviar" style="margin-left:3%;" action="#{boletoMB.enviarBoleto()}" rendered="#{boletoMB.habilitarGerarBoleto}" update="idConsultaNotificacao, botaoGerarBoleto, botao2Via, botaoGerar2Via, botao1Via, botaoEnviar">
                 <p:fileDownload value="#{boletoMB.stream}" />

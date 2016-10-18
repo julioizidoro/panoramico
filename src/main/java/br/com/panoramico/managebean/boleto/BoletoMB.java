@@ -36,8 +36,8 @@ import org.primefaces.model.StreamedContent;
 
 @Named
 @ViewScoped
-public class BoletoMB implements Serializable{
-    
+public class BoletoMB implements Serializable {
+
     private Contasreceber contasreceber;
     private List<Contasreceber> listaContasReceber;
     @EJB
@@ -53,7 +53,7 @@ public class BoletoMB implements Serializable{
     private StreamedContent stream;
     private Associado associado;
     private List<Associado> listaAssociado;
-    @EJB 
+    @EJB
     private AssociadoDao associadoDao;
     @EJB
     private EmpresaDao empresaDao;
@@ -62,10 +62,9 @@ public class BoletoMB implements Serializable{
     private Banco banco;
     private boolean habilitar2via = false;
     private boolean habilitarGerarBoleto = true;
-    
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         gerarListaContasReceber();
         proprietario = proprietarioDao.find(1);
         banco = bancoDao.find("Select b From Banco b Where b.proprietario.idproprietario=" + proprietario.getIdproprietario());
@@ -134,10 +133,6 @@ public class BoletoMB implements Serializable{
     public void setProprietario(Proprietario proprietario) {
         this.proprietario = proprietario;
     }
-
-    
-
-    
 
     public List<Empresa> getListaEmpresa() {
         return listaEmpresa;
@@ -219,29 +214,28 @@ public class BoletoMB implements Serializable{
         this.habilitarGerarBoleto = habilitarGerarBoleto;
     }
 
-    
-    
-    public void selecionarTodasLista(){
+   
+    public void selecionarTodasLista() {
         if (selecionadoTodos) {
             for (int i = 0; i < listaContasReceber.size(); i++) {
                 listaContasReceber.get(i).setSelecionado(true);
             }
-        }else{
+        } else {
             for (int i = 0; i < listaContasReceber.size(); i++) {
                 listaContasReceber.get(i).setSelecionado(false);
             }
         }
     }
-    
-    public void gerarListaContasReceber(){
+
+    public void gerarListaContasReceber() {
         listaContasReceber = contasReceberDao.list("Select c from Contasreceber c where c.enviado=false and c.tipopagamento='Boleto'");
         if (listaContasReceber == null || listaContasReceber.isEmpty()) {
             listaContasReceber = new ArrayList<Contasreceber>();
         }
     }
-    
-    public void gerarContas2via(){
-        listaContasReceber = null; 
+
+    public void gerarContas2via() {
+        listaContasReceber = null;
         listaContasReceber = contasReceberDao.list("Select c from Contasreceber c Where c.enviado=true and c.tipopagamento='Boleto'");
         if (listaContasReceber == null || listaContasReceber.isEmpty()) {
             listaContasReceber = new ArrayList<Contasreceber>();
@@ -249,17 +243,15 @@ public class BoletoMB implements Serializable{
         habilitar2via = true;
         habilitarGerarBoleto = false;
     }
-    
-    public void habilitarContas1via(){
+
+    public void habilitarContas1via() {
         listaContasReceber = null;
         gerarListaContasReceber();
         habilitar2via = false;
         habilitarGerarBoleto = true;
     }
-    
-    public String gerarBoleto() {
-        List<Boleto> listaBoletos = null;
-        listaBoletos = new ArrayList<Boleto>();
+
+    public void solicitarBoleto() {
         listaSelecionadas = new ArrayList<Contasreceber>();
         for (int i = 0; i < listaContasReceber.size(); i++) {
             if (listaContasReceber.get(i).isSelecionado()) {
@@ -267,20 +259,25 @@ public class BoletoMB implements Serializable{
             }
         }
         if (listaSelecionadas == null || listaSelecionadas.isEmpty()) {
-            Mensagem.lancarMensagemInfo("Atenção", " boleto não selecionado!!");
+            Mensagem.lancarMensagemInfo("Boleto não selecionado", "");
         }else{
-            for (int i = 0; i < listaSelecionadas.size(); i++) {
-                listaBoletos.add(gerarClasseBoleto(listaSelecionadas.get(i)));
-            }
-            if (listaBoletos.size() > 0) {
-                DadosBoletoBean dadosBoletoBean = new DadosBoletoBean();
-                dadosBoletoBean.gerarPDFS(listaBoletos);
-            }
+            gerarBoleto();
         }
-        return ""; 
-    } 
-    
-     
+    }
+
+    public String gerarBoleto() {
+        List<Boleto> listaBoletos = null;
+        listaBoletos = new ArrayList<Boleto>();
+        for (int i = 0; i < listaSelecionadas.size(); i++) {
+            listaBoletos.add(gerarClasseBoleto(listaSelecionadas.get(i)));
+        }
+        if (listaBoletos.size() > 0) {
+            DadosBoletoBean dadosBoletoBean = new DadosBoletoBean();
+            dadosBoletoBean.gerarPDFS(listaBoletos);
+        }
+        return "";
+    }
+
     public Boleto gerarClasseBoleto(Contasreceber conta) {
         associado = pegarEndereco(conta);
         DadosBoletoBean dadosBoletoBean = new DadosBoletoBean();
@@ -299,7 +296,7 @@ public class BoletoMB implements Serializable{
         dadosBoletoBean.setNossoNumeros(dadosBoletoBean.getNumeroDocumentos());
         dadosBoletoBean.setEnderecoSacado(new Endereco());
         if (associado == null) {
-        }else{
+        } else {
             dadosBoletoBean.getEnderecoSacado().setBairro(associado.getBairro());
             dadosBoletoBean.getEnderecoSacado().setCep(associado.getCep());
             dadosBoletoBean.getEnderecoSacado().setComplemento(associado.getComplemento());
@@ -315,38 +312,36 @@ public class BoletoMB implements Serializable{
         conta.setSituacaoboleto("enviado");
         contasReceberDao.update(conta);
         return dadosBoletoBean.getBoleto();
-    } 
-    
-     
-     public String enviarBoleto(){
-       List<Contasreceber> lista = new ArrayList<Contasreceber>();
-       for(int i=0;i<listaContasReceber.size();i++){
-           if(listaContasReceber.get(i).isSelecionado()){
-               lista.add(listaContasReceber.get(i));
-           }
-       }
-       if(lista.size()==0){
-           lista=listaContasReceber;
-       }
-       if(lista.size()>0){
-             GerarArquivoRemessaItau arquivoRemessaItau = new GerarArquivoRemessaItau(lista, usuarioLogadoMB, proprietario, stream, lista);
-             confirmarContas(lista);
-             FacesMessage msg = new FacesMessage("Sucesso! ", "Arquivo Remessa Gerado");
+    }
+
+    public String enviarBoleto() {
+        List<Contasreceber> lista = new ArrayList<Contasreceber>();
+        for (int i = 0; i < listaContasReceber.size(); i++) {
+            if (listaContasReceber.get(i).isSelecionado()) {
+                lista.add(listaContasReceber.get(i));
+            }
+        }
+        if (lista.size() == 0) {
+            lista = listaContasReceber;
+        }
+        if (lista.size() > 0) {
+            GerarArquivoRemessaItau arquivoRemessaItau = new GerarArquivoRemessaItau(lista, usuarioLogadoMB, proprietario, stream, lista);
+            confirmarContas(lista);
+            FacesMessage msg = new FacesMessage("Sucesso! ", "Arquivo Remessa Gerado");
             FacesContext.getCurrentInstance().addMessage(null, msg);
-       }else{ 
+        } else {
             FacesMessage msg = new FacesMessage("Erro! ", "Nenhuma Conta Selecionada");
             FacesContext.getCurrentInstance().addMessage(null, msg);
-       }
-       return "";
+        }
+        return "";
     }
-    
-    public String calcularMultaJuros(float valor, float percentual){
-        Float calculo = valor * (percentual/100);
+
+    public String calcularMultaJuros(float valor, float percentual) {
+        Float calculo = valor * (percentual / 100);
         String scalculo = Formatacao.foramtarFloatString(calculo);
         return scalculo;
     }
-    
-     
+
     public void gerarListaEmpresa() {
         listaEmpresa = empresaDao.list("Select e from Empresa e");
         if (listaEmpresa == null) {
@@ -354,11 +349,11 @@ public class BoletoMB implements Serializable{
         }
         for (int i = 0; i < listaEmpresa.size(); i++) {
             if (listaEmpresa.get(i).getIdempresa() == 1) {
-                
+
             }
         }
     }
-    
+
     private void confirmarContas(List<Contasreceber> lista) {
         for (int i = 0; i < lista.size(); i++) {
             Contasreceber conta = lista.get(i);
@@ -368,8 +363,8 @@ public class BoletoMB implements Serializable{
             listaContasReceber.remove(conta);
         }
     }
-    
-    public Associado pegarEndereco(Contasreceber contasreceber){
+
+    public Associado pegarEndereco(Contasreceber contasreceber) {
         Associado associadoo;
         listaAssociado = associadoDao.list("Select a from Associado a where a.cliente.idcliente=" + contasreceber.getCliente().getIdcliente());
         for (int i = 0; i < listaAssociado.size(); i++) {
@@ -379,4 +374,3 @@ public class BoletoMB implements Serializable{
         return null;
     }
 }
- 
