@@ -141,6 +141,7 @@ public class CadPagamentoMB implements Serializable{
             Mensagem.lancarMensagemInfo("Atenção", "valor total a pagar acima do valor da conta sem constar o valor de juros");
         }else{
             if (valorTotalPago >= contaspagar.getValor()) {
+                totalPago = totalPago + valorTotalPago;
                 List<Pagamento> listaPagamento = pagamentoDao.list("Select p from Pagamento p where p.contaspagar.idcontaspagar="+ contaspagar.getIdcontaspagar());
                 for (int i = 0; i < listaPagamento.size(); i++) {
                     totalPago = totalPago + listaPagamento.get(i).getValorpago();

@@ -142,6 +142,7 @@ public class CadRecebimentoMB implements Serializable{
                 Mensagem.lancarMensagemInfo("Atenção", "valor total a receber acima do valor da conta sem constar o valor de juros");
             }else{
                 if (valorTotalRecebido >= contasreceber.getValorconta()) {
+                    totalRecebido = totalRecebido + valorTotalRecebido;
                     List<Recebimento> listaRecebimento = recebimentoDao.list("Select r from Recebimento r where r.contasreceber.idcontasreceber="+ contasreceber.getIdcontasreceber());
                     for (int i = 0; i < listaRecebimento.size(); i++) {
                         totalRecebido = totalRecebido + listaRecebimento.get(i).getValorrecebido();

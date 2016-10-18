@@ -463,24 +463,31 @@ public class AcessoMB implements Serializable {
                     }else{
                         nome = associado.getCliente().getNome();
                         dataExame = exameassociado.getExame().getDatavalidade();
-                        if ((dataExame.compareTo(new Date()) == 1)
-                                || (dataExame.compareTo(new Date()) == 0)) {
-                            if (exameassociado.getAssociado().getSituacao().equalsIgnoreCase("Ativo")) {
-                                tipoClasse = "cadastrar";
-                                nomeStatus = "LIBERADO";
-                                corDataExame = "color:black;";
-                                descricaoNegado = "";
+                        if (verificarInadimplente()) {
+                            tipoClasse = "cancelar";
+                            nomeStatus = "NEGADO";
+                            Mensagem.lancarMensagemInfo("Acesso negado, cliente inadimplente!!", "");
+                            corDataExame = "color:black;";
+                        }else{
+                            if ((dataExame.compareTo(new Date()) == 1)
+                                    || (dataExame.compareTo(new Date()) == 0)) {
+                                if (exameassociado.getAssociado().getSituacao().equalsIgnoreCase("Ativo")) {
+                                    tipoClasse = "cadastrar";
+                                    nomeStatus = "LIBERADO";
+                                    corDataExame = "color:black;";
+                                    descricaoNegado = "";
+                                } else {
+                                    tipoClasse = "cancelar";
+                                    nomeStatus = "NEGADO";
+                                    Mensagem.lancarMensagemInfo("Associado inativo", "");
+                                    corDataExame = "color:black;";
+                                }
                             } else {
                                 tipoClasse = "cancelar";
                                 nomeStatus = "NEGADO";
-                                Mensagem.lancarMensagemInfo("Associado inativo", "");
-                                corDataExame = "color:black;";
+                                Mensagem.lancarMensagemInfo("Validade do exame expirada", "");
+                                corDataExame = "color:#FB4C4C;";
                             }
-                        } else {
-                            tipoClasse = "cancelar";
-                            nomeStatus = "NEGADO";
-                            Mensagem.lancarMensagemInfo("Validade do exame expirada", "");
-                            corDataExame = "color:#FB4C4C;";
                         }
                         guardaAssociado = codigoAssociado;
                         codigoAssociado = "";
@@ -524,24 +531,31 @@ public class AcessoMB implements Serializable {
                     }else{
                         nome = dependente.getNome();
                         dataExame = examedependente.getExame().getDatavalidade();
-                        if ((dataExame.compareTo(new Date()) == 1)
-                                || (dataExame.compareTo(new Date()) == 0)) {
-                            if (examedependente.getDependente().getAssociado().getSituacao().equalsIgnoreCase("Ativo")) {
-                                tipoClasse = "cadastrar";
-                                nomeStatus = "LIBERADO";
-                                corDataExame = "color:black;";
-                                descricaoNegado = "";
+                        if (verificarInadimplente()) {
+                            tipoClasse = "cancelar";
+                            nomeStatus = "NEGADO";
+                            Mensagem.lancarMensagemInfo("Acesso negado, cliente inadimplente!!", "");
+                            corDataExame = "color:black;";
+                        }else{
+                            if ((dataExame.compareTo(new Date()) == 1)
+                                    || (dataExame.compareTo(new Date()) == 0)) {
+                                if (examedependente.getDependente().getAssociado().getSituacao().equalsIgnoreCase("Ativo")) {
+                                    tipoClasse = "cadastrar";
+                                    nomeStatus = "LIBERADO";
+                                    corDataExame = "color:black;";
+                                    descricaoNegado = "";
+                                } else {
+                                    tipoClasse = "cancelar";
+                                    nomeStatus = "NEGADO";
+                                    Mensagem.lancarMensagemInfo("Associado inativo", "");
+                                    corDataExame = "color:black;";
+                                }
                             } else {
                                 tipoClasse = "cancelar";
                                 nomeStatus = "NEGADO";
-                                Mensagem.lancarMensagemInfo("Associado inativo", "");
-                                corDataExame = "color:black;";
+                                Mensagem.lancarMensagemInfo("Validade do exame expirada", "");
+                                corDataExame = "color:#FB4C4C;";
                             }
-                        } else {
-                            tipoClasse = "cancelar";
-                            nomeStatus = "NEGADO";
-                            Mensagem.lancarMensagemInfo("Validade do exame expirada", "");
-                            corDataExame = "color:#FB4C4C;";
                         }
                         guardaDependente = codigoDependente;
                         codigoDependente = "";
@@ -702,6 +716,26 @@ public class AcessoMB implements Serializable {
         habilitarResultado = false;
         habilitarConsulta = false;
         habilitarFinanceiro = false;
+    }
+    
+    
+    public boolean verificarInadimplente(){
+        boolean inadimplente = false;
+         String sql = "";
+         List<Contasreceber> listaFinanceira;
+        if (associado != null) {
+            sql = "Select c From Contasreceber c Where c.cliente.idcliente=" + associado.getCliente().getIdcliente();
+        } else if (dependente != null) {
+            sql = "Select c From Contasreceber c Where c.cliente.idcliente=" + dependente.getAssociado().getCliente().getIdcliente();
+        }
+        sql = sql + " and c.situacao='PAGAR'";
+        listaFinanceira = contasReceberDao.list(sql);
+        if (listaFinanceira == null || listaFinanceira.isEmpty()) {
+            return inadimplente;
+        }else{
+            inadimplente = true;
+            return inadimplente;
+        }
     }
 
 }
