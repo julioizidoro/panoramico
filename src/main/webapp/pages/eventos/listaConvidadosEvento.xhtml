@@ -48,7 +48,7 @@
                 </h:column>
                 <h:column>
                     <f:facet name="header">Acompanhantes</f:facet> 
-                    <h:outputText value="#{convidados.acompanhante}" styleClass="alinhamento" />
+                    <h:outputText value="#{convidados.acompanhante}" styleClass="alinhamento" style="float: right;"/>
                 </h:column>
                 <h:column> 
                     <p:commandLink title="Convidado Presente" style="text-decoration: none;"   rendered="#{listaConvidadosEventoMB.pendentes}" action="#{listaConvidadosEventoMB.confirmarPresencaConvidado(convidados)}" update="@all">

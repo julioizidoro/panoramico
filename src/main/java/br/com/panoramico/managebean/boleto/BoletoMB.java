@@ -17,13 +17,11 @@ import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.model.Empresa;
 import br.com.panoramico.model.Proprietario;
 import br.com.panoramico.uil.Formatacao;
-import java.io.InputStream;
+import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -62,6 +60,8 @@ public class BoletoMB implements Serializable{
     @EJB
     private BancoDao bancoDao;
     private Banco banco;
+    private boolean habilitar2via = false;
+    private boolean habilitarGerarBoleto = true;
     
     
     @PostConstruct
@@ -179,6 +179,46 @@ public class BoletoMB implements Serializable{
         this.associadoDao = associadoDao;
     }
 
+    public EmpresaDao getEmpresaDao() {
+        return empresaDao;
+    }
+
+    public void setEmpresaDao(EmpresaDao empresaDao) {
+        this.empresaDao = empresaDao;
+    }
+
+    public BancoDao getBancoDao() {
+        return bancoDao;
+    }
+
+    public void setBancoDao(BancoDao bancoDao) {
+        this.bancoDao = bancoDao;
+    }
+
+    public Banco getBanco() {
+        return banco;
+    }
+
+    public void setBanco(Banco banco) {
+        this.banco = banco;
+    }
+
+    public boolean isHabilitar2via() {
+        return habilitar2via;
+    }
+
+    public void setHabilitar2via(boolean habilitar2via) {
+        this.habilitar2via = habilitar2via;
+    }
+
+    public boolean isHabilitarGerarBoleto() {
+        return habilitarGerarBoleto;
+    }
+
+    public void setHabilitarGerarBoleto(boolean habilitarGerarBoleto) {
+        this.habilitarGerarBoleto = habilitarGerarBoleto;
+    }
+
     
     
     public void selecionarTodasLista(){
@@ -200,22 +240,42 @@ public class BoletoMB implements Serializable{
         }
     }
     
-    public String gerarBoleto() {
-        List<Boleto> listaBoletos = new ArrayList<Boleto>();
-        if (listaSelecionadas == null) {
-            listaSelecionadas = new ArrayList<Contasreceber>();
+    public void gerarContas2via(){
+        listaContasReceber = null; 
+        listaContasReceber = contasReceberDao.list("Select c from Contasreceber c Where c.enviado=true and c.tipopagamento='Boleto'");
+        if (listaContasReceber == null || listaContasReceber.isEmpty()) {
+            listaContasReceber = new ArrayList<Contasreceber>();
         }
+        habilitar2via = true;
+        habilitarGerarBoleto = false;
+    }
+    
+    public void habilitarContas1via(){
+        listaContasReceber = null;
+        gerarListaContasReceber();
+        habilitar2via = false;
+        habilitarGerarBoleto = true;
+    }
+    
+    public String gerarBoleto() {
+        List<Boleto> listaBoletos = null;
+        listaBoletos = new ArrayList<Boleto>();
+        listaSelecionadas = new ArrayList<Contasreceber>();
         for (int i = 0; i < listaContasReceber.size(); i++) {
             if (listaContasReceber.get(i).isSelecionado()) {
                 listaSelecionadas.add(listaContasReceber.get(i));
             }
         }
-        for (int i = 0; i < listaSelecionadas.size(); i++) {
-            listaBoletos.add(gerarClasseBoleto(listaSelecionadas.get(i)));
-        }
-        if (listaBoletos.size() > 0) {
-            DadosBoletoBean dadosBoletoBean = new DadosBoletoBean();
-            dadosBoletoBean.gerarPDFS(listaBoletos);
+        if (listaSelecionadas == null || listaSelecionadas.isEmpty()) {
+            Mensagem.lancarMensagemInfo("Atenção", " boleto não selecionado!!");
+        }else{
+            for (int i = 0; i < listaSelecionadas.size(); i++) {
+                listaBoletos.add(gerarClasseBoleto(listaSelecionadas.get(i)));
+            }
+            if (listaBoletos.size() > 0) {
+                DadosBoletoBean dadosBoletoBean = new DadosBoletoBean();
+                dadosBoletoBean.gerarPDFS(listaBoletos);
+            }
         }
         return ""; 
     } 

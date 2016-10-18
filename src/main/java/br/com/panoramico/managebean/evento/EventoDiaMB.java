@@ -75,8 +75,7 @@ public class EventoDiaMB implements Serializable{
   
     public void gerarListaEventos(){
         Date data= new Date(); 
-        listaEvento = eventoDao.list("Select e from Evento e where e.data>='" + Formatacao.ConvercaoDataSql(data) + "' and "
-                + "e.data<='" + Formatacao.ConvercaoDataSql(data) + "' and e.situacao='A'");
+        listaEvento = eventoDao.list("Select e from Evento e where e.data='" + Formatacao.ConvercaoDataSql(data) + "'  and e.situacao='A'");
         if (listaEvento == null) {
             listaEvento = new ArrayList<Evento>();
         }

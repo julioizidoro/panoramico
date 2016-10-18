@@ -102,6 +102,7 @@ public class cadConvidadosEventoMB implements Serializable{
         mensagem = "";
         Eventoconvidados convidados = new Eventoconvidados();
         for(int i = 0; i < listaConvidados.size(); i++) {
+            listaConvidados.get(i).setSituacao("N");
             listaConvidados.get(i).setEvento(evento);
             convidados = eventoConvidadosDao.update(listaConvidados.get(i));
         }

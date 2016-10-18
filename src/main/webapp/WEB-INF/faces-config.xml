@@ -34,6 +34,15 @@
     <navigation-rule>
 		<from-view-id>*</from-view-id>
 		<navigation-case>
+			<from-outcome>semBoletoSelecionado</from-outcome> 
+			<to-view-id>/pages/contasreceber/semBoletoSelecionado.xhtml</to-view-id>
+			<redirect />
+		</navigation-case> 
+    </navigation-rule>
+    
+    <navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
 			<from-outcome>cadCancelamentoEvento</from-outcome> 
 			<to-view-id>/pages/eventos/cadCancelamentoEvento.xhtml</to-view-id>
 			<redirect />

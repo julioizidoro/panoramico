@@ -35,38 +35,92 @@
                         <br/><br/><br/>  
                     </fieldset>
                     <h:panelGroup rendered="#{acessoMB.habilitarResultado}" id="panelResultado">
-                        <fieldset>
-                            <legend></legend>
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <h:outputText value="Nome" style="float: left;font-size: 16px;"/>
+                        <p:tabView style="background: transparent;">
+                            <p:tab title="Dados" titleStyle="font-size:20px;border-radius:10px;">
+                                <h:panelGroup rendered="#{acessoMB.habilitarResultado}" id="panelResultado">
+                                    <fieldset>
+                                        <legend></legend>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <h:outputText value="Nome" style="float: left;font-size: 16px;"/>
+                                                <br/>
+                                                <hr/>
+                                                <h:outputText value="#{acessoMB.nome}" style="float: left;font-size: 18px;" title="Nome" id="idCampoNome"/>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <h:outputText value="Validade do exame" style="font-size: 16px;"/>
+                                                <br/>
+                                                <hr/>
+                                                <h:outputText value="#{acessoMB.dataExame}" style="font-size: 16px;#{acessoMB.corDataExame}" id="idCampoDataExame">
+                                                    <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/> 
+                                                </h:outputText>
+                                            </div>
+                                            <div class="col-sm-2">  
+                                                <h:outputText value="Status" style="float: left;font-size: 16px;"/>
+                                                <br/>
+                                                <hr/>
+                                                <p:commandLink  id="idbotaoLiberado" action="#{acessoMB.controleAcesso()}" update="@all">  
+                                                    <div style="font-size: 18px;padding: 3%;" class="#{acessoMB.tipoClasse}">
+                                                        <h:outputText value="#{acessoMB.nomeStatus}"/>
+                                                    </div>
+                                                </p:commandLink>   
+                                            </div>
+                                        </div>    
+                                        <br/><br/>
+                                    </fieldset> 
+                                </h:panelGroup>
+                            </p:tab>
+                            <p:tab title="Financeiro" titleStyle="font-size:20px;border-radius:10px;">
+                                <fieldset>
+                                    <h:dataTable id="idConsultaExame" style="font-size:20px; width: 98%;" styleClass="table" value="#{acessoMB.listaContasReceber}" var="contasreceber">
+                                        <h:column>
+                                            <f:facet name="header"><b style="font-size: 20px;">ID</b></f:facet> 
+                                            <h:outputText value="#{contasreceber.idcontasreceber}" style="font-size: 20px; float: left; color: black;" title="ID"/>
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header"><b style="font-size: 20px;">Vencimento</b></f:facet> 
+                                            <h:outputText value="#{contasreceber.datalancamento}" style="font-size: 20px; color: black; float: left;  #{acessoMB.contaVencida(contasreceber)}" title="Vencimento" id="idCampoDataExame">
+                                                <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/> 
+                                            </h:outputText>
+                                        </h:column>
+                                        <h:column >  
+                                            <f:facet name="header"><b style="font-size: 20px;">Parcela</b></f:facet>
+                                            <h:outputText value="#{contasreceber.numeroparcela}" style="font-size: 20px; color: black;" title="Situação"/>
+                                        </h:column>
+                                        <h:column >  
+                                            <f:facet name="header"><b style="font-size: 20px;">Valor</b></f:facet>
+                                            <h:outputText value="#{contasreceber.valorconta}" styleClass="alinhamento" style="float: right;font-size: 20px; color: black;">
+                                                <f:convertNumber pattern="##,###,###,###.##" minFractionDigits="2" />
+                                            </h:outputText>
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header"><b style="font-size: 20px;">Situação</b></f:facet> 
+                                            <h:outputText value="#{contasreceber.situacao}" style="font-size: 20px; float: left; color: black;" title="Situação"/>
+                                        </h:column>
+                                    </h:dataTable>
                                     <br/>
-                                    <hr/>
-                                    <h:outputText value="#{acessoMB.nome}" style="float: left;font-size: 18px;" title="Nome" id="idCampoNome"/>
-                                </div>
-                                <div class="col-sm-4">
-                                    <h:outputText value="Validade do exame" style="font-size: 16px;"/>
-                                    <br/>
-                                    <hr/>
-                                    <h:outputText value="#{acessoMB.dataExame}" style="font-size: 16px;#{acessoMB.corDataExame}" id="idCampoDataExame">
-                                        <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/> 
-                                    </h:outputText>
-                                </div>
-                                <div class="col-sm-2">  
-                                    <h:outputText value="Status" style="float: left;font-size: 16px;"/>
-                                    <br/>
-                                    <hr/>
-                                    <p:commandLink  id="idbotaoLiberado" action="#{acessoMB.controleAcesso()}" update="@all">  
-                                        <div style="font-size: 18px;padding: 3%;" class="#{acessoMB.tipoClasse}">
-                                            <h:outputText value="#{acessoMB.nomeStatus}"/>
-                                        </div>
-                                    </p:commandLink>   
-                                </div>
-                            </div>    
-                            <br/><br/>
-                        </fieldset> 
+                                </fieldset>
+                            </p:tab>
+                             <p:tab title="Dependentes" rendered="#{acessoMB.habilitarBotaoDependente}" titleStyle="font-size:20px;border-radius:10px;">
+                                <fieldset>
+                                    <h:panelGroup>
+                                        <ui:repeat value="#{acessoMB.listaDependente}"  var="dependente">
+                                            <div class="row">
+                                                <div> 
+                                                    <br/>
+                                                    <h:outputText value="#{dependente.nome}" style="font-size: 20px;float: left;" title="Nome"/>
+                                                    <br/>
+                                                    <hr/>
+                                                </div>
+                                            </div>
+                                        </ui:repeat>
+                                    </h:panelGroup>
+                                    <br/><br/>
+                                </fieldset>
+                            </p:tab>
+                        </p:tabView>
                     </h:panelGroup>
-                    <h:panelGroup rendered="#{acessoMB.habilitarAcessoPassaporte}" id="panelResultadoPassaporte">
+                     <h:panelGroup rendered="#{acessoMB.habilitarAcessoPassaporte}" id="panelResultadoPassaporte">
                         <fieldset>
                             <legend></legend>
                             <div class="row">
