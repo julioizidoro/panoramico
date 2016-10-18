@@ -175,12 +175,12 @@ public class DependenteMB implements Serializable{
     
     
     public void pesquisar(){
-        String sql = "Select c from Dependente c where c.nome like '"+nome+"%'";
+        String sql = "Select c from Dependente c where c.nome like '%"+nome+"%'";
         if(associado!=null && associado.length()>0){
-            sql = sql + " and c.associado.cliente.nome like '"+associado+"%'";
+            sql = sql + " and c.associado.cliente.nome like '%"+associado+"%'";
         }
         if(email!=null && email.length()>0){
-            sql = sql + " and c.email like '"+email+"%'";
+            sql = sql + " and c.email like '%"+email+"%'";
         }
         if(telefone!=null && telefone.length()>0){
             sql = sql + " and c.telefone='"+telefone+"'"; 

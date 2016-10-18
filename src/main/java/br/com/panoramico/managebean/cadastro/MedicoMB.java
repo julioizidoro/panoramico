@@ -117,7 +117,7 @@ public class MedicoMB implements Serializable {
     }
 
     public void pesquisar() {
-        listaMedicos = medicoDao.list("Select m from Medico m where m.nome like '" + nome + "%' order by m.nome");
+        listaMedicos = medicoDao.list("Select m from Medico m where m.nome like '%" + nome + "%' order by m.nome");
         if (listaMedicos == null) {
             listaMedicos = new ArrayList<Medico>();
         }

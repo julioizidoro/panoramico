@@ -88,10 +88,10 @@
                 <p:spinner id="minMaxAdulto" value="#{cadPassaporteMB.adultos}" min="0" max="100"  size="10" style="margin-left: 2%;font-size: 14px;">
                     <p:ajax event="change" listener="#{cadPassaporteMB.calcularValorTotal()}"  update="idvalorTotal, idvalorTotaladulto"/>
                 </p:spinner>
-                <p:inputText class="form-control" id="idvaloradulto" value="#{cadPassaporteMB.valorAdulto}" size="15" style="margin-left:10.5%;font-size: 14px;text-align: right;">
+                <p:inputText class="form-control" readonly="true" id="idvaloradulto" value="#{cadPassaporteMB.valorAdulto}" size="15" style="margin-left:10.5%;font-size: 14px;text-align: right;">
                     <f:convertNumber pattern="##,###,###,###.##"/> 
                 </p:inputText>
-                <p:inputText class="form-control" id="idvalorTotaladulto" value="#{cadPassaporteMB.totalValorAdulto}" size="15" style="margin-left:10.5%;font-size: 14px;text-align: right;">
+                <p:inputText class="form-control" readonly="true" id="idvalorTotaladulto" value="#{cadPassaporteMB.totalValorAdulto}" size="15" style="margin-left:10.5%;font-size: 14px;text-align: right;">
                     <f:convertNumber pattern="##,###,###,###.##"/> 
                 </p:inputText>
                 <br/><br/> 
@@ -102,17 +102,17 @@
                 <p:spinner id="minMaxCrianca" value="#{cadPassaporteMB.criancas}" min="0" max="100" size="10" style="margin-left:2%;">
                     <p:ajax event="change" listener="#{cadPassaporteMB.calcularValorTotal()}"  update="idvalorTotal, idvalorTotalcrianca"/>
                 </p:spinner>
-                <p:inputText class="form-control" id="idvalorcrianca" value="#{cadPassaporteMB.valorCrianca}" size="15" style="margin-left:10.5%;font-size: 14px;text-align: right;">
+                <p:inputText class="form-control" readonly="true" id="idvalorcrianca" value="#{cadPassaporteMB.valorCrianca}" size="15" style="margin-left:10.5%;font-size: 14px;text-align: right;">
                     <f:convertNumber pattern="##,###,###,###.##"/> 
                 </p:inputText>
-                <p:inputText class="form-control" id="idvalorTotalcrianca" value="#{cadPassaporteMB.totalValorCrianca}" size="15" style="margin-left:10.5%;font-size: 14px;text-align: right;">
+                <p:inputText class="form-control" readonly="true" id="idvalorTotalcrianca" value="#{cadPassaporteMB.totalValorCrianca}" size="15" style="margin-left:10.5%;font-size: 14px;text-align: right;">
                     <f:convertNumber pattern="##,###,###,###.##"/> 
                 </p:inputText>
                 <br/><br/>
                 <p:outputLabel class="titTela" value="Valor Total" style="font-size: 16px;text-align: left;margin-left:2%;"/>
                 <p:outputLabel class="titTela" value="Data" style="font-size: 16px;text-align: left;margin-left:17%;"/>
                 <br/>
-                <p:inputText class="form-control" id="idvalorTotal" value="#{cadPassaporteMB.valorTotal}" size="15" style="margin-left:2%;font-size: 14px;text-align: right;">
+                <p:inputText class="form-control" id="idvalorTotal" readonly="true" value="#{cadPassaporteMB.valorTotal}" size="15" style="margin-left:2%;font-size: 14px;text-align: right;">
                     <f:convertNumber pattern="##,###,###,###.##"/> 
                 </p:inputText>
                 <p:inputMask mask="99/99/9999" size="15" class="form-control" value="#{cadPassaporteMB.passaporte.datacompra}" style="margin-left:7%;font-size: 14px;">

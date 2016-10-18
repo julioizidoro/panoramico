@@ -130,11 +130,11 @@ public class UsuarioMB implements Serializable {
     }
 
     public void pesquisar() {
-        String sql = "Select u from Usuario u where u.nome like '" + nome + "%'";
+        String sql = "Select u from Usuario u where u.nome like '%" + nome + "%'";
         if (login != null && login.length() > 0) {
             sql = sql + " and u.login='" + login + "'";
         }
-        sql = sql + "order by u.nome";
+        sql = sql + " order by u.nome";
         listaUsuario = usuarioDao.list(sql);
         if (listaUsuario == null) {
             listaUsuario = new ArrayList<Usuario>();

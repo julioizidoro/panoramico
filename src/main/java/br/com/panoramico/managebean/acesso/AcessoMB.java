@@ -737,5 +737,4 @@ public class AcessoMB implements Serializable {
             return inadimplente;
         }
     }
-
 }
