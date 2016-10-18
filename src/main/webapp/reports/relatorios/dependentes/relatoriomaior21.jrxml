@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relatorioAniversariantes" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="feecb075-5a7f-42f6-832b-1a654a7aa009">
 	<property name="ireport.zoom" value="1.3660269107301424"/>
-	<property name="ireport.x" value="69"/>
-	<property name="ireport.y" value="23"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
 	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
 	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
@@ -38,7 +38,7 @@ order by cliente.nome, dependente.nome]]>
 				<textFieldExpression><![CDATA["Relatório Dependentes Maior 21 Anos"]]></textFieldExpression>
 			</textField>
 			<image>
-				<reportElement x="1" y="0" width="255" height="94" uuid="44120e79-a716-4d1c-8cf1-2ba645175b59"/>
+				<reportElement x="1" y="0" width="173" height="71" uuid="44120e79-a716-4d1c-8cf1-2ba645175b59"/>
 				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 			</image>
 		</band>
