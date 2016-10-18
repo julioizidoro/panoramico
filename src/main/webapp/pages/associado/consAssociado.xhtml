@@ -72,6 +72,9 @@
                                      <p:commandLink rendered="#{usuarioLogadoMB.excluir}" style="text-decoration: none;" action="#{associadoMB.excluir(associado)}" update=":idFormConsultaAssociado:messages, @form">
                                         <div class="fa fa-trash-o"></div>
                                      </p:commandLink>
+                                     <p:commandLink rendered="#{usuarioLogadoMB.editar}" style="text-decoration: none;" title="Associar a Empresa" action="#{associadoMB.associarEmpresa(associado)}" update=":idFormConsultaAssociado:messages, @form">
+                                        <div class="fa fa-users"></div>
+                                     </p:commandLink>
                                 </h:column>
 
 

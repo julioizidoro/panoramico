@@ -40,6 +40,7 @@ public class CadAssociadoEmpresaMB implements Serializable{
     private List<Empresa> listarEmpresa;
     private Empresa empresa;
     private Associado associado;
+    private String botaoAssociar = "";
     
     
     @PostConstruct
@@ -53,8 +54,10 @@ public class CadAssociadoEmpresaMB implements Serializable{
             if (associadoempresa == null) {
                 associadoempresa = new Associadoempresa();
                 empresa = new Empresa();
+                botaoAssociar = "Associar a Empresa";
             }else{
                 empresa = associadoempresa.getEmpresa();
+                botaoAssociar = "Associado a Empresa";
             }
             
         }
@@ -107,6 +110,14 @@ public class CadAssociadoEmpresaMB implements Serializable{
     public void setAssociado(Associado associado) {
         this.associado = associado;
     }
+
+    public String getBotaoAssociar() {
+        return botaoAssociar;
+    }
+
+    public void setBotaoAssociar(String botaoAssociar) {
+        this.botaoAssociar = botaoAssociar;
+    }
     
     
     
@@ -121,8 +132,28 @@ public class CadAssociadoEmpresaMB implements Serializable{
         associadoempresa.setEmpresa(empresa);
         associadoempresa.setAssociado(associado);
         associadoempresa = associadoEmpresaDao.update(associadoempresa);
-        RequestContext.getCurrentInstance().closeDialog(associadoempresa);
-        Mensagem.lancarMensagemInfo("Salvou", "Associado a empresa com sucesso!!");
+    }
+    
+    public void cancelar(){
+        RequestContext.getCurrentInstance().closeDialog(new Associadoempresa());
+    }
+    
+    public void verificarAssociadoEmpresa(){
+        if (associadoempresa == null || associadoempresa.getIdassociadoempresa() == null) {
+            salvar();
+            botaoAssociar = "Associado a Empresa";
+            associadoempresa = null;
+        }else{
+            desvincularAssociado();
+            associadoempresa = new Associadoempresa();
+            gerarListaEmpresa();
+            empresa = null;
+            botaoAssociar = "Associar a Empresa";
+        }
+    }
+    
+    public void desvincularAssociado(){
+        associadoEmpresaDao.remove(associadoempresa.getIdassociadoempresa());
     }
     
 }

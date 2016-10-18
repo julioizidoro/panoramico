@@ -224,7 +224,7 @@ public class AssociadoMB implements Serializable{
             HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
             session.setAttribute("associado", associado);
             session.setAttribute("associadoempresa", associadoempresa);
-            options.put("contentWidth", 600);
+            options.put("contentWidth", 300);
             RequestContext.getCurrentInstance().openDialog("cadAssociadoEmpresa", options, null);
         }
     }

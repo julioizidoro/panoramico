@@ -8,28 +8,44 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
         <link href="../../resources/css/css.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" type="text/css" href="../../resources/fonts/font-awesome-4.6.3/css/font-awesome.min.css"/>
+        
+        <link type="text/javascript" href="../../resources/js/jquery-3.1.0.js"></link>
+        <link type="text/javascript" src="../../resources/js/modal.js"/> 
+        <link rel="stylesheet" type="text/css" href="../../resources/css/modal.css"/>
+	<link rel="stylesheet" type="text/css" href="../../resources/css/buttons.css"/>
+	<link rel="stylesheet" type="text/css" href="../../resources/css/textos.css"/>
+        <link rel="stylesheet" type="text/css" href="../../resources/css/css.css"/>
     </h:head>
      
 
- <h:body style="background:#CEEDF4;" > 
-        <h:form id="idFormCadastroAssociadoEmpresa" class="body2" style="font-size: 12px; background-color: #CEEDF4;" enctype="multipart/form-data">
+ <h:body style="background:#A3DAD9; border-color: #CF7000;" > 
+        <h:form id="idFormCadastroAssociadoEmpresa" class="body2" style="background:#A3DAD9; border-color: #CF7000;"  enctype="multipart/form-data">
                 
-            <title>Associado Empresa</title>
+            <title>Associado da Empresa</title>
                 <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                
-                <p:outputLabel value="Empresa" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
+                <p:outputLabel class="titTela" value="Associado" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
+                <br/>
+                <p:inputText class="form-control" readonly="true" value="#{cadAssociadoEmpresaMB.associado.cliente.nome}"  style="margin-left: 2%;font-size: 12px;width: 98%;"/>
+                <br/><br/>
+                <p:outputLabel class="titTela" value="Empresa" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
                  <br/>
-                 <p:selectOneMenu  id="empresa"  style="width: 250px;margin-left: 2%"  value="#{cadAssociadoEmpresaMB.empresa}" converter="EmpresaConverter"
+                 <p:selectOneMenu  id="empresa"  style="width: 250px;margin-left: 2%;font-size: 12px;"  value="#{cadAssociadoEmpresaMB.empresa}" converter="EmpresaConverter"
                              filter="true" filterMatchMode="contains" panelStyle="width:180px" >
                     <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
-                    <f:selectItems  value="#{cadAssociadoEmpresaMB.listarEmpresa}" var="empresaselecionado" itemLabel="#{empresaselecionado.razao}" itemValue="#{empresaselecionado}"/>
+                    <f:selectItems  value="#{cadAssociadoEmpresaMB.listarEmpresa}" var="empresaselecionado" itemLabel="#{empresaselecionado.razaosocial}" itemValue="#{empresaselecionado}"/>
                     <f:attribute name="listaEmpresa" value="#{cadAssociadoEmpresaMB.listarEmpresa}"/>
                  </p:selectOneMenu>
-                 
-                 <br/><br/><br/><br/><br/><br/><br/>
+                 <br/><br/><br/><br/>
+                 <p:commandLink disabled="false" id="botaoAssociar" style="margin-left:2%;" update="empresa, botaoAssociar"  action="#{cadAssociadoEmpresaMB.verificarAssociadoEmpresa()}" rendered="true"> 
+                     <div style="font-size: 18px;margin-left: 2%;padding: 3%; text-align: center; width: 90%;" class="pesquisarAcesso">#{cadAssociadoEmpresaMB.botaoAssociar}</div>
+                  </p:commandLink>
+                 <br/><br/><br/>
                 <hr/>
                 <br/>  
-                <p:commandButton value="Salvar"  actionListener="#{cadAssociadoEmpresaMB.salvar()}" ajax="false"/>
+                <p:commandLink style="text-decoration: none;" action="#{cadAssociadoEmpresaMB.cancelar()}" ajax="false">
+                    <div style="font-size: 16px;margin-left: 37%;padding: 3%;" class="cancelar">Fechar</div>
+                </p:commandLink>
         </h:form>
  </h:body>
 </html>
