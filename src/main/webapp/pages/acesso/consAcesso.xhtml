@@ -150,6 +150,7 @@
                                         <div style="font-size: 18px;padding: 3%;" class="#{acessoMB.tipoClasse}">
                                             <h:outputText value="#{acessoMB.nomeStatus}"/>
                                         </div>
+                                        <p:ajax event="dialogReturn" listener="#{acessoMB.retornoDialogPassaporte}" update="@all"/>
                                     </p:commandLink>   
                                 </div>
                             </div>    

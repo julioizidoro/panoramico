@@ -29,8 +29,10 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 
@@ -464,29 +466,20 @@ public class AcessoMB implements Serializable {
                         nome = associado.getCliente().getNome();
                         dataExame = exameassociado.getExame().getDatavalidade();
                         if (verificarInadimplente()) {
-                            tipoClasse = "cancelar";
-                            nomeStatus = "NEGADO";
+                            popularAcesso(false, false);
                             Mensagem.lancarMensagemInfo("Acesso negado, cliente inadimplente!!", "");
-                            corDataExame = "color:black;";
                         }else{
                             if ((dataExame.compareTo(new Date()) == 1)
                                     || (dataExame.compareTo(new Date()) == 0)) {
                                 if (exameassociado.getAssociado().getSituacao().equalsIgnoreCase("Ativo")) {
-                                    tipoClasse = "cadastrar";
-                                    nomeStatus = "LIBERADO";
-                                    corDataExame = "color:black;";
-                                    descricaoNegado = "";
+                                    popularAcesso(true, false);
                                 } else {
-                                    tipoClasse = "cancelar";
-                                    nomeStatus = "NEGADO";
+                                    popularAcesso(false, false);
                                     Mensagem.lancarMensagemInfo("Associado inativo", "");
-                                    corDataExame = "color:black;";
                                 }
                             } else {
-                                tipoClasse = "cancelar";
-                                nomeStatus = "NEGADO";
+                                popularAcesso(false, true);
                                 Mensagem.lancarMensagemInfo("Validade do exame expirada", "");
-                                corDataExame = "color:#FB4C4C;";
                             }
                         }
                         guardaAssociado = codigoAssociado;
@@ -532,29 +525,20 @@ public class AcessoMB implements Serializable {
                         nome = dependente.getNome();
                         dataExame = examedependente.getExame().getDatavalidade();
                         if (verificarInadimplente()) {
-                            tipoClasse = "cancelar";
-                            nomeStatus = "NEGADO";
+                            popularAcesso(false, false);
                             Mensagem.lancarMensagemInfo("Acesso negado, cliente inadimplente!!", "");
-                            corDataExame = "color:black;";
                         }else{
                             if ((dataExame.compareTo(new Date()) == 1)
                                     || (dataExame.compareTo(new Date()) == 0)) {
                                 if (examedependente.getDependente().getAssociado().getSituacao().equalsIgnoreCase("Ativo")) {
-                                    tipoClasse = "cadastrar";
-                                    nomeStatus = "LIBERADO";
-                                    corDataExame = "color:black;";
-                                    descricaoNegado = "";
+                                    popularAcesso(true, false);
                                 } else {
-                                    tipoClasse = "cancelar";
-                                    nomeStatus = "NEGADO";
+                                    popularAcesso(false, false);
                                     Mensagem.lancarMensagemInfo("Associado inativo", "");
-                                    corDataExame = "color:black;";
                                 }
                             } else {
-                                tipoClasse = "cancelar";
-                                nomeStatus = "NEGADO";
+                                popularAcesso(false, true);
                                 Mensagem.lancarMensagemInfo("Validade do exame expirada", "");
-                                corDataExame = "color:#FB4C4C;";
                             }
                         }
                         guardaDependente = codigoDependente;
@@ -582,15 +566,10 @@ public class AcessoMB implements Serializable {
                 adultos = passaporte.getAdultos();
                 criancas = passaporte.getCriancas();
                 if (passaporte.getDataacesso() == null) {
-                    tipoClasse = "cadastrar";
-                    nomeStatus = "LIBERADO";
-                    corDataExame = "color:black;";
-                    descricaoNegado = "";
+                    popularAcesso(true, false);
                 } else {
-                    tipoClasse = "cancelar";
-                    nomeStatus = "NEGADO";
+                    popularAcesso(false, true);
                     Mensagem.lancarMensagemInfo("Passaporte ja foi utilizado", "");
-                    corDataExame = "color:#FB4C4C;";
                 }
                 guardaPassaporte = codigoPassaporte;
                 codigoPassaporte = "";
@@ -620,17 +599,33 @@ public class AcessoMB implements Serializable {
             controleacesso.setAssociado(associado);
             controleacesso.setTipo("A");
             controleacesso = controleAcessoDao.update(controleacesso);
+            Mensagem.lancarMensagemInfo("Salvo com sucesso", "");
         } else if (guardaDependente.length() >= 1) {
             controleacesso.setIddependente(dependente.getIddependente());
             controleacesso.setAssociado(dependente.getAssociado());
             controleacesso.setTipo("D");
             controleacesso = controleAcessoDao.update(controleacesso);
+            Mensagem.lancarMensagemInfo("Salvo com sucesso", "");
         }else if(guardaPassaporte.length() >= 1){
-            passaporte.setDataacesso(new Date());
-            passaporte.setHoraacesso(retornarHoraAtual());
-            passaporteDao.update(passaporte);
+            FacesContext fc = FacesContext.getCurrentInstance();
+            HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+            session.setAttribute("passaporte", passaporte);
+            Map<String, Object> options = new HashMap<String, Object>();
+            options.put("contentWidth", 400);
+            RequestContext.getCurrentInstance().openDialog("utilizadoPassaporte", options, null);
         }
-        Mensagem.lancarMensagemInfo(" Salvo " + " com sucesso", "");
+    }
+    
+    public void retornoDialogPassaporte(SelectEvent event){
+        Passaporte passaporte = (Passaporte) event.getObject();
+        if (passaporte.getIdpassaporte() != null) {
+            Mensagem.lancarMensagemInfo("Acesso liberado com sucesso", "");
+        }
+        habilitarAcessoPassaporte = false;
+        habilitarFinanceiro = false;
+        habilitarBotaoDependente = true;
+        habilitarConsulta = true;
+        habilitarResultado =false;
     }
 
     public String retornarHoraAtual() {
@@ -646,12 +641,6 @@ public class AcessoMB implements Serializable {
         return "";
     }
 
-    public void retornoDialogPassaporte(SelectEvent event) {
-        Passaporte passaporte = (Passaporte) event.getObject();
-        if (passaporte.getIdpassaporte() != null) {
-            Mensagem.lancarMensagemInfo("Compra feita com sucesso", "");
-        }
-    }
 
     public String novoRelatorio() {
         Map<String, Object> options = new HashMap<String, Object>();
@@ -735,6 +724,23 @@ public class AcessoMB implements Serializable {
         }else{
             inadimplente = true;
             return inadimplente;
+        }
+    }
+    
+    public void popularAcesso(boolean liberado, boolean dataVencida){
+        if (liberado) {
+            tipoClasse = "cadastrar";
+            nomeStatus = "LIBERADO";
+            descricaoNegado = "";
+        }else{
+            tipoClasse = "cancelar";
+            nomeStatus = "NEGADO";
+        }
+        
+        if (dataVencida) {
+           corDataExame = "color:#FB4C4C;";
+        }else{
+           corDataExame = "color:black;";
         }
     }
 }
