@@ -63,6 +63,10 @@
                                     <f:facet name="header">Plano</f:facet>
                                     <h:outputText value="#{associado.plano.descricao}" style="float: left;"/>
                                 </h:column>
+                                <h:column>
+                                    <f:facet name="header">Matricula</f:facet>
+                                    <h:outputText value="#{associado.matricula}" style="float: left;"/>
+                                </h:column>
                                  <h:column>
                                      <p:commandLink action="#{associadoMB.editar(associado)}" rendered="#{usuarioLogadoMB.editar}">
                                         <div class="fa fa-pencil-square-o">
