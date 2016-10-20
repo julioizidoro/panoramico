@@ -106,4 +106,8 @@ public class EventoDiaMB implements Serializable{
             return "Sim";
         }else return "Não";
     }
+    
+    public String voltarAcesso(){
+        return "consAcesso";
+    }
 }

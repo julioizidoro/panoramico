@@ -27,10 +27,10 @@
                 <p:outputLabel class="titTela" value="Data" style="font-size: 12px;text-align: left;margin-left: 20%;"/>
                 <p:outputLabel class="titTela" value="Horario" style="font-size: 12px;text-align: left;margin-left: 37%;"/>
                 <br/>
-                <p:inputMask mask="99/99/9999" size="15" class="form-control" value="#{cadCancelamentoEventoMB.eventocancelamento.data}" style="margin-left:20%;font-size: 12px;float: left;">
+                <p:inputMask mask="99/99/9999" size="15" readonly="true" class="form-control" value="#{cadCancelamentoEventoMB.eventocancelamento.data}" style="margin-left:20%;font-size: 12px;float: left;">
                     <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
                 </p:inputMask>
-                <p:inputText class="form-control" value="#{cadCancelamentoEventoMB.eventocancelamento.hora}" size="12" style="margin-left:20%;float: left;"/>
+                <p:inputText class="form-control" readonly="true" value="#{cadCancelamentoEventoMB.eventocancelamento.hora}" size="12" style="margin-left:20%;float: left;"/>
                 <br/><br/>
                 <p:outputLabel class="titTela" value="Motivo" style="font-size: 12px;text-align: left;margin-left: 20%;"/>
                 <br/>

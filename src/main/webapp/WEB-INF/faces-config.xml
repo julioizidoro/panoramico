@@ -80,6 +80,25 @@
     <navigation-rule>
 		<from-view-id>*</from-view-id>
 		<navigation-case>
+			<from-outcome>consEventosDia</from-outcome> 
+			<to-view-id>/pages/eventos/consEventosDia.xhtml</to-view-id>
+			<redirect />
+		</navigation-case> 
+    </navigation-rule>
+    
+     <navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>consAcesso</from-outcome> 
+			<to-view-id>/pages/acesso/consAcesso</to-view-id>
+			<redirect />
+		</navigation-case> 
+    </navigation-rule>
+    
+    
+    <navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
 			<from-outcome>consAssociado</from-outcome> 
 			<to-view-id>/pages/associado/consAssociado.xhtml</to-view-id>
 			<redirect />

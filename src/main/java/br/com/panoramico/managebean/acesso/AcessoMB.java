@@ -93,6 +93,7 @@ public class AcessoMB implements Serializable {
     private boolean habilitarConsulta = true;
     private boolean habilitarListaDependentes;
     private List<Dependente> listaDependente;
+    private String codigoPesquisa = "";
 
     @PostConstruct
     public void init() {
@@ -422,6 +423,14 @@ public class AcessoMB implements Serializable {
     public void setListaDependente(List<Dependente> listaDependente) {
         this.listaDependente = listaDependente;
     }
+
+    public String getCodigoPesquisa() {
+        return codigoPesquisa;
+    }
+
+    public void setCodigoPesquisa(String codigoPesquisa) {
+        this.codigoPesquisa = codigoPesquisa;
+    }
     
     
 
@@ -749,5 +758,32 @@ public class AcessoMB implements Serializable {
         }else{
            corDataExame = "color:black;";
         }
+    }
+    
+    
+    public void pesquisarDependente() {
+        associado = null;
+        dependente = null;
+        codigoDependente = codigoPesquisa;
+        codigoPesquisa = "";
+        pesquisar();
+    }
+
+    public void pesquisarAssociado() {
+        dependente = null;
+        associado = null;
+        codigoAssociado = codigoPesquisa;
+        codigoPesquisa = "";
+        pesquisar();
+    }
+
+    public void pesquisarPassaporte() {
+        codigoPassaporte = codigoPesquisa;
+        codigoPesquisa = "";
+        pesquisar();
+    }
+    
+    public String eventosDia(){
+        return "consEventosDia";
     }
 }

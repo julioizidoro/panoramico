@@ -230,17 +230,17 @@ public class CadEventoMB implements Serializable{
         List<Evento> listaEventos = eventoDao.list("Select e from Evento e where e.ambiente.idambiente=" + ambiente.getIdambiente() 
                 + " and e.data='" + Formatacao.ConvercaoDataSql(evento.getData()) + "' and e.idevento<>" + evento.getIdevento());
         if (listaEventos == null | listaEventos.isEmpty()) {
-            evento.setAmbiente(ambiente);
-            evento.setCliente(cliente);
-            evento.setTipoenvento(tipoevento);
-            evento.setUsuario(usuarioLogadoMB.getUsuario());
-            if (evento.getIdevento() == null) {
-                evento = eventoDao.update(evento);
-                lancarContasReceber();
-            }else{
-                evento = eventoDao.update(evento);
-            }
-            RequestContext.getCurrentInstance().closeDialog(evento);
+                evento.setAmbiente(ambiente);
+                evento.setCliente(cliente);
+                evento.setTipoenvento(tipoevento);
+                evento.setUsuario(usuarioLogadoMB.getUsuario());
+                if (evento.getIdevento() == null) {
+                    evento = eventoDao.update(evento);
+                    lancarContasReceber();
+                }else{
+                    evento = eventoDao.update(evento);
+                }
+                RequestContext.getCurrentInstance().closeDialog(evento);
         }else{
             Mensagem.lancarMensagemInfo("Atenção", " esse ambiente ja tem um evento neste dia");
         }

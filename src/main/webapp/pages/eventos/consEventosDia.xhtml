@@ -12,7 +12,9 @@
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:10%;width: 80%;"/>
                     
                     <div class="col-6 titTela" style="margin-left:-15%;">Eventos do Dia</div>
-                    
+                    <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" action="#{eventoDiaMB.voltarAcesso()}">
+                        <div class="icoAdd fa fa-arrow-left"></div>
+                    </p:commandLink>
                     <h:dataTable  id="idConsultaEvento" class="table" styleClass="table" value="#{eventoDiaMB.listaEvento}" var="evento">
                         <h:column>
                             <f:facet name="header">Responsavel</f:facet> 
