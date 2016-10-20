@@ -150,7 +150,17 @@ public class ImprimieContasRecebidasMB implements Serializable {
             sql = sql + " Group by cliente.nome, contasreceber.idcontasreceber, contasreceber.valorconta, contasreceber.datalancamento"
                     + " ,contasreceber.numeroparcela";
         }else if(tipoRelatorio.equalsIgnoreCase("historicocob")){
-            sql = "";
+            sql = "Select distinct contasreceber.idcontasreceber, contasreceber.numeroparcela, contasreceber.valorconta,"
+                    + " cliente.nome, historicocobranca.descricao, historicocobranca.data, contasreceber.situacao From contasreceber Join"
+                    + " cobrancasparcelas on contasreceber.idcontasreceber=cobrancasparcelas.contasreceber_idcontasreceber "
+                    + "Join cobranca on cobrancasparcelas.cobranca_idcobranca=cobranca.idcobranca Join historicocobranca on"
+                    + " historicocobranca.cobranca_idcobranca=cobranca.idcobranca Join cliente on contasreceber.cliente_idcliente="
+                    + "cliente.idcliente";
+            
+            if ((dataInicio != null) && (dataFinal != null)) {
+                sql = sql + " Where historicocobranca.data>='" + Formatacao.ConvercaoDataSql(dataInicio) + "' " +
+                        " and historicocobranca.data<='" + Formatacao.ConvercaoDataSql(dataFinal) + "'";
+            }
         }
         return sql;
     } 
