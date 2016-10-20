@@ -87,7 +87,13 @@
                         </h:column>
                         <h:column>
                             <f:facet name="header">Parcela</f:facet> 
-                            <h:outputText value="#{contaReceber.numeroparcela}" styleClass="alinhamento" style="margin-right:50%;"/>
+                            <h:outputText value="#{contaReceber.numeroparcela}" styleClass="alinhamento" style="float: left; margin-left:10%;"/>
+                        </h:column> 
+                        <h:column>
+                            <f:facet name="header">Cob</f:facet> 
+                            <p:commandLink  title="Cobrança" action="#{contasReceberMB.cobranca(contaReceber)}">
+                                <h:outputText value="#{contasReceberMB.numeroCob(contaReceber.idcontasreceber)}" styleClass="alinhamento" style="float: left; margin-left:10%;"/>
+                            </p:commandLink> 
                         </h:column> 
                         <h:column>
                             <p:commandLink rendered="#{usuarioLogadoMB.editar}" title="Editar" action="#{contasReceberMB.editar(contaReceber)}" style="text-decoration: none;">

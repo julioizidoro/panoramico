@@ -6,12 +6,14 @@
 package br.com.panoramico.managebean.contasreceber;
 
 import br.com.panoramico.dao.ClienteDao;
+import br.com.panoramico.dao.CobrancasParcelasDao;
 import br.com.panoramico.dao.ContasReceberDao;
 import br.com.panoramico.dao.PlanoContaDao;
 import br.com.panoramico.dao.ProprietarioDao;
 import br.com.panoramico.managebean.UsuarioLogadoMB;
 import br.com.panoramico.managebean.boleto.LerRetornoItauBean;
 import br.com.panoramico.model.Cliente;
+import br.com.panoramico.model.Cobrancasparcelas;
 import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.model.Crcancelamento;
 import br.com.panoramico.model.Planoconta;
@@ -65,6 +67,9 @@ public class ContasReceberMB implements Serializable{
     @EJB
     private ProprietarioDao proprietarioDao;
     private Proprietario proprietario;
+    @EJB
+    private CobrancasParcelasDao cobrancasParcelasDao;
+    private Cobrancasparcelas cobrancasparcelas;
     
     
     @PostConstruct
@@ -189,6 +194,39 @@ public class ContasReceberMB implements Serializable{
 
     public void setListaContasSelecionadas(List<Contasreceber> listaContasSelecionadas) {
         this.listaContasSelecionadas = listaContasSelecionadas;
+    }
+
+    public ProprietarioDao getProprietarioDao() {
+        return proprietarioDao;
+    }
+
+    public void setProprietarioDao(ProprietarioDao proprietarioDao) {
+        this.proprietarioDao = proprietarioDao;
+    }
+
+    public Proprietario getProprietario() {
+        return proprietario;
+    }
+
+    public void setProprietario(Proprietario proprietario) {
+        this.proprietario = proprietario;
+    }
+
+
+    public CobrancasParcelasDao getCobrancasParcelasDao() {
+        return cobrancasParcelasDao;
+    }
+
+    public void setCobrancasParcelasDao(CobrancasParcelasDao cobrancasParcelasDao) {
+        this.cobrancasParcelasDao = cobrancasParcelasDao;
+    }
+
+    public Cobrancasparcelas getCobrancasparcelas() {
+        return cobrancasparcelas;
+    }
+
+    public void setCobrancasparcelas(Cobrancasparcelas cobrancasparcelas) {
+        this.cobrancasparcelas = cobrancasparcelas;
     }
     
     
@@ -397,5 +435,26 @@ public class ContasReceberMB implements Serializable{
         options.put("contentWidth", 580);
         RequestContext.getCurrentInstance().openDialog("imprimirContasRecebidas", options, null);
         return "";
+    }
+    
+    
+    public void cobranca(Contasreceber contasreceber) {
+        Map<String, Object> options = new HashMap<String, Object>();
+        FacesContext fc = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+        session.setAttribute("contasreceber", contasreceber);
+        RequestContext.getCurrentInstance().openDialog("cobranca", options, null);
+    }
+    
+    public Integer numeroCob(int contasreceber){
+        Integer cob = 0;
+        String sql = "Select c From Cobrancasparcelas c Where c.contasreceber.idcontasreceber=" + contasreceber;
+        List<Cobrancasparcelas> listaCobranca = cobrancasParcelasDao.list(sql);
+        if (listaCobranca.size() > 0) {
+            cob = listaCobranca.size();
+        }else{
+            cob = 0;
+        }
+        return cob;
     }
 }

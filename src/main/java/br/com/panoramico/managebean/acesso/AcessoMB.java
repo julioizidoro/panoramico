@@ -607,12 +607,19 @@ public class AcessoMB implements Serializable {
             controleacesso = controleAcessoDao.update(controleacesso);
             Mensagem.lancarMensagemInfo("Salvo com sucesso", "");
         }else if(guardaPassaporte.length() >= 1){
-            FacesContext fc = FacesContext.getCurrentInstance();
-            HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
-            session.setAttribute("passaporte", passaporte);
-            Map<String, Object> options = new HashMap<String, Object>();
-            options.put("contentWidth", 400);
-            RequestContext.getCurrentInstance().openDialog("utilizadoPassaporte", options, null);
+            if (nomeStatus.equalsIgnoreCase("NEGADO")) {
+                passaporte.setDataacesso(new Date());
+                passaporte.setHoraacesso(retornarHoraAtual());
+                passaporte = passaporteDao.update(passaporte);
+                Mensagem.lancarMensagemInfo("Salvo com sucesso", "");
+            }else{
+                FacesContext fc = FacesContext.getCurrentInstance();
+                HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+                session.setAttribute("passaporte", passaporte);
+                Map<String, Object> options = new HashMap<String, Object>();
+                options.put("contentWidth", 400);
+                RequestContext.getCurrentInstance().openDialog("utilizadoPassaporte", options, null);
+            }
         }
     }
     
