@@ -10,56 +10,59 @@
         <link type="text/javascript" href="../../resources/js/jquery-3.1.0.js"></link>
         <link type="text/javascript" src="../../resources/js/modal.js"/> 
         <link rel="stylesheet" type="text/css" href="../../resources/css/modal.css"/>
-	<link rel="stylesheet" type="text/css" href="../../resources/css/buttons.css"/>
-	<link rel="stylesheet" type="text/css" href="../../resources/css/textos.css"/>
-        
+        <link rel="stylesheet" type="text/css" href="../../resources/css/buttons.css"/>
+        <link rel="stylesheet" type="text/css" href="../../resources/css/textos.css"/>
+
     </h:head> 
-     
+
 
     <h:body style="background:#A3DAD9; border-color: #CF7000;border: 2px;"> 
         <h:form id="idFormCadastroUsuario" style="font-size: 12px;" enctype="multipart/form-data">
-                
+
             <title>Novo Usuário</title>
-                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                <p:outputLabel class="titTela" value="Nome" style="font-size: 14px;text-align: left;margin-left:2%;"/>
-                <p:outputLabel class="titTela" value="Perfil" style="font-size: 14px;text-align: left;margin-left: 38%;"/>
-                <br/>
-                <h:panelGrid columns="2">
-                    <p:inputText class="form-control" value="#{cadUsuarioMB.usuario.nome}" size="30" style="margin-left:2%;font-size: 12px;border-radius: 4px;"/>
-                    <p:selectOneMenu styleClass="form-control" class="form-control"  id="perfil"  style="width: 235px;margin-left: 11%;font-size: 12px;border-radius: 3px;"  value="#{cadUsuarioMB.perfil}" converter="PerfilConverter"
+            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+            <h:panelGrid columns="2" columnClasses="tamanho45, tamanho45" style="margin-left:2%;">     
+                <p:outputLabel class="titTela" value="Nome" style="font-size: 14px;text-align: left;"/>
+                <p:outputLabel class="titTela" value="Perfil" style="font-size: 14px;text-align: left;"/>  
+
+                <p:inputText class="form-control" value="#{cadUsuarioMB.usuario.nome}" style="font-size: 12px;border-radius: 4px;width:90%;"/>
+                <p:selectOneMenu styleClass="form-control" class="form-control"  id="perfil"  style="width: 200px;font-size: 12px;border-radius: 3px;"  value="#{cadUsuarioMB.perfil}" converter="PerfilConverter"
                                  filter="true" filterMatchMode="contains" panelStyle="width:180px" >
-                       <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
-                       <f:selectItems  value="#{cadUsuarioMB.listaPerfil}" var="perfilselecionado" itemLabel="#{perfilselecionado.nome}" itemValue="#{perfilselecionado}"/>
-                       <f:attribute name="listaPerfil" value="#{cadUsuarioMB.listaPerfil}"/>
-                    </p:selectOneMenu>
-                </h:panelGrid>
-                <br/>
-                
-                <p:outputLabel class="titTela" value="E-mail" style="font-size: 14px;text-align: left;margin-left:2%;"/>
-                <p:outputLabel class="titTela" value="CPF" style="font-size: 14px;text-align: left;margin-left:37%;"/> 
-                <p:outputLabel class="titTela" value="Data de Nascimento" style="font-size: 14px;text-align: left;margin-left:20%;"/>
-                <br/> 
-                <p:inputText class="form-control" value="#{cadUsuarioMB.usuario.email}" size="30" style="margin-left:2%;font-size: 12px;border-radius: 4px;"/>
-                <p:inputText class="form-control" value="#{cadUsuarioMB.usuario.cpf}" size="12" style="margin-left:5%;font-size: 12px;border-radius: 4px;"/>    
-                <p:inputMask mask="99/99/9999"  class="form-control" id="date" size="18" value="#{cadUsuarioMB.usuario.datanascimento}" style="margin-left:7%;font-size: 12px;">
+                    <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/>   
+                    <f:selectItems  value="#{cadUsuarioMB.listaPerfil}" var="perfilselecionado" itemLabel="#{perfilselecionado.nome}" itemValue="#{perfilselecionado}"/>
+                    <f:attribute name="listaPerfil" value="#{cadUsuarioMB.listaPerfil}"/>
+                </p:selectOneMenu>
+            </h:panelGrid>
+            <br/>
+
+            <h:panelGrid columns="3" columnClasses="tamanho30, tamanho20,tamanho20" style="margin-left:2%;">   
+                <p:outputLabel class="titTela" value="E-mail" style="font-size: 14px;text-align: left;"/>
+                <p:outputLabel class="titTela" value="CPF" style="font-size: 14px;text-align: left;"/> 
+                <p:outputLabel class="titTela" value="Data de Nascimento" style="font-size: 14px;text-align: left;"/>
+
+                <p:inputText class="form-control" value="#{cadUsuarioMB.usuario.email}" style="font-size: 12px;border-radius: 4px;width: 90%;"/>
+                <p:inputMask class="form-control" mask="999.999.999-99"  value="#{cadUsuarioMB.usuario.cpf}" style="font-size: 12px;border-radius: 4px;width: 80%;"/>    
+                <p:inputMask mask="99/99/9999"  class="form-control" id="date" size="20" value="#{cadUsuarioMB.usuario.datanascimento}" style="font-size: 12px;">
                     <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
                 </p:inputMask>
-                <br/><br/>
-                <p:outputLabel class="titTela" value="Login" style="font-size: 14px;text-align: left;margin-left: 2%;"/> 
-                <p:outputLabel class="titTela" value="Senha" rendered="#{cadUsuarioMB.habilitarSenha}" style="font-size: 14px;text-align: left;margin-left: 26%;"/>
-               
-                 <br/>
-                 <p:inputText class="form-control" value="#{cadUsuarioMB.usuario.login}"  style="margin-left: 2%;font-size: 12px;border-radius: 4px;"/>
-                 <p:inputText class="form-control" value="#{cadUsuarioMB.usuario.senha}" rendered="#{cadUsuarioMB.habilitarSenha}" size="10" style="margin-left: 5%;font-size: 12px;border-radius: 4px;"/>
-                <br/><br/><br/><br/><br/>
-                <hr/>
-                <br/>  
-                <p:commandLink style="text-decoration: none;" actionListener="#{cadUsuarioMB.salvar()}" update="messages" ajax="false">
-                    <div style="font-size: 16px;margin-left: 32%;" class="cadastrar">Cadastrar</div>
-                </p:commandLink>
-                <p:commandLink style="text-decoration: none;" actionListener="#{cadUsuarioMB.cancelar()}" ajax="false">
-                    <div style="font-size: 16px" class="cancelar">Cancelar</div>
-                </p:commandLink>
+            </h:panelGrid>
+            <br/>   
+            <h:panelGrid columns="2" columnClasses="tamanho45, tamanho45" style="margin-left:2%;width:70%;">     
+                <p:outputLabel class="titTela" value="Login" style="font-size: 14px;text-align: left;"/>   
+                <p:outputLabel class="titTela" value="Senha" rendered="#{cadUsuarioMB.habilitarSenha}" style="font-size: 14px;text-align: left;"/>
+
+                <p:inputText class="form-control" value="#{cadUsuarioMB.usuario.login}"  style="font-size: 12px;border-radius: 4px;width: 90%;"/>
+                <p:inputText class="form-control" value="#{cadUsuarioMB.usuario.senha}" rendered="#{cadUsuarioMB.habilitarSenha}" style="font-size: 12px;border-radius: 4px;width:70%;"/>  
+            </h:panelGrid>
+            <br/><br/>
+            <hr/>  
+            <br/>  
+            <p:commandLink style="text-decoration: none;" actionListener="#{cadUsuarioMB.salvar()}" update="messages" ajax="false">
+                <div style="font-size: 16px;margin-left: 32%;" class="cadastrar">Cadastrar</div>
+            </p:commandLink>
+            <p:commandLink style="text-decoration: none;" actionListener="#{cadUsuarioMB.cancelar()}" ajax="false">
+                <div style="font-size: 16px" class="cancelar">Cancelar</div>
+            </p:commandLink>
         </h:form>
- </h:body>  
+    </h:body>  
 </html>
