@@ -11,91 +11,92 @@
         <link type="text/javascript" href="../../resources/js/jquery-3.1.0.js"></link>
         <link type="text/javascript" src="../../resources/js/modal.js"/> 
         <link rel="stylesheet" type="text/css" href="../../resources/css/modal.css"/>
-	<link rel="stylesheet" type="text/css" href="../../resources/css/buttons.css"/>
-	<link rel="stylesheet" type="text/css" href="../../resources/css/textos.css"/>
+        <link rel="stylesheet" type="text/css" href="../../resources/css/buttons.css"/>
+        <link rel="stylesheet" type="text/css" href="../../resources/css/textos.css"/>
     </h:head>
-     
 
- <h:body style="background:#A3DAD9; border-color: #CF7000;border: 2px;" > 
+
+    <h:body style="background:#A3DAD9; border-color: #CF7000;border: 2px;" > 
         <h:form id="idFormCadastroProprietario" class="body2" style="font-size: 12px;" enctype="multipart/form-data">
-                
+
             <title>Novo Proprietario</title>
-                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                <p:outputLabel class="titTela" value="Razão Social" style="font-size: 12px;text-align: left;margin-left:1%;"/>
-                <p:outputLabel class="titTela" value="Nome Fantasia" style="font-size: 12px;text-align: left;margin-left: 18.5%;"/>
-                <p:outputLabel class="titTela" value="Tipo de Logadouro" style="font-size: 12px;text-align: left;margin-left: 28%;"/>
-                <br/> 
-                <p:inputText class="form-control" value="#{cadProprietarioMB.proprietario.razaosocial}" style="margin-left:1%;font-size: 12px;"/>
-                <p:inputText class="form-control" value="#{cadProprietarioMB.proprietario.nomefantasia}" size="30" style="margin-left: 4.5%;font-size: 12px;"/>
-                <p:inputText class="form-control" value="#{cadProprietarioMB.proprietario.tipologradouro}" size="15" style="margin-left: 6%;font-size: 12px;"/>
-                <br/><br/>  
+            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+            <h:panelGrid columns="2" columnClasses="tamanho45, tamanho45" style="margin-left:1%;width:98%;"> 
+                <p:outputLabel class="titTela" value="Razão Social" style="font-size: 14px;text-align: left;"/>
+                <p:outputLabel class="titTela" value="Nome Fantasia" style="font-size: 14px;text-align: left;"/>
+
+                <p:inputText class="form-control" value="#{cadProprietarioMB.proprietario.razaosocial}" style="width: 90%;font-size: 12px;"/>
+                <p:inputText class="form-control" value="#{cadProprietarioMB.proprietario.nomefantasia}" style="width: 90%;font-size: 12px;"/>
+            </h:panelGrid>
+            <br/>  
+            <h:panelGrid columns="3" columnClasses="tamanho30, tamanho45, tamanho20" style="margin-left:1%;width:95%;"> 
+                <p:outputLabel class="titTela" value="Tipo de Logadouro" style="font-size: 14px;text-align: left;"/>
+                <p:outputLabel class="titTela" value="Logadouro" style="font-size: 14px;text-align: left;"/>
+                <p:outputLabel value="Número" class="titTela" style="font-size: 14px;text-align: left;"/>  
+
+                <p:inputText class="form-control" value="#{cadProprietarioMB.proprietario.tipologradouro}" style="width: 90%;font-size: 12px;"/>
+                <p:inputText class="form-control" value="#{cadProprietarioMB.proprietario.logradouro}" style="width: 90%;font-size: 12px;"/>
+                <p:inputText class="form-control" value="#{cadProprietarioMB.proprietario.numero}" style="width: 90%;font-size: 12px;"/>
+            </h:panelGrid> 
+            <br/> 
+            <h:panelGrid columns="3" columnClasses="tamanho30, tamanho45, tamanho45" style="margin-left:1%;width:95%;"> 
+                <p:outputLabel class="titTela" value="Complemento" style="font-size: 14px;text-align: left;"/>
+                <p:outputLabel value="Estado" class="titTela" style="font-size: 14px;text-align: left;"/>
+                <p:outputLabel value="Cidade" class="titTela" style="font-size: 14px;text-align: left;"/>
+
+                <p:inputText class="form-control" value="#{cadProprietarioMB.proprietario.complemento}" style="width:90%;font-size: 12px;"/> 
+                <p:selectOneMenu class="form-control" id="estado" value="#{cadProprietarioMB.proprietario.estado}"  style="width:80%;font-size: 12px;">
+                    <f:selectItem itemLabel="Selecione" itemValue="sn" noSelectionOption="true"/> 
+                    <f:selectItem itemLabel="Acre" itemValue="AC" /> 
+                    <f:selectItem itemLabel="Alagoas" itemValue="AL" /> 
+                    <f:selectItem itemLabel="Amapá" itemValue="AP" />  
+                    <f:selectItem itemLabel="Amazonas" itemValue="AM" />  
+                    <f:selectItem itemLabel="Bahia" itemValue="BA" />  
+                    <f:selectItem itemLabel="Ceará" itemValue="CE" />  
+                    <f:selectItem itemLabel="Distrito Federal" itemValue="DF" />  
+                    <f:selectItem itemLabel="Espirito Santo" itemValue="ES" />  
+                    <f:selectItem itemLabel="Goiás" itemValue="GO" />  
+                    <f:selectItem itemLabel="Maranhão" itemValue="MA" />  
+                    <f:selectItem itemLabel="Mato Grosso" itemValue="MT" />  
+                    <f:selectItem itemLabel="Mato Grosso do Sul" itemValue="MS" />  
+                    <f:selectItem itemLabel="Minas Gerais" itemValue="MG" />  
+                    <f:selectItem itemLabel="Pará" itemValue="PA" />  
+                    <f:selectItem itemLabel="Paraíba" itemValue="PB" />  
+                    <f:selectItem itemLabel="Paraná" itemValue="PR" />  
+                    <f:selectItem itemLabel="Pernambuco" itemValue="PE" />  
+                    <f:selectItem itemLabel="Piauí" itemValue="PI" />  
+                    <f:selectItem itemLabel="Rio de Janeiro" itemValue="RJ" />  
+                    <f:selectItem itemLabel="Rio Grande do Norte" itemValue="RN" />  
+                    <f:selectItem itemLabel="Rio Grande do Sul" itemValue="RS" />  
+                    <f:selectItem itemLabel="Rondônia" itemValue="RO" />  
+                    <f:selectItem itemLabel="Roraima" itemValue="RR" />  
+                    <f:selectItem itemLabel="Santa Catarina" itemValue="SC" />  
+                    <f:selectItem itemLabel="São Paulo" itemValue="SP" />  
+                    <f:selectItem itemLabel="Sergipe" itemValue="SE" />  
+                    <f:selectItem itemLabel="Tocantins" itemValue="TO" /> 
+                </p:selectOneMenu>
+                <p:inputText value="#{cadProprietarioMB.proprietario.cidade}" style="width: 90%;font-size: 12px;"/>
+            </h:panelGrid> 
+            <br/>
+            <h:panelGrid columns="3" columnClasses="tamanho45, tamanho45, tamanho30" style="margin-left:1%;width:95%;"> 
+                <p:outputLabel class="titTela" value="Bairro" style="font-size: 14px;text-align: left;"/>
+                <p:outputLabel value="Cep" class="titTela" style="font-size: 14px;text-align: left;"/> 
+                <p:outputLabel/>
                 
-                <p:outputLabel class="titTela" value="Logadouro" style="font-size: 12px;text-align: left;margin-left:1%;"/>
-                <p:outputLabel value="Número" class="titTela" style="font-size: 12px;text-align: left;margin-left: 69%;"/>  
-                
-                <br/> 
-                <p:inputText class="form-control" value="#{cadProprietarioMB.proprietario.logradouro}" size="58" style="margin-left: 1%;font-size: 12px;"/>
-                <p:inputText class="form-control" value="#{cadProprietarioMB.proprietario.numero}" size="9" style="margin-left: 12.6%;font-size: 12px;"/>
-                 
-                
-                <br/><br/> 
-                
-                <p:outputLabel class="titTela" value="Complemento" style="font-size: 12px;text-align: left;margin-left: 1%;"/>
-                <p:outputLabel value="Estado" class="titTela" style="font-size: 12px;text-align: left; margin-left: 9.5%;"/>
-                <p:outputLabel value="Cidade" class="titTela" style="font-size: 12px;text-align: left;margin-left: 35%;"/>
-                 
-                <br/>
-                <h:panelGrid style="margin-left: 1%;font-size: 12px;" columns="3"> 
-                    <p:inputText class="form-control" value="#{cadProprietarioMB.proprietario.complemento}" size="10"/> 
-                    <p:selectOneMenu class="form-control" id="estado" value="#{cadProprietarioMB.proprietario.estado}"  style="width:178px;margin-left: 10.7%;">
-                            <f:selectItem itemLabel="Selecione" itemValue="sn" noSelectionOption="true"/> 
-                            <f:selectItem itemLabel="Acre" itemValue="AC" /> 
-                            <f:selectItem itemLabel="Alagoas" itemValue="AL" /> 
-                            <f:selectItem itemLabel="Amapá" itemValue="AP" />  
-                            <f:selectItem itemLabel="Amazonas" itemValue="AM" />  
-                            <f:selectItem itemLabel="Bahia" itemValue="BA" />  
-                            <f:selectItem itemLabel="Ceará" itemValue="CE" />  
-                            <f:selectItem itemLabel="Distrito Federal" itemValue="DF" />  
-                            <f:selectItem itemLabel="Espirito Santo" itemValue="ES" />  
-                            <f:selectItem itemLabel="Goiás" itemValue="GO" />  
-                            <f:selectItem itemLabel="Maranhão" itemValue="MA" />  
-                            <f:selectItem itemLabel="Mato Grosso" itemValue="MT" />  
-                            <f:selectItem itemLabel="Mato Grosso do Sul" itemValue="MS" />  
-                            <f:selectItem itemLabel="Minas Gerais" itemValue="MG" />  
-                            <f:selectItem itemLabel="Pará" itemValue="PA" />  
-                            <f:selectItem itemLabel="Paraíba" itemValue="PB" />  
-                            <f:selectItem itemLabel="Paraná" itemValue="PR" />  
-                            <f:selectItem itemLabel="Pernambuco" itemValue="PE" />  
-                            <f:selectItem itemLabel="Piauí" itemValue="PI" />  
-                            <f:selectItem itemLabel="Rio de Janeiro" itemValue="RJ" />  
-                            <f:selectItem itemLabel="Rio Grande do Norte" itemValue="RN" />  
-                            <f:selectItem itemLabel="Rio Grande do Sul" itemValue="RS" />  
-                            <f:selectItem itemLabel="Rondônia" itemValue="RO" />  
-                            <f:selectItem itemLabel="Roraima" itemValue="RR" />  
-                            <f:selectItem itemLabel="Santa Catarina" itemValue="SC" />  
-                            <f:selectItem itemLabel="São Paulo" itemValue="SP" />  
-                            <f:selectItem itemLabel="Sergipe" itemValue="SE" />  
-                            <f:selectItem itemLabel="Tocantins" itemValue="TO" /> 
-                    </p:selectOneMenu>
-                    <p:inputText value="#{cadProprietarioMB.proprietario.cidade}" size="19" style="margin-left: 13.5%;"/>
-                </h:panelGrid>
-                
-                 <br/>
-                 <p:outputLabel class="titTela" value="Bairro" style="font-size: 12px;text-align: left;margin-left: 1%;"/>
-                 <p:outputLabel value="Cep" class="titTela" style="font-size: 12px;text-align: left;margin-left: 25%;"/> 
-                 <br/> 
-                 <p:inputText class="form-control" value="#{cadProprietarioMB.proprietario.bairro}" size="15" style="margin-left: 1%;"/>
-                 <p:inputText class="form-control" value="#{cadProprietarioMB.proprietario.cep}" size="10" style="margin-left: 7.2%;"/>
-                 <br/><br/><br/><br/><br/><br/>
-                <hr/>
-                <br/>
-                <p:commandLink style="text-decoration: none;" actionListener="#{cadProprietarioMB.salvar()}" ajax="false">
-                    <div style="font-size: 16px;margin-left: 32%;" class="cadastrar">Cadastrar</div>
-                </p:commandLink>
-                <p:commandLink style="text-decoration: none;" actionListener="#{cadProprietarioMB.cancelar()}" ajax="false">
-                    <div style="font-size: 16px" class="cancelar">Cancelar</div>
-                </p:commandLink>
+                <p:inputText class="form-control" value="#{cadProprietarioMB.proprietario.bairro}" style="width: 90%;font-size: 12px;"/>
+                <p:inputMask mask="99999-999" class="form-control" value="#{cadProprietarioMB.proprietario.cep}" style="width:50%;font-size: 12px;"/>
+                <p:outputLabel/>
+            </h:panelGrid>
+            <br/><br/>
+            <hr/>
+            <br/>
+            <p:commandLink style="text-decoration: none;" actionListener="#{cadProprietarioMB.salvar()}" ajax="false">
+                <div style="font-size: 16px;margin-left: 32%;" class="cadastrar">Cadastrar</div>
+            </p:commandLink>
+            <p:commandLink style="text-decoration: none;" actionListener="#{cadProprietarioMB.cancelar()}" ajax="false">
+                <div style="font-size: 16px" class="cancelar">Cancelar</div>
+            </p:commandLink>
         </h:form>
- </h:body>
-  
+    </h:body>
+
 </html>
