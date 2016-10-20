@@ -8,51 +8,50 @@
 
         <link href="../../resources/css/css.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" type="text/css" href="../../resources/fonts/font-awesome-4.6.3/css/font-awesome.min.css"/>
-        
+
         <link type="text/javascript" href="../../resources/js/jquery-3.1.0.js"></link>
         <link type="text/javascript" src="../../resources/js/modal.js"/> 
         <link rel="stylesheet" type="text/css" href="../../resources/css/modal.css"/>
-	<link rel="stylesheet" type="text/css" href="../../resources/css/buttons.css"/>
-	<link rel="stylesheet" type="text/css" href="../../resources/css/textos.css"/>
+        <link rel="stylesheet" type="text/css" href="../../resources/css/buttons.css"/>
+        <link rel="stylesheet" type="text/css" href="../../resources/css/textos.css"/>
         <link rel="stylesheet" type="text/css" href="../../resources/css/css.css"/>
     </h:head>
-     
+
 
     <h:body style="background:#A3DAD9; border-color: #CF7000;" > 
         <h:form id="idFormImpremirRelatorio" style="font-size: 12px; background-color:#A3DAD9">
-                
-            <title>Imprimir Relatório</title>
-                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                
-                <p:outputLabel class="titTela" value="Periodo" style="font-size: 12px;text-align: left;margin-left: 18%;"/>
-                <p:outputLabel class="titTela" value="Plano de contas" style="font-size: 12px;text-align: left;margin-left: 23%;"/>
-                <br/>
-                 <h:panelGrid columns="3">
-                     <p:inputMask mask="99/99/9999" size="15" class="form-control" value="#{imprimirContasPagarMB.dataInicio}" style="margin-left:4%;font-size: 12px;float: left;">
+
+            <title>Imprimir Relatório</title> 
+            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+            <h:panelGrid columns="2" columnClasses="tamanho45, tamanho45" style="margin-left:1%;width:98%;"> 
+                <p:outputLabel class="titTela" value="Período" style="font-size: 12px;text-align: left;"/>
+                <p:outputLabel class="titTela" value="Plano de contas" style="font-size: 12px;text-align: left;"/>
+
+                <h:panelGroup>
+                    <p:inputMask mask="99/99/9999" size="11" class="form-control" value="#{imprimirContasPagarMB.dataInicio}" style="font-size: 12px;float: left;">
                         <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
                     </p:inputMask>
-                     <p:inputMask mask="99/99/9999" size="15" class="form-control" value="#{imprimirContasPagarMB.dataFinal}" style="margin-left:4%;font-size: 12px;float: left;">
+                    <p:inputMask mask="99/99/9999" size="11" class="form-control" value="#{imprimirContasPagarMB.dataFinal}" style="margin-left:1%;font-size: 12px;float: left;">
                         <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
                     </p:inputMask>
-                     <p:selectOneMenu  class="form-control" id="ambiente"  style="width: 216px;margin-left: 10%;font-size: 12px;"  value="#{imprimirContasPagarMB.planocontas}" converter="PlanoContaConverter"
-                                filter="true" filterMatchMode="contains" panelStyle="width:180px" >
-                       <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
-                       <f:selectItems  value="#{imprimirContasPagarMB.listaPlanoConta}" var="planocontaselecionado" itemLabel="#{planocontaselecionado.descricao}" itemValue="#{planocontaselecionado}"/>
-                       <f:attribute name="listaPlanoContas" value="#{imprimirContasPagarMB.listaPlanoConta}"/>
-                   </p:selectOneMenu> 
-                </h:panelGrid>
-                <br/><br/>
-                
-                 <br/><br/>
-                 <hr style="color: #367587; background: #367587"/>
-                <br/>  
-                <p:commandLink style="text-decoration: none;" target="_blank" action="#{imprimirContasPagarMB.gerarRelatorio()}" ajax="false">
-                    <div style="font-size: 16px;margin-left: 32%;" class="cadastrar">Gerar Relatório</div>
-                </p:commandLink>
-                <p:commandLink style="text-decoration: none;" action="#{imprimirContasPagarMB.cancelar()}">
-                    <div style="font-size: 16px" class="cancelar">Cancelar</div>
-                </p:commandLink>
+                </h:panelGroup>
+                <p:selectOneMenu  class="form-control" id="ambiente"  style="width:80%;font-size: 12px;"  value="#{imprimirContasPagarMB.planocontas}" converter="PlanoContaConverter"
+                                  filter="true" filterMatchMode="contains" panelStyle="width:180px" >
+                    <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
+                    <f:selectItems  value="#{imprimirContasPagarMB.listaPlanoConta}" var="planocontaselecionado" itemLabel="#{planocontaselecionado.descricao}" itemValue="#{planocontaselecionado}"/>
+                    <f:attribute name="listaPlanoContas" value="#{imprimirContasPagarMB.listaPlanoConta}"/>
+                </p:selectOneMenu> 
+            </h:panelGrid>
+            <br/><br/> 
+            <hr style="color: #367587; background: #367587"/>
+            <br/>  
+            <p:commandLink style="text-decoration: none;" target="_blank" action="#{imprimirContasPagarMB.gerarRelatorio()}" ajax="false">
+                <div style="font-size: 16px;margin-left: 32%;" class="cadastrar">Gerar Relatório</div>
+            </p:commandLink>
+            <p:commandLink style="text-decoration: none;" action="#{imprimirContasPagarMB.cancelar()}">
+                <div style="font-size: 16px" class="cancelar">Cancelar</div>
+            </p:commandLink>
         </h:form>
- </h:body>
-  
+    </h:body>
+
 </html>
