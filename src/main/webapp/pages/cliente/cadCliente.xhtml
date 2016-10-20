@@ -21,26 +21,28 @@
                 
             <title style="background: #cf7000">Novo cliente</title>
             <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-            
-            <p:outputLabel class="titTela" value="Nome" style="font-size: 12px;text-align: left;margin-left:2%;"/>
-            <p:outputLabel value="CPF" class="titTela" style="font-size: 12px;text-align: left;margin-left:39%;"/> 
-            <p:outputLabel value="Data de Nascimento" class="titTela" style="font-size: 12px;text-align: left;margin-left:26.9%;"/>
-            <br/> 
-            <p:inputText class="form-control" value="#{cadClienteMB.cliente.nome}" size="30" style="margin-left:2%;font-size: 12px;"/>
-            <p:inputMask mask="999.999.999-99" class="form-control" value="#{cadClienteMB.cliente.cpf}" style="margin-left:6%;font-size: 12px;"/>    
-            <p:inputMask mask="99/99/9999" size="15" class="form-control" value="#{cadClienteMB.cliente.datanascimento}" style="margin-left:5%;font-size: 12px;">
-                <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
-            </p:inputMask>
-            <br/><br/>
-            
-            
-            <p:outputLabel class="titTela" value="E-mail" style="font-size: 12px;text-align: left;margin-left:2%;"/> 
-            <p:outputLabel value="Telefone" class="titTela" style="font-size: 12px;text-align: left;margin-left:38.5%;"/>
-            <br/> 
-            <p:inputText class="form-control" value="#{cadClienteMB.cliente.email}" size="30" style="margin-left:2%;font-size: 12px;"/>
-            <p:inputMask mask="(99)99999999" class="form-control" value="#{cadClienteMB.cliente.telefone}" style="margin-left:6%;font-size: 12px;"/> 
-            
+            <h:panelGrid columns="3" columnClasses="tamanho30, tamanho12, tamanho12" style="margin-left:1%;width:95%;"> 
+                <p:outputLabel class="titTela" value="Nome" style="font-size: 12px;text-align: left;"/>
+                <p:outputLabel value="CPF" class="titTela" style="font-size: 12px;text-align: left;"/> 
+                <p:outputLabel value="Data de Nascimento" class="titTela" style="font-size: 12px;text-align: left;"/>
+                 
+                <p:inputText class="form-control" value="#{cadClienteMB.cliente.nome}" style="width: 90%;font-size: 12px;"/>
+                <p:inputMask mask="999.999.999-99" class="form-control" value="#{cadClienteMB.cliente.cpf}" style="width: 95%;font-size: 12px;"/>    
+                <p:inputMask mask="99/99/9999"  class="form-control" value="#{cadClienteMB.cliente.datanascimento}" style="width: 95%;font-size: 12px;">
+                    <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+                </p:inputMask>
+            </h:panelGrid> 
             <br/>
+            <h:panelGrid columns="3" columnClasses="tamanho30, tamanho12, tamanho12" style="margin-left:1%;width:95%;">  
+                <p:outputLabel class="titTela" value="E-mail" style="font-size: 12px;text-align: left;"/> 
+                <p:outputLabel value="Telefone" class="titTela" style="font-size: 12px;text-align: left;"/>
+                <p:outputLabel/> 
+                
+                <p:inputText class="form-control" value="#{cadClienteMB.cliente.email}" style="width: 90%;font-size: 12px;"/>
+                <p:inputMask mask="(99)99999999" class="form-control" value="#{cadClienteMB.cliente.telefone}" style="width: 90%;font-size: 12px;"/> 
+                <p:outputLabel/> 
+            </h:panelGrid>
+            <br/><br/>  
             <hr/>
             <br/>
             <p:commandLink style="text-decoration: none;" actionListener="#{cadClienteMB.salvar()}" ajax="false">
