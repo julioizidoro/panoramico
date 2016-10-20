@@ -307,7 +307,7 @@ public class ContasReceberMB implements Serializable{
     public String novoCancelamento(Contasreceber contasreceber) {
         if (contasreceber != null) {
            Map<String, Object> options = new HashMap<String, Object>();
-           options.put("contentWidth", 600);
+           options.put("contentWidth", 400);
            FacesContext fc = FacesContext.getCurrentInstance();
            HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
            session.setAttribute("contasreceber", contasreceber);

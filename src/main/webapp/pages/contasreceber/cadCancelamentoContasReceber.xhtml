@@ -8,43 +8,46 @@
 
         <link href="../../resources/css/css.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" type="text/css" href="../../resources/fonts/font-awesome-4.6.3/css/font-awesome.min.css"/>
-        
+
         <link type="text/javascript" href="../../resources/js/jquery-3.1.0.js"></link>
         <link type="text/javascript" src="../../resources/js/modal.js"/> 
         <link rel="stylesheet" type="text/css" href="../../resources/css/modal.css"/>
-	<link rel="stylesheet" type="text/css" href="../../resources/css/buttons.css"/>
-	<link rel="stylesheet" type="text/css" href="../../resources/css/textos.css"/>
+        <link rel="stylesheet" type="text/css" href="../../resources/css/buttons.css"/>
+        <link rel="stylesheet" type="text/css" href="../../resources/css/textos.css"/>
         <link rel="stylesheet" type="text/css" href="../../resources/css/css.css"/>
     </h:head>
-     
+
 
     <h:body style="background:#A3DAD9; border-color: #CF7000;" > 
         <h:form id="idFormCadastroCancelamento" style="font-size: 12px; background-color:#A3DAD9">
-                
+
             <title>Cancelamento de contas a receber</title>
-                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                
-                <p:outputLabel class="titTela" value="Data" style="font-size: 12px;text-align: left;margin-left: 20%;"/>
-                <p:outputLabel class="titTela" value="Horario" style="font-size: 12px;text-align: left;margin-left: 37%;"/>
-                <br/>
-                <p:inputMask mask="99/99/9999" size="15" class="form-control" value="#{cadCancelamentoContasReceberMB.crcancelamento.data}" style="margin-left:20%;font-size: 12px;float: left;">
+            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+            <h:panelGrid columns="2" columnClasses="tamanho30, tamanho30" style="margin-left:2%;width:90%;"> 
+                <p:outputLabel class="titTela" value="Data" style="font-size: 14px;text-align: left;"/>
+                <p:outputLabel class="titTela" value="Horario" style="font-size: 14px;text-align: left;"/>
+
+                <p:inputMask mask="99/99/9999"  class="form-control" value="#{cadCancelamentoContasReceberMB.crcancelamento.data}" style="width:60%;font-size: 12px;float: left;">
                     <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
                 </p:inputMask>
-                <p:inputText class="form-control" readonly="true" value="#{cadCancelamentoContasReceberMB.crcancelamento.hora}" size="12" style="margin-left:20%;float: left;"/>
-                <br/><br/>
-                <p:outputLabel class="titTela" value="Motivo" style="font-size: 12px;text-align: left;margin-left: 20%;"/>
-                <br/>
-                <p:inputText class="form-control" value="#{cadCancelamentoContasReceberMB.crcancelamento.motivo}" size="45" style="margin-left:20%;float: left"/>
-                <br/><br/>
-                <hr style="color: #367587; background: #367587"/> 
-                <br/>  
-                <p:commandLink style="text-decoration: none;" actionListener="#{cadCancelamentoContasReceberMB.salvar()}" ajax="false">
-                    <div style="font-size: 16px;margin-left: 32%;" class="cadastrar">Confirmar</div>
-                </p:commandLink> 
-                <p:commandLink style="text-decoration: none;" action="#{cadCancelamentoContasReceberMB.cancelar()}" ajax="false">
-                    <div style="font-size: 16px" class="cancelar">Cancelar</div>
-                </p:commandLink>
+                <p:inputText class="form-control" readonly="true" value="#{cadCancelamentoContasReceberMB.crcancelamento.hora}" style="width:60%;float: left;font-size: 12px;"/>
+            </h:panelGrid>
+            <br/>
+            <h:panelGrid style="margin-left:2%;width:90%;"> 
+                <p:outputLabel class="titTela" value="Motivo" style="font-size: 14px;text-align: left;"/>
+
+                <p:inputText class="form-control" value="#{cadCancelamentoContasReceberMB.crcancelamento.motivo}" style="width: 90%;float: left;font-size: 12px;"/>
+            </h:panelGrid>
+            <br/><br/>
+            <hr style="color: #367587; background: #367587"/> 
+            <br/>  
+            <p:commandLink style="text-decoration: none;" actionListener="#{cadCancelamentoContasReceberMB.salvar()}" ajax="false">
+                <div style="font-size: 16px;margin-left: 32%;" class="cadastrar">Confirmar</div>
+            </p:commandLink> 
+            <p:commandLink style="text-decoration: none;" action="#{cadCancelamentoContasReceberMB.cancelar()}" ajax="false">
+                <div style="font-size: 16px" class="cancelar">Cancelar</div>
+            </p:commandLink>
         </h:form>  
- </h:body>
-  
+    </h:body>
+
 </html>
