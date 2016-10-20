@@ -264,11 +264,7 @@ public class AssociadoMB implements Serializable {
         gerarListaAssociado();
         return "";
     }
-
-    public String associadoEmpresa(Associado associado) {
-        return "Não";
-    }
-
+ 
     public String dependentes(Associado associado) {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);

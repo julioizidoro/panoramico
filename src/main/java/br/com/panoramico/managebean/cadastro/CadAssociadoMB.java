@@ -7,10 +7,12 @@ package br.com.panoramico.managebean.cadastro;
 
 import br.com.panoramico.dao.AssociadoDao;
 import br.com.panoramico.dao.ClienteDao;
+import br.com.panoramico.dao.ContasReceberDao;
 import br.com.panoramico.dao.DependenteDao;
 import br.com.panoramico.dao.PlanoDao;
 import br.com.panoramico.model.Associado;
 import br.com.panoramico.model.Cliente;
+import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.model.Dependente;
 import br.com.panoramico.model.Plano;
 import java.io.Serializable;
@@ -45,6 +47,8 @@ public class CadAssociadoMB implements Serializable {
     private PlanoDao planoDao;
     private Plano plano;
     private List<Plano> listaPlano;
+    @EJB
+    private ContasReceberDao contasReceberDao; 
 
     @PostConstruct
     public void init() {
@@ -133,6 +137,22 @@ public class CadAssociadoMB implements Serializable {
         this.listaPlano = listaPlano;
     }
 
+    public DependenteDao getDependenteDao() {
+        return dependenteDao;
+    }
+
+    public void setDependenteDao(DependenteDao dependenteDao) {
+        this.dependenteDao = dependenteDao;
+    }
+
+    public ContasReceberDao getContasReceberDao() {
+        return contasReceberDao;
+    }
+
+    public void setContasReceberDao(ContasReceberDao contasReceberDao) {
+        this.contasReceberDao = contasReceberDao;
+    }
+
     public void salvar() {
         associado.setPlano(plano);
         associado.setCliente(cliente);
@@ -143,6 +163,13 @@ public class CadAssociadoMB implements Serializable {
                     dependente = associado.getDependenteList().get(i);
                     dependente.setSituacao("Inativo");
                     dependenteDao.update(dependente);
+                }
+            }
+            List<Contasreceber> listaContasReceber = contasReceberDao.list("Select c from Contasreceber c where c.situacao<>'CANCELADO' and c.situacao<>'PAGO'");
+            if(listaContasReceber!=null && listaContasReceber.size()>0){
+                for (int i = 0; i < listaContasReceber.size(); i++) {
+                    listaContasReceber.get(i).setSituacao("CANCELADO");
+                    contasReceberDao.update(listaContasReceber.get(i));
                 }
             }
         }

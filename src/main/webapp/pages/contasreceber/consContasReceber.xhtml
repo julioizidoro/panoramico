@@ -9,8 +9,8 @@
             <div class="col-10 boxAzulClaro" style="margin-left:8.5%;width: 83.2%;">   
                 <br/> 
                 <h:form id="idFormConsultaContasReceber" style="margin-left:5%;width: 90%;">
-                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:10%;width: 80%;" rendered="#{contasReceberMB.habilitarPesquisa()}"/>
-                    <p:accordionPanel activeIndex="-1">
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:10%;width: 80%;" />
+                    <p:accordionPanel activeIndex="-1" rendered="#{contasReceberMB.habilitarPesquisa()}">
                         <p:tab title="Pesquisar">
                             <p:outputLabel class="titTela" value="Cliente" style="font-size: 12px;text-align: left;float: left;margin-left:10%;"/>
                             <p:outputLabel class="titTela" value="Plano de contas" style="font-size: 12px;text-align: left;margin-left: 25%;float: left;"/>
