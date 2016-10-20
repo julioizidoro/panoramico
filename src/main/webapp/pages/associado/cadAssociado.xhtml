@@ -33,7 +33,7 @@
                     <f:selectItem itemLabel="Selecione" itemValue="sn" noSelectionOption="true"/> 
                     <f:selectItem itemLabel="Ativo" itemValue="Ativo" />   
                     <f:selectItem itemLabel="Inativo" itemValue="Inativo" />  
-                </p:selectOneMenu>
+               </p:selectOneMenu>
             </h:panelGrid>
             <br/>
             <h:panelGrid columns="2" columnClasses="tamanho45, tamanho45" style="margin-left:1%;width:95%;"> 
@@ -116,13 +116,13 @@
             </h:panelGrid>
             <br/><br/> 
             <hr style="color: #367587; background: #367587"/>
-            <br/>  
-            <p:commandLink style="text-decoration: none;" actionListener="#{cadAssociadoMB.salvar()}" ajax="false">
+            <br/>   
+            <p:commandLink style="text-decoration: none;" actionListener="#{cadAssociadoMB.salvar()}">
                 <div style="font-size: 16px;margin-left: 32%;" class="cadastrar">Cadastrar</div>
-            </p:commandLink>
+            </p:commandLink> 
             <p:commandLink style="text-decoration: none;" action="#{cadAssociadoMB.cancelar()}" ajax="false">
                 <div style="font-size: 16px" class="cancelar">Cancelar</div>
-            </p:commandLink>
+            </p:commandLink> 
         </h:form>
     </h:body>
 

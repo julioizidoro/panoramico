@@ -48,7 +48,8 @@ public class CadAssociadoMB implements Serializable {
     private Plano plano;
     private List<Plano> listaPlano;
     @EJB
-    private ContasReceberDao contasReceberDao; 
+    private ContasReceberDao contasReceberDao;
+    private String situacaoAntiga;
 
     @PostConstruct
     public void init() {
@@ -69,6 +70,7 @@ public class CadAssociadoMB implements Serializable {
         } else {
             cliente = associado.getCliente();
             plano = associado.getPlano();
+            situacaoAntiga = associado.getSituacao();
         }
 
     }
@@ -153,6 +155,14 @@ public class CadAssociadoMB implements Serializable {
         this.contasReceberDao = contasReceberDao;
     }
 
+    public String getSituacaoAntiga() {
+        return situacaoAntiga;
+    }
+
+    public void setSituacaoAntiga(String situacaoAntiga) {
+        this.situacaoAntiga = situacaoAntiga;
+    }
+
     public void salvar() {
         associado.setPlano(plano);
         associado.setCliente(cliente);
@@ -166,15 +176,31 @@ public class CadAssociadoMB implements Serializable {
                 }
             }
             List<Contasreceber> listaContasReceber = contasReceberDao.list("Select c from Contasreceber c where c.situacao<>'CANCELADO' and c.situacao<>'PAGO'");
-            if(listaContasReceber!=null && listaContasReceber.size()>0){
+            if (listaContasReceber != null && listaContasReceber.size() > 0) {
                 for (int i = 0; i < listaContasReceber.size(); i++) {
                     listaContasReceber.get(i).setSituacao("CANCELADO");
                     contasReceberDao.update(listaContasReceber.get(i));
                 }
             }
+        }else if (situacaoAntiga != null && situacaoAntiga.equalsIgnoreCase("Inativo")
+                && !situacaoAntiga.equalsIgnoreCase(associado.getSituacao())) {
+            if (associado.getDependenteList() != null && associado.getDependenteList().size() > 0) {
+                salvarDependentes();
+            }
         }
         associado = associadoDao.update(associado);
         RequestContext.getCurrentInstance().closeDialog(associado);
+    }
+
+    public void salvarDependentes() {
+        if (associado.getDependenteList() != null && associado.getDependenteList().size() > 0) {
+            Dependente dependente;
+            for (int i = 0; i < associado.getDependenteList().size(); i++) {
+                dependente = associado.getDependenteList().get(i);
+                dependente.setSituacao("Ativo");
+                dependenteDao.update(dependente);
+            }
+        }
     }
 
     private void gerarListaCliente() {
