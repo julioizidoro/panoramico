@@ -23,17 +23,16 @@
 
             <title>Imprimir Relatório</title>
             <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+            <h:panelGrid columns="2" columnClasses="tamanho45, tamanho45" style="margin-left:1%;width:98%;"> 
+                <p:outputLabel class="titTela" value="Relatório" style="font-size: 12px;text-align: left;"/>
+                <p:outputLabel class="titTela" value="Ambiente" style="font-size: 12px;text-align: left;"/>
 
-            <p:outputLabel class="titTela" value="Relatório" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
-            <p:outputLabel class="titTela" value="Ambiente" style="font-size: 12px;text-align: left;margin-left: 35%;"/>
-            <br/>
-            <h:panelGrid columns="2">
-                <p:selectOneMenu id="tiporelatorio" class="form-control" style="width:194px;font-size: 12px; margin-left: 2%;" value="#{imprimirEventoMB.tipoRelatorio}">
+                <p:selectOneMenu id="tiporelatorio" class="form-control" style="width:80%;font-size: 12px;" value="#{imprimirEventoMB.tipoRelatorio}">
                     <f:selectItem itemLabel="Selecione" itemValue="" noSelectionOption="true"/> 
                     <f:selectItem itemLabel="Faturamento de Evento" itemValue="faturamentoEvento" />  
                     <f:selectItem itemLabel="Agenda de Eventos" itemValue="agendaEvento" /> 
                 </p:selectOneMenu>
-                <p:selectOneMenu  class="form-control" id="ambiente"  style="width: 216px;margin-left: 10%;font-size: 12px;"  value="#{imprimirEventoMB.ambiente}" converter="AmbienteConverter"
+                <p:selectOneMenu  class="form-control" id="ambiente"  style="width:80%;font-size: 12px;"  value="#{imprimirEventoMB.ambiente}" converter="AmbienteConverter"
                                   filter="true" filterMatchMode="contains" panelStyle="width:180px" >
                     <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
                     <f:selectItems  value="#{imprimirEventoMB.listaAmbientes}" var="ambienteselecionado" itemLabel="#{ambienteselecionado.nome}" itemValue="#{ambienteselecionado}"/>
@@ -41,17 +40,19 @@
                 </p:selectOneMenu> 
             </h:panelGrid> 
             <br/>
-            <p:outputLabel class="titTela" value="Periodo" style="font-size: 12px;text-align: left;margin-left: 18%;"/>
-            <br/>
-            <p:inputMask mask="99/99/9999" size="15" class="form-control" value="#{imprimirEventoMB.dataInicio}" style="margin-left:2%;font-size: 12px;float: left;">
-                <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
-            </p:inputMask>
-            <p:inputMask mask="99/99/9999" size="15" class="form-control" value="#{imprimirEventoMB.dataFinal}" style="margin-left:1%;font-size: 12px;float: left;">
-                <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
-            </p:inputMask>
-            <br/><br/>
+            <h:panelGrid  style="margin-left:1%;width:98%;"> 
+                <p:outputLabel class="titTela" value="Periodo" style="font-size: 12px;text-align: left;"/>
 
-            <br/><br/>
+                <h:panelGroup>
+                    <p:inputMask mask="99/99/9999" size="12" class="form-control" value="#{imprimirEventoMB.dataInicio}" style="font-size: 12px;float: left;">
+                        <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+                    </p:inputMask>
+                    <p:inputMask mask="99/99/9999" size="12" class="form-control" value="#{imprimirEventoMB.dataFinal}" style="margin-left:1%;font-size: 12px;float: left;">
+                        <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+                    </p:inputMask>
+                </h:panelGroup>
+            </h:panelGrid>
+            <br/><br/> 
             <hr style="color: #367587; background: #367587"/>
             <br/>  
             <p:commandLink style="text-decoration: none;" target="_blank" action="#{imprimirEventoMB.gerarRelatorio()}" ajax="false">
