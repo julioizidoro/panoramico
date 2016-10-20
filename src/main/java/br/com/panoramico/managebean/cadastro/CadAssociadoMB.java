@@ -17,6 +17,7 @@ import br.com.panoramico.model.Dependente;
 import br.com.panoramico.model.Plano;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -166,6 +167,9 @@ public class CadAssociadoMB implements Serializable {
     public void salvar() {
         associado.setPlano(plano);
         associado.setCliente(cliente);
+        if(associado.getIdassociado()==null){
+            associado.setDataassociacao(new Date());
+        }
         if (associado.getSituacao().equalsIgnoreCase("Inativo")) {
             if (associado.getDependenteList() != null && associado.getDependenteList().size() > 0) {
                 Dependente dependente;

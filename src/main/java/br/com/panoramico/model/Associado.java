@@ -6,6 +6,7 @@
 package br.com.panoramico.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -68,6 +69,8 @@ public class Associado implements Serializable {
     private Float descotomensalidade;
     @Column(name = "situacao")
     private String situacao;
+    @Column(name = "dataassociacao")
+    private Date dataassociacao;
     @JoinColumn(name = "cliente_idcliente", referencedColumnName = "idcliente")
     @OneToOne(optional = false)
     private Cliente cliente;
@@ -223,6 +226,16 @@ public class Associado implements Serializable {
     public void setSituacao(String situacao) {
         this.situacao = situacao;
     }
+
+    public Date getDataassociacao() {
+        return dataassociacao;
+    }
+
+    public void setDataassociacao(Date dataassociacao) {
+        this.dataassociacao = dataassociacao;
+    }
+
+    
 
     @Override
     public int hashCode() {
