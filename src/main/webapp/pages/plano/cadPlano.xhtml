@@ -11,26 +11,25 @@
         <link type="text/javascript" href="../../resources/js/jquery-3.1.0.js"></link>
         <link type="text/javascript" src="../../resources/js/modal.js"/> 
         <link rel="stylesheet" type="text/css" href="../../resources/css/modal.css"/>
-	<link rel="stylesheet" type="text/css" href="../../resources/css/buttons.css"/>
-	<link rel="stylesheet" type="text/css" href="../../resources/css/tabelas.css"/>
-	<link rel="stylesheet" type="text/css" href="../../resources/css/textos.css"/>
+        <link rel="stylesheet" type="text/css" href="../../resources/css/buttons.css"/> 
+        <link rel="stylesheet" type="text/css" href="../../resources/css/textos.css"/> 
     </h:head>
-     
 
- <h:body style="background:#A3DAD9; border-color: #CF7000;border: 2px;" > 
+
+    <h:body style="background:#A3DAD9; border-color: #CF7000;border: 2px;" > 
         <h:form id="idFormCadastroPlano" class="body2" style="font-size: 12px;" enctype="multipart/form-data">
-                
+
             <title>Cadastro de Plano</title>
             <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-            
-            <p:outputLabel class="titTela" value="Descricao" style="font-size: 12px;text-align: left;margin-left:2%;"/>
-            <p:outputLabel value="Valor" class="titTela" style="font-size: 12px;text-align: left;margin-left:52%;"/>
-            <br/> 
-            <p:inputText class="form-control" value="#{cadPlanoMB.plano.descricao}" size="40" style="margin-left:2%;font-size: 12px;"/>
-            <p:inputText value="#{cadPlanoMB.plano.valor}" class="form-control" size="15" style="margin-left:4%;font-size: 12px;">
-                <f:convertNumber pattern="##,###,###,###.##"/> 
-            </p:inputText>
-            
+            <h:panelGrid columns="2" columnClasses="tamanho45, tamanho20" style="margin-left:1%;width:95%;"> 
+                <p:outputLabel class="titTela" value="Descricao" style="font-size: 12px;text-align: left;"/>
+                <p:outputLabel value="Valor" class="titTela" style="font-size: 12px;text-align: left;"/>
+
+                <p:inputText class="form-control" value="#{cadPlanoMB.plano.descricao}" style="width: 90%;font-size: 12px;"/>
+                <p:inputText value="#{cadPlanoMB.plano.valor}" class="form-control" style="width: 90%;font-size: 12px;">
+                    <f:convertNumber pattern="##,###,###,###.##"/> 
+                </p:inputText> 
+            </h:panelGrid>
             <br/> 
             <hr/>
             <br/>
@@ -41,5 +40,5 @@
                 <div style="font-size: 16px" class="cancelar">Cancelar</div>
             </p:commandLink>
         </h:form>
- </h:body>
+    </h:body>
 </html>
