@@ -160,7 +160,7 @@ public class DependenteMB implements Serializable{
     }
     
     public void gerarListaDependente(){
-        listaDependente = dependenteDao.list("Select c from Dependente c");
+        listaDependente = dependenteDao.list("Select c from Dependente c where c.situacao='Ativo' order by c.nome");
         if (listaDependente == null) {
             listaDependente = new ArrayList<Dependente>();
         }

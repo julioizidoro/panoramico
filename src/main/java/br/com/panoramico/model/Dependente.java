@@ -59,6 +59,8 @@ public class Dependente implements Serializable {
     private String matricula;
     @Column(name = "situacao")
     private String situacao;
+    @Column(name = "grauparentesco")
+    private String grauparentesco;
     @JoinColumn(name = "associado_idassociado", referencedColumnName = "idassociado")
     @ManyToOne(optional = false)
     private Associado associado;
@@ -142,6 +144,14 @@ public class Dependente implements Serializable {
 
     public void setSituacao(String situacao) {
         this.situacao = situacao;
+    }
+
+    public String getGrauparentesco() {
+        return grauparentesco;
+    }
+
+    public void setGrauparentesco(String grauparentesco) {
+        this.grauparentesco = grauparentesco;
     }
 
     @Override
