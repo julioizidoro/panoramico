@@ -1,0 +1,58 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+        <link href="../../resources/css/css.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" type="text/css" href="../../resources/fonts/font-awesome-4.6.3/css/font-awesome.min.css"/>
+
+        <link type="text/javascript" href="../../resources/js/jquery-3.1.0.js"></link>
+        <link type="text/javascript" src="../../resources/js/modal.js"/> 
+        <link rel="stylesheet" type="text/css" href="../../resources/css/modal.css"/>
+        <link rel="stylesheet" type="text/css" href="../../resources/css/buttons.css"/>
+        <link rel="stylesheet" type="text/css" href="../../resources/css/textos.css"/>
+        <link rel="stylesheet" type="text/css" href="../../resources/css/css.css"/>
+    </h:head>
+
+
+    <h:body style="background:#A3DAD9; border-color: #CF7000;" > 
+        <h:form id="idFormCadastroNotificacao" style="font-size: 12px; background-color:#A3DAD9">
+
+            <title>Relatório de Dependentes</title>
+            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" /> 
+            <h:panelGrid columns="2" columnClasses="tamanho45, tamanho45" style="margin-left:1%;width:95%;">
+                <p:outputLabel class="titTela" value="Grau de Parentesco" style="font-size: 14px;text-align: left;"/>
+                <p:outputLabel/>
+               
+                <p:selectOneMenu class="form-control" id="grau" value="#{relatorioDependentesMB.grauparentesco}"  style="width:80%;font-size: 12px;">
+                    <f:selectItem itemLabel="Todos" itemValue="Todos"/> 
+                    <f:selectItem itemLabel="Cônjege" itemValue="Cônjege" />   
+                    <f:selectItem itemLabel="Filho" itemValue="Filho" />  
+                    <f:selectItem itemLabel="Mãe" itemValue="Mãe" />  
+                    <f:selectItem itemLabel="Pai" itemValue="Pai" />  
+                    <f:selectItem itemLabel="Outro" itemValue="Outro" />
+                </p:selectOneMenu>
+                <h:panelGroup>
+                     <p:selectBooleanCheckbox id="utilizaPiscina"
+                                              value="#{relatorioDependentesMB.maior21}" /> 
+                    <h:outputText value="Maior de 21 anos"
+                                  class="titTela" style="font-size: 15px;text-align: left;margin-left:1%;"/> 
+                </h:panelGroup>
+            </h:panelGrid>
+            <br/><br/>
+            <hr style="color: #367587; background: #367587"/> 
+            <br/>   
+            <p:commandLink style="text-decoration: none;" action="#{relatorioDependentesMB.iniciarRelatorioMaior21()}"  target="_blank" ajax="false">
+                <div style="font-size: 16px;margin-left:14%;" class="cadastrar">Gerar Relatório</div>
+            </p:commandLink> 
+            <p:commandLink style="text-decoration: none;" action="#{relatorioDependentesMB.fechar()}">
+                <div style="font-size: 16px" class="cancelar">Cancelar</div>
+            </p:commandLink>
+            <br/>
+        </h:form>  
+    </h:body>
+
+</html>
