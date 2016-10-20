@@ -89,7 +89,7 @@ public class CadMedicoMB implements Serializable{
     
     
     public void gerarListaUsuarios(){
-        listaUsuarios = usuarioDao.list("Select u from Usuario u");
+        listaUsuarios = usuarioDao.list("Select u from Usuario u Where u.situacao='Ativo'");
         if (listaUsuarios == null) {
             listaUsuarios = new ArrayList<Usuario>();
         }
@@ -103,6 +103,7 @@ public class CadMedicoMB implements Serializable{
         medico.setIdusuario(usuario.getIdusuario());
         String mensagem = validarDados();
         if (mensagem.length() < 5) {
+            medico.setSituacao("Ativo");
             medico = medicoDao.update(medico);
             RequestContext.getCurrentInstance().closeDialog(medico);
         }else{

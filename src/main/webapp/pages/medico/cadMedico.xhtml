@@ -44,18 +44,12 @@
                 <p:inputText class="form-control" value="#{cadMedicoMB.medico.telefone}" style="width:100%;font-size: 12px;border-radius: 4px;"/>    
             </h:panelGrid>
             <br/> 
-            <h:panelGrid columns="3" columnClasses="tamanho45, tamanho20,tamanho20" style="margin-left:1%;width:95%;"> 
+            <h:panelGrid columns="2" columnClasses="tamanho45, tamanho20" style="margin-left:1%;width:95%;"> 
                 <p:outputLabel class="titTela" value="Especialidade" style="font-size: 14px;text-align: left;"/>
                 <p:outputLabel class="titTela" value="Celular" style="font-size: 14px;text-align: left;"/>
-                <p:outputLabel class="titTela" value="Situação" style="font-size: 14px;text-align: left;"/>
            
                 <p:inputText class="form-control" value="#{cadMedicoMB.medico.especialidade}" style="width: 90%;font-size: 12px;border-radius: 4px;"/>
                 <p:inputText class="form-control" value="#{cadMedicoMB.medico.celular}" style="width: 90%;font-size: 12px;border-radius: 4px;"/>    
-                <p:selectOneMenu class="form-control" id="situacao" value="#{cadMedicoMB.medico.situacao}"  style="width:90%;font-size: 12px;">
-                    <f:selectItem itemLabel="Selecione" itemValue="sn" noSelectionOption="true"/> 
-                    <f:selectItem itemLabel="Ativo" itemValue="Ativo" /> 
-                    <f:selectItem itemLabel="Inativo" itemValue="Inativo" />
-                </p:selectOneMenu>
             </h:panelGrid>
             <br/><br/> 
             <hr/>

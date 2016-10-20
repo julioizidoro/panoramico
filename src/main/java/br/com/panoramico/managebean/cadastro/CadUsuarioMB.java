@@ -156,6 +156,7 @@ public class CadUsuarioMB implements Serializable{
             } catch (NoSuchAlgorithmException ex) {
                 Logger.getLogger(CadUsuarioMB.class.getName()).log(Level.SEVERE, null, ex);
             }
+            usuario.setSituacao("Ativo");
             usuario = usuarioDao.update(usuario);
             boasVindas();
             RequestContext.getCurrentInstance().closeDialog(usuario);

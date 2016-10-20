@@ -105,19 +105,13 @@
                 </p:inputText>
             </h:panelGrid>
             <br/> 
-            <h:panelGrid columns="3" columnClasses="tamanho20, tamanho30,tamanho30" style="margin-left:2%;width:97%;"> 
+            <h:panelGrid columns="2" columnClasses="tamanho20, tamanho30" style="margin-left:2%;width:97%;"> 
                 <p:outputLabel class="titTela" value="Cnpj" style="font-size: 12px;text-align: left;"/>
                 <p:outputLabel class="titTela" value="Pessoa Contato" style="font-size: 12px;text-align: left;"/>
-                <p:outputLabel class="titTela" value="Banco" style="font-size: 12px;text-align: right;"/>
              
                 <p:inputMask class="form-control" mask="99.999.999/9999-99" value="#{cadEmpresaMB.empresa.cnpj}" size="15" style="width: 90%;font-size: 12px;"/>
                 <p:inputText class="form-control" value="#{cadEmpresaMB.empresa.pessoacontato}" size="20" style="width: 90%;font-size: 12px;float: left"/>
-                <p:selectOneMenu  class="form-control" id="idbanco"  style="width: 90%;font-size: 12px;"  value="#{cadEmpresaMB.banco}" converter="BancoConverter"
-                                  filter="true" filterMatchMode="contains" panelStyle="width:180px" >    
-                    <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
-                    <f:selectItems  value="#{cadEmpresaMB.listaBanco}" var="bancoselecionado" itemLabel="#{bancoselecionado.nome}" itemValue="#{bancoselecionado}"/>
-                    <f:attribute name="listaBanco" value="#{cadEmpresaMB.listaBanco}"/>
-                </p:selectOneMenu>
+                
             </h:panelGrid>
             <br/><br/> 
             <hr style="color: #367587; background: #367587"/>

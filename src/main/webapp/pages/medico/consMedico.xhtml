@@ -53,8 +53,8 @@
                                         </div>
                                          <p:ajax event="dialogReturn" listener="#{medicoMB.retornoDialogAlteracao}" update=":idFormConsultaMedico:messages, @form"/>
                                      </p:commandLink>
-                                     <p:commandLink rendered="#{usuarioLogadoMB.excluir}" action="#{medicoMB.excluir(medico)}" style="text-decoration: none;" update=":idFormConsultaMedico:messages, @form">
-                                        <div class="fa fa-trash-o"></div>
+                                     <p:commandLink rendered="#{usuarioLogadoMB.excluir}" action="#{medicoMB.desativarMedico(medico)}" title="#{medicoMB.retornarSituacao(medico)}" style="text-decoration: none;" update=":idFormConsultaMedico:messages, @form">
+                                         <div class="#{medicoMB.pegarIcone(medico)}"></div>
                                      </p:commandLink> 
                                 </h:column> 
 

@@ -7,6 +7,7 @@ package br.com.panoramico.managebean.cadastro;
 
 import br.com.panoramico.dao.MedicoDao;
 import br.com.panoramico.model.Medico;
+import br.com.panoramico.model.Usuario;
 import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -110,9 +111,15 @@ public class MedicoMB implements Serializable {
         }
     }
 
-    public void excluir(Medico medico) {
-        medicoDao.remove(medico.getIdmedico());
-        Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
+    public void desativarMedico(Medico medico) {
+        if (medico.getSituacao().equalsIgnoreCase("Ativo")) {
+            medico.setNome("Inativo");
+            Mensagem.lancarMensagemInfo("Desativado", " com sucesso");
+        }else{
+            medico.setSituacao("Ativo");
+            Mensagem.lancarMensagemInfo("Ativado", "com sucesso");
+        }
+        medicoDao.update(medico);
         gerarListaMedico();
     }
 
@@ -126,5 +133,22 @@ public class MedicoMB implements Serializable {
     public void limpar() {
         nome = "";
         gerarListaMedico();
+    }
+    
+    
+    public String pegarIcone(Medico medico){
+        if (medico.getSituacao().equalsIgnoreCase("Ativo")) {
+            return "fa fa-toggle-on";
+        }else{
+            return "fa fa-toggle-off";
+        }
+    }
+    
+    public String retornarSituacao(Medico medico){
+        if (medico.getSituacao().equalsIgnoreCase("Ativo")) {
+            return "Usuário Ativo";
+        }else{
+            return "Usuário Inativo";
+        }
     }
 }
