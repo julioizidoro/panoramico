@@ -49,6 +49,8 @@ public class Usuario implements Serializable {
     @Size(max = 14)
     @Column(name = "cpf")
     private String cpf;
+    @Column(name = "situacao")
+    private String situacao;
     @Column(name = "datanascimento")
     @Temporal(TemporalType.DATE)
     private Date datanascimento;
@@ -128,6 +130,16 @@ public class Usuario implements Serializable {
     public void setPerfil(Perfil perfil) {
         this.perfil = perfil;
     }
+
+    public String getSituacao() {
+        return situacao;
+    }
+
+    public void setSituacao(String situacao) {
+        this.situacao = situacao;
+    }
+    
+    
 
     @Override
     public int hashCode() {

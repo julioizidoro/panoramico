@@ -58,8 +58,8 @@
                                         </div>
                                          <p:ajax event="dialogReturn" listener="#{usuarioMB.retornoDialogAlteracao}" update=":idFormConsultaUsuario:messages, @form"/>
                                      </p:commandLink>
-                                     <p:commandLink rendered="#{usuarioLogadoMB.excluir}" action="#{usuarioMB.excluir(usuario)}" style="text-decoration: none;" update=":idFormConsultaUsuario:messages, @form">
-                                        <div class="fa fa-trash-o"></div>
+                                     <p:commandLink title="#{usuarioMB.retornarSituacao(usuario)}" rendered="#{usuarioLogadoMB.excluir}" action="#{usuarioMB.desativarUsuario(usuario)}" style="text-decoration: none;" update=":idFormConsultaUsuario:messages, @form">
+                                         <div class="#{usuarioMB.pegarIcone(usuario)}"></div>
                                      </p:commandLink>
                                 </h:column> 
 

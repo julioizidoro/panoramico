@@ -123,9 +123,15 @@ public class UsuarioMB implements Serializable {
         }
     }
 
-    public void excluir(Usuario usuario) {
-        usuarioDao.remove(usuario.getIdusuario());
-        Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
+    public void desativarUsuario(Usuario usuario) {
+        if (usuario.getSituacao().equalsIgnoreCase("Ativo")) {
+            usuario.setSituacao("Inativo");
+            Mensagem.lancarMensagemInfo("Desativado", "com sucesso");
+        }else{
+            usuario.setSituacao("Ativo");
+            Mensagem.lancarMensagemInfo("Ativado", "com sucesso");
+        }
+        usuarioDao.update(usuario);
         gerarListaUsuario();
     }
 
@@ -145,5 +151,21 @@ public class UsuarioMB implements Serializable {
         nome = "";
         login = null;
         gerarListaUsuario();
+    }
+    
+    public String pegarIcone(Usuario usuario){
+        if (usuario.getSituacao().equalsIgnoreCase("Ativo")) {
+            return "fa fa-toggle-on";
+        }else{
+            return "fa fa-toggle-off";
+        }
+    }
+    
+    public String retornarSituacao(Usuario usuario){
+        if (usuario.getSituacao().equalsIgnoreCase("Ativo")) {
+            return "Usuário Ativo";
+        }else{
+            return "Usuário Inativo";
+        }
     }
 }
