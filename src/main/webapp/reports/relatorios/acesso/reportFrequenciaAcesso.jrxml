@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Mapa de Vendas Gerencial" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="320dd56b-4281-455e-becf-bdbfae77892b">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="2"/>
 	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
 	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
 	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
@@ -17,39 +17,30 @@
 	<queryString>
 		<![CDATA[$P!{sql}]]>
 	</queryString>
-	<field name="class" class="java.lang.Class">
-		<fieldDescription><![CDATA[class]]></fieldDescription>
+	<field name="data" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="dataCompensacao" class="java.util.Date">
-		<fieldDescription><![CDATA[dataCompensacao]]></fieldDescription>
+	<field name="hora" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="descricao" class="java.lang.String">
-		<fieldDescription><![CDATA[descricao]]></fieldDescription>
+	<field name="tipo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="planoContas" class="java.lang.String">
-		<fieldDescription><![CDATA[planoContas]]></fieldDescription>
-	</field>
-	<field name="saldo" class="java.lang.Float">
-		<fieldDescription><![CDATA[saldo]]></fieldDescription>
-	</field>
-	<field name="valorEntrada" class="java.lang.Float">
-		<fieldDescription><![CDATA[valorEntrada]]></fieldDescription>
-	</field>
-	<field name="valorSaida" class="java.lang.Float">
-		<fieldDescription><![CDATA[valorSaida]]></fieldDescription>
+	<field name="nome" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<variable name="totalEntrada" class="java.lang.Float" calculation="Sum">
-		<variableExpression><![CDATA[$F{valorEntrada}]]></variableExpression>
+		<variableExpression><![CDATA[]]></variableExpression>
 	</variable>
 	<variable name="totalSaida" class="java.lang.Float" calculation="Sum">
-		<variableExpression><![CDATA[$F{valorSaida}]]></variableExpression>
+		<variableExpression><![CDATA[]]></variableExpression>
 	</variable>
 	<variable name="saldo" class="java.lang.Float"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="216" splitType="Stretch">
+		<band height="188" splitType="Stretch">
 			<textField>
 				<reportElement style="Detail" x="3" y="108" width="553" height="33" uuid="8b407713-f5f1-44b0-9223-250f03a69f01"/>
 				<textElement textAlignment="Center">
@@ -58,14 +49,14 @@
 				<textFieldExpression><![CDATA["Relatório de frequência de Acesso"]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="90" y="172" width="281" height="20" uuid="9adce713-8e13-4466-8f00-23d351c3aef0"/>
+				<reportElement x="91" y="155" width="281" height="20" uuid="9adce713-8e13-4466-8f00-23d351c3aef0"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{periodo}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="4" y="172" width="71" height="20" uuid="6fd811b8-10d0-443a-ac2e-a687af719c6a"/>
+				<reportElement x="5" y="155" width="71" height="20" uuid="6fd811b8-10d0-443a-ac2e-a687af719c6a"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
@@ -89,55 +80,55 @@
 				</graphicElement>
 			</line>
 			<staticText>
-				<reportElement style="Column header" x="10" y="4" width="109" height="15" uuid="315b305d-476b-41fd-9c5d-af8c628b570f"/>
-				<text><![CDATA[Plano de Contas]]></text>
+				<reportElement style="Column header" x="10" y="4" width="95" height="15" uuid="315b305d-476b-41fd-9c5d-af8c628b570f"/>
+				<text><![CDATA[Data de Acesso]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" x="342" y="5" width="73" height="15" uuid="ca145b00-b653-4579-8cb8-36d22ce41438"/>
-				<text><![CDATA[N° Acesso]]></text>
-			</staticText>
-			<staticText>
-				<reportElement style="Column header" x="153" y="3" width="97" height="15" uuid="75035416-8f5c-4205-a2a4-beb512f1a981"/>
-				<text><![CDATA[Nome ]]></text>
+				<reportElement style="Column header" x="115" y="4" width="68" height="15" uuid="75035416-8f5c-4205-a2a4-beb512f1a981"/>
+				<text><![CDATA[Hora]]></text>
 			</staticText>
 			<staticText>
 				<reportElement style="Column header" x="439" y="5" width="93" height="15" uuid="f6fa8c35-4169-4867-99ee-10b9e0608945"/>
 				<text><![CDATA[Tipo de Acesso]]></text>
 			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="199" y="4" width="68" height="15" uuid="a6b0a3d1-47c3-44e5-bf20-f3402f6f6df0"/>
+				<text><![CDATA[Nome]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="38" splitType="Stretch">
+		<band height="18" splitType="Stretch">
 			<rectangle>
-				<reportElement x="0" y="0" width="555" height="38" uuid="ee86d585-c7cb-4176-b6d0-71932d13f089"/>
+				<reportElement x="0" y="0" width="555" height="18" uuid="ee86d585-c7cb-4176-b6d0-71932d13f089"/>
 			</rectangle>
-			<textField>
-				<reportElement style="Detail" x="10" y="2" width="121" height="15" uuid="e0df543e-f9a3-4983-8b5f-111cc992c08b"/>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement style="Detail" x="10" y="2" width="95" height="15" uuid="e0df543e-f9a3-4983-8b5f-111cc992c08b"/>
 				<textElement textAlignment="Left">
 					<font size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{planoContas}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0.00">
-				<reportElement style="Detail" x="343" y="2" width="72" height="15" uuid="4c0b5781-b7bb-4213-a971-00ea0f01211d"/>
-				<textElement textAlignment="Right">
-					<font size="10"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{valorEntrada}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{data}]]></textFieldExpression>
 			</textField>
 			<textField pattern="">
-				<reportElement style="Detail" x="153" y="2" width="159" height="15" uuid="292c73a8-45fe-48d9-b46b-e85bf4b09d50"/>
+				<reportElement style="Detail" x="115" y="3" width="68" height="15" uuid="292c73a8-45fe-48d9-b46b-e85bf4b09d50"/>
 				<textElement textAlignment="Left">
 					<font size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{descricao}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{hora}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00">
-				<reportElement style="Detail" x="440" y="0" width="72" height="15" uuid="f51b6a76-1b75-4f8b-9203-014c3da8da8f"/>
+			<textField pattern="">
+				<reportElement style="Detail" x="440" y="2" width="82" height="15" uuid="f51b6a76-1b75-4f8b-9203-014c3da8da8f"/>
 				<textElement textAlignment="Right">
 					<font size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{valorEntrada}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{tipo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement style="Detail" x="199" y="2" width="233" height="15" uuid="20365fb1-edae-4142-9fee-8b6c74745c55"/>
+				<textElement textAlignment="Left">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

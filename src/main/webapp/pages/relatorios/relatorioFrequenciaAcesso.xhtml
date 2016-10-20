@@ -1,0 +1,57 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+        <link href="../../resources/css/css.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" type="text/css" href="../../resources/fonts/font-awesome-4.6.3/css/font-awesome.min.css"/>
+
+        <link type="text/javascript" href="../../resources/js/jquery-3.1.0.js"></link>
+        <link type="text/javascript" src="../../resources/js/modal.js"/> 
+        <link rel="stylesheet" type="text/css" href="../../resources/css/modal.css"/>
+        <link rel="stylesheet" type="text/css" href="../../resources/css/buttons.css"/>
+        <link rel="stylesheet" type="text/css" href="../../resources/css/textos.css"/>
+        <link rel="stylesheet" type="text/css" href="../../resources/css/css.css"/>
+    </h:head>
+
+
+    <h:body style="background:#A3DAD9; border-color: #CF7000;" > 
+        <h:form id="idFormImprimirRelatorio" style="font-size: 12px; background-color:#A3DAD9">
+
+            <title>Frequência de Acesso</title>
+            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+            <h:panelGrid columns="2" columnClasses="tamanho45, tamanho45" style="margin-left:1%;width:95%;">  
+                <p:outputLabel class="titTela" value="Período de acesso" style="font-size: 12px;text-align: left;"/>
+                <p:outputLabel class="titTela" value="Associado" style="font-size: 12px;text-align: left;"/>
+                
+                <h:panelGroup>
+                    <p:inputMask mask="99/99/9999" size="11" class="form-control" value="#{relatorioFrequenciaAcessoMB.dataInicio}" style="font-size: 12px;float: left;">
+                        <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+                    </p:inputMask>
+                    <p:inputMask mask="99/99/9999" size="11" class="form-control" value="#{relatorioFrequenciaAcessoMB.dataFinal}" style="margin-left:1%;font-size: 12px;float: left;">
+                        <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+                    </p:inputMask>
+                </h:panelGroup>
+                <p:selectOneMenu  class="form-control"  id="associadoDependente2"  style="width:80%;font-size: 12px;"  value="#{relatorioFrequenciaAcessoMB.associado}" converter="AssociadoConverter"
+                                  filter="true" filterMatchMode="contains" panelStyle="width:180px" >
+                    <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
+                    <f:selectItems  value="#{relatorioFrequenciaAcessoMB.listaAssociado}" var="associadoselecionado" itemLabel="#{associadoselecionado.cliente.nome}" itemValue="#{associadoselecionado}"/>
+                    <f:attribute name="listaAssociado" value="#{relatorioFrequenciaAcessoMB.listaAssociado}"/>
+                </p:selectOneMenu>
+            </h:panelGrid>
+            <br/><br/>
+            <hr style="color: #367587; background: #367587"/>
+            <br/>  
+            <p:commandLink style="text-decoration: none;" target="_blank" action="#{relatorioFrequenciaAcessoMB.gerarRelatorio()}" ajax="false">
+                <div style="font-size: 16px;margin-left: 32%;" class="cadastrar">Gerar Relatório</div>
+            </p:commandLink>
+            <p:commandLink style="text-decoration: none;" action="#{relatorioFrequenciaAcessoMB.cancelar()}">
+                <div style="font-size: 16px" class="cancelar">Cancelar</div>
+            </p:commandLink>
+        </h:form>
+    </h:body>
+
+</html>
