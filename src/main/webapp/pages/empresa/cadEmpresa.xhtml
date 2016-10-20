@@ -105,13 +105,14 @@
                 </p:inputText>
             </h:panelGrid>
             <br/> 
-            <h:panelGrid columns="2" columnClasses="tamanho20, tamanho30" style="margin-left:2%;width:97%;"> 
+            <h:panelGrid columns="3" columnClasses="tamanho20, tamanho30, tamanho20" style="margin-left:2%;width:97%;"> 
                 <p:outputLabel class="titTela" value="Cnpj" style="font-size: 12px;text-align: left;"/>
                 <p:outputLabel class="titTela" value="Pessoa Contato" style="font-size: 12px;text-align: left;"/>
+                <p:outputLabel class="titTela" value="I.E." style="font-size: 12px;text-align: left;"/>
              
                 <p:inputMask class="form-control" mask="99.999.999/9999-99" value="#{cadEmpresaMB.empresa.cnpj}" size="15" style="width: 90%;font-size: 12px;"/>
                 <p:inputText class="form-control" value="#{cadEmpresaMB.empresa.pessoacontato}" size="20" style="width: 90%;font-size: 12px;float: left"/>
-                
+                <p:inputText class="form-control" value="#{cadEmpresaMB.empresa.ie}" size="20" style="width: 90%;font-size: 12px;float: left"/>
             </h:panelGrid>
             <br/><br/> 
             <hr style="color: #367587; background: #367587"/>

@@ -89,7 +89,7 @@ public class CadMedicoMB implements Serializable{
     
     
     public void gerarListaUsuarios(){
-        listaUsuarios = usuarioDao.list("Select u from Usuario u Where u.situacao='Ativo'");
+        listaUsuarios = usuarioDao.list("Select u from Usuario u Where u.situacao=true");
         if (listaUsuarios == null) {
             listaUsuarios = new ArrayList<Usuario>();
         }

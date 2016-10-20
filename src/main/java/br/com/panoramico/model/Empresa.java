@@ -60,6 +60,8 @@ public class Empresa implements Serializable {
     private String cep;
     @Column(name = "numero")
     private String numero;
+    @Column(name = "ie")
+    private String ie;
     @Column(name = "valormensalidade")
     private Float valormensalidade;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empresa")
@@ -210,6 +212,16 @@ public class Empresa implements Serializable {
     public void setAssociadoempresaList(List<Associadoempresa> associadoempresaList) {
         this.associadoempresaList = associadoempresaList;
     }
+
+    public String getIe() {
+        return ie;
+    }
+
+    public void setIe(String ie) {
+        this.ie = ie;
+    }
+    
+    
 
     @Override
     public int hashCode() {

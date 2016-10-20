@@ -50,7 +50,7 @@ public class Usuario implements Serializable {
     @Column(name = "cpf")
     private String cpf;
     @Column(name = "situacao")
-    private String situacao;
+    private boolean situacao;
     @Column(name = "datanascimento")
     @Temporal(TemporalType.DATE)
     private Date datanascimento;
@@ -131,13 +131,14 @@ public class Usuario implements Serializable {
         this.perfil = perfil;
     }
 
-    public String getSituacao() {
+    public boolean isSituacao() {
         return situacao;
     }
 
-    public void setSituacao(String situacao) {
+    public void setSituacao(boolean situacao) {
         this.situacao = situacao;
     }
+
     
     
 

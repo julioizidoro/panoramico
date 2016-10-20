@@ -124,11 +124,11 @@ public class UsuarioMB implements Serializable {
     }
 
     public void desativarUsuario(Usuario usuario) {
-        if (usuario.getSituacao().equalsIgnoreCase("Ativo")) {
-            usuario.setSituacao("Inativo");
+        if (usuario.isSituacao()) {
+            usuario.setSituacao(false);
             Mensagem.lancarMensagemInfo("Desativado", "com sucesso");
         }else{
-            usuario.setSituacao("Ativo");
+            usuario.setSituacao(true);
             Mensagem.lancarMensagemInfo("Ativado", "com sucesso");
         }
         usuarioDao.update(usuario);
@@ -154,7 +154,7 @@ public class UsuarioMB implements Serializable {
     }
     
     public String pegarIcone(Usuario usuario){
-        if (usuario.getSituacao().equalsIgnoreCase("Ativo")) {
+        if (usuario.isSituacao()) {
             return "fa fa-toggle-on";
         }else{
             return "fa fa-toggle-off";
@@ -162,7 +162,7 @@ public class UsuarioMB implements Serializable {
     }
     
     public String retornarSituacao(Usuario usuario){
-        if (usuario.getSituacao().equalsIgnoreCase("Ativo")) {
+        if (usuario.isSituacao()) {
             return "Usuário Ativo";
         }else{
             return "Usuário Inativo";
