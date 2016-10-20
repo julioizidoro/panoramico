@@ -33,11 +33,10 @@ import org.primefaces.event.SelectEvent;
  *
  * @author Julio
  */
-
 @Named
 @ViewScoped
-public class AssociadoMB implements Serializable{
-    
+public class AssociadoMB implements Serializable {
+
     @EJB
     private AssociadoDao associadoDao;
     private List<Associado> listaAssociado;
@@ -52,19 +51,19 @@ public class AssociadoMB implements Serializable{
     private String telefone;
     private String sql;
     private String matricula;
-    
+
     @PostConstruct
-    public void init(){
-       FacesContext fc = FacesContext.getCurrentInstance();
-       HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
-       sql = (String) session.getAttribute("sql");
-       if (sql!=null){
-           gerarListaAssociado();
-       }else {
-           sql = "Select a from Associado a";
-           gerarListaAssociado();
-       }
-       session.removeAttribute("sql");
+    public void init() {
+        FacesContext fc = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+        sql = (String) session.getAttribute("sql");
+        if (sql != null) {
+            gerarListaAssociado();
+        } else {
+            sql = "Select a from Associado a where a.situacao='Ativo'";
+            gerarListaAssociado();
+        }
+        session.removeAttribute("sql");
     }
 
     public AssociadoDao getAssociadoDao() {
@@ -154,15 +153,14 @@ public class AssociadoMB implements Serializable{
     public void setMatricula(String matricula) {
         this.matricula = matricula;
     }
-    
-    
-    public void gerarListaAssociado(){
+
+    public void gerarListaAssociado() {
         listaAssociado = associadoDao.list(sql);
         if (listaAssociado == null) {
             listaAssociado = new ArrayList<Associado>();
         }
     }
-    
+
     public String novoCadastroAssociado() {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
@@ -172,34 +170,32 @@ public class AssociadoMB implements Serializable{
         RequestContext.getCurrentInstance().openDialog("cadAssociado", options, null);
         return "";
     }
-    
-    
-    public void retornoDialogNovo(SelectEvent event){
+
+    public void retornoDialogNovo(SelectEvent event) {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         sql = (String) session.getAttribute("sql");
         session.removeAttribute("sql");
         Associado associado = (Associado) event.getObject();
-        if (associado.getIdassociado()!= null) {
+        if (associado.getIdassociado() != null) {
             Mensagem.lancarMensagemInfo("Salvou", "Cadastro de Associado realizado com sucesso");
         }
         gerarListaAssociado();
     }
-    
-     public void retornoDialogAlteracao(SelectEvent event){
+
+    public void retornoDialogAlteracao(SelectEvent event) {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         sql = (String) session.getAttribute("sql");
         session.removeAttribute("sql");
         Associado associado = (Associado) event.getObject();
-        if (associado.getIdassociado()!= null) {
+        if (associado.getIdassociado() != null) {
             Mensagem.lancarMensagemInfo("Salvou", "Alteração do Associado realizado com sucesso");
         }
         gerarListaAssociado();
     }
-    
-    
-    public void editar(Associado associado){
+
+    public void editar(Associado associado) {
         if (associado != null) {
             Map<String, Object> options = new HashMap<String, Object>();
             FacesContext fc = FacesContext.getCurrentInstance();
@@ -210,15 +206,14 @@ public class AssociadoMB implements Serializable{
             RequestContext.getCurrentInstance().openDialog("cadAssociado", options, null);
         }
     }
-    
-    
-    public void associarEmpresa(Associado associado){
+
+    public void associarEmpresa(Associado associado) {
         if (associado != null) {
             try {
                 associadoempresa = associadoEmpresaDao.consultar("Select a from Associadoempresa a where a.associado.idassociado=" + associado.getIdassociado());
             } catch (SQLException ex) {
                 Logger.getLogger(AssociadoMB.class.getName()).log(Level.SEVERE, null, ex);
-            } 
+            }
             Map<String, Object> options = new HashMap<String, Object>();
             FacesContext fc = FacesContext.getCurrentInstance();
             HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
@@ -228,45 +223,63 @@ public class AssociadoMB implements Serializable{
             RequestContext.getCurrentInstance().openDialog("cadAssociadoEmpresa", options, null);
         }
     }
-    
-    public void excluir(Associado associado){
-        List<Dependente> listaDependente = dependenteDao.list("Select d from Dependente d where d.associado.idassociado="+ associado.getIdassociado());
+
+    public void excluir(Associado associado) {
+        List<Dependente> listaDependente = dependenteDao.list("Select d from Dependente d where d.associado.idassociado=" + associado.getIdassociado());
         if (listaDependente == null || listaDependente.isEmpty()) {
             associadoDao.remove(associado.getIdassociado());
             Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
             gerarListaAssociado();
-        }else{
+        } else {
             Mensagem.lancarMensagemInfo("Atenção", "este associado não pode ser excluido");
         }
     }
-    
-    public String limpar(){
-        sql = "Select a from Associado a";
+
+    public String limpar() {
+        sql = "Select a from Associado a where a.situacao='Ativo'";
         gerarListaAssociado();
-        matricula="";
-        nome="";
-        cpf="";
-        email="";
-        telefone="";
+        matricula = "";
+        nome = "";
+        cpf = "";
+        email = "";
+        telefone = "";
         return "";
     }
-    
-    public String pesquisar(){
+
+    public String pesquisar() {
         sql = "Select a from Associado a where a.cliente.nome like '%" + nome + "%' ";
-        if (cpf.length()>0){
+        if (cpf.length() > 0) {
             sql = sql + " and a.cliente.cpf='" + cpf + "' ";
         }
-        if (email.length()>0){
+        if (email.length() > 0) {
             sql = sql + " and a.cliente.email='" + email + "' ";
         }
-        if (telefone.length()>0){
+        if (telefone.length() > 0) {
             sql = sql + " and a.cliente.telefone='" + telefone + "' ";
         }
-        if (matricula.length()>0){
+        if (matricula.length() > 0) {
             sql = sql + " and a.matricula='" + matricula + "' ";
         }
         sql = sql + " order by a.cliente.nome";
         gerarListaAssociado();
         return "";
+    }
+
+    public String associadoEmpresa(Associado associado) {
+        return "Não";
+    }
+
+    public String dependentes(Associado associado) {
+        FacesContext fc = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+        session.setAttribute("associado", associado);
+        return "consDependente";
+    }
+    
+    public String financeiro(Associado associado) {
+        FacesContext fc = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+        session.setAttribute("associado", associado);
+        return "consContasReceber";
     }
 }

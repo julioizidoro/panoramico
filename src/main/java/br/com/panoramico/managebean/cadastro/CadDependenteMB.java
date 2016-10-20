@@ -43,9 +43,11 @@ public class CadDependenteMB implements Serializable{
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         dependente = (Dependente) session.getAttribute("dependente");
-        session.removeAttribute("dependente");
+        session.removeAttribute("dependente"); 
+        associado = (Associado) session.getAttribute("associado");
+        session.removeAttribute("associado");
         if (dependente == null) {
-            dependente = new Dependente();
+            dependente = new Dependente(); 
         }else{
             associado = dependente.getAssociado();
         }

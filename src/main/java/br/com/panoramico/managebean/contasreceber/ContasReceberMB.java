@@ -12,6 +12,7 @@ import br.com.panoramico.dao.PlanoContaDao;
 import br.com.panoramico.dao.ProprietarioDao;
 import br.com.panoramico.managebean.UsuarioLogadoMB;
 import br.com.panoramico.managebean.boleto.LerRetornoItauBean;
+import br.com.panoramico.model.Associado;
 import br.com.panoramico.model.Cliente;
 import br.com.panoramico.model.Cobrancasparcelas;
 import br.com.panoramico.model.Contasreceber;
@@ -70,10 +71,14 @@ public class ContasReceberMB implements Serializable{
     @EJB
     private CobrancasParcelasDao cobrancasParcelasDao;
     private Cobrancasparcelas cobrancasparcelas;
-    
+    private Associado associado;
     
     @PostConstruct
     public void init(){
+        FacesContext fc = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+        associado = (Associado) session.getAttribute("associado");
+        session.removeAttribute("associado");
         gerarListaContasReceber();
         gerarListaCliente();
         gerarListaPlanoConta();
@@ -228,11 +233,24 @@ public class ContasReceberMB implements Serializable{
     public void setCobrancasparcelas(Cobrancasparcelas cobrancasparcelas) {
         this.cobrancasparcelas = cobrancasparcelas;
     }
+
+    public Associado getAssociado() {
+        return associado;
+    }
+
+    public void setAssociado(Associado associado) {
+        this.associado = associado;
+    }
     
     
     
     public void gerarListaContasReceber(){
-        listaContasReceber = contasReceberDao.list("Select c from Contasreceber c where c.situacao<>'CANCELADO' and c.situacao<>'PAGO'");
+        if(associado!=null && associado.getIdassociado()!=null){
+            listaContasReceber = contasReceberDao.list("Select c from Contasreceber c where c.situacao<>'CANCELADO' and c.situacao<>'PAGO'"
+                    + " and c.cliente.idcliente="+associado.getCliente().getIdcliente());
+        }else{
+            listaContasReceber = contasReceberDao.list("Select c from Contasreceber c where c.situacao<>'CANCELADO' and c.situacao<>'PAGO'");
+        } 
         if (listaContasReceber == null) {
             listaContasReceber = new ArrayList<Contasreceber>();
         }
@@ -253,6 +271,11 @@ public class ContasReceberMB implements Serializable{
     }
      
     public String novoCadastroContasReceber() {
+        if(associado!=null && associado.getIdassociado()!=null){
+            FacesContext fc = FacesContext.getCurrentInstance();
+            HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+            session.setAttribute("cliente", associado.getCliente());
+        }
         Map<String, Object> options = new HashMap<String, Object>();
         options.put("contentWidth", 580);
         RequestContext.getCurrentInstance().openDialog("cadContasReceber", options, null);
@@ -460,5 +483,14 @@ public class ContasReceberMB implements Serializable{
     
     public void retornoDialogCob(SelectEvent event){
         gerarListaContasReceber();
+    }
+    
+    
+    public boolean habilitarPesquisa(){
+        if(associado!=null && associado.getIdassociado()!=null){
+            return false;
+        }else{
+            return true;
+        }
     }
 }

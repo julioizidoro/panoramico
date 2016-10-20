@@ -10,7 +10,7 @@
                 <br/>
                 <h:form id="idFormConsultaDependente" style="margin-left:10%;width: 78%;">
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:10%;width: 80%;"/>
-                    <p:accordionPanel activeIndex="-1" style="width:85%;margin-left: 8%;z-index:1">
+                    <p:accordionPanel activeIndex="-1" style="width:85%;margin-left: 8%;z-index:1" rendered="#{dependenteMB.habilitarPesquisa()}">
                         <p:tab title="Pesquisar">
                             <p:outputLabel value="Matrícula" class="titTela" style="font-size: 12px;text-align: left;margin-left: 2%;float: left;"/>
                             <p:outputLabel value="Nome" class="titTela" style="font-size: 12px;text-align: left;margin-left:12%;float: left;"/>
@@ -24,7 +24,7 @@
                             <p:outputLabel value="Associado" class="titTela" style="font-size: 12px;text-align: left;margin-left:2%;float: left;"/>
                             <p:outputLabel value="Telefone" class="titTela" style="font-size: 12px;text-align: left;margin-left:31.6%;float: left;"/>
                             <br/>
-                            <p:inputText id="associado" value="#{dependenteMB.associado}"  style="width: 216px;margin-left:-47.4%;font-size: 12px;float: left;"/>
+                            <p:inputText id="associado" value="#{dependenteMB.nomeassociado}"  style="width: 216px;margin-left:-47.4%;font-size: 12px;float: left;"/>
                             <p:inputText id="telefone" value="#{dependenteMB.telefone}"  style="width:120px;margin-left:-7.3%;font-size: 12px;float: left;"/>
                             <p:commandLink style="text-decoration: none; margin-top: 10%;" actionListener="#{dependenteMB.pesquisar()}" ajax="false" update=":idFormConsultaDependente:idConsultaDependente, messages">
                                 <div style="font-size: 16px;margin-left:5%;" class="adicionar">Filtrar</div>

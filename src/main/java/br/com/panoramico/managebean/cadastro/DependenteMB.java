@@ -6,7 +6,8 @@
 package br.com.panoramico.managebean.cadastro;
 
 import br.com.panoramico.dao.AssociadoDao;
-import br.com.panoramico.dao.DependenteDao; 
+import br.com.panoramico.dao.DependenteDao;
+import br.com.panoramico.model.Associado;
 import br.com.panoramico.model.Dependente;
 import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
@@ -27,25 +28,29 @@ import org.primefaces.event.SelectEvent;
  *
  * @author Julio
  */
-
 @Named
 @ViewScoped
-public class DependenteMB implements Serializable{
-    
+public class DependenteMB implements Serializable {
+
     @EJB
     private DependenteDao dependenteDao;
     private Dependente dependente;
     private List<Dependente> listaDependente;
     @EJB
     private AssociadoDao associadoDao;
+    private Associado associado;
     private String nome;
-    private String associado;
+    private String nomeassociado;
     private String matricula;
     private String email;
     private String telefone;
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
+        FacesContext fc = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+        associado = (Associado) session.getAttribute("associado");
+        session.removeAttribute("associado");
         gerarListaDependente();
     }
 
@@ -89,12 +94,20 @@ public class DependenteMB implements Serializable{
         this.nome = nome;
     }
 
-    public String getAssociado() {
+    public Associado getAssociado() {
         return associado;
     }
 
-    public void setAssociado(String associado) {
+    public void setAssociado(Associado associado) {
         this.associado = associado;
+    }
+
+    public String getNomeassociado() {
+        return nomeassociado;
+    }
+
+    public void setNomeassociado(String nomeassociado) {
+        this.nomeassociado = nomeassociado;
     }
 
     public String getMatricula() {
@@ -103,7 +116,7 @@ public class DependenteMB implements Serializable{
 
     public void setMatricula(String matricula) {
         this.matricula = matricula;
-    } 
+    }
 
     public String getTelefone() {
         return telefone;
@@ -121,34 +134,35 @@ public class DependenteMB implements Serializable{
         this.email = email;
     }
 
-
-    
     public String novoCadastroDependente() {
+        if(associado!=null && associado.getIdassociado()!=null){
+            FacesContext fc = FacesContext.getCurrentInstance();
+            HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+            session.setAttribute("associado", associado);
+        }
         Map<String, Object> options = new HashMap<String, Object>();
         options.put("contentWidth", 550);
         RequestContext.getCurrentInstance().openDialog("cadDependente", options, null);
         return "";
     }
-    
-    
-    public void retornoDialogNovo(SelectEvent event){
+
+    public void retornoDialogNovo(SelectEvent event) {
         Dependente dependente = (Dependente) event.getObject();
-        if (dependente.getIddependente()!= null) {
+        if (dependente.getIddependente() != null) {
             Mensagem.lancarMensagemInfo("Salvou", "Cadastro de Dependente realizado com sucesso");
         }
         gerarListaDependente();
     }
-    
-    public void retornoDialogAlteracao(SelectEvent event){
+
+    public void retornoDialogAlteracao(SelectEvent event) {
         Dependente dependente = (Dependente) event.getObject();
-        if (dependente.getIddependente()!= null) {
+        if (dependente.getIddependente() != null) {
             Mensagem.lancarMensagemInfo("Salvou", "Alteração do Dependente realizado com sucesso");
         }
         gerarListaDependente();
     }
-    
-    
-    public void editar(Dependente dependente){
+
+    public void editar(Dependente dependente) {
         if (dependente != null) {
             Map<String, Object> options = new HashMap<String, Object>();
             FacesContext fc = FacesContext.getCurrentInstance();
@@ -158,35 +172,39 @@ public class DependenteMB implements Serializable{
             RequestContext.getCurrentInstance().openDialog("cadDependente", options, null);
         }
     }
-    
-    public void gerarListaDependente(){
-        listaDependente = dependenteDao.list("Select c from Dependente c where c.situacao='Ativo' order by c.nome");
+
+    public void gerarListaDependente() {
+        if (associado != null && associado.getIdassociado()!=null) {
+            listaDependente = dependenteDao.list("Select c from Dependente c where c.situacao='Ativo' "
+                    + " and c.associado.idassociado=" + associado.getIdassociado() + " order by c.nome");
+        } else {
+            listaDependente = dependenteDao.list("Select c from Dependente c where c.situacao='Ativo' "
+                    + " order by c.nome");
+        }
         if (listaDependente == null) {
             listaDependente = new ArrayList<Dependente>();
         }
     }
-    
-    
-    public void excluir(Dependente dependente){
+
+    public void excluir(Dependente dependente) {
         dependenteDao.remove(dependente.getIddependente());
         Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
         gerarListaDependente();
     }
-    
-    
-    public void pesquisar(){
-        String sql = "Select c from Dependente c where c.nome like '%"+nome+"%'";
-        if(associado!=null && associado.length()>0){
-            sql = sql + " and c.associado.cliente.nome like '%"+associado+"%'";
+
+    public void pesquisar() {
+        String sql = "Select c from Dependente c where c.nome like '%" + nome + "%'";
+        if (nomeassociado != null && nomeassociado.length() > 0) {
+            sql = sql + " and c.associado.cliente.nome like '%" + associado + "%'";
         }
-        if(email!=null && email.length()>0){
-            sql = sql + " and c.email like '%"+email+"%'";
+        if (email != null && email.length() > 0) {
+            sql = sql + " and c.email like '%" + email + "%'";
         }
-        if(telefone!=null && telefone.length()>0){
-            sql = sql + " and c.telefone='"+telefone+"'"; 
+        if (telefone != null && telefone.length() > 0) {
+            sql = sql + " and c.telefone='" + telefone + "'";
         }
-        if(matricula!=null && matricula.length()>0){
-            sql = sql + " and c.matricula='"+matricula+"'"; 
+        if (matricula != null && matricula.length() > 0) {
+            sql = sql + " and c.matricula='" + matricula + "'";
         }
         sql = sql + " order by c.nome";
         listaDependente = dependenteDao.list(sql);
@@ -194,13 +212,21 @@ public class DependenteMB implements Serializable{
             listaDependente = new ArrayList<Dependente>();
         }
     }
-    
-    public void limpar(){
+
+    public void limpar() {
         nome = "";
         email = null;
         telefone = null;
         associado = null;
         matricula = null;
         gerarListaDependente();
+    }
+    
+    public boolean habilitarPesquisa(){
+        if(associado!=null && associado.getIdassociado()!=null){
+            return false;
+        }else{
+            return true;
+        }
     }
 }

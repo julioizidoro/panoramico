@@ -8,14 +8,14 @@
             <br/>
             <div class="col-10 boxAzulClaro" style="margin-left:8.5%;width: 83.2%;">  
                 <br/> 
-                <h:form id="idFormConsultaAssociado" style="margin-left:10%; width:78%;">
+                <h:form id="idFormConsultaAssociado" style="margin-left:6%; width:85%;">
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:10%;width: 80%;"/>
                     <p:accordionPanel activeIndex="-1" style="width:85%;margin-left: 8%;z-index:1">
                         <p:tab title="Pesquisar">
                             <p:outputLabel value="Matrícula" class="titTela" style="font-size: 12px;text-align: left;margin-left: 2%;float: left;"/>
                             <p:outputLabel value="Nome" class="titTela" style="font-size: 12px;text-align: left;margin-left:12%;float: left;"/>
                             <p:outputLabel value="CPF" class="titTela" style="font-size: 12px;text-align: left;margin-left:29.4%;float: left;"/>
-                            
+
                             <br/>
                             <p:inputText id="matricula" value="#{associadoMB.matricula}"  style="width:115px;margin-left:-56.6%;font-size: 12px;float: left;"/>
                             <p:inputText id="nome" value="#{associadoMB.nome}"  style="width: 216px;margin-left:-37%;font-size: 12px;float: left;"/>
@@ -33,56 +33,66 @@
                                 <div style="font-size: 16px;margin-left: 2%;" class="limpar">Limpar</div>
                             </p:commandLink>
                         </p:tab>
-                   </p:accordionPanel>  
-                            <!-- TABELA CADASTROS -->
-                            <div class="col-6 titTela" style="margin-left:-13%;">Consulta Associado</div>
-                            <p:commandLink action="#{associadoMB.novoCadastroAssociado()}" rendered="#{usuarioLogadoMB.cadastrar}">
-                                <div class="icoAdd fa fa-plus-square-o"></div>
-                                <p:ajax event="dialogReturn" update="messages, idConsultaAssociado" listener="#{associadoMB.retornoDialogNovo}"/>
+                    </p:accordionPanel>  
+                    <!-- TABELA CADASTROS -->
+                    <div class="col-6 titTela" style="margin-left:-13%;">Consulta Associado</div>
+                    <p:commandLink action="#{associadoMB.novoCadastroAssociado()}" rendered="#{usuarioLogadoMB.cadastrar}">
+                        <div class="icoAdd fa fa-plus-square-o"></div>
+                        <p:ajax event="dialogReturn" update="messages, idConsultaAssociado" listener="#{associadoMB.retornoDialogNovo}"/>
+                    </p:commandLink>
+                    <h:dataTable id="idConsultaAssociado" styleClass="table" value="#{associadoMB.listaAssociado}" var="associado" style="width: 100%;">
+                        <h:column>
+                            <f:facet name="header">Cliente</f:facet> 
+                            <h:outputText value="#{associado.cliente.nome}" styleClass="alinhamento" style="float: left;" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Cidade</f:facet> 
+                            <h:outputText value="#{associado.cidade}" styleClass="alinhamento" style="float: left; width: 20%;" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Estado</f:facet> 
+                            <h:outputText value="#{associado.estado}" styleClass="alinhamento" style="text-align: left !important;margin-right:30%;" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Desconto</f:facet> 
+                            <h:outputText value="#{associado.descotomensalidade}" styleClass="alinhamento" style="float: right;">
+                                <f:convertNumber pattern="##,###,###,###.##" minFractionDigits="2" />
+                            </h:outputText>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Plano</f:facet>
+                            <h:outputText value="#{associado.plano.descricao}" style="float: left;"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Matricula</f:facet>
+                            <h:outputText value="#{associado.matricula}" style="float: left;"/>
+                        </h:column>
+                        <h:column>  
+                            <f:facet name="header">Associado a Empresa</f:facet>
+                            <h:outputText value="#{associadoMB.associadoEmpresa(associado)}" style="float: left;"/>
+                        </h:column>
+                        <h:column>
+                            <p:commandLink action="#{associadoMB.editar(associado)}" rendered="#{usuarioLogadoMB.editar}">
+                                <div class="fa fa-pencil-square-o">
+                                </div>
+                                <p:ajax event="dialogReturn" listener="#{associadoMB.retornoDialogAlteracao}" update=":idFormConsultaAssociado:messages, @form"/>
                             </p:commandLink>
-                            <h:dataTable id="idConsultaAssociado" styleClass="table" value="#{associadoMB.listaAssociado}" var="associado">
-                                <h:column>
-                                    <f:facet name="header">Cliente</f:facet> 
-                                    <h:outputText value="#{associado.cliente.nome}" styleClass="alinhamento" style="float: left;" />
-                                </h:column>
-                                <h:column>
-                                    <f:facet name="header">Cidade</f:facet> 
-                                    <h:outputText value="#{associado.cidade}" styleClass="alinhamento" style="float: left; width: 20%;" />
-                                </h:column>
-                                <h:column>
-                                    <f:facet name="header">Estado</f:facet> 
-                                    <h:outputText value="#{associado.estado}" styleClass="alinhamento" style="text-align: left !important;margin-right:30%;" />
-                                </h:column>
-                                <h:column>
-                                    <f:facet name="header">Desconto</f:facet> 
-                                    <h:outputText value="#{associado.descotomensalidade}" styleClass="alinhamento" style="float: right;">
-                                        <f:convertNumber pattern="##,###,###,###.##" minFractionDigits="2" />
-                                    </h:outputText>
-                                </h:column>
-                                <h:column>
-                                    <f:facet name="header">Plano</f:facet>
-                                    <h:outputText value="#{associado.plano.descricao}" style="float: left;"/>
-                                </h:column>
-                                <h:column>
-                                    <f:facet name="header">Matricula</f:facet>
-                                    <h:outputText value="#{associado.matricula}" style="float: left;"/>
-                                </h:column>
-                                 <h:column>
-                                     <p:commandLink action="#{associadoMB.editar(associado)}" rendered="#{usuarioLogadoMB.editar}">
-                                        <div class="fa fa-pencil-square-o">
-                                        </div>
-                                         <p:ajax event="dialogReturn" listener="#{associadoMB.retornoDialogAlteracao}" update=":idFormConsultaAssociado:messages, @form"/>
-                                     </p:commandLink>
-                                     <p:commandLink rendered="#{usuarioLogadoMB.excluir}" style="text-decoration: none;" action="#{associadoMB.excluir(associado)}" update=":idFormConsultaAssociado:messages, @form">
-                                        <div class="fa fa-trash-o"></div>
-                                     </p:commandLink>
-                                     <p:commandLink rendered="#{usuarioLogadoMB.editar}" style="text-decoration: none;" title="Associar a Empresa" action="#{associadoMB.associarEmpresa(associado)}" update=":idFormConsultaAssociado:messages, @form">
-                                        <div class="fa fa-users"></div>
-                                     </p:commandLink>
-                                </h:column>
+                            <p:commandLink rendered="#{usuarioLogadoMB.excluir}" style="text-decoration: none;" action="#{associadoMB.excluir(associado)}" update=":idFormConsultaAssociado:messages, @form">
+                                <div class="fa fa-trash-o"></div>
+                            </p:commandLink>
+                            <p:commandLink rendered="#{usuarioLogadoMB.editar}" style="text-decoration: none;" title="Associar a Empresa" action="#{associadoMB.associarEmpresa(associado)}" update=":idFormConsultaAssociado:messages, @form">
+                                <div class="fa fa-university"></div>
+                            </p:commandLink>
+                            <p:commandLink rendered="#{usuarioLogadoMB.editar}" style="text-decoration: none;" title="Dependentes" action="#{associadoMB.dependentes(associado)}" update=":idFormConsultaAssociado:messages, @form">
+                                <div class="fa fa-users"></div>
+                            </p:commandLink>
+                            <p:commandLink rendered="#{usuarioLogadoMB.editar}" style="text-decoration: none;" title="Financeiro" action="#{associadoMB.financeiro(associado)}" update=":idFormConsultaAssociado:messages, @form">
+                                <div class="fa fa-money"></div>
+                            </p:commandLink>
+                        </h:column>
 
 
-                            </h:dataTable>
+                    </h:dataTable>
                 </h:form>
             </div>
         </ui:define>

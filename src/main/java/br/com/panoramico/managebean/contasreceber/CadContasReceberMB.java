@@ -52,10 +52,12 @@ public class CadContasReceberMB implements Serializable{
     
     
     @PostConstruct
-    public void init() {
+    public void init() { 
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         contasreceber = (Contasreceber) session.getAttribute("contasreceber");
+        cliente = (Cliente) session.getAttribute("cliente");
+        session.removeAttribute("cliente"); 
         if (contasreceber == null) {
             contasreceber = new Contasreceber();
         } else {

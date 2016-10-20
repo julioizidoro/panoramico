@@ -24,10 +24,16 @@
 
             <title>Novo Associado</title>
             <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-            <h:panelGrid  style="margin-left:1%;"> 
+            <h:panelGrid columns="2" columnClasses="tamanho45, tamanho45" style="margin-left:1%;width:95%;">
                 <p:outputLabel class="titTela" value="Matrícula" style="font-size: 12px;text-align: left;"/>
+                <p:outputLabel class="titTela" value="Situação" style="font-size: 12px;text-align: left;"/>
 
                 <p:inputText class="form-control" value="#{cadAssociadoMB.associado.matricula}" size="18" style="font-size: 12px;float: left"/>
+                <p:selectOneMenu class="form-control" id="situacao" value="#{cadAssociadoMB.associado.situacao}"  style="width:50%;font-size: 12px;">
+                    <f:selectItem itemLabel="Selecione" itemValue="sn" noSelectionOption="true"/> 
+                    <f:selectItem itemLabel="Ativo" itemValue="Ativo" />   
+                    <f:selectItem itemLabel="Inativo" itemValue="Inativo" />  
+                </p:selectOneMenu>
             </h:panelGrid>
             <br/>
             <h:panelGrid columns="2" columnClasses="tamanho45, tamanho45" style="margin-left:1%;width:95%;"> 
@@ -100,7 +106,7 @@
                 <p:outputLabel class="titTela" value="Complemento" style="font-size: 12px;text-align: left;"/>
                 <p:outputLabel class="titTela" value="Cep" style="font-size: 12px;text-align: left;"/>
                 <p:outputLabel class="titTela" value="Desconto de Mensalidade" style="font-size: 12px;text-align: right;"/>
-               
+
                 <p:inputText class="form-control" value="#{cadAssociadoMB.associado.numero}" style="width: 90%;font-size: 12px;float: left;"/>
                 <p:inputText class="form-control" value="#{cadAssociadoMB.associado.complemento}" style="width: 90%; float: left;font-size: 12px;"/> 
                 <p:inputMask class="form-control" mask="99999-999" value="#{cadAssociadoMB.associado.cep}" style="width: 90%; float: left;font-size: 12px;"/>

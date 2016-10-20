@@ -7,9 +7,11 @@ package br.com.panoramico.managebean.cadastro;
 
 import br.com.panoramico.dao.AssociadoDao;
 import br.com.panoramico.dao.ClienteDao;
+import br.com.panoramico.dao.DependenteDao;
 import br.com.panoramico.dao.PlanoDao;
 import br.com.panoramico.model.Associado;
 import br.com.panoramico.model.Cliente;
+import br.com.panoramico.model.Dependente;
 import br.com.panoramico.model.Plano;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -26,13 +28,12 @@ import org.primefaces.context.RequestContext;
  *
  * @author Julio
  */
-
-
 @Named
 @ViewScoped
-public class CadAssociadoMB implements Serializable{
-    
-    
+public class CadAssociadoMB implements Serializable {
+
+    @EJB
+    private DependenteDao dependenteDao;
     @EJB
     private AssociadoDao associadoDao;
     private Associado associado;
@@ -44,9 +45,9 @@ public class CadAssociadoMB implements Serializable{
     private PlanoDao planoDao;
     private Plano plano;
     private List<Plano> listaPlano;
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         associado = (Associado) session.getAttribute("associado");
@@ -61,11 +62,11 @@ public class CadAssociadoMB implements Serializable{
             if (plano == null) {
                 plano = new Plano();
             }
-        }else{
+        } else {
             cliente = associado.getCliente();
             plano = associado.getPlano();
         }
-       
+
     }
 
     public AssociadoDao getAssociadoDao() {
@@ -131,14 +132,20 @@ public class CadAssociadoMB implements Serializable{
     public void setListaPlano(List<Plano> listaPlano) {
         this.listaPlano = listaPlano;
     }
-    
-    
-    
-    
-    public void salvar(){
+
+    public void salvar() {
         associado.setPlano(plano);
         associado.setCliente(cliente);
-        associado.setSituacao("Ativo");
+        if (associado.getSituacao().equalsIgnoreCase("Inativo")) {
+            if (associado.getDependenteList() != null && associado.getDependenteList().size() > 0) {
+                Dependente dependente;
+                for (int i = 0; i < associado.getDependenteList().size(); i++) {
+                    dependente = associado.getDependenteList().get(i);
+                    dependente.setSituacao("Inativo");
+                    dependenteDao.update(dependente);
+                }
+            }
+        }
         associado = associadoDao.update(associado);
         RequestContext.getCurrentInstance().closeDialog(associado);
     }
@@ -149,17 +156,16 @@ public class CadAssociadoMB implements Serializable{
             listaCliente = new ArrayList<Cliente>();
         }
     }
-    
-    public void gerarListaPlano(){
+
+    public void gerarListaPlano() {
         listaPlano = planoDao.list("Select p from Plano p");
         if (listaPlano == null) {
             listaPlano = new ArrayList<Plano>();
         }
     }
-    
-    
-    public void cancelar(){
+
+    public void cancelar() {
         RequestContext.getCurrentInstance().closeDialog(new Associado());
     }
-    
+
 }

@@ -74,13 +74,12 @@ public class Associado implements Serializable {
     @JoinColumn(name = "plano_idplano", referencedColumnName = "idplano")
     @ManyToOne(optional = false)
     private Plano plano;
-    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL, mappedBy = "associado")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "associado")
     private List<Dependente> dependenteList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "associado")
     private List<Associadoempresa> associadoempresaList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "associado")
     private List<Exameassociado> exameassociadoList;
-    
 
     public Associado() {
     }
@@ -200,8 +199,7 @@ public class Associado implements Serializable {
     public void setAssociadoempresaList(List<Associadoempresa> associadoempresaList) {
         this.associadoempresaList = associadoempresaList;
     }
-    
-    
+
     public List<Exameassociado> getExameassociadoList() {
         return exameassociadoList;
     }
@@ -225,7 +223,6 @@ public class Associado implements Serializable {
     public void setSituacao(String situacao) {
         this.situacao = situacao;
     }
-    
 
     @Override
     public int hashCode() {
