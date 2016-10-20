@@ -457,4 +457,8 @@ public class ContasReceberMB implements Serializable{
         }
         return cob;
     }
+    
+    public void retornoDialogCob(SelectEvent event){
+        gerarListaContasReceber();
+    }
 }

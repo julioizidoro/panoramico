@@ -24,6 +24,8 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
+import org.primefaces.context.RequestContext;
+import sun.misc.Request;
 
 @Named
 @ViewScoped
@@ -217,10 +219,6 @@ public class CobrancasMB implements Serializable{
     
     public void salvarCobranca(){
         cobranca = cobrancaDao.update(cobranca);
-        cobrancasparcelas = new Cobrancasparcelas();
-        cobrancasparcelas.setCobranca(cobranca);
-        cobrancasparcelas.setContasreceber(contasreceber);
-        cobrancasparcelas = cobrancasParcelasDao.update(cobrancasparcelas);
         adicionado = true;
     }
     
@@ -247,6 +245,10 @@ public class CobrancasMB implements Serializable{
             historicocobranca.setCobranca(cobranca);
             historicocobranca.setUsuario(usuarioLogadoMB.getUsuario());
             historicocobranca = historicoCobrancaDao.update(historicocobranca);
+            cobrancasparcelas = new Cobrancasparcelas();
+            cobrancasparcelas.setCobranca(cobranca);
+            cobrancasparcelas.setContasreceber(contasreceber);
+            cobrancasparcelas = cobrancasParcelasDao.update(cobrancasparcelas);
             gerarListaHistoricoCobranca();
             historicocobranca = new Historicocobranca();
             habilitarCadCobranca = false;
@@ -264,6 +266,11 @@ public class CobrancasMB implements Serializable{
         historicocobranca = new Historicocobranca();
         habilitarCadCobranca = false;
         habilitarCobrança = true;
+    }
+    
+    
+    public void fecharCob(){
+        RequestContext.getCurrentInstance().closeDialog(null);
     }
     
     

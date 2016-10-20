@@ -89,6 +89,9 @@
                         </h:dataTable>
                     </p:tab>
                 </p:tabView>
+                <p:commandLink style="text-decoration: none;" action="#{cobrancasMB.fecharCob()}" ajax="false">
+                    <div style="font-size: 16px;margin-left:45%;" class="cancelar">Fechar</div>
+                </p:commandLink>
             </h:panelGroup>
             <h:panelGroup rendered="#{cobrancasMB.habilitarCadCobranca}" id="panelHistorico">
                 <fieldset style="width: 70%;margin-left: 15%;">

@@ -95,8 +95,10 @@ public class ImprimieContasRecebidasMB implements Serializable {
         Map<String, Object> parameters = new HashMap<String, Object>();
         if (tipoRelatorio.equalsIgnoreCase("contasrecebidas")) {
             caminhoRelatorio = "reports/relatorios/contasReceber/reportContasReceber.jasper";
-        } else {
+        } else if(tipoRelatorio.equalsIgnoreCase("inadimplentes")) {
             caminhoRelatorio = "reports/relatorios/contasReceber/reportInadimplentes.jasper";
+        } else{
+            caminhoRelatorio = "reports/relatorios/contasReceber/reportHistoricoCobranca.jasper";
         }
         parameters.put("sql", gerarSql());
         File f = new File(servletContext.getRealPath("resources/img/logo.png"));
@@ -147,6 +149,8 @@ public class ImprimieContasRecebidasMB implements Serializable {
 
             sql = sql + " Group by cliente.nome, contasreceber.idcontasreceber, contasreceber.valorconta, contasreceber.datalancamento"
                     + " ,contasreceber.numeroparcela";
+        }else if(tipoRelatorio.equalsIgnoreCase("historicocob")){
+            sql = "";
         }
         return sql;
     } 
