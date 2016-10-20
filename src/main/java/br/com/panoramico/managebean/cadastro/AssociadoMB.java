@@ -10,7 +10,9 @@ import br.com.panoramico.dao.AssociadoEmpresaDao;
 import br.com.panoramico.dao.DependenteDao;
 import br.com.panoramico.model.Associado;
 import br.com.panoramico.model.Associadoempresa;
+import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.model.Dependente;
+import br.com.panoramico.model.Evento;
 import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
 import java.sql.SQLException;
@@ -277,5 +279,18 @@ public class AssociadoMB implements Serializable {
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         session.setAttribute("associado", associado);
         return "consContasReceber";
+    }
+    
+    public void lancarContaReceber(Associado associado){
+        if (associado != null) {
+            Contasreceber contasreceber = new Contasreceber();
+            contasreceber.setCliente(associado.getCliente());
+            Map<String, Object> options = new HashMap<String, Object>();
+            FacesContext fc = FacesContext.getCurrentInstance();
+            HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+            session.setAttribute("contasreceber", contasreceber);
+            options.put("contentWidth", 580);
+            RequestContext.getCurrentInstance().openDialog("cadContasReceber", options, null);
+        }
     }
 }

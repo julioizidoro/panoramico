@@ -53,6 +53,8 @@ public class Contaspagar implements Serializable{
     private String formapagamento;
     @Column(name = "situacao")
     private String situacao;
+    @Column(name = "descricao")
+    private String descricao;
     @JoinColumn(name = "planoconta_idplanoconta", referencedColumnName = "idplanoconta")
     @ManyToOne(optional = false)
     private Planoconta planoconta;
@@ -149,6 +151,14 @@ public class Contaspagar implements Serializable{
 
     public void setSituacao(String situacao) {
         this.situacao = situacao;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
     
     

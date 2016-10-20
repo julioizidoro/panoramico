@@ -50,6 +50,7 @@ public class cadCancelamentoContasReceberMB implements Serializable{
             RequestContext.getCurrentInstance().closeDialog(new Crcancelamento());
         }else{
             crcancelamento = new Crcancelamento();
+            crcancelamento.setData(new Date());
         }
         retornarHoraAtual();
     }

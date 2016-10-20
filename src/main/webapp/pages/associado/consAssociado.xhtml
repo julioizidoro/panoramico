@@ -73,6 +73,10 @@
                                 </div>
                                 <p:ajax event="dialogReturn" listener="#{associadoMB.retornoDialogAlteracao}" update=":idFormConsultaAssociado:messages, @form"/>
                             </p:commandLink>
+                            <p:commandLink title="Lançar Conta a receber" style="text-decoration: none;"  rendered="#{usuarioLogadoMB.cadastrar}" action="#{associadoMB.lancarContaReceber(associado)}">
+                                <div class="fa fa-usd" >
+                                </div>
+                            </p:commandLink>
                             <p:commandLink rendered="#{usuarioLogadoMB.excluir}" style="text-decoration: none;" action="#{associadoMB.excluir(associado)}" update=":idFormConsultaAssociado:messages, @form">
                                 <div class="fa fa-trash-o"></div>
                             </p:commandLink>

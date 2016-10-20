@@ -12,30 +12,24 @@
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:10%;width: 80%;" />
                     <p:accordionPanel activeIndex="-1" rendered="#{contasReceberMB.habilitarPesquisa()}">
                         <p:tab title="Pesquisar">
-                            <p:outputLabel class="titTela" value="Cliente" style="font-size: 12px;text-align: left;float: left;margin-left:10%;"/>
-                            <p:outputLabel class="titTela" value="Plano de contas" style="font-size: 12px;text-align: left;margin-left: 25%;float: left;"/>
-                            <p:outputLabel class="titTela" value="Situação" style="font-size: 12px;text-align: left;margin-left: 18%;float: left;"/>
+                            <p:outputLabel class="titTela" value="Cliente" style="font-size: 12px;text-align: left;margin-right:31%;"/>
+                            <p:outputLabel class="titTela" value="Situação" style="font-size: 12px;text-align: left;margin-right:4%;"/>
                             <br/>
-                            <p:selectOneMenu  id="cliente"  style="width: 250px;font-size: 12px;float: left;margin-left: -62%;"  value="#{contasReceberMB.cliente}" converter="ClienteConverter"
+                            <p:selectOneMenu  id="cliente"  style="width: 250px;font-size: 12px;margin-left: 10%;"  value="#{contasReceberMB.cliente}" converter="ClienteConverter"
                                               >
                                 <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
                                 <f:selectItems  value="#{contasReceberMB.listaCliente}" var="clienteselecionado" itemLabel="#{clienteselecionado.nome}" itemValue="#{clienteselecionado}"/>
                                 <f:attribute name="listaCliente" value="#{contasReceberMB.listaCliente}"/>
                             </p:selectOneMenu> 
-                            <p:selectOneMenu id="planoConta"  style="width: 216px;margin-left: -33%;font-size: 12px;float: left;"  value="#{contasReceberMB.planoconta}" converter="PlanoContaConverter"
-                                             filter="true" filterMatchMode="contains" panelStyle="width:180px" >
-                                <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
-                                <f:selectItems  value="#{contasReceberMB.listaPlanoContas}" var="planocontaselecionado" itemLabel="#{planocontaselecionado.descricao}" itemValue="#{planocontaselecionado}"/>
-                                <f:attribute name="listaPlanoContas" value="#{contasReceberMB.listaPlanoContas}"/>
-                            </p:selectOneMenu>
-                            <p:selectOneMenu id="estado" value="#{contasReceberMB.situacao}"  style="width:180px;margin-left: 67%; font-size: 12px;float: left;">
+                            <p:selectOneMenu id="estado" value="#{contasReceberMB.situacao}"  style="width:180px;margin-left: 8%; font-size: 12px;">
                                 <f:selectItem itemLabel="Selecione" itemValue="sn" noSelectionOption="true"/> 
-                                <f:selectItem itemLabel="Pagar" itemValue="PAGAR" /> 
+                                <f:selectItem itemLabel="Vencer" itemValue="VENCER" /> 
                                 <f:selectItem itemLabel="Cancelado" itemValue="CANCELADO" />   
+                                <f:selectItem itemLabel="Vencidos" itemValue="VENCIDOS" />
                                 <f:selectItem itemLabel="Pago" itemValue="PAGO" />
                             </p:selectOneMenu>
                             <br/><br/>
-                            <p:outputLabel class="titTela" value="Periodo" style="font-size: 12px;text-align: left;float: left;margin-left:10%;"/>
+                            <p:outputLabel class="titTela" value="Periodo" style="font-size: 12px;text-align: left;float: left;margin-left:28%;"/>
                             <br/>
                             <p:inputMask mask="99/99/9999" size="15"  value="#{contasReceberMB.dataInicial}" style="margin-left:-5%;font-size: 12px;float: left;">
                                 <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
@@ -73,8 +67,8 @@
                             <h:outputText value="#{contaReceber.cliente.nome}" styleClass="alinhamento" style="float: left;" />
                         </h:column>
                         <h:column >  
-                            <f:facet name="header">Lançamento</f:facet> 
-                            <h:outputText value="#{contaReceber.datalancamento}" styleClass="alinhamento" style="text-align: left !important;margin-right:50%;">
+                            <f:facet name="header">Vencimento</f:facet> 
+                            <h:outputText value="#{contaReceber.datavencimento}" styleClass="alinhamento" style="text-align: left !important;margin-right:50%;">
                                 <f:convertDateTime pattern="dd/MM/yyyy"
                                                    timeZone="America/Sao_Paulo" />
                             </h:outputText>

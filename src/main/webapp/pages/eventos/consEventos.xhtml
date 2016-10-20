@@ -115,6 +115,10 @@
                                         </div>
                                          <p:ajax event="dialogReturn" listener="#{eventoMB.retornoDialogCancelamento}" update=":idFormConsultaEvento:messages, @form"/>
                                      </p:commandLink>
+                                     <p:commandLink title="Lançar Conta a receber" style="text-decoration: none;"  rendered="#{usuarioLogadoMB.cadastrar}" action="#{eventoMB.lancarContaReceber(evento)}">
+                                        <div class="fa fa-usd" >
+                                        </div>
+                                     </p:commandLink>
                                      <p:commandLink title="Concluir Evento" style="text-decoration: none;" update=":idFormConsultaEvento:messages, @form" rendered="#{usuarioLogadoMB.excluir}" disabled="#{eventoMB.verificarSituacaoRealizada(evento)}" action="#{eventoMB.realizadoEvento(evento)}">
                                         <div class="fa fa-check" >
                                         </div>

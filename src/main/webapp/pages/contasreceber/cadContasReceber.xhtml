@@ -83,12 +83,12 @@
             <br/>
             <h:panelGrid columns="2" columnClasses="tamanho45, tamanho45" style="margin-left:1%;width:50%;"> 
                 <p:outputLabel class="titTela" value="Valor" style="font-size: 14px;text-align: left;"/>
-                <p:outputLabel class="titTela" value="Data" style="font-size: 14px;text-align: left;"/>
+                <p:outputLabel class="titTela" value="Vencimento" style="font-size: 14px;text-align: left;"/>
   
                 <p:inputText class="form-control" value="#{cadContasReceberMB.contasreceber.valorconta}"  style="width: 90%;text-align: right;float: left;font-size: 12px;">
                     <f:convertNumber pattern="##,###,###,###.##"/>  
                 </p:inputText>
-                <p:inputMask mask="99/99/9999" class="form-control" value="#{cadContasReceberMB.contasreceber.datalancamento}" style="width: 90%;font-size: 12px;float: left;">
+                <p:inputMask mask="99/99/9999" class="form-control" value="#{cadContasReceberMB.contasreceber.datavencimento}" style="width: 90%;font-size: 12px;float: left;">
                     <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
                 </p:inputMask> 
             </h:panelGrid>

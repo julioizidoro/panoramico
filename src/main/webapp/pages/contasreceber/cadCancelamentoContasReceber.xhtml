@@ -27,7 +27,7 @@
                 <p:outputLabel class="titTela" value="Data" style="font-size: 14px;text-align: left;"/>
                 <p:outputLabel class="titTela" value="Horario" style="font-size: 14px;text-align: left;"/>
 
-                <p:inputMask mask="99/99/9999"  class="form-control" value="#{cadCancelamentoContasReceberMB.crcancelamento.data}" style="width:60%;font-size: 12px;float: left;">
+                <p:inputMask mask="99/99/9999" readonly="true" class="form-control" value="#{cadCancelamentoContasReceberMB.crcancelamento.data}" style="width:60%;font-size: 12px;float: left;">
                     <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
                 </p:inputMask>
                 <p:inputText class="form-control" readonly="true" value="#{cadCancelamentoContasReceberMB.crcancelamento.hora}" style="width:60%;float: left;font-size: 12px;"/>

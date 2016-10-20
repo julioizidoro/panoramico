@@ -6,11 +6,18 @@
 package br.com.panoramico.managebean.acesso;
 
 import br.com.panoramico.dao.ClienteDao;
+import br.com.panoramico.dao.ContasReceberDao;
+import br.com.panoramico.dao.ParametrosDao;
 import br.com.panoramico.dao.PassaporteDao;
 import br.com.panoramico.dao.PassaporteValorDao;
+import br.com.panoramico.dao.PlanoContaDao;
+import br.com.panoramico.managebean.UsuarioLogadoMB;
 import br.com.panoramico.model.Cliente;
+import br.com.panoramico.model.Contasreceber;
+import br.com.panoramico.model.Parametros;
 import br.com.panoramico.model.Passaporte;
 import br.com.panoramico.model.Passaportevalor;
+import br.com.panoramico.model.Planoconta;
 import br.com.panoramico.uil.Formatacao;
 import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
@@ -21,6 +28,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
@@ -51,6 +59,16 @@ public class CadPassaporteMB implements Serializable{
     private float valorCrianca;
     private boolean cadastrocliente = false;
     private boolean cadastropassaporte = true;
+    private Parametros parametros;
+    @EJB
+    private ParametrosDao parametrosDao;
+    private Planoconta planoconta;
+    @EJB
+    private PlanoContaDao planoContaDao;
+    @EJB
+    private ContasReceberDao contasReceberDao;
+    @Inject
+    private UsuarioLogadoMB usuarioLogadoMB;
     
     
     @PostConstruct
@@ -269,6 +287,7 @@ public class CadPassaporteMB implements Serializable{
             passaporte = passaporteDao.update(passaporte);
             passaporte.setLocalizador("PPA" + passaporte.getIdpassaporte());
             passaporteDao.update(passaporte);
+            lancarContasReceber();
             RequestContext.getCurrentInstance().closeDialog(passaporte);
         }
     }
@@ -297,6 +316,24 @@ public class CadPassaporteMB implements Serializable{
     public void cancelarCliente(){
         cadastropassaporte = true;
         cadastrocliente = false;
+    }
+    
+    
+    public void lancarContasReceber() {
+        Contasreceber contasreceber = new Contasreceber();
+        contasreceber.setDatalancamento(new Date());
+        contasreceber.setDatavencimento(new Date());
+        contasreceber.setCliente(cliente);
+        contasreceber.setNumeroparcela("1");
+        contasreceber.setNumerodocumento("" + passaporte.getIdpassaporte());
+        contasreceber.setValorconta(passaporte.getValorpago());
+        contasreceber.setUsuario(usuarioLogadoMB.getUsuario());
+        contasreceber.setEnviado(false);
+        contasreceber.setSituacao("PAGAR");
+        parametros = parametrosDao.find(1);
+        planoconta = planoContaDao.find(parametros.getPlanocontaavulso());
+        contasreceber.setPlanoconta(planoconta);
+        contasReceberDao.update(contasreceber);
     }
     
 }

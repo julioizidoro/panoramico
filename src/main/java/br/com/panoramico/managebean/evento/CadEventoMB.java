@@ -9,6 +9,7 @@ import br.com.panoramico.dao.AmbienteDao;
 import br.com.panoramico.dao.ClienteDao;
 import br.com.panoramico.dao.ContasReceberDao;
 import br.com.panoramico.dao.EventoDao;
+import br.com.panoramico.dao.ParametrosDao;
 import br.com.panoramico.dao.PlanoContaDao;
 import br.com.panoramico.dao.TipoEventoDao;
 import br.com.panoramico.managebean.UsuarioLogadoMB;
@@ -16,6 +17,7 @@ import br.com.panoramico.model.Ambiente;
 import br.com.panoramico.model.Cliente;
 import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.model.Evento;
+import br.com.panoramico.model.Parametros;
 import br.com.panoramico.model.Planoconta;
 import br.com.panoramico.model.Tipoenvento;
 import br.com.panoramico.uil.Formatacao;
@@ -61,6 +63,9 @@ public class CadEventoMB implements Serializable{
     private ContasReceberDao contasReceberDao;
     @EJB
     private PlanoContaDao planoContaDao;
+    private Parametros parametros;
+    @EJB
+    private ParametrosDao parametrosDao;
     
     
     @PostConstruct
@@ -256,7 +261,8 @@ public class CadEventoMB implements Serializable{
         contasreceber.setUsuario(usuarioLogadoMB.getUsuario());
         contasreceber.setEnviado(false);
         contasreceber.setSituacao("PAGAR");
-        planoconta = planoContaDao.find(4);
+        parametros = parametrosDao.find(1);
+        planoconta = planoContaDao.find(parametros.getPlanocontaevento());
         contasreceber.setPlanoconta(planoconta);
         contasReceberDao.update(contasreceber);
     }

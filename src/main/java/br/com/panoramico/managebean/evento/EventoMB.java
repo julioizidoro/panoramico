@@ -12,6 +12,7 @@ import br.com.panoramico.dao.TipoEventoDao;
 import br.com.panoramico.managebean.UsuarioLogadoMB;
 import br.com.panoramico.model.Ambiente;
 import br.com.panoramico.model.Cliente;
+import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.model.Evento;
 import br.com.panoramico.model.Eventocancelamento;
 import br.com.panoramico.model.Tipoenvento;
@@ -436,5 +437,20 @@ public class EventoMB implements Serializable{
         options.put("contentWidth", 580);
         RequestContext.getCurrentInstance().openDialog("imprimirEvento", options, null);
         return "";
+    }
+    
+    
+    public void lancarContaReceber(Evento evento){
+        if (evento != null) {
+            Contasreceber contasreceber = new Contasreceber();
+            contasreceber.setCliente(evento.getCliente());
+            contasreceber.setValorconta(evento.getValor());
+            Map<String, Object> options = new HashMap<String, Object>();
+            FacesContext fc = FacesContext.getCurrentInstance();
+            HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+            session.setAttribute("contasreceber", contasreceber);
+            options.put("contentWidth", 580);
+            RequestContext.getCurrentInstance().openDialog("cadContasReceber", options, null);
+        }
     }
 }

@@ -43,6 +43,9 @@ public class Contasreceber implements Serializable{
     @Column(name = "datalancamento")
     @Temporal(TemporalType.DATE)
     private Date datalancamento;
+    @Column(name = "datavencimento")
+    @Temporal(TemporalType.DATE)
+    private Date datavencimento;
     @Column(name = "valorconta")
     private Float valorconta;
     @JoinColumn(name = "cliente_idcliente", referencedColumnName = "idcliente")
@@ -177,6 +180,14 @@ public class Contasreceber implements Serializable{
 
     public void setNossonumero(String nossonumero) {
         this.nossonumero = nossonumero;
+    }
+
+    public Date getDatavencimento() {
+        return datavencimento;
+    }
+
+    public void setDatavencimento(Date datavencimento) {
+        this.datavencimento = datavencimento;
     }
     
     

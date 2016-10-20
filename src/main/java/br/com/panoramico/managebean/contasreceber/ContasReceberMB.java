@@ -54,11 +54,7 @@ public class ContasReceberMB implements Serializable{
     @EJB
     private ContasReceberDao contasReceberDao;
     private Cliente cliente;
-    private Planoconta planoconta;
-    private List<Planoconta> listaPlanoContas;
     private List<Cliente> listaCliente;
-    @EJB
-    private PlanoContaDao planoContaDao;
     @EJB
     private ClienteDao clienteDao;
     private Date dataInicial;
@@ -81,7 +77,6 @@ public class ContasReceberMB implements Serializable{
         session.removeAttribute("associado");
         gerarListaContasReceber();
         gerarListaCliente();
-        gerarListaPlanoConta();
         proprietario = proprietarioDao.find(1);
         proprietario.setCnpj("20.350.192/0001-73");
         proprietarioDao.update(proprietario);
@@ -95,21 +90,6 @@ public class ContasReceberMB implements Serializable{
         this.cliente = cliente;
     }
 
-    public Planoconta getPlanoconta() {
-        return planoconta;
-    }
-
-    public void setPlanoconta(Planoconta planoconta) {
-        this.planoconta = planoconta;
-    }
-
-    public List<Planoconta> getListaPlanoContas() {
-        return listaPlanoContas;
-    }
-
-    public void setListaPlanoContas(List<Planoconta> listaPlanoContas) {
-        this.listaPlanoContas = listaPlanoContas;
-    }
 
     public List<Cliente> getListaCliente() {
         return listaCliente;
@@ -119,13 +99,6 @@ public class ContasReceberMB implements Serializable{
         this.listaCliente = listaCliente;
     }
 
-    public PlanoContaDao getPlanoContaDao() {
-        return planoContaDao;
-    }
-
-    public void setPlanoContaDao(PlanoContaDao planoContaDao) {
-        this.planoContaDao = planoContaDao;
-    }
 
     public ClienteDao getClienteDao() {
         return clienteDao;
@@ -245,23 +218,17 @@ public class ContasReceberMB implements Serializable{
     
     
     public void gerarListaContasReceber(){
-        if(associado!=null && associado.getIdassociado()!=null){
-            listaContasReceber = contasReceberDao.list("Select c from Contasreceber c where c.situacao<>'CANCELADO' and c.situacao<>'PAGO'"
-                    + " and c.cliente.idcliente="+associado.getCliente().getIdcliente());
+        if(associado==null || associado.getIdassociado()==null){
+            listaContasReceber = contasReceberDao.list("Select c from Contasreceber c where c.situacao='PAGAR' order by c.datavencimento");
         }else{
-            listaContasReceber = contasReceberDao.list("Select c from Contasreceber c where c.situacao<>'CANCELADO' and c.situacao<>'PAGO'");
+            listaContasReceber = contasReceberDao.list("Select c from Contasreceber c where c.situacao<>'CANCELADO' and c.situacao<>'PAGO'"
+                    + " and c.cliente.idcliente="+associado.getCliente().getIdcliente() + " order by c.datavencimento");
         } 
         if (listaContasReceber == null) {
             listaContasReceber = new ArrayList<Contasreceber>();
         }
     }
     
-    public void gerarListaPlanoConta(){
-        listaPlanoContas = planoContaDao.list("Select p from Planoconta p");
-        if (listaPlanoContas == null) {
-            listaPlanoContas = new ArrayList<Planoconta>();
-        }
-    }
     
     public void gerarListaCliente(){
         listaCliente = clienteDao.list("Select c from Cliente c");
@@ -365,44 +332,45 @@ public class ContasReceberMB implements Serializable{
     
     public void filtrar(){
         String sql = "Select c from Contasreceber c";
-        if (cliente.getIdcliente() != null || planoconta.getIdplanoconta() != null || !situacao.equalsIgnoreCase("sn") || dataInicial != null || dataFinal != null) {
-            sql = sql + " where";
-        }
-        if (cliente.getIdcliente() != null) {
-            sql = sql + " c.cliente.idcliente=" + cliente.getIdcliente();
-            if (planoconta.getIdplanoconta() != null || !situacao.equalsIgnoreCase("sn") || dataInicial != null || dataFinal != null) {
-                sql = sql + " and";
+        if (!situacao.equalsIgnoreCase("sn") && (dataInicial == null && dataFinal == null)) {
+            Mensagem.lancarMensagemInfo("Forneça um periodo na pesquisa", "");
+        }else{
+            if (cliente.getIdcliente() != null  || !situacao.equalsIgnoreCase("sn") || dataInicial != null || dataFinal != null) {
+                sql = sql + " where";
             }
-        }
-        if (planoconta.getIdplanoconta() != null) {
-            sql = sql + " c.planoconta.idplanoconta=" + planoconta.getIdplanoconta();
-            if (!situacao.equalsIgnoreCase("sn") || dataInicial != null || dataFinal != null) {
-                sql = sql + " and";
+            if (cliente.getIdcliente() != null) {
+                sql = sql + " c.cliente.idcliente=" + cliente.getIdcliente();
+                if (!situacao.equalsIgnoreCase("sn") || dataInicial != null || dataFinal != null) {
+                    sql = sql + " and";
+                }
             }
-        }
-        if (!situacao.equalsIgnoreCase("sn")) {
-            sql = sql + " c.situacao='" + situacao + "'";
-            if (dataInicial != null || dataFinal != null) {
-                sql = sql + " and";
+            if (!situacao.equalsIgnoreCase("sn")) {
+                if (situacao.equalsIgnoreCase("VENCER")) {
+                    sql = sql + " c.situacao='PAGAR' and c.datavencimento>='" + Formatacao.ConvercaoDataSql(new Date()) + "'";
+                }else if(situacao.equalsIgnoreCase("VENCIDOS")){
+                    sql = sql + " c.situacao='PAGAR' and c.datavencimento>='" + Formatacao.ConvercaoDataSql(dataInicial) + "' and c.datavencimento<'" +
+                         Formatacao.ConvercaoDataSql(new Date()) + "'";
+                }else{
+                    sql = sql + " c.situacao='" + situacao + "' and c.datavencimento>='" + Formatacao.ConvercaoDataSql(dataInicial) + "' and c.datavencimento<='" 
+                        + Formatacao.ConvercaoDataSql(dataFinal) + "'";
+                }
+            }else if ((dataInicial != null && dataFinal != null)) {
+                sql = sql + " c.datavencimento>='" + Formatacao.ConvercaoDataSql(dataInicial) + "' and c.datavencimento<='"
+                        + Formatacao.ConvercaoDataSql(dataFinal) + "'";
             }
+            sql = sql + " order by c.datavencimento";
+            listaContasReceber = contasReceberDao.list(sql);
+            Mensagem.lancarMensagemInfo("", "Filtrado com sucesso");
         }
-        if (dataInicial != null && dataFinal != null) {
-            sql = sql + " c.datalancamento>='" + Formatacao.ConvercaoDataSql(dataInicial) + "' and c.datalancamento<='"
-                    + Formatacao.ConvercaoDataSql(dataFinal) + "'";
-        }
-        listaContasReceber = contasReceberDao.list(sql);
-        Mensagem.lancarMensagemInfo("", "Filtrado com sucesso");
     }
     
     public void limparFiltro(){
         cliente = null;
         situacao = null;
-        planoconta = null;
         dataFinal = null;
         dataInicial = null;
         gerarListaCliente();
         gerarListaContasReceber();
-        gerarListaPlanoConta();
     }
     
     public String consBoleto() {
@@ -487,10 +455,10 @@ public class ContasReceberMB implements Serializable{
     
     
     public boolean habilitarPesquisa(){
-        if(associado!=null && associado.getIdassociado()!=null){
-            return false;
-        }else{
+        if(associado==null ||  associado.getIdassociado()==null){
             return true;
+        }else{
+            return false;
         }
     }
 }

@@ -188,6 +188,7 @@ public class CadContasReceberMB implements Serializable{
     
     public void salvar() {
         Float formataNParcela = Formatacao.formatarStringfloat(numeroParcela);
+        contasreceber.setDatalancamento(new Date());
         if (formataNParcela > 1) {
             calculoParcelaMensal(formataNParcela, contasreceber);
         } else {
