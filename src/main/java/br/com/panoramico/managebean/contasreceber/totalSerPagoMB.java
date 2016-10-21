@@ -41,6 +41,8 @@ public class totalSerPagoMB implements Serializable{
     private List<Contasreceber> listaTotalContasAssociados;
     private List<Contasreceber> listaTotalContasAssociadoEmpresa;
     private boolean  empresa;
+    private boolean selecionadoTodosEmpresa;
+    private boolean selecionadoTodosAssociado;
     
     
     @PostConstruct
@@ -139,6 +141,32 @@ public class totalSerPagoMB implements Serializable{
     public void setListaTotalContasAssociadoEmpresa(List<Contasreceber> listaTotalContasAssociadoEmpresa) {
         this.listaTotalContasAssociadoEmpresa = listaTotalContasAssociadoEmpresa;
     }
+
+    public boolean isEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(boolean empresa) {
+        this.empresa = empresa;
+    }
+
+    public boolean isSelecionadoTodosEmpresa() {
+        return selecionadoTodosEmpresa;
+    }
+
+    public void setSelecionadoTodosEmpresa(boolean selecionadoTodosEmpresa) {
+        this.selecionadoTodosEmpresa = selecionadoTodosEmpresa;
+    }
+
+    public boolean isSelecionadoTodosAssociado() {
+        return selecionadoTodosAssociado;
+    }
+
+    public void setSelecionadoTodosAssociado(boolean selecionadoTodosAssociado) {
+        this.selecionadoTodosAssociado = selecionadoTodosAssociado;
+    }
+
+    
     
     
     
@@ -189,6 +217,12 @@ public class totalSerPagoMB implements Serializable{
       
     
     public String boletoAssociado() {
+        List<Contasreceber> listaSelecionada = new ArrayList<>();
+        for (int i = 0; i < listaTotalContasAssociados.size(); i++) {
+            if (listaTotalContasAssociados.get(i).isSelecionado()) {
+                listaSelecionada.add(listaTotalContasAssociados.get(i));
+            }
+        }
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         Map<String, Object> options = new HashMap<String, Object>();
@@ -196,12 +230,18 @@ public class totalSerPagoMB implements Serializable{
         empresa = false;
         session.setAttribute("empresa", empresa);
         session.setAttribute("valorTotalEmpresa", valorTotalEmpresa);
-        session.setAttribute("listaContasReceber", listaTotalContasAssociados);
+        session.setAttribute("listaContasReceber", listaSelecionada);
         RequestContext.getCurrentInstance().openDialog("boletoTotalContas", options, null);
         return "";
     }
     
     public String boletoEmpresa() {
+        List<Contasreceber> listaSelecionada = new ArrayList<>();
+        for (int i = 0; i < listaTotalContasAssociadoEmpresa.size(); i++) {
+            if (listaTotalContasAssociadoEmpresa.get(i).isSelecionado()) {
+                listaSelecionada.add(listaTotalContasAssociadoEmpresa.get(i));
+            }
+        }
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         Map<String, Object> options = new HashMap<String, Object>();
@@ -209,8 +249,32 @@ public class totalSerPagoMB implements Serializable{
         empresa = true;
         session.setAttribute("valorTotalEmpresa", valorTotalEmpresa);
         session.setAttribute("empresa", empresa);
-        session.setAttribute("listaContasReceber", listaTotalContasAssociadoEmpresa);
+        session.setAttribute("listaContasReceber", listaSelecionada);
         RequestContext.getCurrentInstance().openDialog("boletoTotalContas", options, null);
         return "";
+    }
+    
+    public void selecionarTodasListaEmpresa() {
+        if (selecionadoTodosEmpresa) {
+            for (int i = 0; i < listaTotalContasAssociadoEmpresa.size(); i++) {
+                listaTotalContasAssociadoEmpresa.get(i).setSelecionado(true);
+            }
+        } else {
+            for (int i = 0; i < listaTotalContasAssociadoEmpresa.size(); i++) {
+                listaTotalContasAssociadoEmpresa.get(i).setSelecionado(false);
+            }
+        }
+    }
+    
+    public void selecionarTodasListaAssociado() {
+        if (selecionadoTodosAssociado) {
+            for (int i = 0; i < listaTotalContasAssociados.size(); i++) {
+                listaTotalContasAssociados.get(i).setSelecionado(true);
+            }
+        } else {
+            for (int i = 0; i < listaTotalContasAssociados.size(); i++) {
+                listaTotalContasAssociados.get(i).setSelecionado(false);
+            }
+        }
     }
 }

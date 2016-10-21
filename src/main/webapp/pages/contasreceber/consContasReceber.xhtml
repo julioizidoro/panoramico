@@ -59,7 +59,7 @@
                     </p:commandLink>
                     <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" title="Baixar" action="#{contasReceberMB.consBoleto()}">
                         <div class="icoAdd fa fa-download"></div>
-                    </p:commandLink>
+                    </p:commandLink> 
                     <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" title="Lançar nova conta" action="#{contasReceberMB.novoCadastroContasReceber()}">
                         <div class="icoAdd fa fa-plus-square-o"></div>
                         <p:ajax event="dialogReturn" listener="#{contasReceberMB.retornoDialogNovo}" update="messages, idConsultaContasReceber"/>

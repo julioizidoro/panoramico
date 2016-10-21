@@ -331,15 +331,22 @@ public class BoletoTotalContasMB implements Serializable {
         return dadosBoletoBean.getBoleto();
     }
 
-    public String gerarBoletoEmpresa() {
+    public String gerarBoletoEmpresa(){
+        float valorTotalPorEmpresa;
         List<Boleto> listaBoletos = null;
         listaBoletos = new ArrayList<Boleto>();
         for (int i = 0; i < listaContasReceber.size(); i++) {
+            valorTotalPorEmpresa = 0.0f;
             associado = pegarEndereco(listaContasReceber.get(i));
             if (associado == null) {
             }else{
                 empresa = associado.getAssociadoempresaList().get(0).getEmpresa();
-                listaBoletos.add(gerarClasseBoletoEmpresa(listaContasReceber.get(i)));
+                for (int j = 0; j < listaContasReceber.size(); j++) {
+                    if (listaContasReceber.get(j).getCliente().getIdcliente() == associado.getAssociadoempresaList().get(0).getAssociado().getCliente().getIdcliente()) {
+                        valorTotalPorEmpresa = valorTotalPorEmpresa + listaContasReceber.get(i).getValorconta();
+                    }
+                }
+                listaBoletos.add(gerarClasseBoletoEmpresa(listaContasReceber.get(i), valorTotalPorEmpresa));
             }
         }
         if (listaBoletos.size() > 0) {
@@ -349,7 +356,7 @@ public class BoletoTotalContasMB implements Serializable {
         return "";
     }
 
-    public Boleto gerarClasseBoletoEmpresa(Contasreceber conta) {
+    public Boleto gerarClasseBoletoEmpresa(Contasreceber conta, float valorTotal) {
         // associado = pegarEndereco(conta);
         DadosBoletoBean dadosBoletoBean = new DadosBoletoBean();
         dadosBoletoBean.setAgencias(banco.getAgencia());
@@ -363,7 +370,7 @@ public class BoletoTotalContasMB implements Serializable {
         dadosBoletoBean.setNomeSacado(empresa.getRazaosocial());
         dadosBoletoBean.setNumeroContas(banco.getConta());
         dadosBoletoBean.setNumeroDocumentos(Formatacao.gerarNumeroDocumentoBoleto(conta.getNumerodocumento(), String.valueOf(conta.getNumeroparcela())));
-        dadosBoletoBean.setValor(Formatacao.converterFloatBigDecimal(valorTotalEmpresa));
+        dadosBoletoBean.setValor(Formatacao.converterFloatBigDecimal(valorTotal));
         dadosBoletoBean.setNossoNumeros(dadosBoletoBean.getNumeroDocumentos());
         dadosBoletoBean.setEnderecoSacado(new Endereco());
 
@@ -453,4 +460,5 @@ public class BoletoTotalContasMB implements Serializable {
         }
         return null;
     }
+    
 }

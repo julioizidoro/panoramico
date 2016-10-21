@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -31,7 +32,7 @@ public class Exameassociado implements Serializable {
     @Column(name = "idexameassociado")
     private Integer idexameassociado;
     @JoinColumn(name = "exame_idexame", referencedColumnName = "idexame")
-    @ManyToOne(optional = false)
+    @OneToOne(optional = false)
     private Exame exame;
     @JoinColumn(name = "associado_idassociado", referencedColumnName = "idassociado")
     @ManyToOne(optional = false)

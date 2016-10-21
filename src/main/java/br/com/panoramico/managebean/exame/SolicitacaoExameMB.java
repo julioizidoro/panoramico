@@ -6,6 +6,7 @@
 package br.com.panoramico.managebean.exame;
 
 import br.com.panoramico.dao.ExameAssociadoDao;
+import br.com.panoramico.dao.ExameConvidadoDao;
 import br.com.panoramico.dao.ExameDao;
 import br.com.panoramico.dao.ExameDependenteDao;
 import br.com.panoramico.managebean.UsuarioLogadoMB;
@@ -42,6 +43,8 @@ public class SolicitacaoExameMB implements Serializable{
     private ExameDependenteDao exameDependenteDao;
     @EJB
     private ExameAssociadoDao exameAssociadoDao;
+    @EJB
+    private ExameConvidadoDao exameConvidadoDao;
     @Inject
     private UsuarioLogadoMB usuarioLogadoMB;
     
@@ -109,16 +112,7 @@ public class SolicitacaoExameMB implements Serializable{
         this.exameAssociadoDao = exameAssociadoDao;
     }
     
-    
-    
-    public void gerarListaSolicitacoes(){
-        listaSolicitacao = exameDao.list("Select e from Exame e");
-        if (listaSolicitacao == null || listaSolicitacao.isEmpty()) {
-            listaSolicitacao = new ArrayList<Exame>();
-        }
-    }  
-
-    public UsuarioLogadoMB getUsuarioLogadoMB() {
+     public UsuarioLogadoMB getUsuarioLogadoMB() {
         return usuarioLogadoMB;
     }
 
@@ -127,6 +121,12 @@ public class SolicitacaoExameMB implements Serializable{
     }
      
     
+    public void gerarListaSolicitacoes(){
+        listaSolicitacao = exameDao.list("Select e from Exame e");
+        if (listaSolicitacao == null || listaSolicitacao.isEmpty()) {
+            listaSolicitacao = new ArrayList<Exame>();
+        }
+    }  
     
     public String novaSolicitacaoExame() {
         if (usuarioLogadoMB.getUsuario().getPerfil().getNome().equalsIgnoreCase("Administrativo")
@@ -157,16 +157,12 @@ public class SolicitacaoExameMB implements Serializable{
     }
     
       public void excluir(Exame exame){
-        List<Exameassociado> listaExameAssociado = exameAssociadoDao.list("Select ea from Exameassociado ea where ea.exame.idexame=" + exame.getIdexame());
-        List<Examedependente> listaExameDependente  = exameDependenteDao.list("Select ed from Examedependente ed where ed.exame.idexame=" + exame.getIdexame());
-        if (listaExameAssociado == null || listaExameAssociado.isEmpty()) {
-            for (int i = 0; i < listaExameDependente.size(); i++) {
-                exameDependenteDao.remove(listaExameDependente.get(i).getIdexamedependente());
-            }
+        if (exame.getExamedependente()!=null) {
+            exameDependenteDao.remove(exame.getExamedependente().getIdexamedependente());
+        }else if (exame.getExameassociado()!=null) {
+            exameAssociadoDao.remove(exame.getExameassociado().getIdexameassociado());
         }else{
-            for (int i = 0; i < listaExameAssociado.size(); i++) {
-                exameAssociadoDao.remove(listaExameAssociado.get(i).getIdexameassociado());
-            }
+            exameConvidadoDao.remove(exame.getExameconvidado().getIdexameconvidado());
         }
         exameDao.remove(exame.getIdexame());
         Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
@@ -181,7 +177,11 @@ public class SolicitacaoExameMB implements Serializable{
             HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
             session.setAttribute("exame", exame);
             options.put("contentWidth", 545);
-            RequestContext.getCurrentInstance().openDialog("cadSolicitacaoExame", options, null);
+            if(exame.getExameconvidado()!=null){
+                RequestContext.getCurrentInstance().openDialog("cadSolicitacaoExameConvidado", options, null);
+            }else{
+                RequestContext.getCurrentInstance().openDialog("cadSolicitacaoExame", options, null);
+            }
         }else{
             Mensagem.lancarMensagemInfo("", "Acesso Negado!!");
         }
@@ -189,5 +189,17 @@ public class SolicitacaoExameMB implements Serializable{
      
     public Float calcularTotal(Exame exame){
         return exame.getValor() - exame.getDesconto();
+    }
+    
+    
+    public String nomeCliente(Exame exame){
+       if(exame.getExameassociado()!=null){
+           return exame.getExameassociado().getAssociado().getCliente().getNome();
+       }else if(exame.getExamedependente()!=null){
+           return exame.getExamedependente().getDependente().getNome();
+       }else if(exame.getExameconvidado()!=null){
+           return exame.getExameconvidado().getEventoconvidados().getNome();
+       }
+       return "";
     }
 }

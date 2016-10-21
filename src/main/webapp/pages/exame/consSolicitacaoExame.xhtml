@@ -19,8 +19,8 @@
                             </p:commandLink>
                             <h:dataTable id="idConsultaSolicitacaoExame" styleClass="table" value="#{solicitacaoExameMB.listaSolicitacao}" var="exame">
                                 <h:column>
-                                    <f:facet name="header">Médico</f:facet> 
-                                    <h:outputText value="#{exame.medico.nome}" styleClass="alinhamento" style="float: left;"/>
+                                    <f:facet name="header">Cliente</f:facet> 
+                                    <h:outputText value="#{solicitacaoExameMB.nomeCliente(exame)}" styleClass="alinhamento" style="float: left;"/>
                                 </h:column>
                                 <h:column>
                                     <f:facet name="header">Valor</f:facet> 

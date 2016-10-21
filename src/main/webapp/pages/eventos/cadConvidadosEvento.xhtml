@@ -36,8 +36,12 @@
             <br/>
             <p:inputText class="form-control" value="#{cadConvidadosEventoMB.eventoconvidados.email}" size="40" style="margin-left:2%;float: left;font-size: 12px;"/> 
             <p:inputText class="form-control" value="#{cadConvidadosEventoMB.eventoconvidados.acompanhante}" size="12" style="margin-left:6%;text-align: right;float: left"/> 
-            <p:commandLink style="text-decoration: none; margin-top: -2%;" actionListener="#{cadConvidadosEventoMB.adicionarConvidado()}" ajax="false" update="idConsultaConvidados, messages">
+            <p:commandLink style="text-decoration: none; margin-top: -2%;" actionListener="#{cadConvidadosEventoMB.adicionarConvidado()}"  update="idConsultaConvidados, messages" >
                 <div style="font-size: 16px;margin-left: 2%;" class="adicionar">Adicionar</div>
+            </p:commandLink>
+            <br/><br/><br/>
+            <p:commandLink style="text-decoration: none;float: right;" oncomplete="PF('dialogExame').show()" >
+                <div style="font-size: 16px;margin-left: 2%;" class="pesquisarAcesso">Solicitação de Exame</div>
             </p:commandLink>
             <br/><br/>
             <h:dataTable id="idConsultaConvidados" style="width: 98%;" styleClass="table" value="#{cadConvidadosEventoMB.listaConvidados}" var="convidados">
@@ -69,6 +73,41 @@
             <p:commandLink style="text-decoration: none;" action="#{cadConvidadosEventoMB.cancelar()}" ajax="false">
                 <div style="font-size: 16px" class="cancelar">Cancelar</div>
             </p:commandLink>
+
+            <p:dialog style="background:#D0E9C9;" header="Gerar Solicitação de Exame" widgetVar="dialogExame" width="76%">
+                <p:outputLabel class="titTela" value="Valor" style="font-size: 14px;text-align: left;"/>
+                <p:outputLabel class="titTela" value="Desconto" style="font-size: 14px;text-align: left;margin-left:31%;"/>
+                <br/>  
+                <p:inputText class="form-control" value="#{cadConvidadosEventoMB.valorExame}" size="13" style="font-size: 12px;text-align: right;">
+                    <f:convertNumber pattern="##,###,###,###.##"/>
+                </p:inputText>
+                <p:inputText class="form-control" value="#{cadConvidadosEventoMB.descontoExame}" size="13" style="margin-left:15%;text-align: right;font-size: 12px;">
+                    <f:convertNumber pattern="##,###,###,###.##"/>
+                </p:inputText>
+                <br/>  <br/>      
+                <p:outputLabel class="titTela" value="Forma Pagamento" style="font-size: 14px;text-align: left;"/>
+                <br/>   
+                <p:selectOneMenu id="formaPagamento" class="form-control" style="width:150px;font-size: 12px;text-align: left;" value="#{cadConvidadosEventoMB.formapagamento}">
+                    <f:selectItem itemLabel="Selecione" itemValue="" noSelectionOption="true"/> 
+                    <f:selectItem itemLabel="Boleto" itemValue="Boleto" />  
+                    <f:selectItem itemLabel="Dinheiro" itemValue="Dinheiro" /> 
+                    <f:selectItem itemLabel="Debito" itemValue="Debito" />  
+                    <f:selectItem itemLabel="Crédito" itemValue="Credito" />
+                    <f:selectItem itemLabel="Transferência" itemValue="transferencia" />
+                </p:selectOneMenu> 
+
+                <p:selectBooleanCheckbox id="contasReceber" style="margin-left:4%;"
+                                         value="#{cadConvidadosEventoMB.gerarContasReceber}" /> 
+                <h:outputText value="Gerar Contas a Receber"
+                              class="titTela" style="font-size: 15px;text-align: left;margin-left:1%;"/> 
+                <br/><br/>
+                <p:commandLink style="text-decoration: none;" actionListener="#{cadConvidadosEventoMB.gerarSolicitacaoExameTodos()}" ajax="false">
+                    <div style="font-size: 16px;margin-left: 32%;" class="cadastrar">Confirmar</div>
+                </p:commandLink>
+                <p:commandLink style="text-decoration: none;" onclick="dialogExame.hide()" ajax="false">
+                    <div style="font-size: 16px" class="cancelar">Cancelar</div>
+                </p:commandLink>
+            </p:dialog>
         </h:form>
     </h:body>
 

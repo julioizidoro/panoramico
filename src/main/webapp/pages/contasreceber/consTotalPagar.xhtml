@@ -11,8 +11,8 @@
                 <h:form id="idFormConsultaContasReceber" style="margin-left:5%;width: 90%;">
                     <p:tabView style="background: transparent;">
                         <p:tab title="Associados a empresa">
-                            <p:outputLabel value="Total R$" style="margin-left: 1%;float: left;font-size: 18px;"/>
-                            <h:outputText value="#{totalSerPagoMB.valorTotalEmpresa}" style="font-size: 18px;float: left;">
+                            <p:outputLabel class="titTela" value="Total R$" style="margin-left: 1%;float: left;font-size: 18px;"/>
+                            <h:outputText class="titTela" value="#{totalSerPagoMB.valorTotalEmpresa}" style="font-size: 18px;float: left;">
                                 <f:convertNumber pattern="##,###,###,###.##" minFractionDigits="2" />
                             </h:outputText> 
                                 <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" style="margin-top: -1%;float: right;"  action="#{totalSerPagoMB.boletoEmpresa()}" title="Boletos da Empresa">
@@ -40,11 +40,19 @@
                                         <f:convertNumber pattern="##,###,###,###.##" minFractionDigits="2" />
                                     </h:outputText>
                                 </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                        <p:selectBooleanCheckbox value="#{totalSerPagoMB.selecionadoTodosEmpresa}" style="float: right;">
+                                            <p:ajax event="change" listener="#{totalSerPagoMB.selecionarTodasListaEmpresa()}" update="idConsultaEmpresa"/>
+                                        </p:selectBooleanCheckbox>
+                                    </f:facet>
+                                    <p:selectBooleanCheckbox value="#{associadoempresa.selecionado}" style="float: right;"/>
+                                </h:column> 
                             </h:dataTable>
                         </p:tab>
                         <p:tab title="Associados">
-                            <p:outputLabel value="Total R$" style="margin-left: 1%;float: left;font-size: 18px;"/>
-                                <h:outputText value="#{totalSerPagoMB.valorTotalAssociado}" style="font-size: 18px;float: left;">
+                            <p:outputLabel value="Total R$" class="titTela" style="margin-left: 1%;float: left;font-size: 18px;"/>
+                                <h:outputText class="titTela" value="#{totalSerPagoMB.valorTotalAssociado}" style="font-size: 18px;float: left;">
                                     <f:convertNumber pattern="##,###,###,###.##" minFractionDigits="2" />
                                 </h:outputText> 
                                 <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" style="margin-top: -1%;float: right;"  action="#{totalSerPagoMB.boletoAssociado()}" title="Boletos do Associado">
@@ -72,6 +80,15 @@
                                             <f:convertNumber pattern="##,###,###,###.##" minFractionDigits="2" />
                                         </h:outputText>
                                     </h:column>
+                                    <h:column>  
+                                        <f:facet name="header">
+                                            <p:selectBooleanCheckbox value="#{totalSerPagoMB.selecionadoTodosAssociado}" style="float: right;">
+                                                <p:ajax event="change" listener="#{totalSerPagoMB.selecionarTodasListaAssociado()}" update="idConsultaAssociado"/>
+                                            </p:selectBooleanCheckbox>
+                                        </f:facet>
+                                        <p:selectBooleanCheckbox value="#{associado.selecionado}" style="float: right;"/>
+                                    </h:column> 
+                                    
                                 </h:dataTable>
                         </p:tab>
                     </p:tabView> 

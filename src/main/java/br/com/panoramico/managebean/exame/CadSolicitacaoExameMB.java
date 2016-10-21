@@ -41,8 +41,8 @@ import org.primefaces.context.RequestContext;
 
 @Named
 @ViewScoped
-public class CadSolicitacaoExameMB implements Serializable{
-    
+public class CadSolicitacaoExameMB implements Serializable {
+
     private Exame exame;
     private Medico medico;
     private Contasreceber contasreceber;
@@ -67,7 +67,7 @@ public class CadSolicitacaoExameMB implements Serializable{
     private ContasReceberDao contasReceberDao;
     @EJB
     private AssociadoDao associadoDao;
-    private Float totalPagar  = 0.0f;
+    private Float totalPagar = 0.0f;
     @Inject
     private UsuarioLogadoMB usuarioLogadoMB;
     private Float valorExame = 0.0f;
@@ -84,9 +84,9 @@ public class CadSolicitacaoExameMB implements Serializable{
     private Parametros parametros;
     @EJB
     private ParametrosDao parametrosDao;
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         gerarListaMedico();
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
@@ -97,7 +97,7 @@ public class CadSolicitacaoExameMB implements Serializable{
             exame = new Exame();
             exameassociado = new Exameassociado();
             examedependente = new Examedependente();
-        }else{
+        } else {
             pegarValores();
             medico = exame.getMedico();
             valorExame = exame.getValor();
@@ -110,7 +110,7 @@ public class CadSolicitacaoExameMB implements Serializable{
                 habilitarDependente = false;
                 associadoDependente = "Associado.";
                 gerarListaAssociados();
-            }else{
+            } else {
                 dependente = examedependente.getDependente();
                 habilitarDependente = true;
                 exibirNome = "Dependente";
@@ -305,7 +305,6 @@ public class CadSolicitacaoExameMB implements Serializable{
         this.dependenteDao = dependenteDao;
     }
 
-    
     public String getExibirNome() {
         return exibirNome;
     }
@@ -369,24 +368,22 @@ public class CadSolicitacaoExameMB implements Serializable{
     public void setParametrosDao(ParametrosDao parametrosDao) {
         this.parametrosDao = parametrosDao;
     }
-    
-    
-    
-    public void gerarListaAssociados(){
+
+    public void gerarListaAssociados() {
         listaAssociado = associadoDao.list("Select a from Associado a");
         if (listaAssociado == null || listaAssociado.isEmpty()) {
             listaAssociado = new ArrayList<Associado>();
         }
     }
-    
-    public void gerarListaDependentes(){
+
+    public void gerarListaDependentes() {
         listaDependente = dependenteDao.list("Select d from Dependente d");
         if (listaAssociado == null || listaAssociado.isEmpty()) {
             listaAssociado = new ArrayList<Associado>();
         }
     }
-    
-    public void salvar(){
+
+    public void salvar() {
         exame.setMedico(medico);
         exame.setValor(valorExame);
         exame.setDesconto(descontoExame);
@@ -398,105 +395,103 @@ public class CadSolicitacaoExameMB implements Serializable{
                 exameassociado.setExame(exame);
                 exameassociado.setAssociado(associado);
                 exameAssociadoDao.update(exameassociado);
-            }else if (associadoDependente.equalsIgnoreCase("Dependente") && exame.getIdexame() != null) {
+            } else if (associadoDependente.equalsIgnoreCase("Dependente") && exame.getIdexame() != null) {
                 examedependente.setExame(exame);
                 examedependente.setDependente(dependente);
                 exameDependenteDao.update(examedependente);
-            } 
+            }
             RequestContext.getCurrentInstance().closeDialog(exame);
         }
     }
-    
-     public String validarDados(){
+
+    public String validarDados() {
         String msg = "";
         if (exame.getMedico() == null) {
             msg = msg + " você não informou o medico";
         }
         return msg;
     }
-     
-    
-     public void lancarContaReceber(){
-         contasreceber = new Contasreceber();
-         contasreceber.setDatalancamento(new Date());
-         contasreceber.setNumeroparcela("1");
-         contasreceber.setSituacao("PAGAR");
-         contasreceber.setValorconta(totalPagar);
-         contasreceber.setTipopagamento(exame.getFormapagamento());
-         if (exame.getFormapagamento().equalsIgnoreCase("Boleto")) {
-             contasreceber.setSituacaoboleto("Novo");
-         }else{
-             contasreceber.setSituacaoboleto("Não");
-         }
-         contasreceber.setUsuario(usuarioLogadoMB.getUsuario());
-         contasreceber.setNumerodocumento(""+exame.getIdexame());
-         planoconta = planoContaDao.find(4);
-         contasreceber.setPlanoconta(planoconta);
-         if (associadoDependente.equalsIgnoreCase("Associado")) {
-             contasreceber.setCliente(associado.getCliente());
-         }else{
+
+    public void lancarContaReceber() {
+        contasreceber = new Contasreceber();
+        contasreceber.setDatalancamento(new Date());
+        contasreceber.setNumeroparcela("1");
+        contasreceber.setSituacao("PAGAR");
+        contasreceber.setValorconta(totalPagar);
+        contasreceber.setTipopagamento(exame.getFormapagamento());
+        if (exame.getFormapagamento().equalsIgnoreCase("Boleto")) {
+            contasreceber.setSituacaoboleto("Novo");
+        } else {
+            contasreceber.setSituacaoboleto("Não");
+        }
+        contasreceber.setUsuario(usuarioLogadoMB.getUsuario());
+        contasreceber.setNumerodocumento("" + exame.getIdexame());
+        planoconta = planoContaDao.find(4);
+        contasreceber.setPlanoconta(planoconta);
+        if (associadoDependente.equalsIgnoreCase("Associado")) {
+            contasreceber.setCliente(associado.getCliente());
+        } else {
             contasreceber.setCliente(dependente.getAssociado().getCliente());
-         }
-         contasReceberDao.update(contasreceber);
-     }
-     
-     public void calcularValidade() {
+        }
+        contasReceberDao.update(contasreceber);
+    }
+
+    public void calcularValidade() {
         Calendar c = new GregorianCalendar();
         c.setTime(exame.getData());
         c.add(Calendar.DAY_OF_MONTH, 89);
         Date data = c.getTime();
-       exame.setDatavalidade(data);
+        exame.setDatavalidade(data);
     }
-     
-    public void cancelar(){
+
+    public void cancelar() {
         RequestContext.getCurrentInstance().closeDialog(new Exame());
     }
-    
-    public void calcularTotal(){
+
+    public void calcularTotal() {
         totalPagar = valorExame - descontoExame;
     }
-    
-    public String gerarListaAssociadoDependente(){
+
+    public String gerarListaAssociadoDependente() {
         if (associadoDependente.equalsIgnoreCase("Associado")) {
             exibirNome = "Associado.";
             gerarListaAssociados();
             habilitarAssociado = true;
             habilitarNome = true;
             habilitarDependente = false;
-        }else if (associadoDependente.equals("Dependente")){
+        } else if (associadoDependente.equals("Dependente")) {
             gerarListaDependentes();
-            exibirNome  = "Dependente";
+            exibirNome = "Dependente";
             habilitarDependente = true;
             habilitarNome = true;
             habilitarAssociado = false;
         }
         return "";
     }
-    
-    
-    public void gerarListaMedico(){
+
+    public void gerarListaMedico() {
         listaMedico = medicoDao.list("Select m from Medico m where m.situacao='Ativo'");
         if (listaMedico == null || listaMedico.isEmpty()) {
             listaMedico = new ArrayList<Medico>();
         }
     }
-    
-    public void pegarValores(){
+
+    public void pegarValores() {
         List<Exameassociado> listaExameAssociado = exameAssociadoDao.list("Select ea from Exameassociado ea where ea.exame.idexame=" + exame.getIdexame());
-        List<Examedependente> listaExameDependente  = exameDependenteDao.list("Select ed from Examedependente ed where ed.exame.idexame=" + exame.getIdexame());
+        List<Examedependente> listaExameDependente = exameDependenteDao.list("Select ed from Examedependente ed where ed.exame.idexame=" + exame.getIdexame());
         if (listaExameAssociado == null || listaExameAssociado.isEmpty()) {
             for (int i = 0; i < listaExameDependente.size(); i++) {
                 examedependente = listaExameDependente.get(i);
             }
-        }else{
+        } else {
             for (int i = 0; i < listaExameAssociado.size(); i++) {
                 exameassociado = listaExameAssociado.get(i);
             }
         }
     }
-    
-    public void getMedicoDefault(){
+
+    public void getMedicoDefault() {
         parametros = parametrosDao.find(1);
-        medico  = medicoDao.find(parametros.getMedico());
+        medico = medicoDao.find(parametros.getMedico());
     }
 }
