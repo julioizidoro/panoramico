@@ -204,7 +204,7 @@ public class totalSerPagoMB implements Serializable{
     }
     
     public void gerarListaContasAssociadoEmpresa(Associadoempresa associadoempresa){
-        listaContasAssociadosEmpresa = contasReceberDao.list("Select c From Contasreceber c Where c.situacao='PAGAR' and c.tipopagamento='Boleto' and c.cliente.idcliente="
+        listaContasAssociadosEmpresa = contasReceberDao.list("Select c From Contasreceber c Where c.situacao='PAGAR' and c.cliente.idcliente="
                 + associadoempresa.getAssociado().getCliente().getIdcliente());
         if (listaContasAssociadosEmpresa == null || listaContasAssociadosEmpresa.isEmpty()) {
             listaContasAssociadosEmpresa = new ArrayList<>();

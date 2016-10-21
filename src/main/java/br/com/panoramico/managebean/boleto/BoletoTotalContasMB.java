@@ -332,18 +332,34 @@ public class BoletoTotalContasMB implements Serializable {
     }
 
     public String gerarBoletoEmpresa(){
+        Associado copia = null;
         float valorTotalPorEmpresa;
         List<Boleto> listaBoletos = null;
         listaBoletos = new ArrayList<Boleto>();
         for (int i = 0; i < listaContasReceber.size(); i++) {
             valorTotalPorEmpresa = 0.0f;
-            associado = pegarEndereco(listaContasReceber.get(i));
+            if (associado == null) {
+                associado = pegarEndereco(listaContasReceber.get(i));
+                if (copia == null) {
+                }else{
+                    if (associado.getIdassociado() == copia.getIdassociado()) {
+                        associado = null;
+                    }
+                }
+            }else{
+                copia = pegarEndereco(listaContasReceber.get(i));
+                if (associado.getIdassociado() == copia.getIdassociado()) {
+                    associado = null;
+                }else{
+                    associado = copia;
+                }
+            }
             if (associado == null) {
             }else{
                 empresa = associado.getAssociadoempresaList().get(0).getEmpresa();
                 for (int j = 0; j < listaContasReceber.size(); j++) {
                     if (listaContasReceber.get(j).getCliente().getIdcliente() == associado.getAssociadoempresaList().get(0).getAssociado().getCliente().getIdcliente()) {
-                        valorTotalPorEmpresa = valorTotalPorEmpresa + listaContasReceber.get(i).getValorconta();
+                        valorTotalPorEmpresa = valorTotalPorEmpresa + listaContasReceber.get(j).getValorconta();
                     }
                 }
                 listaBoletos.add(gerarClasseBoletoEmpresa(listaContasReceber.get(i), valorTotalPorEmpresa));
@@ -365,7 +381,7 @@ public class BoletoTotalContasMB implements Serializable {
         dadosBoletoBean.setDataDocumento(new Date());
         dadosBoletoBean.setDigitoAgencias(banco.getDigitoagencia());
         dadosBoletoBean.setDigitoContas(banco.getDigitoconta());
-        dadosBoletoBean.setDataVencimento(conta.getDatalancamento());
+        dadosBoletoBean.setDataVencimento(conta.getDatavencimento());
         dadosBoletoBean.setNomeCedente(proprietario.getRazaosocial());
         dadosBoletoBean.setNomeSacado(empresa.getRazaosocial());
         dadosBoletoBean.setNumeroContas(banco.getConta());
