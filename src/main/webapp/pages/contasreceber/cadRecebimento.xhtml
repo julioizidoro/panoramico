@@ -59,11 +59,19 @@
                 </p:inputText>
             </h:panelGrid>
             <br/> 
-            <p:outputLabel class="titTela" value="Valor Total" style="font-size: 14px;text-align: left;margin-left: 2%;"/>
-            <br/>
-            <p:inputText id="idValorTotalRecebido" class="form-control" readonly="true" value="#{cadRecebimentoMB.valorTotalRecebido}" size="12" style="margin-left:2%;text-align: right;float: left">
-                <f:convertNumber pattern="##,###,###,###.##"/>
-            </p:inputText> 
+            <h:panelGrid columns="2"  style="margin-left:1%;width:98%;"> 
+                <p:outputLabel class="titTela" value="Valor Total" style="font-size: 14px;text-align: left;"/>
+                <p:outputLabel class="titTela" value="Banco" style="font-size: 14px;text-align: left;"/>
+                <p:inputText id="idValorTotalRecebido" class="form-control" readonly="true" value="#{cadRecebimentoMB.valorTotalRecebido}" size="12" style="margin-left:2%;text-align: right;float: left;font-size: 12px;">
+                    <f:convertNumber pattern="##,###,###,###.##"/>
+                </p:inputText> 
+                <p:selectOneMenu  class="form-control" id="plano"  style="width:84.5%;font-size: 12px;"  value="#{cadRecebimentoMB.banco}" converter="BancoConverter"
+                                  filter="true" filterMatchMode="contains" panelStyle="width:180px" >
+                    <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
+                    <f:selectItems  value="#{cadRecebimentoMB.listaBanco}" var="bancoselecionado" itemLabel="#{bancoselecionado.nome}" itemValue="#{bancoselecionado}"/>
+                    <f:attribute name="listaBanco" value="#{cadRecebimentoMB.listaBanco}"/>
+                </p:selectOneMenu> 
+            </h:panelGrid>
             <br/><br/><br/>
             <hr style="color: #367587; background: #367587"/>
             <br/>  

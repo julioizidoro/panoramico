@@ -8,7 +8,6 @@ package br.com.panoramico.managebean.contasreceber;
 import br.com.panoramico.dao.ClienteDao;
 import br.com.panoramico.dao.CobrancasParcelasDao;
 import br.com.panoramico.dao.ContasReceberDao;
-import br.com.panoramico.dao.PlanoContaDao;
 import br.com.panoramico.dao.ProprietarioDao;
 import br.com.panoramico.managebean.UsuarioLogadoMB;
 import br.com.panoramico.managebean.boleto.LerRetornoItauBean;
@@ -17,7 +16,6 @@ import br.com.panoramico.model.Cliente;
 import br.com.panoramico.model.Cobrancasparcelas;
 import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.model.Crcancelamento;
-import br.com.panoramico.model.Planoconta;
 import br.com.panoramico.model.Proprietario;
 import br.com.panoramico.model.Recebimento;
 import br.com.panoramico.uil.Formatacao;
@@ -348,8 +346,13 @@ public class ContasReceberMB implements Serializable{
                 if (situacao.equalsIgnoreCase("VENCER")) {
                     sql = sql + " c.situacao='PAGAR' and c.datavencimento>='" + Formatacao.ConvercaoDataSql(new Date()) + "'";
                 }else if(situacao.equalsIgnoreCase("VENCIDOS")){
-                    sql = sql + " c.situacao='PAGAR' and c.datavencimento>='" + Formatacao.ConvercaoDataSql(dataInicial) + "' and c.datavencimento<'" +
-                         Formatacao.ConvercaoDataSql(new Date()) + "'";
+                    if (dataFinal.before(new Date())) {
+                        sql = sql + " c.situacao='PAGAR' and c.datavencimento>='" + Formatacao.ConvercaoDataSql(dataInicial) + "' and c.datavencimento<'" +
+                         Formatacao.ConvercaoDataSql(dataFinal) + "'";
+                    }else{
+                        sql = sql + " c.situacao='PAGAR' and c.datavencimento>='" + Formatacao.ConvercaoDataSql(dataInicial) + "' and c.datavencimento<'" +
+                            Formatacao.ConvercaoDataSql(new Date()) + "'";
+                    }
                 }else{
                     sql = sql + " c.situacao='" + situacao + "' and c.datavencimento>='" + Formatacao.ConvercaoDataSql(dataInicial) + "' and c.datavencimento<='" 
                         + Formatacao.ConvercaoDataSql(dataFinal) + "'";
@@ -425,6 +428,12 @@ public class ContasReceberMB implements Serializable{
         Map<String, Object> options = new HashMap<String, Object>();
         options.put("contentWidth", 580);
         RequestContext.getCurrentInstance().openDialog("imprimirContasRecebidas", options, null);
+        return "";
+    }
+    
+    
+    public String totalPagar() {
+        RequestContext.getCurrentInstance().openDialog("consTotalPagar");
         return "";
     }
     

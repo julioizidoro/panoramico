@@ -5,13 +5,16 @@
  */
 package br.com.panoramico.managebean.contasreceber;
 
+import br.com.panoramico.dao.BancoDao;
 import br.com.panoramico.dao.ContasReceberDao;
 import br.com.panoramico.dao.RecebimentoDao;
 import br.com.panoramico.managebean.UsuarioLogadoMB;
+import br.com.panoramico.model.Banco;
 import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.model.Recebimento;
 import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -38,6 +41,10 @@ public class CadRecebimentoMB implements Serializable{
     private RecebimentoDao recebimentoDao;
     @EJB
     private ContasReceberDao conasReceberDao;
+    private Banco banco;
+    private List<Banco> listaBanco;
+    @EJB
+    private BancoDao bancoDao;
     
     
     @PostConstruct
@@ -53,6 +60,7 @@ public class CadRecebimentoMB implements Serializable{
             valorTotalRecebido = contasreceber.getValorconta();
             valorReceber = contasreceber.getValorconta();
         }
+        gerarListaBanco();
     }
 
     public RecebimentoDao getRecebimentoDao() {
@@ -133,6 +141,32 @@ public class CadRecebimentoMB implements Serializable{
     public void calcularTotal(){
         valorTotalRecebido = (valorReceber + juros) - desagio;
     }
+
+    public Banco getBanco() {
+        return banco;
+    }
+
+    public void setBanco(Banco banco) {
+        this.banco = banco;
+    }
+
+    public List<Banco> getListaBanco() {
+        return listaBanco;
+    }
+
+    public void setListaBanco(List<Banco> listaBanco) {
+        this.listaBanco = listaBanco;
+    }
+
+    public BancoDao getBancoDao() {
+        return bancoDao;
+    }
+
+    public void setBancoDao(BancoDao bancoDao) {
+        this.bancoDao = bancoDao;
+    }
+    
+    
     
     public void salvar(){
         Float totalRecebido = 0.0f;
@@ -153,6 +187,7 @@ public class CadRecebimentoMB implements Serializable{
                     contasreceber.setValorconta(contasreceber.getValorconta() - valorTotalRecebido);
                 }
                 conasReceberDao.update(contasreceber);
+                recebimento.setBanco(banco);
                 recebimento.setJuros(juros);
                 recebimento.setDesagio(desagio);
                 recebimento.setValorrecebido(valorTotalRecebido);
@@ -173,10 +208,21 @@ public class CadRecebimentoMB implements Serializable{
             Mensagem.lancarMensagemInfo("Atenção", "Data não informada.");
             return false;
         }
+        if (banco == null || banco.getIdbanco() == null) {
+            Mensagem.lancarMensagemInfo("Atenção", "banco não selecionado");
+            return false;
+        }
         return true;
     }
     
     public void cancelar(){
         RequestContext.getCurrentInstance().closeDialog(new Recebimento());
+    }
+    
+    public void gerarListaBanco(){
+        listaBanco = bancoDao.list("Select b From Banco b");
+        if (listaBanco == null || listaBanco.isEmpty()) {
+            listaBanco = new ArrayList<>();
+        }
     }
 }

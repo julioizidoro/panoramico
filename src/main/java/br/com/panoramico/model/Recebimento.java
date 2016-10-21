@@ -43,6 +43,9 @@ public class Recebimento implements Serializable{
     @JoinColumn(name = "contasreceber_idcontasreceber", referencedColumnName = "idcontasreceber")
     @ManyToOne(optional = false)
     private Contasreceber contasreceber;
+    @JoinColumn(name = "banco_idbanco", referencedColumnName = "idbanco")
+    @ManyToOne(optional = false)
+    private Banco banco;
     @JoinColumn(name = "usuario_idusuario", referencedColumnName = "idusuario")
     @ManyToOne(optional = false)
     private Usuario usuario;
@@ -112,6 +115,14 @@ public class Recebimento implements Serializable{
 
     public void setValorrecebido(Float valorrecebido) {
         this.valorrecebido = valorrecebido;
+    }
+
+    public Banco getBanco() {
+        return banco;
+    }
+
+    public void setBanco(Banco banco) {
+        this.banco = banco;
     }
 
     
