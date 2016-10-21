@@ -22,6 +22,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 /**
  *
@@ -79,7 +81,8 @@ public class Associado implements Serializable {
     private Plano plano;
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "associado")
     private List<Dependente> dependenteList;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "associado")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "associado")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Associadoempresa> associadoempresaList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "associado")
     private List<Exameassociado> exameassociadoList;

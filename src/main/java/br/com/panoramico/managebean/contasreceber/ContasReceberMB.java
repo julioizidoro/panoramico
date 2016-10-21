@@ -433,8 +433,7 @@ public class ContasReceberMB implements Serializable{
     
     
     public String totalPagar() {
-        RequestContext.getCurrentInstance().openDialog("consTotalPagar");
-        return "";
+        return "consTotalPagar";
     }
     
     

@@ -8,14 +8,20 @@ package br.com.panoramico.managebean.contasreceber;
 import br.com.panoramico.dao.AssociadoDao;
 import br.com.panoramico.dao.ContasReceberDao;
 import br.com.panoramico.model.Associado;
+import br.com.panoramico.model.Associadoempresa;
 import br.com.panoramico.model.Contasreceber;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import javax.servlet.http.HttpSession;
+import org.primefaces.context.RequestContext;
 
 @Named
 @ViewScoped
@@ -32,11 +38,14 @@ public class totalSerPagoMB implements Serializable{
     private AssociadoDao associadoDao;
     private float valorTotalEmpresa;
     private float valorTotalAssociado;
+    private List<Contasreceber> listaTotalContasAssociados;
+    private List<Contasreceber> listaTotalContasAssociadoEmpresa;
+    private boolean  empresa;
     
     
     @PostConstruct
     public void init(){
-        gerarListaContasAssociadoEmpresa();
+        gerarListaAssociado();
     }
 
     public Contasreceber getContasreceber() {
@@ -114,27 +123,94 @@ public class totalSerPagoMB implements Serializable{
     public void setValorTotalAssociado(float valorTotalAssociado) {
         this.valorTotalAssociado = valorTotalAssociado;
     }
-    
-    
-    
-    public void gerarListaContasAssociado(){
-        listaContasAssociados = contasReceberDao.list("Select c From Contasreceber c");
+
+    public List<Contasreceber> getListaTotalContasAssociados() {
+        return listaTotalContasAssociados;
     }
+
+    public void setListaTotalContasAssociados(List<Contasreceber> listaTotalContasAssociados) {
+        this.listaTotalContasAssociados = listaTotalContasAssociados;
+    }
+
+    public List<Contasreceber> getListaTotalContasAssociadoEmpresa() {
+        return listaTotalContasAssociadoEmpresa;
+    }
+
+    public void setListaTotalContasAssociadoEmpresa(List<Contasreceber> listaTotalContasAssociadoEmpresa) {
+        this.listaTotalContasAssociadoEmpresa = listaTotalContasAssociadoEmpresa;
+    }
+    
     
     
     public void gerarListaAssociado(){
-        listaAssociado = associadoDao.list("Select a From Associado a Join Associadoempresa ae on a.idassociado=ae.associado.idassociado");
+        listaTotalContasAssociadoEmpresa = new ArrayList<>();
+        listaTotalContasAssociados = new ArrayList<>();
+        listaContasAssociados = new ArrayList<>();
+        listaContasAssociadosEmpresa = new ArrayList<>();
+        listaAssociado = associadoDao.list("Select a From Associado a Where a.situacao='Ativo'");
+        if (listaAssociado == null || listaAssociado.isEmpty()) {
+            listaAssociado = new ArrayList<>();
+        }
+        for (int i = 0; i < listaAssociado.size(); i++) {
+            if (listaAssociado.get(i).getAssociadoempresaList().size() > 0) {
+                for (int j = 0; j < listaAssociado.get(i).getAssociadoempresaList().size(); j++) {
+                    gerarListaContasAssociadoEmpresa(listaAssociado.get(i).getAssociadoempresaList().get(j));
+                }
+            }else{
+                    gerarListaContasAssociado(listaAssociado.get(i));
+            }
+        }
     }
     
-    public void gerarListaContasAssociadoEmpresa(){
-        listaContasAssociadosEmpresa = contasReceberDao.list("Select c From Contasreceber c Join Associado a on c.cliente.idcliente=a.cliente.idcliente"
-                + " Join Associadoempresa ae on a.idassociado="
-                + " ae.associado.idassociado Where c.situacao='PAGAR'");
+    
+    public void gerarListaContasAssociado(Associado associado){
+        listaContasAssociados = contasReceberDao.list("Select c From Contasreceber c Where c.situacao='PAGAR' and c.tipopagamento='Boleto' and c.cliente.idcliente="
+                    + associado.getCliente().getIdcliente());
+        if (listaContasAssociados == null || listaContasAssociados.isEmpty()) {
+            listaContasAssociados = new ArrayList<>();
+        }
+        for (int j = 0; j < listaContasAssociados.size(); j++) {
+            valorTotalAssociado = valorTotalAssociado + listaContasAssociados.get(j).getValorconta();
+            listaTotalContasAssociados.add(listaContasAssociados.get(j));
+        }
+    }
+    
+    public void gerarListaContasAssociadoEmpresa(Associadoempresa associadoempresa){
+        listaContasAssociadosEmpresa = contasReceberDao.list("Select c From Contasreceber c Where c.situacao='PAGAR' and c.tipopagamento='Boleto' and c.cliente.idcliente="
+                + associadoempresa.getAssociado().getCliente().getIdcliente());
         if (listaContasAssociadosEmpresa == null || listaContasAssociadosEmpresa.isEmpty()) {
             listaContasAssociadosEmpresa = new ArrayList<>();
         }
-        for (int i = 0; i < listaContasAssociadosEmpresa.size(); i++) {
-            valorTotalEmpresa = valorTotalEmpresa + listaContasAssociadosEmpresa.get(i).getValorconta();
-        }
+            for (int j = 0; j < listaContasAssociadosEmpresa.size(); j++) {
+                valorTotalEmpresa = valorTotalEmpresa + listaContasAssociadosEmpresa.get(j).getValorconta();
+                listaTotalContasAssociadoEmpresa.add(listaContasAssociadosEmpresa.get(j));
+            }
+    }  
+      
+    
+    public String boletoAssociado() {
+        FacesContext fc = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+        Map<String, Object> options = new HashMap<String, Object>();
+        options.put("contentWidth", 600);
+        empresa = false;
+        session.setAttribute("empresa", empresa);
+        session.setAttribute("valorTotalEmpresa", valorTotalEmpresa);
+        session.setAttribute("listaContasReceber", listaTotalContasAssociados);
+        RequestContext.getCurrentInstance().openDialog("boletoTotalContas", options, null);
+        return "";
+    }
+    
+    public String boletoEmpresa() {
+        FacesContext fc = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+        Map<String, Object> options = new HashMap<String, Object>();
+        options.put("contentWidth", 600);
+        empresa = true;
+        session.setAttribute("valorTotalEmpresa", valorTotalEmpresa);
+        session.setAttribute("empresa", empresa);
+        session.setAttribute("listaContasReceber", listaTotalContasAssociadoEmpresa);
+        RequestContext.getCurrentInstance().openDialog("boletoTotalContas", options, null);
+        return "";
     }
 }
