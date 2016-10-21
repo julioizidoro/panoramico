@@ -7,6 +7,7 @@ package br.com.panoramico.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,10 +20,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 /**
  *
@@ -60,6 +64,12 @@ public class Exame implements Serializable {
     @JoinColumn(name = "medico_idmedico", referencedColumnName = "idmedico")
     @ManyToOne(optional = false)
     private Medico medico;
+    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL, mappedBy = "exame")
+    private Exameassociado exameassociado;
+    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL, mappedBy = "exame")
+    private Examedependente examedependente;
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "exame")
+    private Exameconvidado exameconvidado;
     
     public Exame() {
     }
@@ -138,6 +148,30 @@ public class Exame implements Serializable {
 
     public void setMedico(Medico medico) {
         this.medico = medico;
+    }
+
+    public Exameassociado getExameassociado() {
+        return exameassociado;
+    }
+
+    public void setExameassociado(Exameassociado exameassociado) {
+        this.exameassociado = exameassociado;
+    }
+
+    public Examedependente getExamedependente() {
+        return examedependente;
+    }
+
+    public void setExamedependente(Examedependente examedependente) {
+        this.examedependente = examedependente;
+    }
+
+    public Exameconvidado getExameconvidado() {
+        return exameconvidado;
+    }
+
+    public void setExameconvidado(Exameconvidado exameconvidado) {
+        this.exameconvidado = exameconvidado;
     }
 
 

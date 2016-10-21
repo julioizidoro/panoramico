@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -24,9 +25,9 @@ public class Exameconvidado implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "idexameconvidado")
-    private Integer idexameassociado;
+    private Integer idexameconvidado;
     @JoinColumn(name = "exame_idexame", referencedColumnName = "idexame")
-    @ManyToOne(optional = false)
+    @OneToOne(optional = false)
     private Exame exame;
     @JoinColumn(name = "eventoconvidados_ideventoconvidados", referencedColumnName = "ideventoconvidados")
     @ManyToOne(optional = false)
@@ -35,24 +36,20 @@ public class Exameconvidado implements Serializable {
     public Exameconvidado() {
     }
 
-    public Exameconvidado(Integer idexameassociado) {
-        this.idexameassociado = idexameassociado;
-    }
-
-    public Integer getIdexameassociado() {
-        return idexameassociado;
-    }
-
-    public void setIdexameassociado(Integer idexameassociado) {
-        this.idexameassociado = idexameassociado;
-    }
-
     public Exame getExame() {
         return exame;
     }
 
     public void setExame(Exame exame) {
         this.exame = exame;
+    }
+
+    public Integer getIdexameconvidado() {
+        return idexameconvidado;
+    }
+
+    public void setIdexameconvidado(Integer idexameconvidado) {
+        this.idexameconvidado = idexameconvidado;
     }
 
     public Eventoconvidados getEventoconvidados() {
@@ -66,7 +63,7 @@ public class Exameconvidado implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idexameassociado != null ? idexameassociado.hashCode() : 0);
+        hash += (idexameconvidado != null ? idexameconvidado.hashCode() : 0);
         return hash;
     }
 
@@ -77,7 +74,7 @@ public class Exameconvidado implements Serializable {
             return false;
         }
         Exameconvidado other = (Exameconvidado) object;
-        if ((this.idexameassociado == null && other.idexameassociado != null) || (this.idexameassociado != null && !this.idexameassociado.equals(other.idexameassociado))) {
+        if ((this.idexameconvidado == null && other.idexameconvidado != null) || (this.idexameconvidado != null && !this.idexameconvidado.equals(other.idexameconvidado))) {
             return false;
         }
         return true;
@@ -85,7 +82,7 @@ public class Exameconvidado implements Serializable {
 
     @Override
     public String toString() {
-        return "br.com.panoramico.model.Exameassociado[ idexameassociado=" + idexameassociado + " ]";
+        return "br.com.panoramico.model.Exameconvidado[ idexameconvidado=" + idexameconvidado + " ]";
     }
     
 }
