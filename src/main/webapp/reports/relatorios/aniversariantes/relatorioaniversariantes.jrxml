@@ -37,7 +37,7 @@
 		<groupHeader>
 			<band height="55">
 				<line>
-					<reportElement x="1" y="54" width="554" height="1" uuid="a2660627-9a9e-4d29-906d-eb2b90bf545f"/>
+					<reportElement x="1" y="54" width="554" height="1" forecolor="#666666" uuid="a2660627-9a9e-4d29-906d-eb2b90bf545f"/>
 				</line>
 				<textField pattern="">
 					<reportElement mode="Transparent" x="2" y="17" width="552" height="22" uuid="f3d3440c-e411-477b-957d-d4a5cc3f8c1a"/>
@@ -111,7 +111,7 @@
 				<textFieldExpression><![CDATA[$F{datanascimento}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="0" y="15" width="554" height="1" uuid="b9ec124e-9b34-4014-ab2b-9909cd600f6c"/>
+				<reportElement x="0" y="15" width="554" height="1" forecolor="#666666" uuid="b9ec124e-9b34-4014-ab2b-9909cd600f6c"/>
 			</line>
 			<textField pattern="#,##0.00">
 				<reportElement x="261" y="1" width="74" height="15" uuid="32baa722-33a3-4cc1-ad52-48c0f11e4aaf"/>
@@ -139,7 +139,7 @@
 	<pageFooter>
 		<band height="20" splitType="Stretch">
 			<textField pattern="EEEEE dd MMMMM yyyy">
-				<reportElement x="2" y="3" width="127" height="14" uuid="7ae4e633-e737-4a5a-acbf-bd9d128532ca"/>
+				<reportElement x="2" y="3" width="127" height="14" forecolor="#666666" uuid="7ae4e633-e737-4a5a-acbf-bd9d128532ca"/>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<line>
