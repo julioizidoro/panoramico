@@ -30,8 +30,8 @@ import org.primefaces.event.SelectEvent;
 
 @Named
 @ViewScoped
-public class SolicitacaoExameMB implements Serializable{
-    
+public class SolicitacaoExameMB implements Serializable {
+
     private Exame exame;
     private List<Exame> listaSolicitacao;
     @EJB
@@ -44,14 +44,12 @@ public class SolicitacaoExameMB implements Serializable{
     private ExameAssociadoDao exameAssociadoDao;
     @Inject
     private UsuarioLogadoMB usuarioLogadoMB;
-    
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         gerarListaSolicitacoes();
     }
 
-    
     public Exame getExame() {
         return exame;
     }
@@ -68,7 +66,6 @@ public class SolicitacaoExameMB implements Serializable{
         this.listaSolicitacao = listaSolicitacao;
     }
 
-    
     public ExameDao getExameDao() {
         return exameDao;
     }
@@ -108,15 +105,13 @@ public class SolicitacaoExameMB implements Serializable{
     public void setExameAssociadoDao(ExameAssociadoDao exameAssociadoDao) {
         this.exameAssociadoDao = exameAssociadoDao;
     }
-    
-    
-    
-    public void gerarListaSolicitacoes(){
+
+    public void gerarListaSolicitacoes() {
         listaSolicitacao = exameDao.list("Select e from Exame e");
         if (listaSolicitacao == null || listaSolicitacao.isEmpty()) {
             listaSolicitacao = new ArrayList<Exame>();
         }
-    }  
+    }
 
     public UsuarioLogadoMB getUsuarioLogadoMB() {
         return usuarioLogadoMB;
@@ -125,45 +120,43 @@ public class SolicitacaoExameMB implements Serializable{
     public void setUsuarioLogadoMB(UsuarioLogadoMB usuarioLogadoMB) {
         this.usuarioLogadoMB = usuarioLogadoMB;
     }
-     
-    
-    
+
     public String novaSolicitacaoExame() {
         if (usuarioLogadoMB.getUsuario().getPerfil().getNome().equalsIgnoreCase("Administrativo")
                 || usuarioLogadoMB.getUsuario().getPerfil().getNome().equalsIgnoreCase("Gerencial")) {
             Map<String, Object> options = new HashMap<String, Object>();
             options.put("contentWidth", 545);
             RequestContext.getCurrentInstance().openDialog("cadSolicitacaoExame", options, null);
-        }else{
+        } else {
             Mensagem.lancarMensagemInfo("", "Acesso Negado!!");
         }
         return "";
     }
-    
-    public void retornoDialogNovo(SelectEvent event){
+
+    public void retornoDialogNovo(SelectEvent event) {
         Exame exame = (Exame) event.getObject();
-        if (exame.getIdexame()!= null) {
+        if (exame.getIdexame() != null) {
             Mensagem.lancarMensagemInfo("Salvou", "Solicitação de exame realizado com sucesso");
         }
         gerarListaSolicitacoes();
     }
-    
-    public void retornoDialogAlteracao(SelectEvent event){
+
+    public void retornoDialogAlteracao(SelectEvent event) {
         Exame exame = (Exame) event.getObject();
-        if (exame.getIdexame()!= null) {
+        if (exame.getIdexame() != null) {
             Mensagem.lancarMensagemInfo("Salvou", "Alteração de exame realizado com sucesso");
         }
         gerarListaSolicitacoes();
     }
-    
-      public void excluir(Exame exame){
+
+    public void excluir(Exame exame) {
         List<Exameassociado> listaExameAssociado = exameAssociadoDao.list("Select ea from Exameassociado ea where ea.exame.idexame=" + exame.getIdexame());
-        List<Examedependente> listaExameDependente  = exameDependenteDao.list("Select ed from Examedependente ed where ed.exame.idexame=" + exame.getIdexame());
+        List<Examedependente> listaExameDependente = exameDependenteDao.list("Select ed from Examedependente ed where ed.exame.idexame=" + exame.getIdexame());
         if (listaExameAssociado == null || listaExameAssociado.isEmpty()) {
             for (int i = 0; i < listaExameDependente.size(); i++) {
                 exameDependenteDao.remove(listaExameDependente.get(i).getIdexamedependente());
             }
-        }else{
+        } else {
             for (int i = 0; i < listaExameAssociado.size(); i++) {
                 exameAssociadoDao.remove(listaExameAssociado.get(i).getIdexameassociado());
             }
@@ -172,8 +165,8 @@ public class SolicitacaoExameMB implements Serializable{
         Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
         gerarListaSolicitacoes();
     }
-     
-     public void editar(Exame exame){
+
+    public void editar(Exame exame) {
         if (usuarioLogadoMB.getUsuario().getPerfil().getNome().equalsIgnoreCase("Administrativo")
                 || usuarioLogadoMB.getUsuario().getPerfil().getNome().equalsIgnoreCase("Gerencial")) {
             Map<String, Object> options = new HashMap<String, Object>();
@@ -182,12 +175,16 @@ public class SolicitacaoExameMB implements Serializable{
             session.setAttribute("exame", exame);
             options.put("contentWidth", 545);
             RequestContext.getCurrentInstance().openDialog("cadSolicitacaoExame", options, null);
-        }else{
+        } else {
             Mensagem.lancarMensagemInfo("", "Acesso Negado!!");
         }
     }
-     
-    public Float calcularTotal(Exame exame){
+
+    public Float calcularTotal(Exame exame) {
         return exame.getValor() - exame.getDesconto();
+    }
+
+    public String nomeCliente(Exame exame) {
+        return "";
     }
 }

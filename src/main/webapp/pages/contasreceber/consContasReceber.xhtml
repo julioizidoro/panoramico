@@ -61,7 +61,7 @@
                         <div class="icoAdd fa fa-plus-square-o"></div>
                         <p:ajax event="dialogReturn" listener="#{contasReceberMB.retornoDialogNovo}" update="messages, idConsultaContasReceber"/>
                     </p:commandLink> 
-                    <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" rendered="false" action="#{contasReceberMB.totalPagar()}" title="Total a ser pago">
+                    <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" action="#{contasReceberMB.totalPagar()}" title="Total a ser pago">
                         <div class="icoAdd fa fa-bar-chart"></div>
                     </p:commandLink>
                     <h:dataTable  id="idConsultaContasReceber" class="table" styleClass="table" value="#{contasReceberMB.listaContasReceber}" var="contaReceber">
