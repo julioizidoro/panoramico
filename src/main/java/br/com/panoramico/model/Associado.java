@@ -79,7 +79,7 @@ public class Associado implements Serializable {
     private Plano plano;
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "associado")
     private List<Dependente> dependenteList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "associado")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "associado")
     private List<Associadoempresa> associadoempresaList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "associado")
     private List<Exameassociado> exameassociadoList;
