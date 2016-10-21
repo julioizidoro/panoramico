@@ -37,7 +37,7 @@
                 </h:panelGroup>
                 <p:selectOneMenu  class="form-control"  id="associadoDependente2"  style="width:80%;font-size: 12px;"  value="#{relatorioFrequenciaAcessoMB.associado}" converter="AssociadoConverter"
                                   filter="true" filterMatchMode="contains" panelStyle="width:180px" >
-                    <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
+                    <f:selectItem  itemLabel="Todos" itemValue="0" noSelectionOption="true"/> 
                     <f:selectItems  value="#{relatorioFrequenciaAcessoMB.listaAssociado}" var="associadoselecionado" itemLabel="#{associadoselecionado.cliente.nome}" itemValue="#{associadoselecionado}"/>
                     <f:attribute name="listaAssociado" value="#{relatorioFrequenciaAcessoMB.listaAssociado}"/>
                 </p:selectOneMenu>

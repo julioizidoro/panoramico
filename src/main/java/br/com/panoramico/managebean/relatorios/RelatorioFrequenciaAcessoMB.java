@@ -139,11 +139,11 @@ public class RelatorioFrequenciaAcessoMB implements Serializable {
                 + " join associado on controleacesso.associado_idassociado = associado.idassociado"
                 + " join cliente on associado.cliente_idcliente = cliente.idcliente"
                 + " Where associado.situacao='Ativo' and controleacesso.situacao='LIBERADO'";
-        if (associado != null) {
+        if (associado != null && associado.getIdassociado()!=null) {
             sql = sql + " and associado.idassociado=" + associado.getIdassociado();
         }
         if (dataInicio != null && dataFinal != null) {
-            sql = sql + " and controleacesso.data>='" + dataInicio + "' and controleacesso.data<='" + dataFinal + "'";
+            sql = sql + " and controleacesso.data>='" + Formatacao.ConvercaoDataSql(dataInicio) + "' and controleacesso.data<='" + Formatacao.ConvercaoDataSql(dataFinal) + "'";
         }
         sql = sql + " order by cliente.nome";
         return sql;
@@ -151,24 +151,6 @@ public class RelatorioFrequenciaAcessoMB implements Serializable {
 
     public void cancelar() {
         RequestContext.getCurrentInstance().closeDialog(null);
-    }
-
-    public Integer quantidadeFrequencia() {
-        String sql = "Select count(c.iddependente) From Controleacesso Where c.associado.situacao='Ativo' and c.situacao='LIBERADO'";
-        if (associado != null) {
-            sql = sql + " and c.associado.idassociado=" + associado.getIdassociado();
-        }
-        if (dataInicio != null && dataFinal != null) {
-            sql = sql + " and c.data>='" + dataInicio + "' and c.data<='" + dataFinal + "'";
-        }
-        sql = sql + " order by c.associado.cliente.nome";
-        try {
-            Integer numeroFrequencia = controleAcessoDao.numeroFrequencia(sql);
-            return numeroFrequencia;
-        } catch (SQLException ex) {
-            Logger.getLogger(RelatorioFrequenciaAcessoMB.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return 0;
     }
 
     public void gerarListaAssociado() {
