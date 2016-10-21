@@ -82,7 +82,7 @@
 				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="0" y="15" width="554" height="1" uuid="b9ec124e-9b34-4014-ab2b-9909cd600f6c"/>
+				<reportElement x="0" y="15" width="554" height="1" forecolor="#666666" uuid="b9ec124e-9b34-4014-ab2b-9909cd600f6c"/>
 			</line>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
 				<reportElement x="276" y="0" width="88" height="15" uuid="32baa722-33a3-4cc1-ad52-48c0f11e4aaf"/>

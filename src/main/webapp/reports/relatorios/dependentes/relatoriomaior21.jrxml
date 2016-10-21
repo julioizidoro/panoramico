@@ -53,7 +53,7 @@
 				<text><![CDATA[Associado]]></text>
 			</staticText>
 			<line>
-				<reportElement x="0" y="14" width="554" height="1" uuid="5b24f4af-8a73-4b8f-aa6b-ec4f5a5b1e07"/>
+				<reportElement x="0" y="14" width="554" height="1" forecolor="#666666" uuid="5b24f4af-8a73-4b8f-aa6b-ec4f5a5b1e07"/>
 			</line>
 			<staticText>
 				<reportElement x="277" y="0" width="88" height="14" uuid="46b70367-fa30-46c5-bcc7-5fda2429e67d"/>
