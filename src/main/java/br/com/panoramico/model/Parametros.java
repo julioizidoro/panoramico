@@ -32,6 +32,12 @@ public class Parametros implements Serializable {
     private Integer planocontaavulso;
     @Column(name = "medico")
     private Integer medico;
+    @Column(name = "cliente")
+    private Integer cliente;
+    @Column(name = "usuario")
+    private Integer usuario;
+    @Column(name = "banco")
+    private Integer banco;
 
     public Parametros() {
     }
@@ -75,6 +81,31 @@ public class Parametros implements Serializable {
     public void setMedico(Integer medico) {
         this.medico = medico;
     }
+
+    public Integer getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Integer cliente) {
+        this.cliente = cliente;
+    }
+
+    public Integer getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Integer usuario) {
+        this.usuario = usuario;
+    }
+
+    public Integer getBanco() {
+        return banco;
+    }
+
+    public void setBanco(Integer banco) {
+        this.banco = banco;
+    }
+    
     
     
     
@@ -88,7 +119,7 @@ public class Parametros implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Pagamento)) {
+        if (!(object instanceof Parametros)) {
             return false;
         }
         Parametros other = (Parametros) object;
