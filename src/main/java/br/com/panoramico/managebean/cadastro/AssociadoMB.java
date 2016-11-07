@@ -284,6 +284,7 @@ public class AssociadoMB implements Serializable {
     public void lancarContaReceber(Associado associado){
         if (associado != null) {
             Contasreceber contasreceber = new Contasreceber();
+            contasreceber.setValorconta(associado.getPlano().getValor() + gerarContaDependentes(associado));
             contasreceber.setCliente(associado.getCliente());
             Map<String, Object> options = new HashMap<String, Object>();
             FacesContext fc = FacesContext.getCurrentInstance();
@@ -292,5 +293,17 @@ public class AssociadoMB implements Serializable {
             options.put("contentWidth", 580);
             RequestContext.getCurrentInstance().openDialog("cadContasReceber", options, null);
         }
+    }
+    
+    public float gerarContaDependentes(Associado associado){
+        float valorTotal = 0.0f;
+        List<Dependente> lista = dependenteDao.list("Select d From Dependente d Where d.associado.idassociado=" + associado.getIdassociado());
+        if (lista == null || lista.isEmpty()) {
+            lista = new ArrayList<>();
+        }
+        for (int i = 0; i < lista.size(); i++) {
+            valorTotal = valorTotal + lista.get(i).getPlano().getValor();
+        }
+        return valorTotal;
     }
 }

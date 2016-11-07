@@ -66,6 +66,9 @@ public class Dependente implements Serializable {
     private Associado associado;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "dependente")
     private List<Examedependente> examedependenteList;
+    @JoinColumn(name = "plano_idplano", referencedColumnName = "idplano")
+    @ManyToOne(optional = false)
+    private Plano plano;
 
     public Dependente() {
     }
@@ -153,6 +156,16 @@ public class Dependente implements Serializable {
     public void setGrauparentesco(String grauparentesco) {
         this.grauparentesco = grauparentesco;
     }
+
+    public Plano getPlano() {
+        return plano;
+    }
+
+    public void setPlano(Plano plano) {
+        this.plano = plano;
+    }
+    
+    
 
     @Override
     public int hashCode() {

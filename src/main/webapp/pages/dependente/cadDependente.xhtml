@@ -66,6 +66,20 @@
                     <f:selectItem itemLabel="Inativo" itemValue="Inativo" />  
                 </p:selectOneMenu>
             </h:panelGrid>
+            <h:panelGrid id="panelIdPlano" columnClasses="tamanho45, tamanho30" columns="2" style="margin-left:1%;width:95%;">
+                <p:outputLabel class="titTela" value="Plano" style="font-size: 12px;text-align: left;;"/>
+                <p:outputLabel class="titTela" value="Valor do plano" style="font-size: 12px;text-align: left;margin-left: 27%;;"/>
+                <p:selectOneMenu  class="form-control" id="plano"  style="width:70%;font-size: 12px;"  value="#{cadDependenteMB.plano}" converter="PlanoConverter"
+                                  filter="true" filterMatchMode="contains" panelStyle="width:180px" >
+                    <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
+                    <f:selectItems  value="#{cadDependenteMB.listaPlano}" var="planoselecionado" itemLabel="#{planoselecionado.descricao}" itemValue="#{planoselecionado}"/>
+                    <f:attribute name="listaPlano" value="#{cadDependenteMB.listaPlano}"/>
+                    <p:ajax event="change" listener="#{cadDependenteMB.pegarValorPlano()}" update="panelIdPlano, idValorPlano"/>
+                </p:selectOneMenu> 
+                <p:inputText class="form-control" id="idValorPlano" value="#{cadDependenteMB.valorPlano}" style="width: 70%;font-size: 12px;text-align: right;float: right;margin-right: 3%;">
+                    <f:convertNumber pattern="##,###,###,###.##"/>  
+                </p:inputText>
+            </h:panelGrid>
             <br/><br/>
             <hr/>
             <br/>

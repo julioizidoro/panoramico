@@ -24,21 +24,27 @@
 
             <title>Novo Associado</title>
             <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-            <h:panelGrid columns="2" columnClasses="tamanho45, tamanho45" style="margin-left:1%;width:95%;">
+            <h:panelGrid id="panelIdPlanoMatricula" columns="3" columnClasses="tamanho30, tamanho45, tamanho30" style="margin-left:1%;width:95%;">
                 <p:outputLabel class="titTela" value="Matrícula" style="font-size: 12px;text-align: left;"/>
-                <p:outputLabel class="titTela" value="Situação" style="font-size: 12px;text-align: left;"/>
+                <p:outputLabel class="titTela" value="Plano" style="font-size: 12px;text-align: left;"/>
+                <p:outputLabel class="titTela" value="Valor do plano" style="font-size: 12px;text-align: left;margin-left: 21%;"/>
 
                 <p:inputText class="form-control" value="#{cadAssociadoMB.associado.matricula}" size="18" style="font-size: 12px;float: left"/>
-                <p:selectOneMenu class="form-control" id="situacao" value="#{cadAssociadoMB.associado.situacao}"  style="width:50%;font-size: 12px;">
-                    <f:selectItem itemLabel="Selecione" itemValue="sn" noSelectionOption="true"/> 
-                    <f:selectItem itemLabel="Ativo" itemValue="Ativo" />   
-                    <f:selectItem itemLabel="Inativo" itemValue="Inativo" />  
-               </p:selectOneMenu>
+                <p:selectOneMenu  class="form-control" id="plano"  style="width:84.5%;font-size: 12px;"  value="#{cadAssociadoMB.plano}" converter="PlanoConverter"
+                                  filter="true" filterMatchMode="contains" panelStyle="width:180px" >
+                    <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
+                    <f:selectItems  value="#{cadAssociadoMB.listaPlano}" var="planoselecionado" itemLabel="#{planoselecionado.descricao}" itemValue="#{planoselecionado}"/>
+                    <f:attribute name="listaPlano" value="#{cadAssociadoMB.listaPlano}"/>
+                    <p:ajax event="change" listener="#{cadAssociadoMB.pegarValorPlano()}" update="panelIdPlanoMatricula, idValorPlano"/>
+                </p:selectOneMenu> 
+                <p:inputText class="form-control" id="idValorPlano" value="#{cadAssociadoMB.valorPlano}" readonly="true" style="width: 70%;font-size: 12px;text-align: right;float: right;margin-right: 10%;">
+                    <f:convertNumber pattern="##,###,###,###.##"/>  
+                </p:inputText>
             </h:panelGrid>
             <br/>
             <h:panelGrid columns="2" columnClasses="tamanho45, tamanho45" style="margin-left:1%;width:95%;"> 
                 <p:outputLabel class="titTela" value="Cliente" style="font-size: 12px;text-align: left;"/>
-                <p:outputLabel class="titTela" value="Plano" style="font-size: 12px;text-align: left;;"/>
+                <p:outputLabel class="titTela" value="Situação" style="font-size: 12px;text-align: left;margin-left: 34%;"/>
 
                 <p:selectOneMenu class="form-control"  id="cliente"  style="width:80%;font-size: 12px;"  value="#{cadAssociadoMB.cliente}" converter="ClienteConverter"
                                  filter="true" filterMatchMode="contains" panelStyle="width:180px" >
@@ -46,12 +52,11 @@
                     <f:selectItems  value="#{cadAssociadoMB.listaCliente}" var="clienteselecionado" itemLabel="#{clienteselecionado.nome}" itemValue="#{clienteselecionado}"/>
                     <f:attribute name="listaCliente" value="#{cadAssociadoMB.listaCliente}"/>
                 </p:selectOneMenu>
-                <p:selectOneMenu  class="form-control" id="plano"  style="width:84.5%;font-size: 12px;"  value="#{cadAssociadoMB.plano}" converter="PlanoConverter"
-                                  filter="true" filterMatchMode="contains" panelStyle="width:180px" >
-                    <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
-                    <f:selectItems  value="#{cadAssociadoMB.listaPlano}" var="planoselecionado" itemLabel="#{planoselecionado.descricao}" itemValue="#{planoselecionado}"/>
-                    <f:attribute name="listaPlano" value="#{cadAssociadoMB.listaPlano}"/>
-                </p:selectOneMenu> 
+                <p:selectOneMenu class="form-control" id="situacao" value="#{cadAssociadoMB.associado.situacao}"  style="width:50%;font-size: 12px;margin-left:34%;">
+                    <f:selectItem itemLabel="Selecione" itemValue="sn" noSelectionOption="true"/> 
+                    <f:selectItem itemLabel="Ativo" itemValue="Ativo" />   
+                    <f:selectItem itemLabel="Inativo" itemValue="Inativo" />  
+               </p:selectOneMenu>
             </h:panelGrid>
             <br/>
             <h:panelGrid columns="2" columnClasses="tamanho45, tamanho45" style="margin-left:1%;width:95%;"> 

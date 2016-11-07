@@ -51,6 +51,7 @@ public class CadAssociadoMB implements Serializable {
     @EJB
     private ContasReceberDao contasReceberDao;
     private String situacaoAntiga;
+    private float valorPlano = 0.0f;
 
     @PostConstruct
     public void init() {
@@ -72,6 +73,7 @@ public class CadAssociadoMB implements Serializable {
             cliente = associado.getCliente();
             plano = associado.getPlano();
             situacaoAntiga = associado.getSituacao();
+            valorPlano = plano.getValor();
         }
 
     }
@@ -164,6 +166,16 @@ public class CadAssociadoMB implements Serializable {
         this.situacaoAntiga = situacaoAntiga;
     }
 
+    public float getValorPlano() {
+        return valorPlano;
+    }
+
+    public void setValorPlano(float valorPlano) {
+        this.valorPlano = valorPlano;
+    }
+    
+    
+
     public void salvar() {
         associado.setPlano(plano);
         associado.setCliente(cliente);
@@ -223,6 +235,12 @@ public class CadAssociadoMB implements Serializable {
 
     public void cancelar() {
         RequestContext.getCurrentInstance().closeDialog(new Associado());
+    }
+    
+     public void pegarValorPlano(){
+        if (plano != null) {
+            valorPlano = plano.getValor();
+        }
     }
 
 }
