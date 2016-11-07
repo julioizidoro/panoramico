@@ -35,12 +35,10 @@ import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
 
-
-
 @Named
 @ViewScoped
-public class CadEventoMB implements Serializable{
-    
+public class CadEventoMB implements Serializable {
+
     @Inject
     private UsuarioLogadoMB usuarioLogadoMB;
     private Evento evento;
@@ -66,17 +64,16 @@ public class CadEventoMB implements Serializable{
     private Parametros parametros;
     @EJB
     private ParametrosDao parametrosDao;
-    
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         evento = (Evento) session.getAttribute("evento");
         session.removeAttribute("evento");
         if (evento == null) {
             evento = new Evento();
-        }else{
+        } else {
             tipoevento = evento.getTipoenvento();
             ambiente = evento.getAmbiente();
             cliente = evento.getCliente();
@@ -86,7 +83,6 @@ public class CadEventoMB implements Serializable{
         gerarListaTipoEvento();
     }
 
-    
     public UsuarioLogadoMB getUsuarioLogadoMB() {
         return usuarioLogadoMB;
     }
@@ -206,57 +202,53 @@ public class CadEventoMB implements Serializable{
     public void setPlanoconta(Planoconta planoconta) {
         this.planoconta = planoconta;
     }
-    
-    
-    
-    public void gerarListaAmbiente(){
+
+    public void gerarListaAmbiente() {
         listaAmbiente = ambienteDao.list("Select a from Ambiente a");
         if (listaAmbiente == null) {
             listaAmbiente = new ArrayList<Ambiente>();
         }
     }
-    
-    public void gerarListaTipoEvento(){
+
+    public void gerarListaTipoEvento() {
         listaTipoEvento = tipoEventoDao.list("Select t from Tipoenvento t ");
         if (listaTipoEvento == null) {
             listaTipoEvento = new ArrayList<Tipoenvento>();
         }
     }
-    
-    public void gerarListaResponsavel(){
+
+    public void gerarListaResponsavel() {
         listaCliente = clienteDao.list("Select c from Cliente c");
         if (listaCliente == null) {
             listaCliente = new ArrayList<Cliente>();
         }
     }
-    
-    
-    public void salvar(){
-        List<Evento> listaEventos = eventoDao.list("Select e from Evento e where e.ambiente.idambiente=" + ambiente.getIdambiente() 
-                + " and e.data='" + Formatacao.ConvercaoDataSql(evento.getData()) + "' and e.idevento<>" + evento.getIdevento());
-        if (listaEventos == null | listaEventos.isEmpty()) {
-                evento.setAmbiente(ambiente);
-                evento.setCliente(cliente);
-                evento.setTipoenvento(tipoevento);
-                evento.setUsuario(usuarioLogadoMB.getUsuario());
-                if (evento.getIdevento() == null) {
-                    evento = eventoDao.update(evento);
-                    lancarContasReceber();
-                }else{
-                    evento = eventoDao.update(evento);
-                }
-                RequestContext.getCurrentInstance().closeDialog(evento);
-        }else{
-            Mensagem.lancarMensagemInfo("Atenção", " esse ambiente ja tem um evento neste dia");
+
+    public void salvar() {
+        String msg = validarDados();
+        if (msg.length() < 1) {
+            evento.setAmbiente(ambiente);
+            evento.setCliente(cliente);
+            evento.setTipoenvento(tipoevento);
+            evento.setUsuario(usuarioLogadoMB.getUsuario());
+            if (evento.getIdevento() == null) {
+                evento = eventoDao.update(evento);
+                lancarContasReceber();
+            } else {
+                evento = eventoDao.update(evento);
+            }
+            RequestContext.getCurrentInstance().closeDialog(evento);
+        } else {
+            Mensagem.lancarMensagemInfo("Atenção", msg);
         }
     }
-    
+
     public void lancarContasReceber() {
         Contasreceber contasreceber = new Contasreceber();
         contasreceber.setDatalancamento(new Date());
         contasreceber.setCliente(cliente);
         contasreceber.setNumeroparcela("1");
-        contasreceber.setNumerodocumento(""+evento.getIdevento());
+        contasreceber.setNumerodocumento("" + evento.getIdevento());
         contasreceber.setValorconta(evento.getValor());
         contasreceber.setUsuario(usuarioLogadoMB.getUsuario());
         contasreceber.setEnviado(false);
@@ -266,8 +258,31 @@ public class CadEventoMB implements Serializable{
         contasreceber.setPlanoconta(planoconta);
         contasReceberDao.update(contasreceber);
     }
-    
-    public void cancelar(){
+
+    public void cancelar() {
         RequestContext.getCurrentInstance().closeDialog(new Evento());
+    }
+
+    public String validarDados() {
+        String mensagem = "";
+        List<Evento> listaEventos = eventoDao.list("Select e from Evento e where e.ambiente.idambiente=" + ambiente.getIdambiente()
+                + " and e.data='" + Formatacao.ConvercaoDataSql(evento.getData()) + "' and e.idevento<>" + evento.getIdevento());
+        if (listaEventos == null | listaEventos.isEmpty()) {
+        } else {
+            mensagem = mensagem + " neste dia ja tem evento neste ambiente \r\n";
+        }
+        if (ambiente == null) {
+            mensagem = mensagem + " Ambiente não selecionado \r\n";
+        }
+        if (tipoevento == null) {
+            mensagem = mensagem + " Tipo de Evento não selecionado \r\n";
+        }
+        if (cliente == null) {
+            mensagem = mensagem + " Cliente não selecionado";
+        }
+        if (evento.getData().before(new Date())) {
+            mensagem = mensagem + " Data do evento inferior a data de hoje \r\n";
+        }
+        return mensagem;
     }
 }

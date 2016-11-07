@@ -12,6 +12,9 @@ import br.com.panoramico.model.Evento;
 import br.com.panoramico.model.Eventocancelamento;
 import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
@@ -47,6 +50,8 @@ public class cadCancelamentoEventoMB implements Serializable{
         session.removeAttribute("evento");
         if (eventocancelamento == null) {
             eventocancelamento = new Eventocancelamento();
+            eventocancelamento.setData(new Date());
+            retornarHoraAtual();
         }
     }
 
@@ -116,5 +121,12 @@ public class cadCancelamentoEventoMB implements Serializable{
             mensagem = mensagem + " motivo do cancelamento não informado \r\n";
         }
         return mensagem;
+    }
+    
+    
+     public void retornarHoraAtual() {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        Date hora = Calendar.getInstance().getTime();
+        eventocancelamento.setHora(sdf.format(hora));
     }
 }
