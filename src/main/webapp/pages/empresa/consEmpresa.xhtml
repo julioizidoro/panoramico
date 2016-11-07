@@ -32,6 +32,9 @@
                                      <p:commandLink rendered="#{usuarioLogadoMB.excluir}" style="text-decoration: none;" action="#{empresaMB.excluir(empresa)}" update=":idFormConsultaEmpresa:messages, @form">
                                         <div class="fa fa-trash-o"></div>
                                      </p:commandLink>
+                                     <p:commandLink rendered="#{usuarioLogadoMB.editar}" style="text-decoration: none;" title="Associados a Empresa" action="#{empresaMB.consAssociadoEmpresa(empresa)}" update=":idFormConsultaEmpresa:messages, @form">
+                                        <div class="fa fa-users"></div>
+                                     </p:commandLink>
                                 </h:column>
 
 

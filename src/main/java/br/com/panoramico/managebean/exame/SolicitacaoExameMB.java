@@ -122,7 +122,7 @@ public class SolicitacaoExameMB implements Serializable{
      
     
     public void gerarListaSolicitacoes(){
-        listaSolicitacao = exameDao.list("Select e from Exame e");
+        listaSolicitacao = exameDao.list("Select e from Exame e where e.situacao is null");
         if (listaSolicitacao == null || listaSolicitacao.isEmpty()) {
             listaSolicitacao = new ArrayList<Exame>();
         }

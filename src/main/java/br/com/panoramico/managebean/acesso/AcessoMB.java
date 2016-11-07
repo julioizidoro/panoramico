@@ -462,7 +462,7 @@ public class AcessoMB implements Serializable {
                     habilitarResultado = false;
                 }
                 if (exameassociado == null || exameassociado.getIdexameassociado() == null) {
-                    Mensagem.lancarMensagemInfo("Não encontrado", "");
+                    Mensagem.lancarMensagemInfo("Não foi encontrado nenhum exame medico!!", "");
                     habilitarAcessoPassaporte = false;
                     habilitarResultado = false;
                     codigoAssociado = "";
@@ -521,7 +521,7 @@ public class AcessoMB implements Serializable {
                     examedependente = listaExameDependente.get(i);
                 }
                 if (examedependente == null || examedependente.getIdexamedependente() == null) {
-                    Mensagem.lancarMensagemInfo("Não encontrado", "");
+                    Mensagem.lancarMensagemInfo("Não foi encontrado nenhum exame medico!!", "");
                     habilitarAcessoPassaporte = false;
                     habilitarResultado = false;
                     codigoAssociado = "";
@@ -676,8 +676,8 @@ public class AcessoMB implements Serializable {
             sql = "Select c From Contasreceber c Where c.cliente.idcliente=" + dependente.getAssociado().getCliente().getIdcliente();
         }
         if (sql.length() > 5) {
-            sql = sql + " and c.datalancamento>='" + Formatacao.ConvercaoDataSql(dataInicio) + "' and "
-                    + " c.datalancamento<='" + Formatacao.ConvercaoDataSql(dataFinal) + "' order by c.datalancamento";
+            sql = sql + " and c.datavencimento>='" + Formatacao.ConvercaoDataSql(dataInicio) + "' and "
+                    + " c.datavencimento<='" + Formatacao.ConvercaoDataSql(dataFinal) + "' order by c.datavencimento";
             listaContasReceber = contasReceberDao.list(sql);
         }
         habilitarListaDependentes = false;
@@ -733,7 +733,7 @@ public class AcessoMB implements Serializable {
         } else if (dependente != null) {
             sql = "Select c From Contasreceber c Where c.cliente.idcliente=" + dependente.getAssociado().getCliente().getIdcliente();
         }
-        sql = sql + " and c.situacao='PAGAR'";
+        sql = sql + " and c.situacao='PAGAR' and c.datavencimento<" + Formatacao.ConvercaoDataSql(new Date());
         listaFinanceira = contasReceberDao.list(sql);
         if (listaFinanceira == null || listaFinanceira.isEmpty()) {
             return inadimplente;

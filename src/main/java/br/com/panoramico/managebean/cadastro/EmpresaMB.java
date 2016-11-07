@@ -117,4 +117,11 @@ public class EmpresaMB implements  Serializable{
         Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
         gerarListaEmpresa();
     }
+    
+    public String consAssociadoEmpresa(Empresa empresa){
+        FacesContext fc = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+        session.setAttribute("empresa", empresa);
+        return "consAssociadoEmpresa";
+    }
 }

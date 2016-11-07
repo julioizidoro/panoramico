@@ -1,0 +1,88 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/pages/templates/default.xhtml">
+        <ui:define name="corpo"> 
+            <br/>
+            <div class="col-10 boxAzulClaro" style="margin-left:8.5%;width: 83.2%;">  
+                <br/> 
+                <h:form id="idFormConsultaAssociado" style="margin-left:6%; width:85%;">
+                    <p:accordionPanel activeIndex="-1" style="width:85%;margin-left: 8%;z-index:1">
+                        <p:tab title="Pesquisar">
+                            <p:outputLabel value="Matrícula" class="titTela" style="font-size: 12px;text-align: left;margin-left: 2%;float: left;"/>
+                            <p:outputLabel value="Nome" class="titTela" style="font-size: 12px;text-align: left;margin-left:12%;float: left;"/>
+                            <p:outputLabel value="CPF" class="titTela" style="font-size: 12px;text-align: left;margin-left:29.4%;float: left;"/>
+
+                            <br/>
+                            <p:inputText id="matricula" value="#{associadoEmpresaMB.matricula}"  style="width:115px;margin-left:-56.6%;font-size: 12px;float: left;"/>
+                            <p:inputText id="nome" value="#{associadoEmpresaMB.nome}"  style="width: 216px;margin-left:-37%;font-size: 12px;float: left;"/>
+                            <p:inputMask id="cpf" mask="999.999.999-99" value="#{associadoEmpresaMB.cpf}"  style="width:115px;margin-left:-3%;font-size: 12px;float: left;"/>
+                            <br/><br/>
+                            <p:outputLabel value="Email" class="titTela" style="font-size: 12px;text-align: left;margin-left:2%;float: left;"/>
+                            <p:outputLabel value="Telefone" class="titTela" style="font-size: 12px;text-align: left;margin-left:31.6%;float: left;"/>
+                            <br/>
+                            <p:inputText id="email" value="#{associadoEmpresaMB.email}"  style="width: 216px;margin-left:-43%;font-size: 12px;float: left;"/>
+                            <p:inputText id="telefone" value="#{associadoEmpresaMB.telefone}"  style="width:120px;margin-left:-7%;font-size: 12px;float: left;"/>
+                            <p:commandLink style="text-decoration: none; margin-top: 10%;" actionListener="#{associadoEmpresaMB.pesquisar()}" ajax="false" update=":idFormConsultaAssociado:idConsultaAssociado">
+                                <div style="font-size: 16px;margin-left:5%;" class="adicionar">Filtrar</div>
+                            </p:commandLink>
+                            <p:commandLink style="text-decoration: none; margin-top: 2%;" actionListener="#{associadoEmpresaMB.limpar()}" ajax="false" update=":idFormConsultaAssociado:idConsultaAssociado, matricula, nome, email, cpf, telefone, matricula">
+                                <div style="font-size: 16px;margin-left: 2%;" class="limpar">Limpar</div>
+                            </p:commandLink>
+                        </p:tab>
+                    </p:accordionPanel>  
+                    <!-- TABELA CADASTROS -->
+                    <br/><br/>
+                    <div class=" titTela">Consulta Associado a Empresa: #{associadoEmpresaMB.empresa.razaosocial}</div>
+                    <p:commandLink action="#{associadoEmpresaMB.voltar()}" title="Voltar">
+                        <div class="icoAdd fa fa-arrow-left"></div>
+                    </p:commandLink>
+                    <h:dataTable id="idConsultaAssociado" styleClass="table" value="#{associadoEmpresaMB.listaAssociadoEmpresa}" var="associadoempresa" style="width: 100%;">
+                        <h:column>
+                            <f:facet name="header">Cliente</f:facet> 
+                            <h:outputText value="#{associadoempresa.associado.cliente.nome}" styleClass="alinhamento" style="float: left;" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Cidade</f:facet> 
+                            <h:outputText value="#{associadoempresa.associado.cidade}" styleClass="alinhamento" style="float: left; width: 20%;" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Estado</f:facet> 
+                            <h:outputText value="#{associadoempresa.associado.estado}" styleClass="alinhamento" style="text-align: left !important;margin-right:30%;" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Desconto</f:facet> 
+                            <h:outputText value="#{associadoempresa.associado.descotomensalidade}" styleClass="alinhamento" style="float: right;">
+                                <f:convertNumber pattern="##,###,###,###.##" minFractionDigits="2" />
+                            </h:outputText>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Plano</f:facet>
+                            <h:outputText value="#{associadoempresa.associado.plano.descricao}" style="float: left;"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Matricula</f:facet>
+                            <h:outputText value="#{associadoempresa.associado.matricula}" style="float: left;"/>
+                        </h:column> 
+                        <h:column>
+                            <p:commandLink title="Lançar Conta a receber" style="text-decoration: none;"  rendered="#{usuarioLogadoMB.cadastrar}" action="#{associadoEmpresaMB.lancarContaReceber(associadoempresa.associado)}">
+                                <div class="fa fa-usd" >
+                                </div>
+                            </p:commandLink>
+                            <p:commandLink rendered="#{usuarioLogadoMB.editar}" style="text-decoration: none;" title="Dependentes" action="#{associadoEmpresaMB.dependentes(associadoempresa.associado)}" update="@form">
+                                <div class="fa fa-users"></div>
+                            </p:commandLink>
+                            <p:commandLink rendered="#{usuarioLogadoMB.editar}" style="text-decoration: none;" title="Financeiro" action="#{associadoEmpresaMB.financeiro(associadoempresa.associado)}" update="@form">
+                                <div class="fa fa-money"></div>
+                            </p:commandLink>
+                        </h:column>
+
+
+                    </h:dataTable>
+                </h:form>
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>
