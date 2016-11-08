@@ -35,7 +35,7 @@
                     <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
                     <f:selectItems  value="#{cadAssociadoMB.listaPlano}" var="planoselecionado" itemLabel="#{planoselecionado.descricao}" itemValue="#{planoselecionado}"/>
                     <f:attribute name="listaPlano" value="#{cadAssociadoMB.listaPlano}"/>
-                    <p:ajax event="change" listener="#{cadAssociadoMB.pegarValorPlano()}" update="panelIdPlanoMatricula, idValorPlano"/>
+                    <p:ajax event="change" listener="#{cadAssociadoMB.pegarValorPlano()}" update="idValorPlano"/>
                 </p:selectOneMenu> 
                 <p:inputText class="form-control" id="idValorPlano" value="#{cadAssociadoMB.valorPlano}" readonly="true" style="width: 70%;font-size: 12px;text-align: right;float: right;margin-right: 10%;">
                     <f:convertNumber pattern="##,###,###,###.##"/>  
@@ -55,7 +55,8 @@
                 <p:selectOneMenu class="form-control" id="situacao" value="#{cadAssociadoMB.associado.situacao}"  style="width:50%;font-size: 12px;margin-left:34%;">
                     <f:selectItem itemLabel="Selecione" itemValue="sn" noSelectionOption="true"/> 
                     <f:selectItem itemLabel="Ativo" itemValue="Ativo" />   
-                    <f:selectItem itemLabel="Inativo" itemValue="Inativo" />  
+                    <f:selectItem itemLabel="Inativo" itemValue="Inativo" />
+                    <f:selectItem itemLabel="Isento" itemValue="Isento" /> 
                </p:selectOneMenu>
             </h:panelGrid>
             <br/>

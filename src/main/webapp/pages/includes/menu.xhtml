@@ -65,16 +65,19 @@
                                 </div>
                             </div> 
                         </li>
-                        <li> 
-                            <div class="dropdown" style="float: left;">
-                                <i class="fa fa-money" aria-hidden="true"></i>
-                                Financeiro <div class="fa fa-sort-desc"></div>
-                                <div class="dropdown-content" style="z-index: 9999;"> 
-                                    <p><h:link outcome="/pages/contaspagar/consContasPagar.xhtml" value="Contas a Pagar"></h:link></p>
-                                    <p><h:link outcome="/pages/contasreceber/consContasReceber.xhtml" value="Contas a Receber"></h:link></p>
-                                </div>
-                            </div> 
-                        </li>
+                        <h:panelGroup rendered="#{usuarioLogadoMB.financeiro}">
+                            <li> 
+                                <div class="dropdown" style="float: left;">
+                                    <i class="fa fa-money" aria-hidden="true"></i>
+                                    Financeiro <div class="fa fa-sort-desc"></div>
+                                    <div class="dropdown-content" style="z-index: 9999;"> 
+                                        <p><h:link outcome="/pages/contaspagar/consContasPagar.xhtml" value="Contas a Pagar"></h:link></p>
+                                        <p><h:link outcome="/pages/contasreceber/consContasReceber.xhtml" value="Contas a Receber"></h:link></p>
+                                        <p><h:link outcome="/pages/contasreceber/consGerarContas.xhtml" value="Geras Contas"></h:link></p>
+                                    </div>
+                                </div> 
+                            </li>
+                        </h:panelGroup>
                         <li>   
                             <div class="dropdown" style="float: left;">
                                 <i class="fa fa-user-md" aria-hidden="true"></i>

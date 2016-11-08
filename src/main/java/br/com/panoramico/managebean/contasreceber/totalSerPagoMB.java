@@ -6,10 +6,13 @@
 package br.com.panoramico.managebean.contasreceber;
 
 import br.com.panoramico.dao.AssociadoDao;
+import br.com.panoramico.dao.AssociadoEmpresaDao;
 import br.com.panoramico.dao.ContasReceberDao;
+import br.com.panoramico.dao.EmpresaDao;
 import br.com.panoramico.model.Associado;
 import br.com.panoramico.model.Associadoempresa;
 import br.com.panoramico.model.Contasreceber;
+import br.com.panoramico.model.Empresa;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,11 +46,18 @@ public class totalSerPagoMB implements Serializable{
     private boolean  empresa;
     private boolean selecionadoTodosEmpresa;
     private boolean selecionadoTodosAssociado;
+    @EJB
+    private EmpresaDao empresaDao;
+    private List<Empresa> listaEmpresa;
+    private Empresa empresaa;
+    @EJB
+    private AssociadoEmpresaDao associadoEmpresaDao;
     
     
     @PostConstruct
     public void init(){
         gerarListaAssociado();
+        gerarListaEmpresa();
     }
 
     public Contasreceber getContasreceber() {
@@ -166,6 +176,38 @@ public class totalSerPagoMB implements Serializable{
         this.selecionadoTodosAssociado = selecionadoTodosAssociado;
     }
 
+    public EmpresaDao getEmpresaDao() {
+        return empresaDao;
+    }
+
+    public void setEmpresaDao(EmpresaDao empresaDao) {
+        this.empresaDao = empresaDao;
+    }
+
+    public List<Empresa> getListaEmpresa() {
+        return listaEmpresa;
+    }
+
+    public void setListaEmpresa(List<Empresa> listaEmpresa) {
+        this.listaEmpresa = listaEmpresa;
+    }
+
+    public Empresa getEmpresaa() {
+        return empresaa;
+    }
+
+    public void setEmpresaa(Empresa empresaa) {
+        this.empresaa = empresaa;
+    }
+
+    public AssociadoEmpresaDao getAssociadoEmpresaDao() {
+        return associadoEmpresaDao;
+    }
+
+    public void setAssociadoEmpresaDao(AssociadoEmpresaDao associadoEmpresaDao) {
+        this.associadoEmpresaDao = associadoEmpresaDao;
+    }
+
     
     
     
@@ -277,4 +319,47 @@ public class totalSerPagoMB implements Serializable{
             }
         }
     }
+    
+    
+    public void gerarListaEmpresa(){
+        String sql = "Select e From Empresa e";
+        listaEmpresa = empresaDao.list(sql);
+        if (listaEmpresa == null || listaEmpresa.isEmpty()) {
+            listaEmpresa = new ArrayList<>();
+        }
+    }
+    
+    public void filtrar(){
+        listaTotalContasAssociadoEmpresa = new ArrayList<>();
+        valorTotalEmpresa = 0.0f;
+        String sql = "";
+        List<Associadoempresa> listaAssociadoEmpresa;
+        List<Contasreceber> listaContasEmpresa;
+        if (empresaa == null) {
+            gerarListaAssociado();  
+        }else{
+            sql = "Select ae From Associadoempresa ae Where ae.empresa.idempresa=" + empresaa.getIdempresa();
+            listaAssociadoEmpresa = associadoEmpresaDao.list(sql);
+            for (int i = 0; i < listaAssociadoEmpresa.size(); i++) {
+                String sql2 = "Select c From Contasreceber c Where c.situacao='PAGAR' and c.cliente.idcliente=" + 
+                listaAssociadoEmpresa.get(i).getAssociado().getCliente().getIdcliente();
+                listaContasEmpresa = contasReceberDao.list(sql2);
+                for (int j = 0; j < listaContasEmpresa.size(); j++) {
+                    valorTotalEmpresa = valorTotalEmpresa + listaContasEmpresa.get(j).getValorconta();
+                    listaTotalContasAssociadoEmpresa.add(listaContasEmpresa.get(j));
+                }
+            }
+        }
+    }
+    
+    
+    public void limpar(){
+        empresaa = null;
+        gerarListaAssociado();
+    }
+    
+   public String pegarNomeEmpresa(Contasreceber contasreceber){
+       String nome = contasreceber.getCliente().getAssociado().getAssociadoempresaList().get(0).getEmpresa().getRazaosocial();
+       return nome;
+   }
 }

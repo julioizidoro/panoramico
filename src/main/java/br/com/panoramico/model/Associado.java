@@ -73,6 +73,10 @@ public class Associado implements Serializable {
     private String situacao;
     @Column(name = "dataassociacao")
     private Date dataassociacao;
+    @Column(name = "mes")
+    private Integer mes;
+    @Column(name = "ano")
+    private Integer ano;
     @JoinColumn(name = "cliente_idcliente", referencedColumnName = "idcliente")
     @OneToOne(optional = false)
     private Cliente cliente;
@@ -236,6 +240,22 @@ public class Associado implements Serializable {
 
     public void setDataassociacao(Date dataassociacao) {
         this.dataassociacao = dataassociacao;
+    }
+
+    public Integer getMes() {
+        return mes;
+    }
+
+    public void setMes(Integer mes) {
+        this.mes = mes;
+    }
+
+    public Integer getAno() {
+        return ano;
+    }
+
+    public void setAno(Integer ano) {
+        this.ano = ano;
     }
 
     

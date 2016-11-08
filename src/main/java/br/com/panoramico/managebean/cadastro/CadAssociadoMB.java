@@ -25,6 +25,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
+import org.jfree.data.time.Month;
+import org.jfree.data.time.Year;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -179,6 +181,8 @@ public class CadAssociadoMB implements Serializable {
     public void salvar() {
         associado.setPlano(plano);
         associado.setCliente(cliente);
+        associado.setAno(new Year().getYear());
+        associado.setMes(new Month().getMonth() + 1);
         if(associado.getIdassociado()==null){
             associado.setDataassociacao(new Date());
         }

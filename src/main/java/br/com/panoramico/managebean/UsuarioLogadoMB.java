@@ -42,6 +42,7 @@ public class UsuarioLogadoMB implements Serializable{
     private boolean cadastrar;
     private boolean editar;
     private boolean excluir;
+    private boolean financeiro;
 
     public UsuarioLogadoMB() {
         this.usuario = new Usuario();
@@ -121,6 +122,14 @@ public class UsuarioLogadoMB implements Serializable{
 
     public void setUsuarioDao(UsuarioDao usuarioDao) {
         this.usuarioDao = usuarioDao;
+    }
+
+    public boolean isFinanceiro() {
+        return financeiro;
+    }
+
+    public void setFinanceiro(boolean financeiro) {
+        this.financeiro = financeiro;
     }
     
     
@@ -258,21 +267,47 @@ public class UsuarioLogadoMB implements Serializable{
              cadastrar = true;
              editar = true;
              excluir = true;
+             financeiro = true;
          }else if (usuario.getPerfil().getAcesso().getIdacesso() == 2) {
-             cadastrar = true;
              editar = true;
+             excluir = true;
+             financeiro = true;
          }else if (usuario.getPerfil().getAcesso().getIdacesso() == 3) {
              cadastrar = true;
              excluir = true;
+             financeiro = true;
          }else if (usuario.getPerfil().getAcesso().getIdacesso() == 4) {
-             editar = true;
+             financeiro = true;
              excluir = true;
          }else if(usuario.getPerfil().getAcesso().getIdacesso() == 5){
-             cadastrar = true;
+             excluir = true;
          }else if(usuario.getPerfil().getAcesso().getIdacesso() == 6){
              editar = true;
+             financeiro = true;
          }else if(usuario.getPerfil().getAcesso().getIdacesso() == 7){
+             cadastrar = true;
+             financeiro = true;
+         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 8){
+             financeiro = true;
+         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 9){
+             cadastrar = true;
+             editar = true;
              excluir = true;
+         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 10){
+             editar = true;
+             excluir = true;
+         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 11){
+             cadastrar = true;
+             excluir = true;
+         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 12){
+             excluir = true;
+         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 13){
+             cadastrar = true;
+             editar = true;
+         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 14){
+             editar = true;
+         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 15){
+             cadastrar = true;
          }
      }
 }

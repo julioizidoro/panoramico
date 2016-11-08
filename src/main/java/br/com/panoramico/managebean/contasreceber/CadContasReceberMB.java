@@ -58,6 +58,7 @@ public class CadContasReceberMB implements Serializable{
         contasreceber = (Contasreceber) session.getAttribute("contasreceber");
         cliente = (Cliente) session.getAttribute("cliente");
         session.removeAttribute("cliente"); 
+        session.removeAttribute("contasreceber");
         if (contasreceber == null) {
             contasreceber = new Contasreceber();
         } else {
@@ -234,6 +235,8 @@ public class CadContasReceberMB implements Serializable{
     }
     
     public void calculoParcelaMensal(Float nParcela, Contasreceber contasreceber) {
+        float valorParcela = contasreceber.getValorconta() / nParcela;
+        contasreceber.setValorconta(valorParcela);
         for (int i = 1; i <= nParcela; i++) {
             Contasreceber copia = new Contasreceber();
             copia = contasreceber;
@@ -254,10 +257,10 @@ public class CadContasReceberMB implements Serializable{
                 } 
                 contasreceber = contasReceberDao.update(contasreceber);
                 Calendar c = new GregorianCalendar();
-                c.setTime(copia.getDatalancamento());
+                c.setTime(copia.getDatavencimento());
                 c.add(Calendar.MONTH, 1);
                 Date data = c.getTime();
-                copia.setDatalancamento(data);
+                copia.setDatavencimento(data);
                 if (i < nParcela) {
                     contasreceber = new Contasreceber();
                     contasreceber = copia;

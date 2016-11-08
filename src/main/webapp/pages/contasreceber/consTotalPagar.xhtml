@@ -9,20 +9,36 @@
             <div class="col-10 boxAzulClaro" style="margin-left:8.5%;width: 83.2%;">   
                 <br/> 
                 <h:form id="idFormConsultaContasReceber" style="margin-left:5%;width: 90%;">
-                    <p:tabView style="background: transparent;">
+                    <p:accordionPanel activeIndex="-1">
+                        <p:tab title="Pesquisar">
+                            <p:outputLabel class="titTela" value="Empresa" style="font-size: 12px;text-align: left;margin-left:-54%;"/>
+                            <br/>
+                            <p:selectOneMenu  id="cliente"  style="width: 250px;font-size: 12px;margin-left: 20%;float: left;"  value="#{totalSerPagoMB.empresaa}" converter="EmpresaConverter"
+                                              >
+                                <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
+                                <f:selectItems  value="#{totalSerPagoMB.listaEmpresa}" var="empresaselecionado" itemLabel="#{empresaselecionado.razaosocial}" itemValue="#{empresaselecionado}"/>
+                                <f:attribute name="listaEmpresa" value="#{totalSerPagoMB.listaEmpresa}"/>
+                            </p:selectOneMenu> 
+                            <p:commandLink style="text-decoration: none; margin-top: 10%;" actionListener="#{totalSerPagoMB.filtrar()}" update=":idFormConsultaContasReceber:idTabConsultas:idConsultaEmpresa, :idFormConsultaContasReceber:idTabConsultas:idValorEmpresa">
+                                <div style="font-size: 16px;margin-left: 2%;" class="adicionar">Filtrar</div>
+                            </p:commandLink>
+                            <p:commandLink style="text-decoration: none; margin-top: 2%;" actionListener="#{totalSerPagoMB.limpar()}" ajax="false" update="@form">
+                                <div style="font-size: 16px;margin-left: 2%;" class="limpar">Limpar</div>
+                            </p:commandLink>
+                        </p:tab> 
+                    </p:accordionPanel>
+                    <br/>
+                    <p:tabView style="background: transparent;" id="idTabConsultas">
                         <p:tab title="Associados a empresa">
                             <p:outputLabel class="titTela" value="Total R$" style="margin-left: 1%;float: left;font-size: 18px;"/>
-                            <h:outputText class="titTela" value="#{totalSerPagoMB.valorTotalEmpresa}" style="font-size: 18px;float: left;">
+                            <h:outputText class="titTela" id="idValorEmpresa" value="#{totalSerPagoMB.valorTotalEmpresa}" style="font-size: 18px;float: left;">
                                 <f:convertNumber pattern="##,###,###,###.##" minFractionDigits="2" />
                             </h:outputText> 
                                 <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" style="margin-top: -1%;float: right;"  action="#{totalSerPagoMB.boletoEmpresa()}" title="Boletos da Empresa">
                                     <div class="icoAdd fa fa-file-text-o"></div>
                                 </p:commandLink> 
                             <h:dataTable id="idConsultaEmpresa" styleClass="table" value="#{totalSerPagoMB.listaTotalContasAssociadoEmpresa}" var="associadoempresa">
-                                <h:column>
-                                    <f:facet name="header">Cliente</f:facet> 
-                                    <h:outputText value="#{associadoempresa.cliente.nome}" styleClass="alinhamento" style="float: left;" />
-                                </h:column>
+                                
                                 <h:column>
                                     <f:facet name="header">Parcela</f:facet> 
                                     <h:outputText value="#{associadoempresa.numeroparcela}" styleClass="alinhamento" style="text-align: left !important;margin-right:40%;"/>
@@ -39,6 +55,10 @@
                                     <h:outputText value="#{associadoempresa.valorconta}" styleClass="alinhamento" style="float: right;">
                                         <f:convertNumber pattern="##,###,###,###.##" minFractionDigits="2" />
                                     </h:outputText>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">Empresa</f:facet> 
+                                    <h:outputText value="#{totalSerPagoMB.pegarNomeEmpresa(associadoempresa)}" styleClass="alinhamento" style="float: left;" />
                                 </h:column>
                                 <h:column>
                                     <f:facet name="header">

@@ -33,9 +33,10 @@ public class CadPerfilMB implements Serializable{
     @EJB
     private AcessoDao acessoDao;
     private Acesso acesso;
-    private boolean cadastrar;
-    private boolean editar;
-    private boolean exlcuir;
+    private boolean cadastrar = false;
+    private boolean editar = false;
+    private boolean exlcuir = false;
+    private boolean financeiro = false;
     
     
     
@@ -53,15 +54,49 @@ public class CadPerfilMB implements Serializable{
                 cadastrar = true;
                 editar = true;
                 exlcuir = true;
+                financeiro = true;
             }else if(perfil.getAcesso().getIdacesso() == 2){
-                cadastrar = true; 
                 editar = true;
+                exlcuir = true;
+                financeiro = true;
             }else if (perfil.getAcesso().getIdacesso() == 3){
                 cadastrar = true;
                 exlcuir = true;
+                financeiro = true;
             }else if (perfil.getAcesso().getIdacesso() == 4) {
+                exlcuir = true;
+                financeiro = true;
+            }else if (perfil.getAcesso().getIdacesso() == 5){
+                cadastrar = true;
+                editar = true;
+                financeiro = true;
+            }else if (perfil.getAcesso().getIdacesso() == 6){
+                editar = true;
+                financeiro = true;
+            }else if (perfil.getAcesso().getIdacesso() == 7){
+                cadastrar = true;
+                financeiro = true;
+            }else if (perfil.getAcesso().getIdacesso() == 8){
+                financeiro = true;
+            }else if (perfil.getAcesso().getIdacesso() == 9){
+                cadastrar = true;
                 editar = true;
                 exlcuir = true;
+            }else if (perfil.getAcesso().getIdacesso() == 10){
+                editar = true;
+                exlcuir = true;
+            }else if (perfil.getAcesso().getIdacesso() == 11){
+                cadastrar = true;
+                exlcuir = true;
+            }else if (perfil.getAcesso().getIdacesso() == 12){
+                exlcuir = true;
+            }else if (perfil.getAcesso().getIdacesso() == 13){
+                cadastrar = true;
+                editar = true;
+            }else if (perfil.getAcesso().getIdacesso() == 14){
+                editar = true;
+            }else if (perfil.getAcesso().getIdacesso() == 15){
+                cadastrar = true;
             }
                     
         }
@@ -123,25 +158,51 @@ public class CadPerfilMB implements Serializable{
     public void setPerfil(Perfil perfil) {
         this.perfil = perfil;
     }
+
+    public boolean isFinanceiro() {
+        return financeiro;
+    }
+
+    public void setFinanceiro(boolean financeiro) {
+        this.financeiro = financeiro;
+    }
+    
+    
     
     
     public void salvar(){
-            if (cadastrar && editar && exlcuir) {
+            if (cadastrar && editar && exlcuir && financeiro) {
                 acesso = acessoDao.find(1);
-            }else if(cadastrar && editar){
+            }else if(exlcuir && editar && financeiro && !cadastrar){
                 acesso = acessoDao.find(2);
-            }else if(cadastrar && exlcuir){
+            }else if(cadastrar && exlcuir && financeiro && !editar){
                 acesso = acessoDao.find(3);
-            }else if (editar && exlcuir) {
+            }else if (financeiro && exlcuir && !cadastrar && !editar) {
                 acesso = acessoDao.find(4);
-            }else if(cadastrar){
+            }else if(cadastrar && editar && financeiro && !exlcuir){
                 acesso = acessoDao.find(5);
-            }else if(editar){
+            }else if(editar && financeiro && !cadastrar && !exlcuir){
                 acesso = acessoDao.find(6);
-            }else if(exlcuir){
+            }else if(cadastrar && financeiro && !editar && !exlcuir){
                 acesso = acessoDao.find(7);
-            }else{
+            }else if(financeiro && !cadastrar && !exlcuir && !editar){
                 acesso = acessoDao.find(8);
+            }else if(cadastrar && editar && exlcuir && !financeiro){
+                acesso = acessoDao.find(9);
+            }else if(exlcuir && editar && !cadastrar && !financeiro){
+                acesso = acessoDao.find(10);
+            }else if(exlcuir && cadastrar && !editar && !financeiro){
+                acesso = acessoDao.find(11);
+            }else if(exlcuir && !cadastrar && !editar && !financeiro){
+                acesso = acessoDao.find(12);
+            }else if(cadastrar && editar && !exlcuir && !financeiro){
+                acesso = acessoDao.find(13);
+            }else if(editar && !cadastrar && !exlcuir && !financeiro){
+                acesso = acessoDao.find(14);
+            }else if(cadastrar && !editar && !exlcuir && !financeiro){
+                acesso = acessoDao.find(15);
+            }else{
+                acesso = acessoDao.find(16);
             }
             perfil.setAcesso(acesso);
            
