@@ -54,6 +54,8 @@ public class ExameMB implements Serializable{
     private Medico medico;
     @EJB
     private MedicoDao medicoDao;
+    private String nomeCliente;
+    private String matricula;
     
     @PostConstruct
     public void init(){
@@ -147,6 +149,39 @@ public class ExameMB implements Serializable{
     public void setUsuarioLogadoMB(UsuarioLogadoMB usuarioLogadoMB) {
         this.usuarioLogadoMB = usuarioLogadoMB;
     }
+
+    public Medico getMedico() {
+        return medico;
+    }
+
+    public void setMedico(Medico medico) {
+        this.medico = medico;
+    }
+
+    public MedicoDao getMedicoDao() {
+        return medicoDao;
+    }
+
+    public void setMedicoDao(MedicoDao medicoDao) {
+        this.medicoDao = medicoDao;
+    }
+
+    public String getNomeCliente() {
+        return nomeCliente;
+    }
+
+    public void setNomeCliente(String nomeCliente) {
+        this.nomeCliente = nomeCliente;
+    }
+
+    public String getMatricula() {
+        return matricula;
+    }
+
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
+    }
+    
     
     
     

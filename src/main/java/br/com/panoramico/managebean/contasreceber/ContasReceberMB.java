@@ -9,6 +9,7 @@ import br.com.panoramico.dao.ClienteDao;
 import br.com.panoramico.dao.CobrancasParcelasDao;
 import br.com.panoramico.dao.ContasReceberDao;
 import br.com.panoramico.dao.ProprietarioDao;
+import br.com.panoramico.dao.RecebimentoDao;
 import br.com.panoramico.managebean.UsuarioLogadoMB;
 import br.com.panoramico.managebean.boleto.LerRetornoItauBean;
 import br.com.panoramico.model.Associado;
@@ -66,6 +67,8 @@ public class ContasReceberMB implements Serializable{
     private CobrancasParcelasDao cobrancasParcelasDao;
     private Cobrancasparcelas cobrancasparcelas;
     private Associado associado;
+    @EJB
+    private RecebimentoDao recebimentoDao;
     
     @PostConstruct
     public void init(){
@@ -468,5 +471,14 @@ public class ContasReceberMB implements Serializable{
         }else{
             return false;
         }
+    }
+    
+    
+    public String pegarRecebimento(Contasreceber contasreceber){
+        String pago = "NÃO";
+        if (contasreceber.getSituacao().equalsIgnoreCase("PAGO")) {
+            pago = "SIM";
+        }
+        return pago;
     }
 }
