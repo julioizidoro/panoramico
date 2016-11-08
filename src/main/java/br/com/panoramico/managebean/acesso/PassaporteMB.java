@@ -6,9 +6,13 @@
 package br.com.panoramico.managebean.acesso;
 
 import br.com.panoramico.dao.ClienteDao;
+import br.com.panoramico.dao.ContasReceberDao;
 import br.com.panoramico.dao.PassaporteDao;
+import br.com.panoramico.dao.RecebimentoDao;
 import br.com.panoramico.model.Cliente;
+import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.model.Passaporte;
+import br.com.panoramico.model.Recebimento;
 import br.com.panoramico.uil.Formatacao;
 import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
@@ -44,6 +48,12 @@ public class PassaporteMB implements Serializable {
     private Date dataFinalUso;
     private String localCompra;
     private String passaporteUtilizado;
+    @EJB
+    private ContasReceberDao contasReceberDao;
+    private Contasreceber contasreceber;
+    private List<Recebimento> listaRecebimento;
+    @EJB
+    private RecebimentoDao recebimentoDao;
 
     @PostConstruct
     public void init() {
@@ -146,6 +156,33 @@ public class PassaporteMB implements Serializable {
     public void setPassaporteUtilizado(String passaporteUtilizado) {
         this.passaporteUtilizado = passaporteUtilizado;
     }
+
+    public ContasReceberDao getContasReceberDao() {
+        return contasReceberDao;
+    }
+
+    public void setContasReceberDao(ContasReceberDao contasReceberDao) {
+        this.contasReceberDao = contasReceberDao;
+    }
+
+    public Contasreceber getContasreceber() {
+        return contasreceber;
+    }
+
+    public void setContasreceber(Contasreceber contasreceber) {
+        this.contasreceber = contasreceber;
+    }
+
+    public List<Recebimento> getListaRecebimento() {
+        return listaRecebimento;
+    }
+
+    public void setListaRecebimento(List<Recebimento> listaRecebimento) {
+        this.listaRecebimento = listaRecebimento;
+    }
+
+    
+    
     
     
 
@@ -194,6 +231,13 @@ public class PassaporteMB implements Serializable {
         if (passaporte.getIdpassaporte() != null) {
             Mensagem.lancarMensagemInfo("Acesso feito com sucesso", "");
             listaPassaporte.remove(passaporte);
+        }
+    }
+    
+    public void retornoDialogRecebimento(SelectEvent event) {
+        Recebimento recebimento = (Recebimento) event.getObject();
+        if (recebimento.getIdrecebimento() != null) {
+            Mensagem.lancarMensagemInfo("Recebimento com sucesso", "");
         }
     }
 
@@ -264,5 +308,24 @@ public class PassaporteMB implements Serializable {
         localCompra = "";
         passaporteUtilizado = "";
         gerarListaPassaporte();
+    }
+    
+    
+    public String novoRecebimento(Passaporte passaporte) {
+        if (passaporte != null) {
+           contasreceber = contasReceberDao.find("Select c From Contasreceber c Where c.numerodocumento='Passaporte-" + passaporte.getIdpassaporte() + "'");
+           listaRecebimento = recebimentoDao.list("Select r From Recebimento r where r.contasreceber.idcontasreceber=" + contasreceber.getIdcontasreceber());
+            if (listaRecebimento == null || listaRecebimento.isEmpty()) {
+                Map<String, Object> options = new HashMap<String, Object>();
+                options.put("contentWidth", 500);
+                FacesContext fc = FacesContext.getCurrentInstance();
+                HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+                session.setAttribute("contasreceber", contasreceber);
+                RequestContext.getCurrentInstance().openDialog("cadRecebimento", options, null);
+            }else{
+               Mensagem.lancarMensagemInfo("Este passaporte ja teve o valor recebido", "");
+            }
+        }
+        return "";
     }
 }

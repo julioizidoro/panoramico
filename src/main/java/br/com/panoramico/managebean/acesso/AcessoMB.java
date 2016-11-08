@@ -8,6 +8,7 @@ import br.com.panoramico.dao.ExameAssociadoDao;
 import br.com.panoramico.dao.ExameDao;
 import br.com.panoramico.dao.ExameDependenteDao;
 import br.com.panoramico.dao.PassaporteDao;
+import br.com.panoramico.dao.RecebimentoDao;
 import br.com.panoramico.model.Associado;
 import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.model.Controleacesso;
@@ -16,6 +17,7 @@ import br.com.panoramico.model.Exame;
 import br.com.panoramico.model.Exameassociado;
 import br.com.panoramico.model.Examedependente;
 import br.com.panoramico.model.Passaporte;
+import br.com.panoramico.model.Recebimento;
 import br.com.panoramico.uil.Formatacao;
 import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
@@ -94,6 +96,9 @@ public class AcessoMB implements Serializable {
     private boolean habilitarListaDependentes;
     private List<Dependente> listaDependente;
     private String codigoPesquisa = "";
+    @EJB
+    private RecebimentoDao recebimentoDao;
+    private List<Recebimento> listaRecebimento;
 
     @PostConstruct
     public void init() {
@@ -571,22 +576,28 @@ public class AcessoMB implements Serializable {
                 codigoDependente = "";
                 codigoPassaporte = "";
             } else {
-                nome = passaporte.getCliente().getNome();
-                adultos = passaporte.getAdultos();
-                criancas = passaporte.getCriancas();
-                if (passaporte.getDataacesso() == null) {
-                    popularAcesso(true, false);
-                } else {
-                    popularAcesso(false, true);
-                    Mensagem.lancarMensagemInfo("Passaporte ja foi utilizado", "");
+                contasreceber = contasReceberDao.find("Select c From Contasreceber c Where c.numerodocumento='Passaporte-" + passaporte.getIdpassaporte() + "'");
+                listaRecebimento = recebimentoDao.list("Select r From Recebimento r where r.contasreceber.idcontasreceber=" + contasreceber.getIdcontasreceber());
+                if (listaRecebimento == null || listaRecebimento.isEmpty()) {
+                    Mensagem.lancarMensagemInfo("Valor para receber do passaporte ainda pendente!!", "");
+                }else{
+                    nome = passaporte.getCliente().getNome();
+                    adultos = passaporte.getAdultos();
+                    criancas = passaporte.getCriancas();
+                    if (passaporte.getDataacesso() == null) {
+                        popularAcesso(true, false);
+                    } else {
+                        popularAcesso(false, true);
+                        Mensagem.lancarMensagemInfo("Passaporte ja foi utilizado", "");
+                    }
+                    guardaPassaporte = codigoPassaporte;
+                    codigoPassaporte = "";
+                    habilitarcampo = false;
+                    habilitarResultado = false;
+                    habilitarAcessoPassaporte = true;
+                    habilitarBotaoDependente = false;
+                    habilitarConsulta = false;
                 }
-                guardaPassaporte = codigoPassaporte;
-                codigoPassaporte = "";
-                habilitarcampo = false;
-                habilitarResultado = false;
-                habilitarAcessoPassaporte = true;
-                habilitarBotaoDependente = false;
-                habilitarConsulta = false;
             }
         }
         if (habilitarcampo) {

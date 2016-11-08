@@ -274,20 +274,31 @@ public class CadPassaporteMB implements Serializable{
         valorAdulto = passaportevalor.getValoradulto();
         valorCrianca = passaportevalor.getValorcrianca();
     }
-    
-     
+      
+            
     public void salvar(){
         String msg = validarDados();
         if (msg.length() < 5) {
-            passaporte.setCliente(cliente);
-            passaporte.setAdultos(adultos);
-            passaporte.setCriancas(criancas);
-            passaporte.setValorpago(valorTotal);
-            passaporte.setFormapagamento(formaPagamento);
-            passaporte = passaporteDao.update(passaporte);
-            passaporte.setLocalizador("PPA" + passaporte.getIdpassaporte());
-            passaporteDao.update(passaporte);
-            lancarContasReceber();
+            if (passaporte.getIdpassaporte() == null) {
+                passaporte.setCliente(cliente);
+                passaporte.setAdultos(adultos);
+                passaporte.setCriancas(criancas);
+                passaporte.setValorpago(valorTotal);
+                passaporte.setFormapagamento(formaPagamento);
+                passaporte = passaporteDao.update(passaporte);
+                passaporte.setLocalizador("PPA" + passaporte.getIdpassaporte());
+                passaporteDao.update(passaporte);
+                lancarContasReceber();
+            }else{
+                passaporte.setCliente(cliente);
+                passaporte.setAdultos(adultos);
+                passaporte.setCriancas(criancas);
+                passaporte.setValorpago(valorTotal);
+                passaporte.setFormapagamento(formaPagamento);
+                passaporte = passaporteDao.update(passaporte);
+                passaporte.setLocalizador("PPA" + passaporte.getIdpassaporte());
+                passaporteDao.update(passaporte);
+            }
             RequestContext.getCurrentInstance().closeDialog(passaporte);
         }
     }
@@ -325,11 +336,12 @@ public class CadPassaporteMB implements Serializable{
         contasreceber.setDatavencimento(new Date());
         contasreceber.setCliente(cliente);
         contasreceber.setNumeroparcela("1");
-        contasreceber.setNumerodocumento("" + passaporte.getIdpassaporte());
+        contasreceber.setNumerodocumento("Passaporte-" + passaporte.getIdpassaporte());
         contasreceber.setValorconta(passaporte.getValorpago());
         contasreceber.setUsuario(usuarioLogadoMB.getUsuario());
         contasreceber.setEnviado(false);
         contasreceber.setSituacao("PAGAR");
+        contasreceber.setTipopagamento(passaporte.getFormapagamento());
         parametros = parametrosDao.find(1);
         planoconta = planoContaDao.find(parametros.getPlanocontaavulso());
         contasreceber.setPlanoconta(planoconta);

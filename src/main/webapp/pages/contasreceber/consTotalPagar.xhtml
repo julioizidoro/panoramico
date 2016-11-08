@@ -22,7 +22,7 @@
                             <p:commandLink style="text-decoration: none; margin-top: 10%;" actionListener="#{totalSerPagoMB.filtrar()}" update=":idFormConsultaContasReceber:idTabConsultas:idConsultaEmpresa, :idFormConsultaContasReceber:idTabConsultas:idValorEmpresa">
                                 <div style="font-size: 16px;margin-left: 2%;" class="adicionar">Filtrar</div>
                             </p:commandLink>
-                            <p:commandLink style="text-decoration: none; margin-top: 2%;" actionListener="#{totalSerPagoMB.limpar()}" ajax="false" update="@form">
+                            <p:commandLink style="text-decoration: none; margin-top: 2%;" actionListener="#{totalSerPagoMB.limpar()}" update="@form, cliente">
                                 <div style="font-size: 16px;margin-left: 2%;" class="limpar">Limpar</div>
                             </p:commandLink>
                         </p:tab> 

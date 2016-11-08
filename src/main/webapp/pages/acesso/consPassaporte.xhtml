@@ -60,7 +60,7 @@
                     </p:accordionPanel>
                             <br/><br/>
                     <!-- TABELA CADASTROS -->
-                            <div class="col-6 titTela" style="margin-left:-15%;">Consulta Passaporte</div>
+                            <div class="col-6 titTela" style="margin-left:-13%;">Consulta Passaporte</div>
                             <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" action="#{passaporteMB.novoPassaporte()}">
                                 <div class="icoAdd fa fa-plus-square-o"></div>
                                 <p:ajax event="dialogReturn" listener="#{passaporteMB.retornoDialogPassaporte}" update="messages, idConsultaPassaporte"/>
@@ -100,6 +100,11 @@
                                         <div class="fa fa-check" >
                                         </div>  
                                          <p:ajax event="dialogReturn" listener="#{passaporteMB.retornoDialogUtilizado}" update=":idFormConsultaPassaporte:messages, idConsultaPassaporte"/>
+                                     </p:commandLink>
+                                     <p:commandLink title="Recebimento" style="text-decoration: none;" update=":idFormConsultaPassaporte:messages, idConsultaPassaporte" rendered="#{usuarioLogadoMB.financeiro}"  action="#{passaporteMB.novoRecebimento(passaporte)}">
+                                        <div class="fa fa-usd" >
+                                        </div>
+                                         <p:ajax event="dialogReturn" listener="#{passaporteMB.retornoDialogRecebimento}" update=":idFormConsultaPassaporte:messages, idConsultaPassaporte"/>
                                      </p:commandLink>
                                 </h:column> 
                             </h:dataTable>
