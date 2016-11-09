@@ -819,4 +819,46 @@ public class AcessoMB implements Serializable {
     public String eventosDia(){
         return "consEventosDia";
     }
+    
+    
+    public void pesquisarTudo() {
+        String msg = "";
+        dependente = null;
+        associado = null;
+        List<Associado> listaAssociado = associadoDao.list("Select a From Associado a Where a.matricula='" + codigoPesquisa + "'");
+        List<Dependente> listaDependente = dependenteDao.list("Select d From Dependente d Where d.matricula='" + codigoPesquisa + "'");
+        List<Passaporte> listaPassaporte = passaporteDao.list("Select p From Passaporte p Where p.localizador='" + codigoPesquisa + "'");
+        if (listaAssociado == null || listaAssociado.isEmpty()) {
+            msg = "Identificador não encontrada";
+            if (listaDependente == null || listaDependente.isEmpty()) {
+                msg = "Identificador não encontrada";
+                if (listaPassaporte == null || listaPassaporte.isEmpty()) {
+                    msg = "Identificador não encontrada";
+                }else{
+                    codigoPesquisa = listaPassaporte.get(0).getLocalizador();
+                    codigoPassaporte = codigoPesquisa;
+                    msg = "";
+                }
+            }else{
+                codigoPesquisa = listaDependente.get(0).getMatricula();
+                codigoDependente = codigoPesquisa;
+                msg = "";
+            }
+        }else{
+            codigoPesquisa = listaAssociado.get(0).getMatricula();
+            codigoAssociado = codigoPesquisa;
+            msg = "";
+        }
+        codigoPesquisa = "";
+        if (msg.length() > 1) {
+            Mensagem.lancarMensagemInfo(msg, "");
+            habilitarAcessoPassaporte = false;
+            habilitarFinanceiro = false;
+            habilitarBotaoDependente = true;
+            habilitarConsulta = true;
+            habilitarResultado = false;
+        }else{
+            pesquisar(); 
+        }
+    }
 }

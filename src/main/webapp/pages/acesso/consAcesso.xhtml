@@ -24,23 +24,18 @@
                         </legend>
                             <h:outputText value="Identificador" style="float: left;font-size: 16px;margin-left:25%;"/>
                             <br/><br/> 
-                            <p:inputText value="#{acessoMB.codigoPesquisa}" style="float: left;text-align: right;font-size: 14px;width: 47%;margin-left:25%;" title="Identifiador"/>
+                            <p:inputText value="#{acessoMB.codigoPesquisa}" style="float: left;text-align: right;font-size: 14px;width: 36%;margin-left:25%;" title="Identifiador"/>
                             <br/><br/>
-                            <p:commandLink disabled="false" style="float: left;margin-left: 25%;" ajax="false" action="#{acessoMB.pesquisarAssociado()}" update="messages, panelResultado, idCampoNome, idbotaoLiberado, idrespostaNegado, idCampoDataExame, panelResultadoPassaporte, idCampoNomePass, idCampoAdultosPass, idCampoCriancaPass, idbotaoLiberadoPass"> 
-                                <div style="font-size: 20px;padding: 3%;" class="pesquisarAcesso">Associado</div>
-                            </p:commandLink>
-                            <p:commandLink disabled="false" style="float: left;" ajax="false" action="#{acessoMB.pesquisarDependente()}" update="messages, panelResultado, idCampoNome, idbotaoLiberado, idrespostaNegado, idCampoDataExame, panelResultadoPassaporte, idCampoNomePass, idCampoAdultosPass, idCampoCriancaPass, idbotaoLiberadoPass"> 
-                                <div style="font-size: 20px;margin-left: 25%;padding: 3%;" class="pesquisarAcesso">Dependente</div>
-                            </p:commandLink>
-                            <p:commandLink disabled="false" style="float: left;" ajax="false" action="#{acessoMB.pesquisarPassaporte()}" update="messages, panelResultado, idCampoNome, idbotaoLiberado, idrespostaNegado, idCampoDataExame, panelResultadoPassaporte, idCampoNomePass, idCampoAdultosPass, idCampoCriancaPass, idbotaoLiberadoPass"> 
-                                <div style="font-size: 20px;margin-left: 25%;padding: 3%;" class="pesquisarAcesso">Passaporte</div>
-                            </p:commandLink>
+                            <p:commandButton disabled="false" value="Associado" class="pesquisarAcesso" style="padding: 0%;float: left;margin-left: 25%;font-size: 20px;" ajax="false" action="#{acessoMB.pesquisarTudo()}" update="messages, panelResultado, idCampoNome, idbotaoLiberado, idrespostaNegado, idCampoDataExame, panelResultadoPassaporte, idCampoNomePass, idCampoAdultosPass, idCampoCriancaPass, idbotaoLiberadoPass"/> 
+                            <p:commandButton disabled="false" value="Dependente" class="pesquisarAcesso" style="padding: 0%;float: left;font-size: 20px;" ajax="false" action="#{acessoMB.pesquisarDependente()}" update="messages, panelResultado, idCampoNome, idbotaoLiberado, idrespostaNegado, idCampoDataExame, panelResultadoPassaporte, idCampoNomePass, idCampoAdultosPass, idCampoCriancaPass, idbotaoLiberadoPass"/> 
+                            <p:commandButton disabled="false" value="Passaporte" class="pesquisarAcesso" style="padding: 0%;float: left;font-size: 20px;" ajax="false" action="#{acessoMB.pesquisarPassaporte()}" update="messages, panelResultado, idCampoNome, idbotaoLiberado, idrespostaNegado, idCampoDataExame, panelResultadoPassaporte, idCampoNomePass, idCampoAdultosPass, idCampoCriancaPass, idbotaoLiberadoPass"/> 
+                            
                             <br/><br/><br/>
                             <p:commandLink disabled="false" style="float: left;width: 20%;margin-left: 25%;" ajax="false" action="#{acessoMB.eventosDia()}"> 
                                 <div style="font-size: 20px;padding: 3%;width: 100%;" class="pesquisarAcesso">Eventos</div>
                             </p:commandLink>
                             <p:commandLink disabled="false" style="float: left; width: 20%;"  action="#{acessoMB.novoPassaporte()}" rendered="true"> 
-                                <div style="font-size: 18px;padding: 3%;width: 100%;margin-left: 35%;" class="pesquisarAcesso">Novo Passaporte</div>
+                                <div style="font-size: 18px;padding: 3%;width: 100%;margin-left: 72%;" class="pesquisarAcesso">Novo Passaporte</div>
                             </p:commandLink>
                         <br/><br/><br/>  
                     </fieldset>
