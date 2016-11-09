@@ -643,6 +643,21 @@ public class AcessoMB implements Serializable {
         }
     }
     
+    
+    public void controleAcessoDependenteAssociado(Dependente dependente) {
+        controleacesso = new Controleacesso();
+        controleacesso.setSituacao(nomeStatus);
+        controleacesso.setData(new Date());
+        controleacesso.setHora(retornarHoraAtual());
+        if (guardaDependente.length() >= 1) {
+            controleacesso.setIddependente(dependente.getIddependente());
+            controleacesso.setAssociado(dependente.getAssociado());
+            controleacesso.setTipo("D");
+            controleacesso = controleAcessoDao.update(controleacesso);
+            Mensagem.lancarMensagemInfo("Salvo com sucesso", "");
+        }
+    }
+    
     public void retornoDialogPassaporte(SelectEvent event){
         Passaporte passaporte = (Passaporte) event.getObject();
         if (passaporte.getIdpassaporte() != null) {
@@ -665,6 +680,13 @@ public class AcessoMB implements Serializable {
         Map<String, Object> options = new HashMap<String, Object>();
         options.put("contentWidth", 550);
         RequestContext.getCurrentInstance().openDialog("cadPassaporte", options, null);
+        return "";
+    }
+    
+    public String novaPesquisaCpf() {
+        Map<String, Object> options = new HashMap<String, Object>();
+        options.put("contentWidth", 550);
+        RequestContext.getCurrentInstance().openDialog("pesquisarAssociado", options, null);
         return "";
     }
 
@@ -744,7 +766,7 @@ public class AcessoMB implements Serializable {
         } else if (dependente != null) {
             sql = "Select c From Contasreceber c Where c.cliente.idcliente=" + dependente.getAssociado().getCliente().getIdcliente();
         }
-        sql = sql + " and c.situacao='PAGAR' and c.datavencimento<" + Formatacao.ConvercaoDataSql(new Date());
+        sql = sql + " and c.situacao='PAGAR' and c.datavencimento<'" + Formatacao.ConvercaoDataSql(new Date()) + "'";
         listaFinanceira = contasReceberDao.list(sql);
         if (listaFinanceira == null || listaFinanceira.isEmpty()) {
             return inadimplente;

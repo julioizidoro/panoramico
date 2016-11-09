@@ -14,8 +14,11 @@
                     <fieldset>
                         <legend>
                             Acesso
-                            <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" action="#{acessoMB.novoRelatorio()}" title="Relatórios">
+                            <p:commandLink action="#{acessoMB.novoRelatorio()}" title="Relatórios">
                                 <div class="fa fa-bar-chart"></div>
+                            </p:commandLink>
+                            <p:commandLink action="#{acessoMB.novaPesquisaCpf()}" title="Buscar Associado" style="text-decoration: none;">
+                                <div class="fa fa-search"></div>
                             </p:commandLink>
 
                         </legend>
@@ -116,6 +119,11 @@
                                                 <div> 
                                                     <br/>
                                                     <h:outputText value="#{dependente.nome}" style="font-size: 20px;float: left;" title="Nome"/>
+                                                    <p:commandLink  id="idbotaoLiberado" action="#{acessoMB.controleAcessoDependenteAssociado(dependente)}" update="@all">  
+                                                        <div style="font-size: 18px;margin-top: -2%;float: right;" class="#{acessoMB.tipoClasse}">
+                                                            <h:outputText value="#{acessoMB.nomeStatus}"/>
+                                                        </div>
+                                                    </p:commandLink>  
                                                     <br/>
                                                     <hr/>
                                                 </div>

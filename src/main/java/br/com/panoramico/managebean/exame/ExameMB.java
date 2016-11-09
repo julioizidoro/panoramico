@@ -251,35 +251,31 @@ public class ExameMB implements Serializable{
     
     
      public String pegarValores(Exame exame){
-        List<Exameassociado> listaExameAssociado = exameAssociadoDao.list("Select ea from Exameassociado ea where ea.exame.idexame=" + exame.getIdexame());
-        List<Examedependente> listaExameDependente  = exameDependenteDao.list("Select ed from Examedependente ed where ed.exame.idexame=" + exame.getIdexame());
-        if (listaExameAssociado == null || listaExameAssociado.isEmpty()) {
-            for (int i = 0; i < listaExameDependente.size(); i++) {
-                examedependente = listaExameDependente.get(i);
-                return examedependente.getDependente().getNome();
-            }
-        }else{
-            for (int i = 0; i < listaExameAssociado.size(); i++) {
-                exameassociado = listaExameAssociado.get(i);
-                return exameassociado.getAssociado().getCliente().getNome();
-            }
-        }
-        return "";
+          if (exame.getExamedependente() == null && exame.getExameconvidado() == null && exame.getExameassociado() != null) {
+             return exame.getExameassociado().getAssociado().getCliente().getNome();
+          }else if(exame.getExameassociado()== null && exame.getExameconvidado() == null && exame.getExamedependente() != null){
+              return exame.getExamedependente().getDependente().getAssociado().getCliente().getNome();
+          }else if(exame.getExameassociado() == null && exame.getExamedependente() == null && exame.getExameconvidado() != null){
+              return exame.getExameconvidado().getEventoconvidados().getNome();
+          }
+          return "";
     }
      
     
     public void filtrar(){
         String sql = "Select e from Exame e";
-        if (!situacao.equalsIgnoreCase("sn") || dataInicio != null || dataFinal != null) {
+        if (!situacao.equalsIgnoreCase("sn") || dataInicio != null || dataFinal != null || nomeCliente.length() > 0) {
             sql = sql + " where";
         }
         
-//        if (nomeCliente.length() > 0) {
-//            sql = sql + " e.cliente.nomecliente like '%" + nomeCliente + "%'";
-//            if (!situacao.equalsIgnoreCase("sn") || dataInicio != null || dataFinal != null) {
-//                sql = sql + " and";
-//            }
-//        }
+        if (nomeCliente.length() > 0) {
+            sql = sql + " (e.exameassociado.associado.cliente.nome like '%" + nomeCliente + "%' or "
+                    + "e.examedependente.dependente.associado.cliente.nome like '%" + nomeCliente + "%' or "
+                    + "e.exameconvidado.eventoconvidados.nome like '%" + nomeCliente + "%')";
+            if (!situacao.equalsIgnoreCase("sn") || dataInicio != null || dataFinal != null) {
+                sql = sql + " and";
+            }
+        }
         
         if (!situacao.equalsIgnoreCase("sn")) {
             sql = sql + " e.situacao='" + situacao + "'";
