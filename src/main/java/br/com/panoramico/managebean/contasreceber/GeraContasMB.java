@@ -43,6 +43,7 @@ public class GeraContasMB implements Serializable{
     private String nome;
     private String matricula;
     private String cpf;
+    private String anoReferencia;
     
     
     @PostConstruct
@@ -146,6 +147,14 @@ public class GeraContasMB implements Serializable{
     public void setCpf(String cpf) {
         this.cpf = cpf;
     }
+
+    public String getAnoReferencia() {
+        return anoReferencia;
+    }
+
+    public void setAnoReferencia(String anoReferencia) {
+        this.anoReferencia = anoReferencia;
+    }
     
     
     
@@ -196,6 +205,9 @@ public class GeraContasMB implements Serializable{
         if (mesReferencia > 0) {
             sql = sql + " and a.mes='" + mesReferencia + "' ";
         }
+        if (anoReferencia.length() > 0) {
+            sql = sql + " and a.ano='" + anoReferencia + "' ";
+        }
         if (matricula.length() > 0) {
             sql = sql + " and a.matricula='" + matricula + "' ";
         }
@@ -214,7 +226,15 @@ public class GeraContasMB implements Serializable{
         nome = "";
         cpf = "";
         mesReferencia = 0;
+        anoReferencia = "";
         return "";
+    }
+    
+    public String financeiro(Associado associado) {
+        FacesContext fc = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+        session.setAttribute("associado", associado);
+        return "consContasReceber";
     }
     
 }

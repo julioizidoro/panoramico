@@ -12,18 +12,20 @@
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:10%;width: 80%;"/>
                     <p:accordionPanel activeIndex="-1" style="width:85%;margin-left: 8%;z-index:1">
                         <p:tab title="Pesquisar">
-                            <p:outputLabel value="Matrícula" class="titTela" style="font-size: 12px;text-align: left;margin-left: 2%;float: left;"/>
+                            <p:outputLabel value="Matrícula" class="titTela" style="font-size: 12px;text-align: left;margin-left: 4%;float: left;"/>
                             <p:outputLabel value="Nome" class="titTela" style="font-size: 12px;text-align: left;margin-left:12%;float: left;"/>
                             <p:outputLabel value="CPF" class="titTela" style="font-size: 12px;text-align: left;margin-left:29.4%;float: left;"/>
+                            <p:outputLabel value="Ano Referência" class="titTela" style="font-size: 12px;text-align: left;margin-left:17%;float: left;"/>
 
                             <br/>
-                            <p:inputText id="matricula" value="#{geraContasMB.matricula}"  style="width:115px;margin-left:-56.6%;font-size: 12px;float: left;"/>
-                            <p:inputText id="nome" value="#{geraContasMB.nome}"  style="width: 216px;margin-left:-37%;font-size: 12px;float: left;"/>
-                            <p:inputMask id="cpf" mask="999.999.999-99" value="#{geraContasMB.cpf}"  style="width:115px;margin-left:-3%;font-size: 12px;float: left;"/>
+                            <p:inputText id="matricula" value="#{geraContasMB.matricula}"  style="width:115px;margin-left:-3.6%;font-size: 12px;"/>
+                            <p:inputText id="nome" value="#{geraContasMB.nome}"  style="width: 216px;margin-left:3%;font-size: 12px;"/>
+                            <p:inputMask id="cpf" mask="999.999.999-99" value="#{geraContasMB.cpf}"  style="width:115px;margin-left:4%;font-size: 12px;"/>
+                            <p:inputText id="anoreferencia" value="#{geraContasMB.anoReferencia}"  style="width: 115px;margin-left:4%;font-size: 12px;"/>
                             <br/><br/>  
                             <p:outputLabel value="Mês Referência" class="titTela" style="font-size: 12px;text-align: left;margin-left:2%;float: left;"/>
                             <br/>
-                            <p:selectOneMenu id="numeroParcela" class="form-control" style="width:18%;font-size: 12px;margin-left: 2%;" value="#{geraContasMB.mesReferencia}">
+                            <p:selectOneMenu id="mesreferencia" class="form-control" style="width:18%;font-size: 12px;margin-left: 2%;" value="#{geraContasMB.mesReferencia}">
                                 <f:selectItem itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
                                 <f:selectItem itemLabel="1" itemValue="1" />  
                                 <f:selectItem itemLabel="2" itemValue="2" /> 
@@ -40,7 +42,7 @@
                             <p:commandLink style="text-decoration: none; margin-top: 10%;" actionListener="#{geraContasMB.pesquisar()}" ajax="false" update=":idFormConsultaAssociado:idConsultaAssociado, messages">
                                 <div style="font-size: 16px;margin-left:5%;margin-top: -4%;margin-left: 23%;" class="adicionar">Filtrar</div>
                             </p:commandLink>
-                            <p:commandLink style="text-decoration: none; margin-top: 2%;" actionListener="#{geraContasMB.limpar()}" ajax="false" update=":idFormConsultaAssociado:idConsultaAssociado, matricula, nome, email, cpf, telefone, matricula">
+                            <p:commandLink style="text-decoration: none; margin-top: 2%;" actionListener="#{geraContasMB.limpar()}" ajax="false" update=":idFormConsultaAssociado:idConsultaAssociado, matricula, nome, email, cpf, telefone, matricula, anoreferencia, mesreferencia">
                                 <div style="font-size: 16px;margin-left: 2%;margin-top: -4%;" class="limpar">Limpar</div>
                             </p:commandLink>
                         </p:tab>
@@ -80,7 +82,7 @@
                                 <div class="fa fa-usd" >
                                 </div>
                             </p:commandLink>
-                            <p:commandLink rendered="#{usuarioLogadoMB.editar}" style="text-decoration: none;" title="Financeiro" action="#" update=":idFormConsultaAssociado:messages, @form">
+                            <p:commandLink rendered="#{usuarioLogadoMB.editar}" style="text-decoration: none;" title="Financeiro" action="#{geraContasMB.financeiro(associado)}" update=":idFormConsultaAssociado:messages, @form">
                                 <div class="fa fa-money"></div>
                             </p:commandLink>
                         </h:column>
