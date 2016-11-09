@@ -274,6 +274,13 @@ public class ExameMB implements Serializable{
             sql = sql + " where";
         }
         
+//        if (nomeCliente.length() > 0) {
+//            sql = sql + " e.cliente.nomecliente like '%" + nomeCliente + "%'";
+//            if (!situacao.equalsIgnoreCase("sn") || dataInicio != null || dataFinal != null) {
+//                sql = sql + " and";
+//            }
+//        }
+        
         if (!situacao.equalsIgnoreCase("sn")) {
             sql = sql + " e.situacao='" + situacao + "'";
             if (dataInicio != null && dataFinal != null) {

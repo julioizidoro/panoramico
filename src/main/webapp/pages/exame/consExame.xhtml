@@ -7,21 +7,21 @@
         <ui:define name="corpo">
             <br/> 
             <div class="col-10 boxAzulClaro" style="margin-left:8.5%;width: 83.2%;">   
-                <br/> 
+                <br/>   
                 <h:form id="idFormConsultaExame" style="margin-left:10%;width: 78%;">
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:8%;width: 80%;"/>
                     <p:accordionPanel activeIndex="-1" style="margin-left:1%;">
                         <p:tab title="Pesquisar"> 
-                            <p:outputLabel class="titTela" value="Nome do Cliente" style="font-size: 12px;text-align: left;margin-left:9%;float: left;"/>
+                            <p:outputLabel class="titTela" value="Nome do Cliente" style="font-size: 12px;text-align: left;margin-left:11%;float: left;"/>
                             <p:outputLabel class="titTela" value="Matricula" style="font-size: 12px;text-align: left;margin-left: 20%;float: left;"/>
                             <br/>
-                            <p:inputText id="nome" value="#{exameMB.nomeCliente}"  style="width: 216px;margin-left:-37%;font-size: 12px;float: left;"/>
+                            <p:inputText id="nome" value="#{exameMB.nomeCliente}"  style="width: 216px;margin-left:-39%;font-size: 12px;float: left;"/>
                             <p:inputText id="matricula" value="#{exameMB.matricula}"  style="width:115px;margin-left:-7.6%;font-size: 12px;float: left;"/>
                             <br/><br/>
-                            <p:outputLabel class="titTela" value="Situação" style="font-size: 12px;text-align: left;margin-left:-39%;float: left;"/>
+                            <p:outputLabel class="titTela" value="Situação" style="font-size: 12px;text-align: left;margin-left:11%;float: left;"/>
                             <p:outputLabel class="titTela" value="Periodo" style="font-size: 12px;text-align: left;margin-left: 20%;float: left;"/>
                             <br/>
-                            <p:selectOneMenu id="estado" value="#{exameMB.situacao}"  style="width:180px;margin-left: -31%; font-size: 12px;float: left;">
+                            <p:selectOneMenu id="estado" value="#{exameMB.situacao}"  style="width:180px;margin-left: -32%; font-size: 12px;float: left;">
                                 <f:selectItem itemLabel="Selecione" itemValue="sn" noSelectionOption="true"/> 
                                 <f:selectItem itemLabel="Apto" itemValue="Apto" /> 
                                 <f:selectItem itemLabel="Inapto" itemValue="Inapto" />
