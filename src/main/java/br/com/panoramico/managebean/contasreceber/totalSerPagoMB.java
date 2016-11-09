@@ -213,6 +213,8 @@ public class totalSerPagoMB implements Serializable{
     
     
     public void gerarListaAssociado(){
+        valorTotalEmpresa = 0.0f;
+        valorTotalAssociado = 0.0f;
         listaTotalContasAssociadoEmpresa = new ArrayList<>();
         listaTotalContasAssociados = new ArrayList<>();
         listaContasAssociados = new ArrayList<>();
