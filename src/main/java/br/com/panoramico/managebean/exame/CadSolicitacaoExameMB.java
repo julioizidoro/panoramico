@@ -389,13 +389,18 @@ public class CadSolicitacaoExameMB implements Serializable {
         exame.setDesconto(descontoExame);
         String mensagem = validarDados();
         if (mensagem.length() < 5) {
-            exame = exameDao.update(exame);
             lancarContaReceber();
             if (associadoDependente.equalsIgnoreCase("Associado") && exame.getIdexame() != null) {
+                exame.setNomeCliente(associado.getCliente().getNome());
+                exame.setMatricula(associado.getMatricula());
+                exame = exameDao.update(exame);
                 exameassociado.setExame(exame);
                 exameassociado.setAssociado(associado);
                 exameAssociadoDao.update(exameassociado);
             } else if (associadoDependente.equalsIgnoreCase("Dependente") && exame.getIdexame() != null) {
+                exame.setNomeCliente(dependente.getNome());
+                exame.setMatricula(dependente.getMatricula());
+                exame = exameDao.update(exame);
                 examedependente.setExame(exame);
                 examedependente.setDependente(dependente);
                 exameDependenteDao.update(examedependente);

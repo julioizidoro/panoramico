@@ -50,7 +50,7 @@
                     <h:dataTable id="idConsultaExame" styleClass="table" value="#{exameMB.listaExames}" var="exame">
                         <h:column>
                             <f:facet name="header">Nome</f:facet> 
-                            <h:outputText value="#{exameMB.pegarValores(exame)}" styleClass="alinhamento" style="float: left;"/>
+                            <h:outputText value="#{exame.nomeCliente}" styleClass="alinhamento" style="float: left;"/>
                         </h:column>
                         <h:column >  
                             <f:facet name="header">Diagnostico</f:facet> 

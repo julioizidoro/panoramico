@@ -186,7 +186,7 @@ public class ExameMB implements Serializable{
     
     
     public void gerarListaExame(){
-        listaExames = exameDao.list("Select e from Exame e");
+        listaExames = exameDao.list("Select e from Exame e Where e.situacao is null");
         if (listaExames == null) {
             listaExames = new ArrayList<Exame>();
         }
@@ -264,14 +264,19 @@ public class ExameMB implements Serializable{
     
     public void filtrar(){
         String sql = "Select e from Exame e";
-        if (!situacao.equalsIgnoreCase("sn") || dataInicio != null || dataFinal != null || nomeCliente.length() > 0) {
-            sql = sql + " where";
+        if (!situacao.equalsIgnoreCase("sn") || dataInicio != null || dataFinal != null || nomeCliente.length() > 0 || matricula.length() > 0) {
+            sql = sql + " where"; 
         }
         
         if (nomeCliente.length() > 0) {
-            sql = sql + " (e.exameassociado.associado.cliente.nome like '%" + nomeCliente + "%' or "
-                    + "e.examedependente.dependente.associado.cliente.nome like '%" + nomeCliente + "%' or "
-                    + "e.exameconvidado.eventoconvidados.nome like '%" + nomeCliente + "%')";
+            sql = sql + " (e.nomeCliente like '%" + nomeCliente + "%')";
+            if (!situacao.equalsIgnoreCase("sn") || dataInicio != null || dataFinal != null || matricula.length() > 0) {
+                sql = sql + " and";
+            }
+        }
+        
+        if (matricula.length() > 0) {
+            sql = sql + " (e. matricula='" + matricula + "')";
             if (!situacao.equalsIgnoreCase("sn") || dataInicio != null || dataFinal != null) {
                 sql = sql + " and";
             }

@@ -228,6 +228,8 @@ public class CadSolicitacaoExameConvidadoMB implements Serializable {
         exame.setMedico(medico);
         exame.setValor(valorExame);
         exame.setDesconto(descontoExame);
+        exame.setNomeCliente(exameconvidado.getEventoconvidados().getNome());
+        exame.setMatricula("0");
         exame = exameDao.update(exame);
         exameconvidado.setExame(exame);
         exameConvidadoDao.update(exameconvidado);
