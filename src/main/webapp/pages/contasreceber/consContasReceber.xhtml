@@ -36,11 +36,11 @@
                                 <f:selectItem itemLabel="Pago" itemValue="PAGO" />
                             </p:selectOneMenu>
                             <br/><br/>
-                            <p:outputLabel class="titTela" value="Tipo Documento" for="tipoDocumento" style="font-size: 12px;text-align: left;float: left;margin-left:0%;"/>
+                            <p:outputLabel class="titTela" value="Tipo Documento" for="tipoDocumento" style="font-size: 12px;text-align: left;margin-left:0%;"/>
                             <p:outputLabel class="titTela" value="Função Boleto" for="boleto"
-                                           rendered="#{contasReceberMB.comboBoleto}" style="font-size: 12px;text-align: left;float: left;margin-left:20%;"/> 
-                            <br/> 
-                            <p:selectOneMenu id="tipoDocumento" style="width:210px;float: left;margin-left:-10%;"
+                                           rendered="#{contasReceberMB.comboBoleto}" style="font-size: 12px;text-align: left;margin-left:18%;"/> 
+                            <br/>
+                            <p:selectOneMenu id="tipoDocumento" style="width:210px;float: left;margin-left:0%;"
                                              value="#{contasReceberMB.tipoDocumento}">
                                 <f:selectItem itemLabel="Selecione" itemValue="Selecione"
                                               noSelectionOption="true" />
@@ -135,7 +135,7 @@
                         </h:column> 
                         <h:column>
                             <f:facet name="header">Pago?</f:facet> 
-                            <h:outputText value="#{contasReceberMB.pegarRecebimento(contaReceber)}" styleClass="alinhamento" style="float: left;" />
+                            <h:outputText value="#" styleClass="alinhamento" style="float: left;" />
                         </h:column>
                         <h:column>
                             <p:commandLink rendered="#{usuarioLogadoMB.editar}" title="Editar" action="#{contasReceberMB.editar(contaReceber)}" style="text-decoration: none;">

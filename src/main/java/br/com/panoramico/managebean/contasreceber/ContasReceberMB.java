@@ -265,6 +265,8 @@ public class ContasReceberMB implements Serializable {
     public void setBtnGerarBoleto(boolean btnGerarBoleto) {
         this.btnGerarBoleto = btnGerarBoleto;
     }
+    
+    
 
     public void gerarListaContasReceber() {
         if (associado == null || associado.getIdassociado() == null) {
