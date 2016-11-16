@@ -42,6 +42,7 @@ public class GerarArquivoRemessaItau {
     private Proprietario proprietario;
     private List<Empresa> listaEmpresa;
     private StreamedContent stream;
+    private String nomeArquivo;
 
     public GerarArquivoRemessaItau(List<Contasreceber> lista, UsuarioLogadoMB usuarioLogadoMB, Proprietario proprietario, StreamedContent stream, List<Contasreceber> listaContas) {
         this.listaContas = lista;
@@ -83,7 +84,7 @@ public class GerarArquivoRemessaItau {
     public void setNumeroSequencial(int numeroSequencial) {
         this.numeroSequencial = numeroSequencial;
     }
- 
+
     public ContasReceberDao getContasReceberDao() {
         return contasReceberDao;
     }
@@ -108,10 +109,6 @@ public class GerarArquivoRemessaItau {
         this.proprietario = proprietario;
     }
 
-    
-
-   
-
     public List<Empresa> getListaEmpresa() {
         return listaEmpresa;
     }
@@ -128,13 +125,19 @@ public class GerarArquivoRemessaItau {
         this.stream = stream;
     }
 
-    
-      
+    public String getNomeArquivo() {
+        return nomeArquivo;
+    }
+
+    public void setNomeArquivo(String nomeArquivo) {
+        this.nomeArquivo = nomeArquivo;
+    }
 
     private void iniciarRemessa() {
         if (this.listaContas != null) {
             String nome = System.getProperty("user.name");
-            String nomeA = "C:\\Users\\"+ nome +"\\Documents\\" + gerarNomeArquivo();
+            String nomeA = "C:\\Users\\" + nome + "\\Documents\\" + gerarNomeArquivo();
+            nomeArquivo = nomeA;
             File arquivo = new File(nomeA);
             try {
                 remessa = new FileWriter(arquivo);
@@ -148,9 +151,9 @@ public class GerarArquivoRemessaItau {
             } catch (IOException ex) {
                 Logger.getLogger(GerarArquivoRemessaItau.class.getName()).log(Level.SEVERE, null, ex);
             }
-    
-        } 
-    } 
+
+        }
+    }
 
     public String gerarNomeArquivo() {
         String data = Formatacao.ConvercaoDataPadrao(new Date());
@@ -201,8 +204,8 @@ public class GerarArquivoRemessaItau {
         remessa.write(arquivoRemessaNormal.gerarMulta(conta, numeroSequencial, proprietario));
         numeroSequencial++;
         remessa.write(arquivoRemessaNormal.gerarTrailer(numeroSequencial));
-    }  
-     
+    }
+
     private void confirmarContas() {
         for (int i = 0; i < listaContas.size(); i++) {
             Contasreceber conta = listaContas.get(i);
@@ -212,4 +215,3 @@ public class GerarArquivoRemessaItau {
         }
     }
 }
- 

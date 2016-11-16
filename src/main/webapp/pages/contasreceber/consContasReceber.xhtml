@@ -93,18 +93,21 @@
 
                     <p:commandButton id="bntboleto" style="font-size:12px;"
                                      rendered="#{contasReceberMB.btnGerarBoleto}" value="Gerar Boletos"
-                                     action="#"
+                                     action="#{contasReceberMB.gerarBoleto()}"
                                      update=":idFormConsultaContasReceber:messages" ajax="false"
                                      onclick="this.form.target = '_blank'" />
                     <p:commandButton id="bntSegundaVia" style="font-size:12px;"  
                                      rendered="#{contasReceberMB.btnGerarSegundaVia}"
                                      value="Gerar 2º via"
-                                     action="#" ajax="false"
+                                     action="#{contasReceberMB.gerarBoletoSegundaVia()}" ajax="false"
                                      update="growl" onclick="this.form.target = '_blank'" />
                     <p:commandButton id="bntenviarboleto" style="font-size:12px;"
                                      rendered="#{contasReceberMB.btnEnviarBoleto}"
-                                     value="Gerar Remessa" action="#" />
+                                     value="Gerar Remessa" action="#{contasReceberMB.dialogBoletos()}" />
                     <h:dataTable  id="idConsultaContasReceber" class="table" styleClass="table" value="#{contasReceberMB.listaContasReceber}" var="contaReceber">
+                        <p:column style="width:32px;text-align: center">
+                            <p:selectBooleanCheckbox value="#{contaReceber.selecionado}" />
+                        </p:column>
                         <h:column>
                             <f:facet name="header">Cliente</f:facet> 
                             <h:outputText value="#{contaReceber.cliente.nome}" styleClass="alinhamento" style="float: left;" />

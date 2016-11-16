@@ -1,113 +1,56 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.panoramico.managebean.boleto;
-
-import br.com.panoramico.dao.AssociadoDao;
-import br.com.panoramico.dao.BancoDao;
-import br.com.panoramico.dao.ContasReceberDao;
-import br.com.panoramico.dao.EmpresaDao;
+ 
+import br.com.panoramico.dao.ContasReceberDao; 
 import br.com.panoramico.dao.ProprietarioDao;
-import br.com.panoramico.managebean.UsuarioLogadoMB;
-import br.com.panoramico.model.Associado;
-import br.com.panoramico.model.Banco;
-import br.com.panoramico.model.Contasreceber;
-import br.com.panoramico.model.Empresa;
+import br.com.panoramico.managebean.UsuarioLogadoMB; 
+import br.com.panoramico.model.Contasreceber; 
 import br.com.panoramico.model.Proprietario;
-import br.com.panoramico.uil.Formatacao;
-import br.com.panoramico.uil.Mensagem;
+import br.com.panoramico.uil.Formatacao; 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import javax.annotation.PostConstruct;
+import java.util.List; 
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.jrimum.bopepo.Boleto;
-import org.jrimum.domkee.comum.pessoa.endereco.Endereco;
-import org.jrimum.domkee.comum.pessoa.endereco.UnidadeFederativa;
+import javax.servlet.http.HttpSession;
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.StreamedContent;
 
 @Named
 @ViewScoped
 public class BoletoMB implements Serializable {
 
-    private Contasreceber contasreceber;
-    private List<Contasreceber> listaContasReceber;
+    private List<Contasreceber> listarSelecionados;
     @EJB
     private ContasReceberDao contasReceberDao;
-    private boolean selecionadoTodos;
-    private List<Contasreceber> listaSelecionadas;
     @Inject
     private UsuarioLogadoMB usuarioLogadoMB;
+    private String nomearquivo;
     @EJB
     private ProprietarioDao proprietarioDao;
     private Proprietario proprietario;
-    private List<Empresa> listaEmpresa;
     private StreamedContent stream;
-    private Associado associado;
-    private List<Associado> listaAssociado;
-    @EJB
-    private AssociadoDao associadoDao;
-    @EJB
-    private EmpresaDao empresaDao;
-    @EJB
-    private BancoDao bancoDao;
-    private Banco banco;
-    private boolean habilitar2via = false;
-    private boolean habilitarGerarBoleto = true;
 
-    @PostConstruct
-    public void init() {
-        gerarListaContasReceber();
+    public BoletoMB() {
+        FacesContext fc = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+        listarSelecionados = (List<Contasreceber>) session.getAttribute("listaContas");
+        nomearquivo = Formatacao.ConvercaoDataPadrao(new Date());
+        nomearquivo = nomearquivo.substring(6, 10) + nomearquivo.substring(3, 5) + nomearquivo.substring(0, 2);
+        nomearquivo = nomearquivo;
         proprietario = proprietarioDao.find(1);
-        banco = bancoDao.find("Select b From Banco b Where b.proprietario.idproprietario=" + proprietario.getIdproprietario());
     }
 
-    public Contasreceber getContasreceber() {
-        return contasreceber;
+    public List<Contasreceber> getListarSelecionados() {
+        return listarSelecionados;
     }
 
-    public void setContasreceber(Contasreceber contasreceber) {
-        this.contasreceber = contasreceber;
-    }
-
-    public List<Contasreceber> getListaContasReceber() {
-        return listaContasReceber;
-    }
-
-    public void setListaContasReceber(List<Contasreceber> listaContasReceber) {
-        this.listaContasReceber = listaContasReceber;
-    }
-
-    public ContasReceberDao getContasReceberDao() {
-        return contasReceberDao;
-    }
-
-    public void setContasReceberDao(ContasReceberDao contasReceberDao) {
-        this.contasReceberDao = contasReceberDao;
-    }
-
-    public boolean isSelecionadoTodos() {
-        return selecionadoTodos;
-    }
-
-    public void setSelecionadoTodos(boolean selecionadoTodos) {
-        this.selecionadoTodos = selecionadoTodos;
-    }
-
-    public List<Contasreceber> getListaSelecionadas() {
-        return listaSelecionadas;
-    }
-
-    public void setListaSelecionadas(List<Contasreceber> listaSelecionadas) {
-        this.listaSelecionadas = listaSelecionadas;
+    public void setListarSelecionados(List<Contasreceber> listarSelecionados) {
+        this.listarSelecionados = listarSelecionados;
     }
 
     public UsuarioLogadoMB getUsuarioLogadoMB() {
@@ -116,6 +59,26 @@ public class BoletoMB implements Serializable {
 
     public void setUsuarioLogadoMB(UsuarioLogadoMB usuarioLogadoMB) {
         this.usuarioLogadoMB = usuarioLogadoMB;
+    }
+
+    public String getNomearquivo() {
+        return nomearquivo;
+    }
+
+    public void setNomearquivo(String nomearquivo) {
+        this.nomearquivo = nomearquivo;
+    }
+
+    public void fechardialogBoletos() {
+        RequestContext.getCurrentInstance().closeDialog(null);
+    }
+
+    public ContasReceberDao getContasReceberDao() {
+        return contasReceberDao;
+    }
+
+    public void setContasReceberDao(ContasReceberDao contasReceberDao) {
+        this.contasReceberDao = contasReceberDao;
     }
 
     public ProprietarioDao getProprietarioDao() {
@@ -134,14 +97,6 @@ public class BoletoMB implements Serializable {
         this.proprietario = proprietario;
     }
 
-    public List<Empresa> getListaEmpresa() {
-        return listaEmpresa;
-    }
-
-    public void setListaEmpresa(List<Empresa> listaEmpresa) {
-        this.listaEmpresa = listaEmpresa;
-    }
-
     public StreamedContent getStream() {
         return stream;
     }
@@ -150,184 +105,21 @@ public class BoletoMB implements Serializable {
         this.stream = stream;
     }
 
-    public Associado getAssociado() {
-        return associado;
-    }
-
-    public void setAssociado(Associado associado) {
-        this.associado = associado;
-    }
-
-    public List<Associado> getListaAssociado() {
-        return listaAssociado;
-    }
-
-    public void setListaAssociado(List<Associado> listaAssociado) {
-        this.listaAssociado = listaAssociado;
-    }
-
-    public AssociadoDao getAssociadoDao() {
-        return associadoDao;
-    }
-
-    public void setAssociadoDao(AssociadoDao associadoDao) {
-        this.associadoDao = associadoDao;
-    }
-
-    public EmpresaDao getEmpresaDao() {
-        return empresaDao;
-    }
-
-    public void setEmpresaDao(EmpresaDao empresaDao) {
-        this.empresaDao = empresaDao;
-    }
-
-    public BancoDao getBancoDao() {
-        return bancoDao;
-    }
-
-    public void setBancoDao(BancoDao bancoDao) {
-        this.bancoDao = bancoDao;
-    }
-
-    public Banco getBanco() {
-        return banco;
-    }
-
-    public void setBanco(Banco banco) {
-        this.banco = banco;
-    }
-
-    public boolean isHabilitar2via() {
-        return habilitar2via;
-    }
-
-    public void setHabilitar2via(boolean habilitar2via) {
-        this.habilitar2via = habilitar2via;
-    }
-
-    public boolean isHabilitarGerarBoleto() {
-        return habilitarGerarBoleto;
-    }
-
-    public void setHabilitarGerarBoleto(boolean habilitarGerarBoleto) {
-        this.habilitarGerarBoleto = habilitarGerarBoleto;
-    }
-
-   
-    public void selecionarTodasLista() {
-        if (selecionadoTodos) {
-            for (int i = 0; i < listaContasReceber.size(); i++) {
-                listaContasReceber.get(i).setSelecionado(true);
-            }
-        } else {
-            for (int i = 0; i < listaContasReceber.size(); i++) {
-                listaContasReceber.get(i).setSelecionado(false);
-            }
-        }
-    }
-
-    public void gerarListaContasReceber() {
-        listaContasReceber = contasReceberDao.list("Select c from Contasreceber c where c.enviado=false and c.tipopagamento='Boleto'");
-        if (listaContasReceber == null || listaContasReceber.isEmpty()) {
-            listaContasReceber = new ArrayList<Contasreceber>();
-        }
-    }
-
-    public void gerarContas2via() {
-        listaContasReceber = null;
-        listaContasReceber = contasReceberDao.list("Select c from Contasreceber c Where c.enviado=true and c.tipopagamento='Boleto'");
-        if (listaContasReceber == null || listaContasReceber.isEmpty()) {
-            listaContasReceber = new ArrayList<Contasreceber>();
-        }
-        habilitar2via = true;
-        habilitarGerarBoleto = false;
-    }
-
-    public void habilitarContas1via() {
-        listaContasReceber = null;
-        gerarListaContasReceber();
-        habilitar2via = false;
-        habilitarGerarBoleto = true;
-    }
-
-    public void solicitarBoleto() {
-        listaSelecionadas = new ArrayList<Contasreceber>();
-        for (int i = 0; i < listaContasReceber.size(); i++) {
-            if (listaContasReceber.get(i).isSelecionado()) {
-                listaSelecionadas.add(listaContasReceber.get(i));
-            }
-        }
-        if (listaSelecionadas == null || listaSelecionadas.isEmpty()) {
-            Mensagem.lancarMensagemInfo("Boleto não selecionado", "");
-        }else{
-            gerarBoleto();
-        }
-    }
-
-    public String gerarBoleto() {
-        List<Boleto> listaBoletos = null;
-        listaBoletos = new ArrayList<Boleto>();
-        for (int i = 0; i < listaSelecionadas.size(); i++) {
-            listaBoletos.add(gerarClasseBoleto(listaSelecionadas.get(i)));
-        }
-        if (listaBoletos.size() > 0) {
-            DadosBoletoBean dadosBoletoBean = new DadosBoletoBean();
-            dadosBoletoBean.gerarPDFS(listaBoletos);
-        }
-        return "";
-    }
-
-    public Boleto gerarClasseBoleto(Contasreceber conta) {
-        associado = pegarEndereco(conta);
-        DadosBoletoBean dadosBoletoBean = new DadosBoletoBean();
-        dadosBoletoBean.setAgencias(banco.getAgencia());
-        dadosBoletoBean.setCarteiras(banco.getCarteira());
-        dadosBoletoBean.setCnpjCedente(proprietario.getCnpj());
-        dadosBoletoBean.setDataDocumento(new Date());
-        dadosBoletoBean.setDigitoAgencias(banco.getDigitoagencia());
-        dadosBoletoBean.setDigitoContas(banco.getDigitoconta());
-        dadosBoletoBean.setDataVencimento(conta.getDatalancamento());
-        dadosBoletoBean.setNomeCedente(proprietario.getRazaosocial());
-        dadosBoletoBean.setNomeSacado(conta.getCliente().getNome());
-        dadosBoletoBean.setNumeroContas(banco.getConta());
-        dadosBoletoBean.setNumeroDocumentos(Formatacao.gerarNumeroDocumentoBoleto(conta.getNumerodocumento(), String.valueOf(conta.getNumeroparcela())));
-        dadosBoletoBean.setValor(Formatacao.converterFloatBigDecimal(conta.getValorconta()));
-        dadosBoletoBean.setNossoNumeros(dadosBoletoBean.getNumeroDocumentos());
-        dadosBoletoBean.setEnderecoSacado(new Endereco());
-        if (associado == null) {
-        } else {
-            dadosBoletoBean.getEnderecoSacado().setBairro(associado.getBairro());
-            dadosBoletoBean.getEnderecoSacado().setCep(associado.getCep());
-            dadosBoletoBean.getEnderecoSacado().setComplemento(associado.getComplemento());
-            dadosBoletoBean.getEnderecoSacado().setLocalidade(associado.getCidade());
-            dadosBoletoBean.getEnderecoSacado().setLogradouro(associado.getTipologradouro() + " " + associado.getLogradouro());
-            dadosBoletoBean.getEnderecoSacado().setNumero(associado.getNumero());
-            dadosBoletoBean.getEnderecoSacado().setUF(UnidadeFederativa.valueOfSigla(associado.getEstado()));
-        }
-        String juros = Formatacao.converterValorFloatReal(banco.getValorjuros());
-        String multa = Formatacao.converterValorFloatReal(banco.getValormulta());
-        dadosBoletoBean.criarBoleto(juros, multa);
-        conta.setNossonumero(dadosBoletoBean.getNossoNumeros());
-        conta.setSituacaoboleto("enviado");
-        contasReceberDao.update(conta);
-        return dadosBoletoBean.getBoleto();
-    }
-
     public String enviarBoleto() {
         List<Contasreceber> lista = new ArrayList<Contasreceber>();
-        for (int i = 0; i < listaContasReceber.size(); i++) {
-            if (listaContasReceber.get(i).isSelecionado()) {
-                lista.add(listaContasReceber.get(i));
+        for (int i = 0; i < listarSelecionados.size(); i++) {
+            if (listarSelecionados.get(i).isSelecionado()) {
+                lista.add(listarSelecionados.get(i));
             }
         }
         if (lista.size() == 0) {
-            lista = listaContasReceber;
+            lista = listarSelecionados;
         }
         if (lista.size() > 0) {
             GerarArquivoRemessaItau arquivoRemessaItau = new GerarArquivoRemessaItau(lista, usuarioLogadoMB, proprietario, stream, lista);
             confirmarContas(lista);
-            FacesMessage msg = new FacesMessage("Sucesso! ", "Arquivo Remessa Gerado");
+            FacesMessage msg = new FacesMessage("Sucesso! ", "Arquivo Remessa Gerado no caminho: "
+                    + arquivoRemessaItau.getNomeArquivo());
             FacesContext.getCurrentInstance().addMessage(null, msg);
         } else {
             FacesMessage msg = new FacesMessage("Erro! ", "Nenhuma Conta Selecionada");
@@ -336,41 +128,13 @@ public class BoletoMB implements Serializable {
         return "";
     }
 
-    public String calcularMultaJuros(float valor, float percentual) {
-        Float calculo = valor * (percentual / 100);
-        String scalculo = Formatacao.foramtarFloatString(calculo);
-        return scalculo;
-    }
-
-    public void gerarListaEmpresa() {
-        listaEmpresa = empresaDao.list("Select e from Empresa e");
-        if (listaEmpresa == null) {
-            listaEmpresa = new ArrayList<Empresa>();
-        }
-        for (int i = 0; i < listaEmpresa.size(); i++) {
-            if (listaEmpresa.get(i).getIdempresa() == 1) {
-
-            }
-        }
-    }
-
     private void confirmarContas(List<Contasreceber> lista) {
         for (int i = 0; i < lista.size(); i++) {
             Contasreceber conta = lista.get(i);
             conta.setEnviado(true);
             conta.setSituacaoboleto("Enviado");
             contasReceberDao.update(conta);
-            listaContasReceber.remove(conta);
+            listarSelecionados.remove(conta);
         }
-    }
-
-    public Associado pegarEndereco(Contasreceber contasreceber) {
-        Associado associadoo;
-        listaAssociado = associadoDao.list("Select a from Associado a where a.cliente.idcliente=" + contasreceber.getCliente().getIdcliente());
-        for (int i = 0; i < listaAssociado.size(); i++) {
-            associadoo = listaAssociado.get(i);
-            return associadoo;
-        }
-        return null;
     }
 }

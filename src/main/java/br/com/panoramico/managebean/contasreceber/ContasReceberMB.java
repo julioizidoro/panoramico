@@ -1,12 +1,14 @@
-/** To change this license header, choose License Headers in Project Properties.* To change this template file, choose Tools | Templates* and open the template in the editor. */package br.com.panoramico.managebean.contasreceber;
-
+import br.com.panoramico.dao.AssociadoDao;
+import br.com.panoramico.dao.BancoDao;
 import br.com.panoramico.dao.ClienteDao;
 import br.com.panoramico.dao.CobrancasParcelasDao;
 import br.com.panoramico.dao.ContasReceberDao;
 import br.com.panoramico.dao.ProprietarioDao;
+import br.com.panoramico.managebean.RelatorioErroBean;
 import br.com.panoramico.managebean.UsuarioLogadoMB;
-import br.com.panoramico.managebean.boleto.LerRetornoItauBean;
+import br.com.panoramico.managebean.boleto.DadosBoletoBean; 
 import br.com.panoramico.model.Associado;
+import br.com.panoramico.model.Banco;
 import br.com.panoramico.model.Cliente;
 import br.com.panoramico.model.Cobrancasparcelas;
 import br.com.panoramico.model.Contasreceber;
@@ -20,21 +22,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Map; 
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
+import javax.ejb.EJB; 
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
-import org.primefaces.context.RequestContext;
-import org.primefaces.event.FileUploadEvent;
-import org.primefaces.event.SelectEvent;
-import org.primefaces.model.UploadedFile;
+import org.jrimum.bopepo.Boleto;
+import org.jrimum.domkee.comum.pessoa.endereco.Endereco;
+import org.jrimum.domkee.comum.pessoa.endereco.UnidadeFederativa;
+import org.primefaces.context.RequestContext; 
+import org.primefaces.event.SelectEvent; 
 
 @Named
 @ViewScoped
@@ -68,6 +68,10 @@ public class ContasReceberMB implements Serializable {
     private boolean btnEnviarBoleto = false;
     private boolean btnGerarSegundaVia = false;
     private boolean btnGerarBoleto = false;
+    @EJB
+    private BancoDao bancoDao;
+    @EJB
+    private AssociadoDao associadoDao;
 
     @PostConstruct
     public void init() {
@@ -265,8 +269,6 @@ public class ContasReceberMB implements Serializable {
     public void setBtnGerarBoleto(boolean btnGerarBoleto) {
         this.btnGerarBoleto = btnGerarBoleto;
     }
-    
-    
 
     public void gerarListaContasReceber() {
         if (associado == null || associado.getIdassociado() == null) {
@@ -422,13 +424,13 @@ public class ContasReceberMB implements Serializable {
                         Mensagem.lancarMensagemInfo("Atenção", "Selecione a função desejada.");
                     } else {
                         if (funcaoBotaoBoleto.equalsIgnoreCase("Gerar")) {
-                            sql = sql + " and c.nossonumero is null and c.situacao='PAGAR' and c.situacaoboleto='NOVO' and c.datavencimento>='" + Formatacao.ConvercaoDataSql(new Date()) + "'";
+                            sql = sql + " and c.nossonumero is null and c.situacao='PAGAR' and c.situacaoboleto='Novo' and c.datavencimento>='" + Formatacao.ConvercaoDataSql(new Date()) + "'";
                             btnGerarBoleto = true;
                         } else if (funcaoBotaoBoleto.equalsIgnoreCase("2º Via")) {
                             sql = sql + " and c.situacaoboleto='enviado' and c.situacao='PAGAR' and c.datavencimento>='" + Formatacao.ConvercaoDataSql(new Date()) + "'";
                             btnGerarSegundaVia = true;
                         } else if (funcaoBotaoBoleto.equalsIgnoreCase("Enviar")) {
-                            sql = sql + " and c.nossonumero>0 and c.situacaoboleto='NOVO' and c.situacao='PAGAR' and c.datavencimento>='" + Formatacao.ConvercaoDataSql(new Date()) + "'";
+                            sql = sql + " and c.nossonumero>0 and c.situacaoboleto='Gerado' and c.situacao='PAGAR' and c.datavencimento>='" + Formatacao.ConvercaoDataSql(new Date()) + "'";
                             btnEnviarBoleto = true;
                         }
                     }
@@ -447,47 +449,6 @@ public class ContasReceberMB implements Serializable {
         dataInicial = null;
         gerarListaCliente();
         gerarListaContasReceber();
-    }
-
-    public String consBoleto() {
-        listaContasSelecionadas = new ArrayList<Contasreceber>();
-        for (int i = 0; i < listaContasReceber.size(); i++) {
-            if (listaContasReceber.get(i).isSelecionado()) {
-                listaContasSelecionadas.add(listaContasReceber.get(i));
-            }
-        }
-        FacesContext fc = FacesContext.getCurrentInstance();
-        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
-        Map<String, Object> options = new HashMap<String, Object>();
-        options.put("contentWidth", 600);
-        session.setAttribute("listaContasSelecionadas", listaContasSelecionadas);
-        RequestContext.getCurrentInstance().openDialog("boletos", options, null);
-        return "";
-    }
-
-    public String uploadBoleto() {
-        Map<String, Object> options = new HashMap<String, Object>();
-        options.put("contentWidth", 500);
-        RequestContext.getCurrentInstance().openDialog("uploadBoleto", options, null);
-        return "";
-    }
-
-    public String uploadRetorno(FileUploadEvent event) {
-        FacesMessage msg = new FacesMessage("Sucesso! ", event.getFile().getFileName() + " carregado");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-        UploadedFile uFile = event.getFile();
-        lerRetorno(uFile);
-        RequestContext.getCurrentInstance().closeDialog(null);
-        return "consContasReceber";
-    }
-
-    public String lerRetorno(UploadedFile retorno) {
-        try {
-            LerRetornoItauBean lerRetornoItauBean = new LerRetornoItauBean(Formatacao.converterUploadedFileToFile(retorno));
-        } catch (Exception ex) {
-            Logger.getLogger(ContasReceberMB.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
     }
 
     public String voltar() {
@@ -547,7 +508,166 @@ public class ContasReceberMB implements Serializable {
             comboBoleto = false;
         }
     }
-    
-    
+
+    public String gerarBoleto() {
+        List<Contasreceber> listaSelecionada = new ArrayList<>();
+        for (int i = 0; i < listaContasReceber.size(); i++) {
+            if ((listaContasReceber.get(i).isSelecionado())
+                    && (listaContasReceber.get(i).getTipopagamento().equalsIgnoreCase("Boleto"))) {
+                if (!listaContasReceber.get(i).getSituacaoboleto().equalsIgnoreCase("enviado")) {
+                    listaSelecionada.add(listaContasReceber.get(i));
+                }
+            }
+        }
+        if (listaSelecionada != null && listaSelecionada.size() > 0) {
+            List<Boleto> listaBoletos = new ArrayList<Boleto>();
+            if (listaSelecionada != null) {
+                for (int i = 0; i < listaSelecionada.size(); i++) {
+                    if (listaSelecionada.get(i).getTipopagamento().equalsIgnoreCase("Boleto")) {
+                        listaBoletos.add(gerarClasseBoleto(listaSelecionada.get(i)));
+                    }
+
+                }
+            }
+            if (listaBoletos.size() > 0) {
+                DadosBoletoBean dadosBoletoBean = new DadosBoletoBean();
+                dadosBoletoBean.gerarPDFS(listaBoletos);
+            }
+        } else {
+            Mensagem.lancarMensagemInfo("Atenção!", "Selecione uma conta a receber.");
+            RelatorioErroBean relatorioErroBean = new RelatorioErroBean();
+            relatorioErroBean.iniciarRelatorioErro("Selecione uma conta a receber.");
+        }
+        return "";
+    }
+
+    public Boleto gerarClasseBoleto(Contasreceber conta) {
+        associado = pegarEndereco(conta);
+        proprietario = proprietarioDao.find(1);
+        Banco banco = bancoDao.find("Select b From Banco b Where b.proprietario.idproprietario=" + proprietario.getIdproprietario());
+        DadosBoletoBean dadosBoletoBean = new DadosBoletoBean();
+        dadosBoletoBean.setAgencias(banco.getAgencia());
+        dadosBoletoBean.setCarteiras(banco.getCarteira());
+        dadosBoletoBean.setCnpjCedente(proprietario.getCnpj());
+        dadosBoletoBean.setDataDocumento(new Date());
+        dadosBoletoBean.setDigitoAgencias(banco.getDigitoagencia());
+        dadosBoletoBean.setDigitoContas(banco.getDigitoconta());
+        dadosBoletoBean.setDataVencimento(conta.getDatalancamento());
+        dadosBoletoBean.setNomeCedente(proprietario.getRazaosocial());
+        dadosBoletoBean.setNomeSacado(conta.getCliente().getNome());
+        dadosBoletoBean.setNumeroContas(banco.getConta());
+        dadosBoletoBean.setNumeroDocumentos(Formatacao.gerarNumeroDocumentoBoleto(conta.getNumerodocumento(), String.valueOf(conta.getNumeroparcela())));
+        dadosBoletoBean.setValor(Formatacao.converterFloatBigDecimal(conta.getValorconta()));
+        dadosBoletoBean.setNossoNumeros(dadosBoletoBean.getNumeroDocumentos());
+        dadosBoletoBean.setEnderecoSacado(new Endereco());
+        if (associado == null) {
+        } else {
+            dadosBoletoBean.getEnderecoSacado().setBairro(associado.getBairro());
+            dadosBoletoBean.getEnderecoSacado().setCep(associado.getCep());
+            dadosBoletoBean.getEnderecoSacado().setComplemento(associado.getComplemento());
+            dadosBoletoBean.getEnderecoSacado().setLocalidade(associado.getCidade());
+            dadosBoletoBean.getEnderecoSacado().setLogradouro(associado.getTipologradouro() + " " + associado.getLogradouro());
+            dadosBoletoBean.getEnderecoSacado().setNumero(associado.getNumero());
+            dadosBoletoBean.getEnderecoSacado().setUF(UnidadeFederativa.valueOfSigla(associado.getEstado()));
+        }
+        String juros = Formatacao.converterValorFloatReal(banco.getValorjuros());
+        String multa = Formatacao.converterValorFloatReal(banco.getValormulta());
+        dadosBoletoBean.criarBoleto(juros, multa);
+        conta.setNossonumero(dadosBoletoBean.getNossoNumeros());
+        conta.setSituacaoboleto("Gerado");
+        contasReceberDao.update(conta);
+        return dadosBoletoBean.getBoleto();
+    }
+
+    public Associado pegarEndereco(Contasreceber contasreceber) {
+        Associado associadoo;
+        List<Associado> listaAssociado = associadoDao.list("Select a from Associado a where a.cliente.idcliente=" + contasreceber.getCliente().getIdcliente());
+        for (int i = 0; i < listaAssociado.size(); i++) {
+            associadoo = listaAssociado.get(i);
+            return associadoo;
+        }
+        return null;
+    }
+
+    public void gerarBoletoSegundaVia() {
+        List<Contasreceber> listaSelecionada = new ArrayList<>();
+        for (int i = 0; i < listaContasReceber.size(); i++) {
+            if ((listaContasReceber.get(i).isSelecionado())
+                    && (listaContasReceber.get(i).getTipopagamento().equalsIgnoreCase("Boleto"))) {
+                if (listaContasReceber.get(i).getSituacaoboleto().equalsIgnoreCase("enviado")) {
+                    listaSelecionada.add(listaContasReceber.get(i));
+                }
+            }
+        }
+        if (listaSelecionada != null && listaSelecionada.size() > 0) {
+            List<Boleto> listaBoletos = new ArrayList<Boleto>();
+            for (int i = 0; i < listaSelecionada.size(); i++) {
+                listaBoletos.add(gerarClasseBoletoSegundaVia(listaSelecionada.get(i)));
+            }
+            if (listaBoletos.size() > 0) {
+                DadosBoletoBean dadosBoletoBean = new DadosBoletoBean();
+                dadosBoletoBean.gerarPDFS(listaBoletos);
+            }
+        } else {
+            Mensagem.lancarMensagemInfo("Atenção!", "Selecione uma conta a receber.");
+            RelatorioErroBean relatorioErroBean = new RelatorioErroBean();
+            relatorioErroBean.iniciarRelatorioErro("Selecione uma conta a receber.");
+        }
+    }
+
+    public Boleto gerarClasseBoletoSegundaVia(Contasreceber conta) {
+        proprietario = proprietarioDao.find(1);
+        Banco banco = bancoDao.find("Select b From Banco b Where b.proprietario.idproprietario=" + proprietario.getIdproprietario());
+        DadosBoletoBean dadosBoletoBean = new DadosBoletoBean();
+        dadosBoletoBean.setAgencias(banco.getAgencia());
+        dadosBoletoBean.setCarteiras(banco.getCarteira());
+        dadosBoletoBean.setCnpjCedente(proprietario.getCnpj());
+        dadosBoletoBean.setDataDocumento(new Date());
+        dadosBoletoBean.setDigitoAgencias(banco.getDigitoagencia());
+        dadosBoletoBean.setDigitoContas(banco.getDigitoconta());
+        dadosBoletoBean.setDataVencimento(conta.getDatalancamento());
+        dadosBoletoBean.setNomeCedente(proprietario.getRazaosocial());
+        dadosBoletoBean.setNomeSacado(conta.getCliente().getNome());
+        dadosBoletoBean.setNumeroContas(banco.getConta());
+        dadosBoletoBean.setNumeroDocumentos(Formatacao.gerarNumeroDocumentoBoleto(conta.getNumerodocumento(), String.valueOf(conta.getNumeroparcela())));
+        dadosBoletoBean.setValor(Formatacao.converterFloatBigDecimal(conta.getValorconta()));
+        dadosBoletoBean.setNossoNumeros(dadosBoletoBean.getNumeroDocumentos());
+        dadosBoletoBean.setEnderecoSacado(new Endereco());
+        if (associado == null) {
+        } else {
+            dadosBoletoBean.getEnderecoSacado().setBairro(associado.getBairro());
+            dadosBoletoBean.getEnderecoSacado().setCep(associado.getCep());
+            dadosBoletoBean.getEnderecoSacado().setComplemento(associado.getComplemento());
+            dadosBoletoBean.getEnderecoSacado().setLocalidade(associado.getCidade());
+            dadosBoletoBean.getEnderecoSacado().setLogradouro(associado.getTipologradouro() + " " + associado.getLogradouro());
+            dadosBoletoBean.getEnderecoSacado().setNumero(associado.getNumero());
+            dadosBoletoBean.getEnderecoSacado().setUF(UnidadeFederativa.valueOfSigla(associado.getEstado()));
+        }
+        String juros = Formatacao.converterValorFloatReal(banco.getValorjuros());
+        String multa = Formatacao.converterValorFloatReal(banco.getValormulta());
+        dadosBoletoBean.criarBoleto(juros, multa);
+        conta.setNossonumero(dadosBoletoBean.getNossoNumeros());
+        conta.setSituacaoboleto("Gerado");
+        contasReceberDao.update(conta);
+        return dadosBoletoBean.getBoleto();
+    }
+
+    public String dialogBoletos() {
+        List<Contasreceber> lista = new ArrayList<>();
+        for (int i = 0; i < listaContasReceber.size(); i++) {
+            if ((listaContasReceber.get(i).getTipopagamento().equalsIgnoreCase("Boleto")
+                    && listaContasReceber.get(i).isSelecionado())) { 
+                    lista.add(listaContasReceber.get(i)); 
+            }
+        }
+        if (lista != null && lista.size() > 0) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
+            session.setAttribute("listaContas", lista);
+            RequestContext.getCurrentInstance().openDialog("boletos");
+        } else {
+            Mensagem.lancarMensagemInfo("Atenção!", "Selecione uma conta a receber.");
+        }
+        return "";
+    }
 }
-   
