@@ -28,10 +28,7 @@
             <br/>
             <p:inputText id="nomearquivo" value="#{boletoMB.nomearquivo}"/>
             <br/><br/>
-            <p:dataTable id="listaBoleto" var="listaboleto"
-                         value="#{boletoMB.listarSelecionados}" scrollable="true"
-                         scrollHeight="100" style="margin-bottom:20px">
-
+            <h:dataTable id="idConsultaNotificacao" style="width: 98%;" styleClass="table" value="#{boletoMB.listarSelecionados}" var="contasreceber">
                 <h:column> 
                     <f:facet name="header">Cliente</f:facet> 
                     <h:outputText value="#{contasreceber.cliente.nome}" styleClass="alinhamento" style="float: left;"/>
@@ -50,13 +47,14 @@
                         <f:convertNumber pattern="##,###,###,###.##" minFractionDigits="2" />
                     </h:outputText>
                 </h:column> 
-            </p:dataTable>
+            </h:dataTable>
             <br></br>
             <div align="center">
                 <p:commandButton id="bntarquivoremessa" style="font-size:12px;"
-                                 icon="ui-icon-check" value="Enviar" action="#{boletoMB.enviarBoleto()}" update="growl"/>
+                                 icon="ui-icon-check" value="Enviar" action="#{boletoMB.enviarBoleto()}" />
             </div>
         </h:form>
     </h:body>
 
 </html>
+  

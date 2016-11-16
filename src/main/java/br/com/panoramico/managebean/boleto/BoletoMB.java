@@ -41,8 +41,7 @@ public class BoletoMB implements Serializable {
         listarSelecionados = (List<Contasreceber>) session.getAttribute("listaContas");
         nomearquivo = Formatacao.ConvercaoDataPadrao(new Date());
         nomearquivo = nomearquivo.substring(6, 10) + nomearquivo.substring(3, 5) + nomearquivo.substring(0, 2);
-        nomearquivo = nomearquivo;
-        proprietario = proprietarioDao.find(1);
+        nomearquivo = nomearquivo; 
     }
 
     public List<Contasreceber> getListarSelecionados() {
@@ -106,6 +105,7 @@ public class BoletoMB implements Serializable {
     }
 
     public String enviarBoleto() {
+        proprietario = proprietarioDao.find(1);
         List<Contasreceber> lista = new ArrayList<Contasreceber>();
         for (int i = 0; i < listarSelecionados.size(); i++) {
             if (listarSelecionados.get(i).isSelecionado()) {
