@@ -1,15 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package br.com.panoramico.managebean.contasreceber;
+/** To change this license header, choose License Headers in Project Properties.* To change this template file, choose Tools | Templates* and open the template in the editor. */package br.com.panoramico.managebean.contasreceber;
 
 import br.com.panoramico.dao.ClienteDao;
 import br.com.panoramico.dao.CobrancasParcelasDao;
 import br.com.panoramico.dao.ContasReceberDao;
 import br.com.panoramico.dao.ProprietarioDao;
-import br.com.panoramico.dao.RecebimentoDao;
 import br.com.panoramico.managebean.UsuarioLogadoMB;
 import br.com.panoramico.managebean.boleto.LerRetornoItauBean;
 import br.com.panoramico.model.Associado;
@@ -44,8 +38,8 @@ import org.primefaces.model.UploadedFile;
 
 @Named
 @ViewScoped
-public class ContasReceberMB implements Serializable{
-    
+public class ContasReceberMB implements Serializable {
+
     private Contasreceber contasreceber;
     private List<Contasreceber> listaContasReceber;
     @Inject
@@ -67,11 +61,16 @@ public class ContasReceberMB implements Serializable{
     private CobrancasParcelasDao cobrancasParcelasDao;
     private Cobrancasparcelas cobrancasparcelas;
     private Associado associado;
-    @EJB
-    private RecebimentoDao recebimentoDao;
-    
+    private String tipoDocumento;
+    private String funcaoBotaoBoleto;
+    private boolean comboBoleto = false;
+    private boolean habilitarComboBoleto = true;
+    private boolean btnEnviarBoleto = false;
+    private boolean btnGerarSegundaVia = false;
+    private boolean btnGerarBoleto = false;
+
     @PostConstruct
-    public void init(){
+    public void init() {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         associado = (Associado) session.getAttribute("associado");
@@ -91,7 +90,6 @@ public class ContasReceberMB implements Serializable{
         this.cliente = cliente;
     }
 
-
     public List<Cliente> getListaCliente() {
         return listaCliente;
     }
@@ -99,7 +97,6 @@ public class ContasReceberMB implements Serializable{
     public void setListaCliente(List<Cliente> listaCliente) {
         this.listaCliente = listaCliente;
     }
-
 
     public ClienteDao getClienteDao() {
         return clienteDao;
@@ -125,8 +122,6 @@ public class ContasReceberMB implements Serializable{
         this.dataFinal = dataFinal;
     }
 
-    
-    
     public Contasreceber getContasreceber() {
         return contasreceber;
     }
@@ -191,7 +186,6 @@ public class ContasReceberMB implements Serializable{
         this.proprietario = proprietario;
     }
 
-
     public CobrancasParcelasDao getCobrancasParcelasDao() {
         return cobrancasParcelasDao;
     }
@@ -215,31 +209,83 @@ public class ContasReceberMB implements Serializable{
     public void setAssociado(Associado associado) {
         this.associado = associado;
     }
-    
-    
-    
-    public void gerarListaContasReceber(){
-        if(associado==null || associado.getIdassociado()==null){
+
+    public String getTipoDocumento() {
+        return tipoDocumento;
+    }
+
+    public void setTipoDocumento(String tipoDocumento) {
+        this.tipoDocumento = tipoDocumento;
+    }
+
+    public String getFuncaoBotaoBoleto() {
+        return funcaoBotaoBoleto;
+    }
+
+    public void setFuncaoBotaoBoleto(String funcaoBotaoBoleto) {
+        this.funcaoBotaoBoleto = funcaoBotaoBoleto;
+    }
+
+    public boolean isComboBoleto() {
+        return comboBoleto;
+    }
+
+    public void setComboBoleto(boolean comboBoleto) {
+        this.comboBoleto = comboBoleto;
+    }
+
+    public boolean isHabilitarComboBoleto() {
+        return habilitarComboBoleto;
+    }
+
+    public void setHabilitarComboBoleto(boolean habilitarComboBoleto) {
+        this.habilitarComboBoleto = habilitarComboBoleto;
+    }
+
+    public boolean isBtnEnviarBoleto() {
+        return btnEnviarBoleto;
+    }
+
+    public void setBtnEnviarBoleto(boolean btnEnviarBoleto) {
+        this.btnEnviarBoleto = btnEnviarBoleto;
+    }
+
+    public boolean isBtnGerarSegundaVia() {
+        return btnGerarSegundaVia;
+    }
+
+    public void setBtnGerarSegundaVia(boolean btnGerarSegundaVia) {
+        this.btnGerarSegundaVia = btnGerarSegundaVia;
+    }
+
+    public boolean isBtnGerarBoleto() {
+        return btnGerarBoleto;
+    }
+
+    public void setBtnGerarBoleto(boolean btnGerarBoleto) {
+        this.btnGerarBoleto = btnGerarBoleto;
+    }
+
+    public void gerarListaContasReceber() {
+        if (associado == null || associado.getIdassociado() == null) {
             listaContasReceber = contasReceberDao.list("Select c from Contasreceber c where c.situacao='PAGAR' order by c.datavencimento");
-        }else{
-            listaContasReceber = contasReceberDao.list("Select c from Contasreceber c where c.situacao<>'CANCELADO' and c.situacao<>'PAGO'"
-                    + " and c.cliente.idcliente="+associado.getCliente().getIdcliente() + " order by c.datavencimento");
-        } 
+        } else {
+            listaContasReceber = contasReceberDao.list("Select c from Contasreceber c where c.situacao<>'CANCELADO' and c.situacao<>'PAGO'" + " and c.cliente.idcliente=" + associado.getCliente().getIdcliente() + " order by c.datavencimento");
+        }
         if (listaContasReceber == null) {
             listaContasReceber = new ArrayList<Contasreceber>();
         }
     }
-    
-    
-    public void gerarListaCliente(){
+
+    public void gerarListaCliente() {
         listaCliente = clienteDao.list("Select c from Cliente c");
         if (listaCliente == null) {
             listaCliente = new ArrayList<Cliente>();
         }
     }
-     
+
     public String novoCadastroContasReceber() {
-        if(associado!=null && associado.getIdassociado()!=null){
+        if (associado != null && associado.getIdassociado() != null) {
             FacesContext fc = FacesContext.getCurrentInstance();
             HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
             session.setAttribute("cliente", associado.getCliente());
@@ -249,41 +295,40 @@ public class ContasReceberMB implements Serializable{
         RequestContext.getCurrentInstance().openDialog("cadContasReceber", options, null);
         return "";
     }
-    
-    public void retornoDialogNovo(SelectEvent event){
+
+    public void retornoDialogNovo(SelectEvent event) {
         Contasreceber conta = (Contasreceber) event.getObject();
-        if (conta.getIdcontasreceber()!= null) {
+        if (conta.getIdcontasreceber() != null) {
             Mensagem.lancarMensagemInfo("Salvou", "Cadastro de uma conta a receber realizado com sucesso");
         }
         gerarListaContasReceber();
     }
-    
-    public void retornoDialogCancelamento(SelectEvent event){
+
+    public void retornoDialogCancelamento(SelectEvent event) {
         Crcancelamento crcancelamento = (Crcancelamento) event.getObject();
-        if (crcancelamento.getIdcrcancelamento()!= null) {
+        if (crcancelamento.getIdcrcancelamento() != null) {
             Mensagem.lancarMensagemInfo("Salvou", "Cancelamento de uma conta a receber realizado com sucesso");
         }
         gerarListaContasReceber();
     }
-    
-    public void retornoDialogRecebimento(SelectEvent event){
+
+    public void retornoDialogRecebimento(SelectEvent event) {
         Recebimento recebimento = (Recebimento) event.getObject();
-        if (recebimento.getIdrecebimento()!= null) {
+        if (recebimento.getIdrecebimento() != null) {
             Mensagem.lancarMensagemInfo("Salvou", "Recebimento de uma conta a receber realizado com sucesso");
         }
         gerarListaContasReceber();
     }
-    
-    public void retornoDialogAlteracao(SelectEvent event){
+
+    public void retornoDialogAlteracao(SelectEvent event) {
         Contasreceber contasreceber = (Contasreceber) event.getObject();
-        if (contasreceber.getIdcontasreceber()!= null) {
+        if (contasreceber.getIdcontasreceber() != null) {
             Mensagem.lancarMensagemInfo("Salvou", "Alteração de uma conta a receber realizado com sucesso");
         }
         gerarListaContasReceber();
     }
-    
-    
-    public void editar(Contasreceber contasreceber){
+
+    public void editar(Contasreceber contasreceber) {
         if (contasreceber != null) {
             Map<String, Object> options = new HashMap<String, Object>();
             FacesContext fc = FacesContext.getCurrentInstance();
@@ -293,84 +338,107 @@ public class ContasReceberMB implements Serializable{
             RequestContext.getCurrentInstance().openDialog("cadContasReceber", options, null);
         }
     }
-    
-    
+
     public String novoCancelamento(Contasreceber contasreceber) {
         if (contasreceber != null) {
-           Map<String, Object> options = new HashMap<String, Object>();
-           options.put("contentWidth", 400);
-           FacesContext fc = FacesContext.getCurrentInstance();
-           HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
-           session.setAttribute("contasreceber", contasreceber);
-           RequestContext.getCurrentInstance().openDialog("cadCancelamentoContasReceber", options, null);
+            Map<String, Object> options = new HashMap<String, Object>();
+            options.put("contentWidth", 400);
+            FacesContext fc = FacesContext.getCurrentInstance();
+            HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+            session.setAttribute("contasreceber", contasreceber);
+            RequestContext.getCurrentInstance().openDialog("cadCancelamentoContasReceber", options, null);
         }
         return "";
     }
-    
+
     public String novoRecebimento(Contasreceber contasreceber) {
         if (contasreceber != null) {
-           Map<String, Object> options = new HashMap<String, Object>();
-           options.put("contentWidth", 500);
-           FacesContext fc = FacesContext.getCurrentInstance();
-           HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
-           session.setAttribute("contasreceber", contasreceber);
-           RequestContext.getCurrentInstance().openDialog("cadRecebimento", options, null);
+            Map<String, Object> options = new HashMap<String, Object>();
+            options.put("contentWidth", 500);
+            FacesContext fc = FacesContext.getCurrentInstance();
+            HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+            session.setAttribute("contasreceber", contasreceber);
+            RequestContext.getCurrentInstance().openDialog("cadRecebimento", options, null);
         }
         return "";
     }
-    
+
     public String visualizarRecebimento(Contasreceber contasreceber) {
         if (contasreceber != null) {
-           Map<String, Object> options = new HashMap<String, Object>();
-           options.put("contentWidth", 500);
-           FacesContext fc = FacesContext.getCurrentInstance();
-           HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
-           session.setAttribute("contasreceber", contasreceber);
-           RequestContext.getCurrentInstance().openDialog("consRecebimentos", options, null);
+            Map<String, Object> options = new HashMap<String, Object>();
+            options.put("contentWidth", 500);
+            FacesContext fc = FacesContext.getCurrentInstance();
+            HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+            session.setAttribute("contasreceber", contasreceber);
+            RequestContext.getCurrentInstance().openDialog("consRecebimentos", options, null);
         }
         return "";
     }
-    
-    public void filtrar(){
+
+    public void filtrar() {
         String sql = "Select c from Contasreceber c";
         if (!situacao.equalsIgnoreCase("sn") && (dataInicial == null && dataFinal == null)) {
             Mensagem.lancarMensagemInfo("Forneça um periodo na pesquisa", "");
-        }else{
-            if (cliente.getIdcliente() != null  || !situacao.equalsIgnoreCase("sn") || dataInicial != null || dataFinal != null) {
+        } else {
+            if (cliente.getIdcliente() != null || !situacao.equalsIgnoreCase("sn") || dataInicial != null || dataFinal != null || (tipoDocumento != null && !tipoDocumento.equalsIgnoreCase("Selecione"))) {
                 sql = sql + " where";
             }
             if (cliente.getIdcliente() != null) {
                 sql = sql + " c.cliente.idcliente=" + cliente.getIdcliente();
-                if (!situacao.equalsIgnoreCase("sn") || dataInicial != null || dataFinal != null) {
+                if (!situacao.equalsIgnoreCase("sn") || dataInicial != null || dataFinal != null || (tipoDocumento != null && !tipoDocumento.equalsIgnoreCase("Selecione"))) {
                     sql = sql + " and";
                 }
             }
             if (!situacao.equalsIgnoreCase("sn")) {
                 if (situacao.equalsIgnoreCase("VENCER")) {
                     sql = sql + " c.situacao='PAGAR' and c.datavencimento>='" + Formatacao.ConvercaoDataSql(new Date()) + "'";
-                }else if(situacao.equalsIgnoreCase("VENCIDOS")){
+                } else if (situacao.equalsIgnoreCase("VENCIDOS")) {
                     if (dataFinal.before(new Date())) {
-                        sql = sql + " c.situacao='PAGAR' and c.datavencimento>='" + Formatacao.ConvercaoDataSql(dataInicial) + "' and c.datavencimento<'" +
-                         Formatacao.ConvercaoDataSql(dataFinal) + "'";
-                    }else{
-                        sql = sql + " c.situacao='PAGAR' and c.datavencimento>='" + Formatacao.ConvercaoDataSql(dataInicial) + "' and c.datavencimento<'" +
-                            Formatacao.ConvercaoDataSql(new Date()) + "'";
+                        sql = sql + " c.situacao='PAGAR' and c.datavencimento>='" + Formatacao.ConvercaoDataSql(dataInicial) + "' and c.datavencimento<'" + Formatacao.ConvercaoDataSql(dataFinal) + "'";
+                    } else {
+                        sql = sql + " c.situacao='PAGAR' and c.datavencimento>='" + Formatacao.ConvercaoDataSql(dataInicial) + "' and c.datavencimento<'" + Formatacao.ConvercaoDataSql(new Date()) + "'";
                     }
-                }else{
-                    sql = sql + " c.situacao='" + situacao + "' and c.datavencimento>='" + Formatacao.ConvercaoDataSql(dataInicial) + "' and c.datavencimento<='" 
-                        + Formatacao.ConvercaoDataSql(dataFinal) + "'";
+                    if ((tipoDocumento != null && !tipoDocumento.equalsIgnoreCase("Selecione"))) {
+                        sql = sql + " and";
+                    }
+                } else {
+                    sql = sql + " c.situacao='" + situacao + "' and c.datavencimento>='" + Formatacao.ConvercaoDataSql(dataInicial) + "' and c.datavencimento<='" + Formatacao.ConvercaoDataSql(dataFinal) + "'";
+                    if ((tipoDocumento != null && !tipoDocumento.equalsIgnoreCase("Selecione"))) {
+                        sql = sql + " and";
+                    }
                 }
-            }else if ((dataInicial != null && dataFinal != null)) {
-                sql = sql + " c.datavencimento>='" + Formatacao.ConvercaoDataSql(dataInicial) + "' and c.datavencimento<='"
-                        + Formatacao.ConvercaoDataSql(dataFinal) + "'";
+            } else if ((dataInicial != null && dataFinal != null)) {
+                sql = sql + " c.datavencimento>='" + Formatacao.ConvercaoDataSql(dataInicial) + "' and c.datavencimento<='" + Formatacao.ConvercaoDataSql(dataFinal) + "'";
+                if ((tipoDocumento != null && !tipoDocumento.equalsIgnoreCase("Selecione"))) {
+                    sql = sql + " and";
+                }
+            }
+            if (!tipoDocumento.equalsIgnoreCase("Selecione")) {
+                sql = sql + " c.tipopagamento='" + tipoDocumento + "'";
+                if (tipoDocumento.equalsIgnoreCase("Boleto")) {
+                    if (funcaoBotaoBoleto == null || funcaoBotaoBoleto.equalsIgnoreCase("Selecione")) {
+                        Mensagem.lancarMensagemInfo("Atenção", "Selecione a função desejada.");
+                    } else {
+                        if (funcaoBotaoBoleto.equalsIgnoreCase("Gerar")) {
+                            sql = sql + " and c.nossonumero is null and c.situacao='PAGAR' and c.situacaoboleto='NOVO' and c.datavencimento>='" + Formatacao.ConvercaoDataSql(new Date()) + "'";
+                            btnGerarBoleto = true;
+                        } else if (funcaoBotaoBoleto.equalsIgnoreCase("2º Via")) {
+                            sql = sql + " and c.situacaoboleto='enviado' and c.situacao='PAGAR' and c.datavencimento>='" + Formatacao.ConvercaoDataSql(new Date()) + "'";
+                            btnGerarSegundaVia = true;
+                        } else if (funcaoBotaoBoleto.equalsIgnoreCase("Enviar")) {
+                            sql = sql + " and c.nossonumero>0 and c.situacaoboleto='NOVO' and c.situacao='PAGAR' and c.datavencimento>='" + Formatacao.ConvercaoDataSql(new Date()) + "'";
+                            btnEnviarBoleto = true;
+                        }
+                    }
+                }
             }
             sql = sql + " order by c.datavencimento";
             listaContasReceber = contasReceberDao.list(sql);
             Mensagem.lancarMensagemInfo("", "Filtrado com sucesso");
         }
     }
-    
-    public void limparFiltro(){
+
+    public void limparFiltro() {
         cliente = null;
         situacao = null;
         dataFinal = null;
@@ -378,7 +446,7 @@ public class ContasReceberMB implements Serializable{
         gerarListaCliente();
         gerarListaContasReceber();
     }
-    
+
     public String consBoleto() {
         listaContasSelecionadas = new ArrayList<Contasreceber>();
         for (int i = 0; i < listaContasReceber.size(); i++) {
@@ -394,15 +462,15 @@ public class ContasReceberMB implements Serializable{
         RequestContext.getCurrentInstance().openDialog("boletos", options, null);
         return "";
     }
-    
+
     public String uploadBoleto() {
         Map<String, Object> options = new HashMap<String, Object>();
         options.put("contentWidth", 500);
         RequestContext.getCurrentInstance().openDialog("uploadBoleto", options, null);
         return "";
     }
-    
-     public String uploadRetorno(FileUploadEvent event) {
+
+    public String uploadRetorno(FileUploadEvent event) {
         FacesMessage msg = new FacesMessage("Sucesso! ", event.getFile().getFileName() + " carregado");
         FacesContext.getCurrentInstance().addMessage(null, msg);
         UploadedFile uFile = event.getFile();
@@ -410,36 +478,32 @@ public class ContasReceberMB implements Serializable{
         RequestContext.getCurrentInstance().closeDialog(null);
         return "consContasReceber";
     }
-    
+
     public String lerRetorno(UploadedFile retorno) {
         try {
-            LerRetornoItauBean lerRetornoItauBean = new LerRetornoItauBean(
-                    Formatacao.converterUploadedFileToFile(retorno));
+            LerRetornoItauBean lerRetornoItauBean = new LerRetornoItauBean(Formatacao.converterUploadedFileToFile(retorno));
         } catch (Exception ex) {
             Logger.getLogger(ContasReceberMB.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
-    }  
-    
+    }
+
     public String voltar() {
         RequestContext.getCurrentInstance().closeDialog(null);
         return "consContasReceber";
     }
-    
-    
-    public String novoRelatorio() { 
+
+    public String novoRelatorio() {
         Map<String, Object> options = new HashMap<String, Object>();
         options.put("contentWidth", 580);
         RequestContext.getCurrentInstance().openDialog("imprimirContasRecebidas", options, null);
         return "";
     }
-    
-    
+
     public String totalPagar() {
         return "consTotalPagar";
     }
-    
-    
+
     public void cobranca(Contasreceber contasreceber) {
         Map<String, Object> options = new HashMap<String, Object>();
         FacesContext fc = FacesContext.getCurrentInstance();
@@ -447,38 +511,41 @@ public class ContasReceberMB implements Serializable{
         session.setAttribute("contasreceber", contasreceber);
         RequestContext.getCurrentInstance().openDialog("cobranca", options, null);
     }
-    
-    public Integer numeroCob(int contasreceber){
+
+    public Integer numeroCob(int contasreceber) {
         Integer cob = 0;
         String sql = "Select c From Cobrancasparcelas c Where c.contasreceber.idcontasreceber=" + contasreceber;
         List<Cobrancasparcelas> listaCobranca = cobrancasParcelasDao.list(sql);
         if (listaCobranca.size() > 0) {
             cob = listaCobranca.size();
-        }else{
+        } else {
             cob = 0;
         }
         return cob;
     }
-    
-    public void retornoDialogCob(SelectEvent event){
+
+    public void retornoDialogCob(SelectEvent event) {
         gerarListaContasReceber();
     }
-    
-    
-    public boolean habilitarPesquisa(){
-        if(associado==null ||  associado.getIdassociado()==null){
+
+    public boolean habilitarPesquisa() {
+        if (associado == null || associado.getIdassociado() == null) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
-    
-    
-    public String pegarRecebimento(Contasreceber contasreceber){
-        String pago = "NÃO";
-        if (contasreceber.getSituacao().equalsIgnoreCase("PAGO")) {
-            pago = "SIM";
+
+    public void verificarComboBoleto() {
+        if (tipoDocumento != null && tipoDocumento.equalsIgnoreCase("Boleto")) {
+            comboBoleto = true;
+            habilitarComboBoleto = false;
+        } else {
+            habilitarComboBoleto = true;
+            comboBoleto = false;
         }
-        return pago;
     }
+    
+    
 }
+   

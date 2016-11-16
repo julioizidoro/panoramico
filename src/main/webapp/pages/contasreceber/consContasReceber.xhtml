@@ -10,13 +10,20 @@
                 <br/> 
                 <h:form id="idFormConsultaContasReceber" style="margin-left:5%;width: 90%;">
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:10%;width: 80%;" />
-                    <p:accordionPanel activeIndex="-1" rendered="#{contasReceberMB.habilitarPesquisa()}">
-                        <p:tab title="Pesquisar">
-                            <p:outputLabel class="titTela" value="Cliente" style="font-size: 12px;text-align: left;margin-right:31%;"/>
-                            <p:outputLabel class="titTela" value="Situação" style="font-size: 12px;text-align: left;margin-right:4%;"/>
+                    <p:accordionPanel id="idtab" rendered="#{contasReceberMB.habilitarPesquisa()}" style="text-align: left;">
+                        <p:tab title="Pesquisar" >
+                            <p:outputLabel class="titTela" value="Periodo" style="font-size: 12px;text-align: left;float: left;margin-left:0%;"/>
+
+                            <p:outputLabel class="titTela" value="Cliente" style="font-size: 12px;text-align: left;margin-left:25.5%;"/>
+                            <p:outputLabel class="titTela" value="Situação" style="font-size: 12px;text-align: left;margin-left:31%;"/>
                             <br/>
-                            <p:selectOneMenu  id="cliente"  style="width: 250px;font-size: 12px;margin-left: 10%;"  value="#{contasReceberMB.cliente}" converter="ClienteConverter"
-                                              >
+                            <p:inputMask mask="99/99/9999" size="15"  value="#{contasReceberMB.dataInicial}" style="margin-left:0%;font-size: 12px;float: left;">
+                                <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+                            </p:inputMask>
+                            <p:inputMask mask="99/99/9999" size="15" value="#{contasReceberMB.dataFinal}" style="margin-left:2%;font-size: 12px;float: left;">
+                                <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+                            </p:inputMask>
+                            <p:selectOneMenu  id="cliente"  style="width: 250px;font-size: 12px;margin-left:3%;"  value="#{contasReceberMB.cliente}" converter="ClienteConverter">
                                 <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
                                 <f:selectItems  value="#{contasReceberMB.listaCliente}" var="clienteselecionado" itemLabel="#{clienteselecionado.nome}" itemValue="#{clienteselecionado}"/>
                                 <f:attribute name="listaCliente" value="#{contasReceberMB.listaCliente}"/>
@@ -29,15 +36,40 @@
                                 <f:selectItem itemLabel="Pago" itemValue="PAGO" />
                             </p:selectOneMenu>
                             <br/><br/>
-                            <p:outputLabel class="titTela" value="Periodo" style="font-size: 12px;text-align: left;float: left;margin-left:28%;"/>
-                            <br/>
-                            <p:inputMask mask="99/99/9999" size="15"  value="#{contasReceberMB.dataInicial}" style="margin-left:-5%;font-size: 12px;float: left;">
-                                <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
-                            </p:inputMask>
-                            <p:inputMask mask="99/99/9999" size="15" value="#{contasReceberMB.dataFinal}" style="margin-left:2%;font-size: 12px;float: left;">
-                                <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
-                            </p:inputMask>
-                            <p:commandLink style="text-decoration: none; margin-top: 10%;" actionListener="#{contasReceberMB.filtrar()}" ajax="false" update="idConsultaContasReceber, messages">
+                            <p:outputLabel class="titTela" value="Tipo Documento" for="tipoDocumento" style="font-size: 12px;text-align: left;float: left;margin-left:0%;"/>
+                            <p:outputLabel class="titTela" value="Função Boleto" for="boleto"
+                                           rendered="#{contasReceberMB.comboBoleto}" style="font-size: 12px;text-align: left;float: left;margin-left:20%;"/> 
+                            <br/> 
+                            <p:selectOneMenu id="tipoDocumento" style="width:210px;float: left;margin-left:-10%;"
+                                             value="#{contasReceberMB.tipoDocumento}">
+                                <f:selectItem itemLabel="Selecione" itemValue="Selecione"
+                                              noSelectionOption="true" />
+                                <f:selectItem itemLabel="Boleto" itemValue="Boleto" />
+                                <f:selectItem itemLabel="Dinheiro" itemValue="Dinheiro" />
+                                <f:selectItem itemLabel="Cartão de Crédito"
+                                              itemValue="Cartão de Crédito" />
+                                <f:selectItem itemLabel="Cartão de Crédito Autorizado"
+                                              itemValue="Cartão de Crédito Autorizado" />
+                                <f:selectItem itemLabel="Cartão de Débito"
+                                              itemValue="Cartão de Débito" />
+                                <f:selectItem itemLabel="Cheque" itemValue="Cheque" />
+                                <f:selectItem itemLabel="Deposito" itemValue="Deposito" />
+                                <f:selectItem itemLabel="Financiamento Banco"
+                                              itemValue="Financiamento Banco" />
+                                <p:ajax event="change"  
+                                        listener="#{contasReceberMB.verificarComboBoleto()}"
+                                        update="idtab" />
+                            </p:selectOneMenu>
+                            <h:panelGroup id="painelBoleto"
+                                          rendered="#{contasReceberMB.comboBoleto}">
+                                <p:selectOneMenu id="boleto"
+                                                 value="#{contasReceberMB.funcaoBotaoBoleto}" style="width:120px;float: left;margin-left:5%;">
+                                    <f:selectItem itemLabel="Gerar" itemValue="Gerar" />
+                                    <f:selectItem itemLabel="2º Via" itemValue="2º Via" />
+                                    <f:selectItem itemLabel="Enviar" itemValue="Enviar" />
+                                </p:selectOneMenu>
+                            </h:panelGroup> 
+                            <p:commandLink style="text-decoration: none; margin-top: 10%;" actionListener="#{contasReceberMB.filtrar()}" ajax="false" update="@form">  
                                 <div style="font-size: 16px;margin-left: 2%;" class="adicionar">Filtrar</div>
                             </p:commandLink>
                             <p:commandLink style="text-decoration: none; margin-top: 2%;" actionListener="#{contasReceberMB.limparFiltro()}" ajax="false" update="@form">
@@ -53,17 +85,25 @@
                     </p:commandLink> 
                     <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" action="#{contasReceberMB.novoRelatorio()}" title="Relatórios">
                         <div class="icoAdd fa fa-bar-chart"></div>
-                    </p:commandLink>
-                    <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" title="Remessas" action="#{contasReceberMB.uploadBoleto()}">
-                        <div class="icoAdd fa fa-upload"></div>
-                    </p:commandLink>
-                    <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" title="Baixar" action="#{contasReceberMB.consBoleto()}">
-                        <div class="icoAdd fa fa-download"></div>
-                    </p:commandLink> 
+                    </p:commandLink>  
                     <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" title="Lançar nova conta" action="#{contasReceberMB.novoCadastroContasReceber()}">
                         <div class="icoAdd fa fa-plus-square-o"></div>
                         <p:ajax event="dialogReturn" listener="#{contasReceberMB.retornoDialogNovo}" update="messages, idConsultaContasReceber"/>
                     </p:commandLink>
+
+                    <p:commandButton id="bntboleto" style="font-size:12px;"
+                                     rendered="#{contasReceberMB.btnGerarBoleto}" value="Gerar Boletos"
+                                     action="#"
+                                     update=":idFormConsultaContasReceber:messages" ajax="false"
+                                     onclick="this.form.target = '_blank'" />
+                    <p:commandButton id="bntSegundaVia" style="font-size:12px;"  
+                                     rendered="#{contasReceberMB.btnGerarSegundaVia}"
+                                     value="Gerar 2º via"
+                                     action="#" ajax="false"
+                                     update="growl" onclick="this.form.target = '_blank'" />
+                    <p:commandButton id="bntenviarboleto" style="font-size:12px;"
+                                     rendered="#{contasReceberMB.btnEnviarBoleto}"
+                                     value="Gerar Remessa" action="#" />
                     <h:dataTable  id="idConsultaContasReceber" class="table" styleClass="table" value="#{contasReceberMB.listaContasReceber}" var="contaReceber">
                         <h:column>
                             <f:facet name="header">Cliente</f:facet> 
