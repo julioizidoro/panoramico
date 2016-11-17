@@ -178,6 +178,7 @@ public class CadContasPagarMB implements Serializable{
     }
     
     public void calcularParcelamentoMensal(Float nParcela, Contaspagar contaspagar) {
+        Float valorPagar = contaspagar.getValor() / nParcela;
         for (int i = 1; i <= nParcela; i++) {
             Contaspagar copia = new Contaspagar();
             copia = contaspagar;
@@ -186,6 +187,7 @@ public class CadContasPagarMB implements Serializable{
             contaspagar.setPlanoconta(planoconta);
             contaspagar.setUsuario(usuarioLogadoMB.getUsuario());
             contaspagar.setSituacao("PAGAR");
+            contaspagar.setValor(valorPagar);
             String mensagem = validarDados(contaspagar);
             if (mensagem.length() < 5) {
                 contaspagar = contasPagarDao.update(contaspagar);

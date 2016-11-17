@@ -32,6 +32,7 @@ public class CadClienteMB implements  Serializable{
     private Cliente cliente;
     private Boolean ePassaporte;
     private String cpfCliente;
+    private Boolean noveDigito = false;
     
     
     @PostConstruct
@@ -67,6 +68,32 @@ public class CadClienteMB implements  Serializable{
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
+
+    public Boolean getePassaporte() {
+        return ePassaporte;
+    }
+
+    public void setePassaporte(Boolean ePassaporte) {
+        this.ePassaporte = ePassaporte;
+    }
+
+    public String getCpfCliente() {
+        return cpfCliente;
+    }
+
+    public void setCpfCliente(String cpfCliente) {
+        this.cpfCliente = cpfCliente;
+    }
+
+    public Boolean getNoveDigito() {
+        return noveDigito;
+    }
+
+    public void setNoveDigito(Boolean noveDigito) {
+        this.noveDigito = noveDigito;
+    }
+    
+    
     
     
     public void salvar(){
@@ -85,5 +112,14 @@ public class CadClienteMB implements  Serializable{
         }
         RequestContext.getCurrentInstance().closeDialog(cliente);
         return "";
+    }
+    
+    
+    public String habilitarNoveDigito(){
+        if (noveDigito) {
+            return "(99)999999999";
+        }else{
+            return "(99)99999999";
+        }
     }
 }
