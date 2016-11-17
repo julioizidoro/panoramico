@@ -18,7 +18,7 @@
                             <p:outputLabel class="titTela" value="Tipo Evento" style="font-size: 12px;text-align: left; margin-left: 25%;float: left;"/>
                             <br/>
                             <p:selectOneMenu  id="cliente"  style="width: 250px;font-size: 12px;float: left;margin-left: -75%;"  value="#{eventoMB.cliente}" converter="ClienteConverter"
-                                          >
+                                         filter="true" filterMatchMode="contains" panelStyle="width:180px"  >
                                 <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
                                 <f:selectItems  value="#{eventoMB.listaCliente}" var="clienteselecionado" itemLabel="#{clienteselecionado.nome}" itemValue="#{clienteselecionado}"/>
                                 <f:attribute name="listaCliente" value="#{eventoMB.listaCliente}"/>

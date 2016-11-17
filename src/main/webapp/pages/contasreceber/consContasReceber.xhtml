@@ -23,7 +23,8 @@
                             <p:inputMask mask="99/99/9999" size="15" value="#{contasReceberMB.dataFinal}" style="margin-left:2%;font-size: 12px;float: left;">
                                 <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
                             </p:inputMask>
-                            <p:selectOneMenu  id="cliente"  style="width: 250px;font-size: 12px;margin-left:3%;"  value="#{contasReceberMB.cliente}" converter="ClienteConverter">
+                            <p:selectOneMenu  id="cliente"  style="width: 250px;font-size: 12px;margin-left:3%;"  value="#{contasReceberMB.cliente}" converter="ClienteConverter"
+                                               filter="true" filterMatchMode="contains" panelStyle="width:180px">
                                 <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
                                 <f:selectItems  value="#{contasReceberMB.listaCliente}" var="clienteselecionado" itemLabel="#{clienteselecionado.nome}" itemValue="#{clienteselecionado}"/>
                                 <f:attribute name="listaCliente" value="#{contasReceberMB.listaCliente}"/>

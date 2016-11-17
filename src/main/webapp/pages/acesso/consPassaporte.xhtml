@@ -18,7 +18,7 @@
                             <p:outputLabel class="titTela" value="Data Uso" style="font-size: 12px;text-align: left; margin-left: 25%;float: left;"/>
                             <br/>
                             <p:selectOneMenu  id="cliente"  style="width: 250px;font-size: 12px;float: left;"  value="#{passaporteMB.cliente}" converter="ClienteConverter"
-                                          >
+                                      filter="true" filterMatchMode="contains" panelStyle="width:180px"     >
                                 <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
                                 <f:selectItems  value="#{passaporteMB.listaCliente}" var="clienteselecionado" itemLabel="#{clienteselecionado.nome}" itemValue="#{clienteselecionado}"/>
                                 <f:attribute name="listaCliente" value="#{passaporteMB.listaCliente}"/>

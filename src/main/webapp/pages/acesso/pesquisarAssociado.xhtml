@@ -31,7 +31,7 @@
                 <p:commandLink ajax="false"  actionListener="#{pesquisarAssociadoMB.pesquisar()}" update="idMatricula, idnomeCliente, idMatricula">
                     <div style="font-size: 16px;margin-left: 2%;margin-top:-0.5%;" class="pesquisarAcesso">Pesquisar</div> 
                 </p:commandLink>
-                <p:inputText class="form-control" id="idnomeCliente" value="#{pesquisarAssociadoMB.cpfCliente}" size="32" readonly="true" style="margin-left:2%;font-size: 14px;"/>
+                <p:inputText class="form-control" id="idnomeCliente" value="#{pesquisarAssociadoMB.cliente.nome}" size="32" readonly="true" style="margin-left:2%;font-size: 14px;"/>
                 <br/><br/><br/>
                 <p:outputLabel class="titTela" value="Matricula" style="font-size: 16px;text-align: left;margin-left:2%;"/>
                 <br/>
