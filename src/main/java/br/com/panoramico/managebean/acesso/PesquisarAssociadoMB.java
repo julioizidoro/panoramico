@@ -62,11 +62,18 @@ public class PesquisarAssociadoMB implements Serializable{
         List<Cliente> listaCliente = clienteDao.list("Select c From Cliente c Where c.cpf='" + cpfCliente + "'");
         if (listaCliente == null || listaCliente.isEmpty()) {
             Mensagem.lancarMensagemInfo("Cliente não encontrado", "");
+            cliente = null;
+            matricula = "";
         }else{
             for (int i = 0; i < listaCliente.size(); i++) {
                 cliente = listaCliente.get(i);
             }
-            matricula = cliente.getAssociado().getMatricula();
+            if (cliente.getAssociado() == null) {
+                Mensagem.lancarMensagemInfo("Cliente não é associado", "");
+                matricula = "";
+            }else{
+                matricula = cliente.getAssociado().getMatricula();
+            }
         }
     }
     

@@ -28,7 +28,7 @@
                 <p:outputLabel class="titTela" value="Cliente" style="font-size: 16px;text-align: left;margin-left:39%;"/>
                 <br/>
                 <p:inputMask mask="999.999.999-99" size="15" class="form-control" value="#{pesquisarAssociadoMB.cpfCliente}" style="margin-left:2%;font-size: 14px;float: left;"/>
-                <p:commandLink ajax="false"  actionListener="#{pesquisarAssociadoMB.pesquisar()}" update="idMatricula, idnomeCliente, idMatricula">
+                <p:commandLink ajax="false"  actionListener="#{pesquisarAssociadoMB.pesquisar()}" update="idMatricula, idnomeCliente">
                     <div style="font-size: 16px;margin-left: 2%;margin-top:-0.5%;" class="pesquisarAcesso">Pesquisar</div> 
                 </p:commandLink>
                 <p:inputText class="form-control" id="idnomeCliente" value="#{pesquisarAssociadoMB.cliente.nome}" size="32" readonly="true" style="margin-left:2%;font-size: 14px;"/>
