@@ -53,6 +53,7 @@ public class AssociadoMB implements Serializable {
     private String telefone;
     private String sql;
     private String matricula;
+    private String situacao;
 
     @PostConstruct
     public void init() {
@@ -62,7 +63,7 @@ public class AssociadoMB implements Serializable {
         if (sql != null) {
             gerarListaAssociado();
         } else {
-            sql = "Select a from Associado a where a.situacao='Ativo'";
+            sql = "Select a from Associado a ";
             gerarListaAssociado();
         }
         session.removeAttribute("sql");
@@ -155,6 +156,16 @@ public class AssociadoMB implements Serializable {
     public void setMatricula(String matricula) {
         this.matricula = matricula;
     }
+
+    public String getSituacao() {
+        return situacao;
+    }
+
+    public void setSituacao(String situacao) {
+        this.situacao = situacao;
+    }
+    
+    
 
     public void gerarListaAssociado() {
         listaAssociado = associadoDao.list(sql);
@@ -262,6 +273,9 @@ public class AssociadoMB implements Serializable {
         if (matricula.length() > 0) {
             sql = sql + " and a.matricula='" + matricula + "' ";
         }
+        if (situacao.length() > 0) {
+            sql = sql + " and a.situacao='" + situacao + "'";
+        }
         sql = sql + " order by a.cliente.nome";
         gerarListaAssociado();
         return "";
@@ -305,5 +319,33 @@ public class AssociadoMB implements Serializable {
             valorTotal = valorTotal + lista.get(i).getPlano().getValor();
         }
         return valorTotal;
+    }
+    
+    public String pegarIcone(Associado associado){
+        if (associado.getSituacao().equalsIgnoreCase("Ativo")) {
+            return "fa fa-toggle-on";
+        }else{
+            return "fa fa-toggle-off";
+        }
+    }
+    
+    public String retornarSituacao(Associado associado){
+        if (associado.getSituacao().equalsIgnoreCase("Ativo")) {
+            return "Usuário Ativo";
+        }else{
+            return "Usuário Inativo";
+        }
+    }
+    
+    public void desativarAssociado(Associado associado) {
+        if (associado.getSituacao().equalsIgnoreCase("Ativo")) {
+            associado.setSituacao("Inativo");
+            Mensagem.lancarMensagemInfo("Desativado", "com sucesso");
+        }else{
+            associado.setSituacao("Ativo");
+            Mensagem.lancarMensagemInfo("Ativado", "com sucesso");
+        }
+        associadoDao.update(associado);
+        gerarListaAssociado();
     }
 }
