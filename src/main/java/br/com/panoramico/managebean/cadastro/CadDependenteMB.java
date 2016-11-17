@@ -141,6 +141,7 @@ public class CadDependenteMB implements Serializable{
         if (msg.length() > 0) {
             Mensagem.lancarMensagemInfo("Atenção!! ", msg);
         }else{
+            dependente.setPlano(plano);
             if(dependente.getIddependente()==null){
                 dependente.setSituacao("Ativo");
                 String matricula = associado.getMatricula()+"/";
