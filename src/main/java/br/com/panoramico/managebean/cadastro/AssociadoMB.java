@@ -54,6 +54,7 @@ public class AssociadoMB implements Serializable {
     private String sql;
     private String matricula;
     private String situacao;
+    private boolean habilitarVoltar = false;
 
     @PostConstruct
     public void init() {
@@ -282,9 +283,11 @@ public class AssociadoMB implements Serializable {
     }
  
     public String dependentes(Associado associado) {
+        habilitarVoltar = true;
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         session.setAttribute("associado", associado);
+        session.setAttribute("habilitarVoltar", habilitarVoltar);
         return "consDependente";
     }
     

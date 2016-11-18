@@ -44,12 +44,18 @@ public class DependenteMB implements Serializable {
     private String matricula;
     private String email;
     private String telefone;
+    private boolean habilitarVoltar = false;
 
     @PostConstruct
     public void init() {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         associado = (Associado) session.getAttribute("associado");
+        if (associado == null) {
+        }else{
+            habilitarVoltar = (boolean) session.getAttribute("habilitarVoltar");
+            session.removeAttribute("habilitarVoltar");
+        }
         session.removeAttribute("associado");
         gerarListaDependente();
     }
@@ -133,6 +139,16 @@ public class DependenteMB implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public boolean isHabilitarVoltar() {
+        return habilitarVoltar;
+    }
+
+    public void setHabilitarVoltar(boolean habilitarVoltar) {
+        this.habilitarVoltar = habilitarVoltar;
+    }
+    
+    
 
     public String novoCadastroDependente() {
         if(associado!=null && associado.getIdassociado()!=null){
@@ -228,5 +244,9 @@ public class DependenteMB implements Serializable {
         }else{
             return true;
         }
+    }
+    
+    public String voltarAssociado(){
+        return "consAssociado";
     }
 }

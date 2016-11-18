@@ -36,6 +36,9 @@
                     </p:accordionPanel>  
                     <!-- TABELA CADASTROS -->
                     <div class="col-6 titTela" style="margin-left:-14%;">Consulta Dependente</div>
+                    <p:commandLink rendered="#{dependenteMB.habilitarVoltar}" action="#{dependenteMB.voltarAssociado()}">
+                        <div class="icoAdd fa fa-arrow-left" ></div>
+                    </p:commandLink>
                     <p:commandLink action="#{dependenteMB.novoCadastroDependente()}" rendered="#{usuarioLogadoMB.cadastrar}">
                         <div class="icoAdd fa fa-plus-square-o"></div>
                         <p:ajax event="dialogReturn" update="messages, idConsultaDependente" listener="#{dependenteMB.retornoDialogNovo}"/>
