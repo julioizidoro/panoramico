@@ -1,3 +1,4 @@
+
 import br.com.panoramico.dao.AssociadoDao;
 import br.com.panoramico.dao.BancoDao;
 import br.com.panoramico.dao.ClienteDao;
@@ -6,7 +7,7 @@ import br.com.panoramico.dao.ContasReceberDao;
 import br.com.panoramico.dao.ProprietarioDao;
 import br.com.panoramico.managebean.RelatorioErroBean;
 import br.com.panoramico.managebean.UsuarioLogadoMB;
-import br.com.panoramico.managebean.boleto.DadosBoletoBean; 
+import br.com.panoramico.managebean.boleto.DadosBoletoBean;
 import br.com.panoramico.model.Associado;
 import br.com.panoramico.model.Banco;
 import br.com.panoramico.model.Cliente;
@@ -22,9 +23,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map; 
+import java.util.Map;
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB; 
+import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -33,8 +34,8 @@ import javax.servlet.http.HttpSession;
 import org.jrimum.bopepo.Boleto;
 import org.jrimum.domkee.comum.pessoa.endereco.Endereco;
 import org.jrimum.domkee.comum.pessoa.endereco.UnidadeFederativa;
-import org.primefaces.context.RequestContext; 
-import org.primefaces.event.SelectEvent; 
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.SelectEvent;
 
 @Named
 @ViewScoped
@@ -380,6 +381,9 @@ public class ContasReceberMB implements Serializable {
     }
 
     public void filtrar() {
+        btnGerarBoleto = false;
+        btnGerarSegundaVia = false;
+        btnEnviarBoleto = false;
         String sql = "Select c from Contasreceber c";
         if (!situacao.equalsIgnoreCase("sn") && (dataInicial == null && dataFinal == null)) {
             Mensagem.lancarMensagemInfo("Forneça um periodo na pesquisa", "");
@@ -418,6 +422,7 @@ public class ContasReceberMB implements Serializable {
                 }
             }
             if (!tipoDocumento.equalsIgnoreCase("Selecione")) {
+
                 sql = sql + " c.tipopagamento='" + tipoDocumento + "'";
                 if (tipoDocumento.equalsIgnoreCase("Boleto")) {
                     if (funcaoBotaoBoleto == null || funcaoBotaoBoleto.equalsIgnoreCase("Selecione")) {
@@ -426,12 +431,18 @@ public class ContasReceberMB implements Serializable {
                         if (funcaoBotaoBoleto.equalsIgnoreCase("Gerar")) {
                             sql = sql + " and c.nossonumero is null and c.situacao='PAGAR' and c.situacaoboleto='Novo' and c.datavencimento>='" + Formatacao.ConvercaoDataSql(new Date()) + "'";
                             btnGerarBoleto = true;
+                            btnGerarSegundaVia = false;
+                            btnEnviarBoleto = false;
                         } else if (funcaoBotaoBoleto.equalsIgnoreCase("2º Via")) {
                             sql = sql + " and c.situacaoboleto='enviado' and c.situacao='PAGAR' and c.datavencimento>='" + Formatacao.ConvercaoDataSql(new Date()) + "'";
                             btnGerarSegundaVia = true;
+                            btnGerarBoleto = false;
+                            btnEnviarBoleto = false;
                         } else if (funcaoBotaoBoleto.equalsIgnoreCase("Enviar")) {
                             sql = sql + " and c.nossonumero>0 and c.situacaoboleto='Gerado' and c.situacao='PAGAR' and c.datavencimento>='" + Formatacao.ConvercaoDataSql(new Date()) + "'";
                             btnEnviarBoleto = true;
+                            btnGerarBoleto = false;
+                            btnGerarSegundaVia = false;
                         }
                     }
                 }
@@ -447,6 +458,11 @@ public class ContasReceberMB implements Serializable {
         situacao = null;
         dataFinal = null;
         dataInicial = null;
+        btnGerarBoleto = false;
+        btnGerarSegundaVia = false;
+        btnEnviarBoleto = false;
+        tipoDocumento = null;
+        funcaoBotaoBoleto = null;
         gerarListaCliente();
         gerarListaContasReceber();
     }
@@ -503,9 +519,15 @@ public class ContasReceberMB implements Serializable {
         if (tipoDocumento != null && tipoDocumento.equalsIgnoreCase("Boleto")) {
             comboBoleto = true;
             habilitarComboBoleto = false;
+            btnGerarBoleto = false;
+            btnGerarSegundaVia = false;
+            btnEnviarBoleto = false;
         } else {
             habilitarComboBoleto = true;
             comboBoleto = false;
+            btnGerarBoleto = false;
+            btnGerarSegundaVia = false;
+            btnEnviarBoleto = false;
         }
     }
 
@@ -656,8 +678,8 @@ public class ContasReceberMB implements Serializable {
         List<Contasreceber> lista = new ArrayList<>();
         for (int i = 0; i < listaContasReceber.size(); i++) {
             if ((listaContasReceber.get(i).getTipopagamento().equalsIgnoreCase("Boleto")
-                    && listaContasReceber.get(i).isSelecionado())) { 
-                    lista.add(listaContasReceber.get(i)); 
+                    && listaContasReceber.get(i).isSelecionado())) {
+                lista.add(listaContasReceber.get(i));
             }
         }
         if (lista != null && lista.size() > 0) {
@@ -670,13 +692,12 @@ public class ContasReceberMB implements Serializable {
         }
         return "";
     }
-    
-    
-    public String pegarRecebimento(Contasreceber contasreceber){
-         String pago = "NÃO";
-         if (contasreceber.getSituacao().equalsIgnoreCase("PAGO")) {
-             pago = "SIM";
-         }
-         return pago;
+
+    public String pegarRecebimento(Contasreceber contasreceber) {
+        String pago = "NÃO";
+        if (contasreceber.getSituacao().equalsIgnoreCase("PAGO")) {
+            pago = "SIM";
+        }
+        return pago;
     }
 }

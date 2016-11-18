@@ -59,7 +59,7 @@
                                               itemValue="Financiamento Banco" />
                                 <p:ajax event="change"  
                                         listener="#{contasReceberMB.verificarComboBoleto()}"
-                                        update="idtab" />
+                                        update="@form" />
                             </p:selectOneMenu>
                             <h:panelGroup id="painelBoleto"
                                           rendered="#{contasReceberMB.comboBoleto}">
