@@ -60,10 +60,44 @@
                </p:selectOneMenu>
             </h:panelGrid>
             <br/>
-            <h:panelGrid columns="2" columnClasses="tamanho45, tamanho45" style="margin-left:1%;width:95%;"> 
-                <p:outputLabel class="titTela" value="Estado" style="font-size: 12px;text-align: left;"/>
-                <p:outputLabel class="titTela" value="Cidade" style="font-size: 12px;text-align: left;"/>
+            <h:panelGrid columns="3" columnClasses="tamanho30, tamanho45, tamanho30" style="margin-left:1%;width:95%;"> 
+                <p:outputLabel class="titTela" value="Tipo Logradouro" style="font-size: 12px;text-align: left;"/>
+                <p:outputLabel class="titTela" value="Logadouro" style="font-size: 12px;text-align: left;"/>
+                <p:outputLabel class="titTela" value="Número" style="font-size: 12px;text-align: left;"/>
+                
+                <p:selectOneMenu class="form-control" id="tipoLogradouro" value="#{cadAssociadoMB.associado.estado}"  style="width:80%;font-size: 12px;">
+                    <f:selectItem itemLabel="Selecione" itemValue="sn" noSelectionOption="true"/> 
+                    <f:selectItem itemLabel="Avenida" itemValue="Avenida" /> 
+                    <f:selectItem itemLabel="BR" itemValue="BR" />  
+                    <f:selectItem itemLabel="Estrada" itemValue="Estrada" />  
+                    <f:selectItem itemLabel="Rodovia" itemValue="Rodovia" />  
+                    <f:selectItem itemLabel="Rua" itemValue="Rua" /> 
+                    <f:selectItem itemLabel="Servidão" itemValue="Servidão" />  
+                    <f:selectItem itemLabel="Parque" itemValue="Parque" />  
+                    <f:selectItem itemLabel="Travessa" itemValue="Travessa" />  
+                </p:selectOneMenu>
+                <p:inputText class="form-control" value="#{cadAssociadoMB.associado.logradouro}" style="width: 95%; font-size: 12px;"/>
+                <p:inputText class="form-control" value="#{cadAssociadoMB.associado.numero}" style="width: 90%;font-size: 12px;float: left;"/>
+            </h:panelGrid>
+            <br/>
+            <h:panelGrid columns="3" columnClasses="tamanho30, tamanh30, tamanho30" style="margin-left:1%;width:95%;"> 
+                <p:outputLabel class="titTela" value="Complemento" style="font-size: 12px;text-align: left;"/>
+                <p:outputLabel class="titTela" value="Bairro" style="font-size: 12px;text-align: left;"/>
+                <p:outputLabel class="titTela" value="Cep" style="font-size: 12px;text-align: left;"/>
 
+                <p:inputText class="form-control" value="#{cadAssociadoMB.associado.complemento}" style="width: 90%; float: left;font-size: 12px;"/> 
+                <p:inputText class="form-control" value="#{cadAssociadoMB.associado.bairro}" style="width: 90%;font-size: 12px;float: left"/>
+                <p:inputMask class="form-control" mask="99999-999" value="#{cadAssociadoMB.associado.cep}" style="width: 90%; float: left;font-size: 12px;"/>
+            </h:panelGrid>
+            <br/>
+            <h:panelGrid columns="3" columnClasses="tamanho30, tamanho30, tamanho30" style="margin-left:1%;width:95%;">  
+                <p:outputLabel class="titTela" value="Cidade" style="font-size: 12px;text-align: left;"/> 
+                <p:outputLabel class="titTela" value="Estado" style="font-size: 12px;text-align: left;"/> 
+                <p:outputLabel class="titTela" value="Desconto de Mensalidade" style="font-size: 12px;text-align: right;"/>
+                
+                
+                
+                <p:inputText class="form-control" value="#{cadAssociadoMB.associado.cidade}" style="width: 90%; float: left;font-size: 12px;"/> 
                 <p:selectOneMenu class="form-control" id="estado" value="#{cadAssociadoMB.associado.estado}"  style="width:80%;font-size: 12px;">
                     <f:selectItem itemLabel="Selecione" itemValue="sn" noSelectionOption="true"/> 
                     <f:selectItem itemLabel="Acre" itemValue="AC" /> 
@@ -94,28 +128,7 @@
                     <f:selectItem itemLabel="Sergipe" itemValue="SE" />  
                     <f:selectItem itemLabel="Tocantins" itemValue="TO" />  
                 </p:selectOneMenu>
-                <p:inputText class="form-control" value="#{cadAssociadoMB.associado.cidade}" style="width: 95%; font-size: 12px;"/>
-            </h:panelGrid>
-            <br/>
-            <h:panelGrid columns="3" columnClasses="tamanho30, tamanho20, tamanho30" style="margin-left:1%;width:95%;"> 
-                <p:outputLabel class="titTela" value="Bairro" style="font-size: 12px;text-align: left;"/>
-                <p:outputLabel class="titTela" value="Tipo de Logadouro" style="font-size: 12px;text-align: left;"/>
-                <p:outputLabel class="titTela" value="Logadouro" style="font-size: 12px;text-align: left;"/>
 
-                <p:inputText class="form-control" value="#{cadAssociadoMB.associado.bairro}" style="width: 90%;font-size: 12px;float: left"/>
-                <p:inputText class="form-control" value="#{cadAssociadoMB.associado.tipologradouro}" style="width: 90%;font-size: 12px;float: left"/>
-                <p:inputText class="form-control" value="#{cadAssociadoMB.associado.logradouro}" style="width: 92.5%;font-size: 12px;float: left"/>
-            </h:panelGrid>
-            <br/>
-            <h:panelGrid columns="4" columnClasses="tamanho20, tamanho30, tamanho20,tamanho30" style="margin-left:1%;width:95%;">   
-                <p:outputLabel class="titTela" value="Número" style="font-size: 12px;text-align: left;"/>
-                <p:outputLabel class="titTela" value="Complemento" style="font-size: 12px;text-align: left;"/>
-                <p:outputLabel class="titTela" value="Cep" style="font-size: 12px;text-align: left;"/>
-                <p:outputLabel class="titTela" value="Desconto de Mensalidade" style="font-size: 12px;text-align: right;"/>
-
-                <p:inputText class="form-control" value="#{cadAssociadoMB.associado.numero}" style="width: 90%;font-size: 12px;float: left;"/>
-                <p:inputText class="form-control" value="#{cadAssociadoMB.associado.complemento}" style="width: 90%; float: left;font-size: 12px;"/> 
-                <p:inputMask class="form-control" mask="99999-999" value="#{cadAssociadoMB.associado.cep}" style="width: 90%; float: left;font-size: 12px;"/>
                 <p:inputText class="form-control" value="#{cadAssociadoMB.associado.descotomensalidade}" style="width: 90%;text-align: right;float: left;font-size: 12px;">
                     <f:convertNumber pattern="##,###,###,###.##"/>  
                 </p:inputText>
