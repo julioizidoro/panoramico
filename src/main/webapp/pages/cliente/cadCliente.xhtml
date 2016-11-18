@@ -33,14 +33,21 @@
                 </p:inputMask>
             </h:panelGrid> 
             <br/>
-            <h:panelGrid columns="3" columnClasses="tamanho30, tamanho12, tamanho12" style="margin-left:1%;width:95%;">  
+            <h:panelGrid id="idPanelEmailTelefone" columns="3" columnClasses="tamanho30, tamanho12, tamanho12" style="margin-left:1%;width:95%;">  
                 <p:outputLabel class="titTela" value="E-mail" style="font-size: 12px;text-align: left;"/> 
-                <p:outputLabel value="Telefone" class="titTela" style="font-size: 12px;text-align: left;"/>
-                <p:outputLabel/> 
+                <p:outputLabel value="Telefone" class="titTela" style="font-size: 12px;text-align: left;">
+                    <p:outputLabel value="9°"/> 
+                </p:outputLabel>
+                    <p:outputLabel /> 
                 
                 <p:inputText class="form-control" value="#{cadClienteMB.cliente.email}" style="width: 90%;font-size: 12px;"/>
-                <p:inputMask mask="(99)99999999" class="form-control" value="#{cadClienteMB.cliente.telefone}" style="width: 90%;font-size: 12px;"/> 
-                <p:outputLabel/> 
+                <p:inputMask id="idTelefone" mask="#{cadClienteMB.habilitarNoveDigito()}" class="form-control" value="#{cadClienteMB.cliente.telefone}" style="width: 90%;font-size: 12px;"> 
+                    <p:selectBooleanCheckbox id="idNonoDigito"
+                                             value="#{cadClienteMB.noveDigito}">
+                        <p:ajax event="change" listener="#{cadClienteMB.habilitarNoveDigito()}" update="idTelefone"/>
+                    </p:selectBooleanCheckbox>
+                </p:inputMask>
+                    <p:outputLabel /> 
             </h:panelGrid>
             <br/><br/>  
             <hr/>

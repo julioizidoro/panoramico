@@ -139,7 +139,7 @@ public class ImprimirAcessoMB implements Serializable {
             } catch (JRException ex) {
                 Logger.getLogger(ImprimirAcessoMB.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } else {
+        } else {    
             caminhoRelatorio = "reports/relatorios/acesso/reportNumeroAcesso.jasper";
             parameters.put("sql", gerarSql());
             gerarTotalAcesso();

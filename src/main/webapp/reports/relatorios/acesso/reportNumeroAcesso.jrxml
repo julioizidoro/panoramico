@@ -120,8 +120,8 @@
 				<reportElement x="0" y="0" width="554" height="1" uuid="4ba21f34-2453-4c55-a360-ae335e90fc1b"/>
 			</line>
 			<textField pattern="EEEEE dd MMMMM yyyy">
-				<reportElement x="213" y="19" width="341" height="22" uuid="0d499b68-de87-469d-a74a-147d6678b7e9"/>
-				<textFieldExpression><![CDATA["A = Associado;    C = Convidado;      P = Passaporte;       E = Evento;"]]></textFieldExpression>
+				<reportElement x="133" y="19" width="421" height="22" uuid="0d499b68-de87-469d-a74a-147d6678b7e9"/>
+				<textFieldExpression><![CDATA["A = Associado;    C = Convidado;      P = Passaporte;       E = Evento;    D= Dependente;"]]></textFieldExpression>
 			</textField>
 		</band>
 	</lastPageFooter>

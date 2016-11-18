@@ -633,12 +633,15 @@ public class AcessoMB implements Serializable {
                 passaporte = passaporteDao.update(passaporte);
                 Mensagem.lancarMensagemInfo("Salvo com sucesso", "");
             }else{
-                FacesContext fc = FacesContext.getCurrentInstance();
-                HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
-                session.setAttribute("passaporte", passaporte);
-                Map<String, Object> options = new HashMap<String, Object>();
-                options.put("contentWidth", 400);
-                RequestContext.getCurrentInstance().openDialog("utilizadoPassaporte", options, null);
+                Associado associado = associadoDao.find(12);
+                passaporte.setDataacesso(new Date());
+                passaporte.setHoraacesso(retornarHoraAtual());
+                passaporte = passaporteDao.update(passaporte);
+                controleacesso.setIddependente(0);
+                controleacesso.setAssociado(associado);
+                controleacesso.setTipo("P");
+                controleacesso = controleAcessoDao.update(controleacesso);
+                Mensagem.lancarMensagemInfo("Salvo com sucesso", "");
             }
         }
     }
@@ -649,7 +652,7 @@ public class AcessoMB implements Serializable {
         controleacesso.setSituacao(nomeStatus);
         controleacesso.setData(new Date());
         controleacesso.setHora(retornarHoraAtual());
-        if (guardaDependente.length() >= 1) {
+        if (dependente != null) {
             controleacesso.setIddependente(dependente.getIddependente());
             controleacesso.setAssociado(dependente.getAssociado());
             controleacesso.setTipo("D");
