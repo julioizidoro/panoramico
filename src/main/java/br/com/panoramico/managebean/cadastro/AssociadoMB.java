@@ -55,6 +55,7 @@ public class AssociadoMB implements Serializable {
     private String matricula;
     private String situacao;
     private boolean habilitarVoltar = false;
+    private boolean habilitarVoltarFinanceiro = false;
 
     @PostConstruct
     public void init() {
@@ -292,9 +293,11 @@ public class AssociadoMB implements Serializable {
     }
     
     public String financeiro(Associado associado) {
+        habilitarVoltarFinanceiro = true;
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         session.setAttribute("associado", associado);
+        session.setAttribute("habilitarVoltarFinanceiro", habilitarVoltarFinanceiro);
         return "consContasReceber";
     }
     

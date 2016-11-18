@@ -5,7 +5,9 @@
  */
 package br.com.panoramico.managebean.cadastro;
 
+import br.com.panoramico.dao.AssociadoEmpresaDao;
 import br.com.panoramico.dao.EmpresaDao;
+import br.com.panoramico.model.Associadoempresa;
 import br.com.panoramico.model.Empresa;
 import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
@@ -35,6 +37,8 @@ public class EmpresaMB implements  Serializable{
     private EmpresaDao empresaDao;
     private Empresa empresa;
     private List<Empresa> listaEmpresa;
+    @EJB
+    private AssociadoEmpresaDao associadoEmpresaDao;
     
     
     @PostConstruct
@@ -113,9 +117,14 @@ public class EmpresaMB implements  Serializable{
     
     
     public void excluir(Empresa empresa){
-        empresaDao.remove(empresa.getIdempresa());
-        Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
-        gerarListaEmpresa();
+        List<Associadoempresa> listaAssociadoEmpresa = associadoEmpresaDao.list("Select ae From Associadoempresa ae Where ae.empresa.idempresa=" + empresa.getIdempresa());
+        if (listaAssociadoEmpresa == null || listaAssociadoEmpresa.isEmpty()) {
+            empresaDao.remove(empresa.getIdempresa());
+            Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
+            gerarListaEmpresa();
+        }else{
+            Mensagem.lancarMensagemInfo("Atenção", " esta empresa não pode ser excluido");
+        }
     }
     
     public String consAssociadoEmpresa(Empresa empresa){

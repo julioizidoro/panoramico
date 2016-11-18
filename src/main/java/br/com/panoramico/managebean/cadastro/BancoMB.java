@@ -6,7 +6,9 @@
 package br.com.panoramico.managebean.cadastro;
 
 import br.com.panoramico.dao.BancoDao;
+import br.com.panoramico.dao.RecebimentoDao;
 import br.com.panoramico.model.Banco;
+import br.com.panoramico.model.Recebimento;
 import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -31,6 +33,8 @@ public class BancoMB implements Serializable{
     private List<Banco> listaBanco;
     @EJB
     private BancoDao bancoDao;
+    @EJB
+    private RecebimentoDao recebimentoDao;
     
     
     @PostConstruct
@@ -98,8 +102,13 @@ public class BancoMB implements Serializable{
     }
     
     public void excluir(Banco banco){
-        bancoDao.remove(banco.getIdbanco());
-        listaBanco.remove(banco);
-        Mensagem.lancarMensagemInfo("Excluido", " com sucesso");
+        List<Recebimento> listaRecebimento = recebimentoDao.list("Select r From Recebimento r Where r.banco.idbanco=" + banco.getIdbanco());
+        if (listaRecebimento == null || listaRecebimento.isEmpty()) {
+            bancoDao.remove(banco.getIdbanco());
+            listaBanco.remove(banco);
+            Mensagem.lancarMensagemInfo("Excluido", " com sucesso");
+        }else{
+            Mensagem.lancarMensagemInfo("Atenção", " este banco não pode ser excluido");
+        }
     }
 }

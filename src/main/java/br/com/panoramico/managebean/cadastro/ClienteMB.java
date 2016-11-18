@@ -5,7 +5,9 @@
  */
 package br.com.panoramico.managebean.cadastro;
 
+import br.com.panoramico.dao.AssociadoDao;
 import br.com.panoramico.dao.ClienteDao;
+import br.com.panoramico.model.Associado;
 import br.com.panoramico.model.Cliente;
 import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
@@ -40,6 +42,8 @@ public class ClienteMB implements Serializable{
     private String email;
     private String telefone;
     private String sql;
+    @EJB
+    private AssociadoDao associadoDao;
     
     
     @PostConstruct
@@ -171,9 +175,14 @@ public class ClienteMB implements Serializable{
     }
     
     public void excluir(Cliente cliente){
-        clienteDao.remove(cliente.getIdcliente());
-        Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
-        gerarListaCliente();
+        List<Associado> listaAssociado = associadoDao.list("Select a From Associado a Where a.cliente.idcliente=" + cliente.getIdcliente());
+        if (listaAssociado == null || listaAssociado.isEmpty()) {
+            clienteDao.remove(cliente.getIdcliente());
+            Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
+            gerarListaCliente();
+        }else{
+            Mensagem.lancarMensagemInfo("Atenção", " este cliente não pode ser excluido");
+        }
     }
     
     public String limpar(){

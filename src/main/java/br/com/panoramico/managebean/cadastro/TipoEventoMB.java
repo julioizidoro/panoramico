@@ -5,7 +5,9 @@
  */
 package br.com.panoramico.managebean.cadastro;
 
+import br.com.panoramico.dao.EventoDao;
 import br.com.panoramico.dao.TipoEventoDao;
+import br.com.panoramico.model.Evento;
 import br.com.panoramico.model.Tipoenvento;
 import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
@@ -35,6 +37,8 @@ public class TipoEventoMB implements Serializable{
     private TipoEventoDao tipoEventoDao;
     private Tipoenvento tipoEnvento;
     private List<Tipoenvento> listaTipoEvento;
+    @EJB
+    private EventoDao eventoDao;
     
     
     @PostConstruct
@@ -114,8 +118,13 @@ public class TipoEventoMB implements Serializable{
     
     
     public void excluir(Tipoenvento tipoenvento){
-        tipoEventoDao.remove(tipoenvento.getIdtipoenvento());
-        Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
-        gerarListaTipoEvento();
+        List<Evento> listaEvento = eventoDao.list("Select e From Evento e Where e.tipoenvento.idtipoenvento=" + tipoenvento.getIdtipoenvento());
+        if (listaEvento == null || listaEvento.isEmpty()) {
+            tipoEventoDao.remove(tipoenvento.getIdtipoenvento());
+            Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
+            gerarListaTipoEvento();
+        }else{
+            Mensagem.lancarMensagemInfo("Atenção", " este tipo de evento não pode ser excluido");
+        }
     }
 }

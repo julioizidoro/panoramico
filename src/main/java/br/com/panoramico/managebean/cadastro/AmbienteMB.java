@@ -6,7 +6,9 @@
 package br.com.panoramico.managebean.cadastro;
 
 import br.com.panoramico.dao.AmbienteDao;
+import br.com.panoramico.dao.EventoDao;
 import br.com.panoramico.model.Ambiente;
+import br.com.panoramico.model.Evento;
 import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -35,6 +37,8 @@ public class AmbienteMB implements  Serializable{
     private AmbienteDao ambienteDao;
     private Ambiente ambiente;
     private List<Ambiente> listaAmbiente;
+    @EJB
+    private EventoDao eventoDao;
     
     
     @PostConstruct
@@ -112,8 +116,13 @@ public class AmbienteMB implements  Serializable{
     
     
     public void excluir(Ambiente ambiente){
-        ambienteDao.remove(ambiente.getIdambiente());
-        Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
-        gerarListaAmbiente();
+        List<Evento> listaEvento = eventoDao.list("Select e From Evento e Where e.ambiente.idambiente="+ ambiente.getIdambiente());
+        if (listaEvento == null || listaEvento.isEmpty()) {
+            ambienteDao.remove(ambiente.getIdambiente());
+            Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
+            gerarListaAmbiente();
+        }else{
+            Mensagem.lancarMensagemInfo("Atenção", " este ambiente não pode ser excluido");
+        }
     }
 }

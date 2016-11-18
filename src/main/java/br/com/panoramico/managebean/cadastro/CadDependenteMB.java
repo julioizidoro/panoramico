@@ -39,6 +39,7 @@ public class CadDependenteMB implements Serializable{
     private Plano plano;
     private List<Plano> listaPlano;
     private float valorPlano = 0.0f;
+    private boolean noveDigito = false;
     
     
     @PostConstruct
@@ -131,7 +132,16 @@ public class CadDependenteMB implements Serializable{
     public void setValorPlano(float valorPlano) {
         this.valorPlano = valorPlano;
     }
-    
+
+    public boolean isNoveDigito() {
+        return noveDigito;
+    }
+
+    public void setNoveDigito(boolean noveDigito) {
+        this.noveDigito = noveDigito;
+    }
+
+   
     
     
     
@@ -187,6 +197,15 @@ public class CadDependenteMB implements Serializable{
     public void pegarValorPlano(){
         if (plano != null) {
             valorPlano = plano.getValor();
+        }
+    }
+    
+    
+     public String habilitarNoveDigito(){
+        if (noveDigito) {
+            return "(99)999999999";
+        }else{
+            return "(99)99999999";
         }
     }
 }

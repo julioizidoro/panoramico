@@ -81,6 +81,9 @@
                     <br/><br/>
                     <!-- TABELA CADASTROS --> 
                     <div class="col-6 titTela" style="margin-left:-10%;">Consulta Contas a Receber</div> 
+                    <p:commandLink rendered="#{contasReceberMB.habilitarVoltarFinanceiro}" action="#{contasReceberMB.voltarAssociado()}">
+                        <div class="icoAdd fa fa-arrow-left" ></div>
+                    </p:commandLink>
                     <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}"  action="#{contasReceberMB.totalPagar()}" title="Total a ser pago">
                         <div class="icoAdd fa fa-usd"></div>
                     </p:commandLink> 

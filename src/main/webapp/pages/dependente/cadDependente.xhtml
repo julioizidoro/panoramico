@@ -34,14 +34,21 @@
                 <p:inputText class="form-control" value="#{cadDependenteMB.dependente.nome}" style="width: 90%;font-size: 12px;"/>
             </h:panelGrid>  
             <br/>
-            <h:panelGrid columns="3" columnClasses="tamanho45, tamanho20,tamanho20" style="margin-left:1%;width:95%;"> 
+            <h:panelGrid columns="4" columnClasses="tamanho45, tamanho20,tamanho20,tamanho20" style="margin-left:1%;width:95%;"> 
                 <p:outputLabel class="titTela" value="E-mail" style="font-size: 12px;text-align: left;"/> 
                 <p:outputLabel value="Cep" class="titTela" style="font-size: 12px;text-align: left;"/>
                 <p:outputLabel class="titTela" value="Telefone" style="font-size: 12px;text-align: left;"/>
+                <p:outputLabel value="9°" class="titTela" style="margin-left:-48%;font-size: 14px;">
+                    <p:selectBooleanCheckbox id="idNonoDigito"
+                                             value="#{cadDependenteMB.noveDigito}">
+                        <p:ajax event="change" listener="#{cadDependenteMB.habilitarNoveDigito()}" update="idNonoDigito, idTelefone"/>
+                    </p:selectBooleanCheckbox>
+                </p:outputLabel>
 
                 <p:inputText class="form-control" value="#{cadDependenteMB.dependente.email}" style="width: 90%;font-size: 12px;"/>
                 <p:inputMask class="form-control" mask="99999-999" value="#{cadDependenteMB.dependente.cep}" style="width: 90%;font-size: 12px;"/>    
-                <p:inputMask class="form-control" mask="(99)99999999" value="#{cadDependenteMB.dependente.telefone}" style="width: 90%;font-size: 12px;"/>    
+                <p:inputMask class="form-control" id="idTelefone" mask="#{cadDependenteMB.habilitarNoveDigito()}" value="#{cadDependenteMB.dependente.telefone}" style="width: 100%;font-size: 12px;"/>
+                <p:outputLabel/>
             </h:panelGrid>
             <br/>
             <h:panelGrid columns="3" columnClasses="tamanho30, tamanho30, tamanho30" style="margin-left:1%;width:95%;"> 

@@ -50,9 +50,11 @@
             <h:panelGrid columns="2" columnClasses="tamanho45, tamanho45" style="margin-left:2%;width:70%;">     
                 <p:outputLabel class="titTela" value="Login" style="font-size: 14px;text-align: left;"/>   
                 <p:outputLabel class="titTela" value="Senha" rendered="#{cadUsuarioMB.habilitarSenha}" style="font-size: 14px;text-align: left;"/>
+                <p:outputLabel rendered="#{!cadUsuarioMB.habilitarSenha}"/>
 
                 <p:inputText class="form-control" value="#{cadUsuarioMB.usuario.login}"  style="font-size: 12px;border-radius: 4px;width: 90%;"/>
                 <p:inputText class="form-control" value="#{cadUsuarioMB.usuario.senha}" rendered="#{cadUsuarioMB.habilitarSenha}" style="font-size: 12px;border-radius: 4px;width:70%;"/>  
+                <p:outputLabel rendered="#{!cadUsuarioMB.habilitarSenha}"/>
             </h:panelGrid>
             <br/><br/>
             <hr/>  

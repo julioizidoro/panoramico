@@ -73,12 +73,18 @@ public class ContasReceberMB implements Serializable {
     private BancoDao bancoDao;
     @EJB
     private AssociadoDao associadoDao;
+    private boolean habilitarVoltarFinanceiro = false;
 
     @PostConstruct
     public void init() {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         associado = (Associado) session.getAttribute("associado");
+        if (associado == null) {
+        }else{
+            habilitarVoltarFinanceiro = (boolean) session.getAttribute("habilitarVoltarFinanceiro");
+            session.removeAttribute("habilitarVoltarFinanceiro");
+        }
         session.removeAttribute("associado");
         gerarListaContasReceber();
         gerarListaCliente();
@@ -270,6 +276,33 @@ public class ContasReceberMB implements Serializable {
     public void setBtnGerarBoleto(boolean btnGerarBoleto) {
         this.btnGerarBoleto = btnGerarBoleto;
     }
+
+    public BancoDao getBancoDao() {
+        return bancoDao;
+    }
+
+    public void setBancoDao(BancoDao bancoDao) {
+        this.bancoDao = bancoDao;
+    }
+
+    public AssociadoDao getAssociadoDao() {
+        return associadoDao;
+    }
+
+    public void setAssociadoDao(AssociadoDao associadoDao) {
+        this.associadoDao = associadoDao;
+    }
+
+    public boolean isHabilitarVoltarFinanceiro() {
+        return habilitarVoltarFinanceiro;
+    }
+
+    public void setHabilitarVoltarFinanceiro(boolean habilitarVoltarFinanceiro) {
+        this.habilitarVoltarFinanceiro = habilitarVoltarFinanceiro;
+    }
+
+    
+    
 
     public void gerarListaContasReceber() {
         if (associado == null || associado.getIdassociado() == null) {
@@ -699,5 +732,9 @@ public class ContasReceberMB implements Serializable {
             pago = "SIM";
         }
         return pago;
+    }
+    
+    public String voltarAssociado(){
+        return "consAssociado";
     }
 }

@@ -5,8 +5,10 @@
  */
 package br.com.panoramico.managebean.cadastro;
 
+import br.com.panoramico.dao.ContasPagarDao;
 import br.com.panoramico.dao.PlanoContaDao;
 import br.com.panoramico.managebean.UsuarioLogadoMB;
+import br.com.panoramico.model.Contaspagar;
 import br.com.panoramico.model.Planoconta;
 import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
@@ -34,6 +36,8 @@ public class PlanosContasMB implements Serializable{
     private PlanoContaDao planoContaDao;
     @Inject
     private UsuarioLogadoMB usuarioLogadoMB;
+    @EJB
+    private ContasPagarDao contasPagarDao;
     
     
     @PostConstruct
@@ -121,8 +125,13 @@ public class PlanosContasMB implements Serializable{
 
     
     public void excluir(Planoconta planoconta){
-        planoContaDao.remove(planoconta.getIdplanoconta());
-        Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
-        gerarListaPlanoContas();
+        List<Contaspagar> listaContasPagar = contasPagarDao.list("Select c From Contaspagar c Where c.planoconta.idplanoconta=" + planoconta.getIdplanoconta());
+        if (listaContasPagar == null || listaContasPagar.isEmpty()) {
+            planoContaDao.remove(planoconta.getIdplanoconta());
+            Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
+            gerarListaPlanoContas();
+        }else{
+            Mensagem.lancarMensagemInfo("Atenção", " este plano de conta não pode ser excluido");
+        }
     }
 }
