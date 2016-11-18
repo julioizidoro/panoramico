@@ -142,13 +142,14 @@ public class CadAssociadoEmpresaMB implements Serializable{
         if (associadoempresa == null || associadoempresa.getIdassociadoempresa() == null) {
             salvar();
             botaoAssociar = "Associado a Empresa";
+            Mensagem.lancarMensagemInfo("", "Sócio vinculado a empresa "+empresa.getNomefantasia()+".");
             associadoempresa = null;
         }else{
             desvincularAssociado();
             associadoempresa = new Associadoempresa();
             gerarListaEmpresa();
             empresa = null;
-            Mensagem.lancarMensagemInfo("", "Sócio desvinculado a empresa.");
+            Mensagem.lancarMensagemInfo("", "Sócio desvinculado a empresa "+empresa.getNomefantasia()+".");
             botaoAssociar = "Associar a Empresa";
         }
     }

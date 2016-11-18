@@ -23,7 +23,7 @@
         <h:form id="idFormCadastroAssociadoEmpresa" class="body2" style="background:#A3DAD9; border-color: #CF7000;"  enctype="multipart/form-data">
                 
             <title>Associado da Empresa</title>
-                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+            <p:growl id="messages" showDetail="true" autoUpdate="true" />
                 <p:outputLabel class="titTela" value="Associado" style="font-size: 12px;text-align: left;margin-left: 2%;"/>
                 <br/>
                 <p:inputText class="form-control" readonly="true" value="#{cadAssociadoEmpresaMB.associado.cliente.nome}"  style="margin-left: 2%;font-size: 12px;width: 98%;"/>
