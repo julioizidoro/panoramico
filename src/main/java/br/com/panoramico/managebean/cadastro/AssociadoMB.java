@@ -331,9 +331,9 @@ public class AssociadoMB implements Serializable {
     
     public String retornarSituacao(Associado associado){
         if (associado.getSituacao().equalsIgnoreCase("Ativo")) {
-            return "Usuário Ativo";
+            return "Associado Ativo";
         }else{
-            return "Usuário Inativo";
+            return "Associado Inativo";
         }
     }
     

@@ -670,4 +670,13 @@ public class ContasReceberMB implements Serializable {
         }
         return "";
     }
+    
+    
+    public String pegarRecebimento(Contasreceber contasreceber){
+         String pago = "NÃO";
+         if (contasreceber.getSituacao().equalsIgnoreCase("PAGO")) {
+             pago = "SIM";
+         }
+         return pago;
+    }
 }

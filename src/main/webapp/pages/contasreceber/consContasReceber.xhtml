@@ -139,7 +139,7 @@
                         </h:column> 
                         <h:column>
                             <f:facet name="header">Pago?</f:facet> 
-                            <h:outputText value="#" styleClass="alinhamento" style="float: left;" />
+                            <h:outputText value="#{contasReceberMB.pegarRecebimento(contaReceber)}" styleClass="alinhamento" style="float: left;" />
                         </h:column>
                         <h:column>
                             <p:commandLink rendered="#{usuarioLogadoMB.editar}" title="Editar" action="#{contasReceberMB.editar(contaReceber)}" style="text-decoration: none;">
