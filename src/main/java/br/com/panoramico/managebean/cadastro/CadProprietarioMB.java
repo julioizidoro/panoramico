@@ -32,10 +32,7 @@ public class CadProprietarioMB implements  Serializable{
     
     @PostConstruct
     public void init(){
-        FacesContext fc = FacesContext.getCurrentInstance();
-        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
-        proprietario = (Proprietario) session.getAttribute("proprietario");
-        session.removeAttribute("proprietario");
+        proprietario = proprietarioDao.find(1);
         if (proprietario == null) {
             proprietario = new Proprietario();
         }

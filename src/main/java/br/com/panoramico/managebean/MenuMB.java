@@ -161,4 +161,12 @@ public class MenuMB implements Serializable{
         options.put("closable", false);
         RequestContext.getCurrentInstance().openDialog("relatorioFrequenciaAcesso", options, null);
     }
+     
+     
+    public String novoCadastroProprietario() {
+        Map<String, Object> options = new HashMap<String, Object>();
+        options.put("contentWidth", 570);
+        RequestContext.getCurrentInstance().openDialog("cadProprietario", options, null);
+        return "";
+    }
 }
