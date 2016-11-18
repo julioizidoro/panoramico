@@ -113,7 +113,7 @@ public class MedicoMB implements Serializable {
 
     public void desativarMedico(Medico medico) {
         if (medico.getSituacao().equalsIgnoreCase("Ativo")) {
-            medico.setNome("Inativo");
+            medico.setSituacao("Inativo");
             Mensagem.lancarMensagemInfo("Desativado", " com sucesso");
         }else{
             medico.setSituacao("Ativo");
