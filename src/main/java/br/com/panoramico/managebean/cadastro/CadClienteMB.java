@@ -47,6 +47,10 @@ public class CadClienteMB implements  Serializable{
         session.removeAttribute("cliente");
         if (cliente == null) {
             cliente = new Cliente();
+        }else{
+            if (cliente.getTelefone().length() > 12) {
+                noveDigito = true;
+            }
         }
         if (ePassaporte == null) {
             ePassaporte = false;
