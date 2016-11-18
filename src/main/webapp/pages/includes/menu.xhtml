@@ -19,9 +19,20 @@
                     <ul>
                         <li> 
                             <div class="dropdown"  style="float: left;">
-                               <i class="fa fa-file" aria-hidden="true"></i>
-                                 Associado <div class="fa fa-sort-desc"></div>
-                                 <div class="dropdown-content" style="z-index: 9999;"> 
+                                <i class="fa fa-file" aria-hidden="true"></i>
+                                Cadastro <div class="fa fa-sort-desc"></div>
+                                <div class="dropdown-content" style="z-index: 9999;"> 
+                                    <p><h:link outcome="/pages/perfil/consPerfil.xhtml" value="Perfil"></h:link></p>
+                                    <p><p:commandLink action="#{menuMB.novoCadastroProprietario()}"  value="Proprietário"/></p>
+                                    <p><h:link outcome="/pages/usuario/consUsuario.xhtml" value="Usuário"></h:link></p>
+                                </div>  
+                            </div> 
+                        </li>
+                        <li> 
+                            <div class="dropdown"  style="float: left;">
+                                <i class="fa fa-file" aria-hidden="true"></i>
+                                Associado <div class="fa fa-sort-desc"></div>
+                                <div class="dropdown-content" style="z-index: 9999;"> 
                                     <p><h:link outcome="/pages/cliente/consCliente.xhtml" value="Cliente"></h:link></p>
                                     <p><h:link outcome="/pages/associado/consAssociado.xhtml" value="Sócio"></h:link></p>
                                     <p><h:link outcome="/pages/dependente/consDependente.xhtml" value="Dependente"></h:link></p>
@@ -40,17 +51,7 @@
                                 </div>
                             </div>  
                         </li>
-                        <li> 
-                            <div class="dropdown"  style="float: left;">
-                               <i class="fa fa-file" aria-hidden="true"></i>
-                                 Cadastro <div class="fa fa-sort-desc"></div>
-                                 <div class="dropdown-content" style="z-index: 9999;"> 
-                                    <p><h:link outcome="/pages/perfil/consPerfil.xhtml" value="Perfil"></h:link></p>
-                                    <p><p:commandLink action="#{menuMB.novoCadastroProprietario()}"  value="Proprietário"/></p>
-                                    <p><h:link outcome="/pages/usuario/consUsuario.xhtml" value="Usuário"></h:link></p>
-                                </div>
-                            </div> 
-                        </li>
+
                         <li> 
                             <div class="dropdown" style="float: left;">
                                 <i class="fa fa-calendar" aria-hidden="true"></i>
