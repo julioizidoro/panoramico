@@ -42,11 +42,23 @@
                         <br/>
                         <p:outputLabel class="titTela" value="Email" style="font-size: 12px;text-align: left;"/>
                         <p:outputLabel class="titTela" value="Fone 1" style="font-size: 12px;text-align: left;margin-left: 51%;"/>
-                        <p:outputLabel class="titTela" value="Fone 2" style="font-size: 12px;text-align: left;margin-left: 15%;"/>
+                         <p:outputLabel value="9°" class="titTela" style="margin-left:5%;font-size: 14px;">
+                            <p:selectBooleanCheckbox id="idNonoDigito1"
+                                                     value="#{cobrancasMB.noveDigito1}">
+                               <p:ajax event="change" listener="#{cobrancasMB.habilitarNoveDigito1()}" update="idNonoDigito1, fone1Cobranca"/>
+                           </p:selectBooleanCheckbox>
+                        </p:outputLabel>
+                        <p:outputLabel class="titTela" value="Fone 2" style="font-size: 12px;text-align: left;margin-left: 4%;"/>
+                         <p:outputLabel value="9°" class="titTela" style="margin-left:5%;font-size: 14px;">
+                            <p:selectBooleanCheckbox id="idNonoDigito2"
+                                                     value="#{cobrancasMB.noveDigito2}">
+                               <p:ajax event="change" listener="#{cobrancasMB.habilitarNoveDigito2()}" update="idNonoDigito2, fone2Cobranca"/>
+                           </p:selectBooleanCheckbox>
+                        </p:outputLabel>
                         <br/>
                         <p:inputText class="form-control" id="emailCobranca" value="#{cobrancasMB.cobranca.email}" style="font-size: 12px;width: 53%;"/>
-                        <p:inputMask mask="(99)99999999" id="fone1Cobranca" class="form-control" value="#{cobrancasMB.cobranca.fone1}" style="font-size: 12px;width: 18%; margin-left: 3%;"/> 
-                        <p:inputMask mask="(99)99999999" id="fone2Cobranca" class="form-control" value="#{cobrancasMB.cobranca.fone2}" style="margin-left:4%;font-size: 12px;width: 18%; margin-left: 3%;"/> 
+                        <p:inputMask mask="#{cobrancasMB.habilitarNoveDigito1()}" id="fone1Cobranca" class="form-control" value="#{cobrancasMB.cobranca.fone1}" style="font-size: 12px;width: 18%; margin-left: 3%;"/> 
+                        <p:inputMask mask="#{cobrancasMB.habilitarNoveDigito2()}" id="fone2Cobranca" class="form-control" value="#{cobrancasMB.cobranca.fone2}" style="margin-left:4%;font-size: 12px;width: 18%; margin-left: 3%;"/> 
                         <br/>
                         <p:commandLink  ajax="false" id="adicionadoCobranca" update="emailCobranca, fone1Cobranca, fone2Cobranca, adicionadoCobranca" action="#{cobrancasMB.salvarCobranca()}"  disabled="#{cobrancasMB.adicionado}"> 
                             <div style="font-size: 20px;float: right;margin-right: 5%;" class="pesquisarAcesso">Adicionar</div>

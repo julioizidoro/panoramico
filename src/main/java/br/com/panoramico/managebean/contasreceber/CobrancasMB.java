@@ -51,6 +51,8 @@ public class CobrancasMB implements Serializable{
     private boolean habilitarCadCobranca = false;
     @Inject
     private UsuarioLogadoMB usuarioLogadoMB;
+    private boolean noveDigito1 = false;
+    private boolean noveDigito2 = false;
     
     
     @PostConstruct
@@ -65,6 +67,13 @@ public class CobrancasMB implements Serializable{
         }
         if (cobranca == null) {
             cobranca = new Cobranca();
+        }else{
+            if (cobranca.getFone1().length() > 12) {
+                noveDigito1 = true;
+            }
+            if (cobranca.getFone2().length() > 12) {
+                noveDigito2 = true;
+            }
         }
     }
 
@@ -188,6 +197,22 @@ public class CobrancasMB implements Serializable{
         this.usuarioLogadoMB = usuarioLogadoMB;
     }
 
+    public boolean isNoveDigito1() {
+        return noveDigito1;
+    }
+
+    public void setNoveDigito1(boolean noveDigito1) {
+        this.noveDigito1 = noveDigito1;
+    }
+
+    public boolean isNoveDigito2() {
+        return noveDigito2;
+    }
+
+    public void setNoveDigito2(boolean noveDigito2) {
+        this.noveDigito2 = noveDigito2;
+    }
+
     
     
     
@@ -273,5 +298,23 @@ public class CobrancasMB implements Serializable{
         RequestContext.getCurrentInstance().closeDialog(null);
     }
     
+    
+    
+    public String habilitarNoveDigito1(){
+        if (noveDigito1) {
+            return "(99)999999999";
+        }else{
+            return "(99)99999999";
+        }
+    }
+    
+    
+    public String habilitarNoveDigito2(){
+        if (noveDigito2) {
+            return "(99)999999999";
+        }else{
+            return "(99)99999999";
+        }
+    }
     
 }
