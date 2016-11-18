@@ -248,7 +248,7 @@ public class AssociadoMB implements Serializable {
         }
     }
 
-    public String limpar() {
+    public void limpar() {
         sql = "Select a from Associado a where a.situacao='Ativo'";
         gerarListaAssociado();
         matricula = "";
@@ -256,24 +256,24 @@ public class AssociadoMB implements Serializable {
         cpf = "";
         email = "";
         telefone = "";
-        return "";
+        situacao="";   
     }
 
     public String pesquisar() {
         sql = "Select a from Associado a where a.cliente.nome like '%" + nome + "%' ";
-        if (cpf.length() > 0) {
+        if (cpf!=null && cpf.length() > 0) {
             sql = sql + " and a.cliente.cpf='" + cpf + "' ";
         }
-        if (email.length() > 0) {
+        if (email!=null && email.length() > 0) {
             sql = sql + " and a.cliente.email='" + email + "' ";
         }
-        if (telefone.length() > 0) {
+        if (telefone!=null && telefone.length() > 0) {
             sql = sql + " and a.cliente.telefone='" + telefone + "' ";
         }
-        if (matricula.length() > 0) {
+        if (matricula!=null && matricula.length() > 0) {
             sql = sql + " and a.matricula='" + matricula + "' ";
         }
-        if (situacao.length() > 0) {
+        if (situacao!=null && situacao.length() > 0) {
             sql = sql + " and a.situacao='" + situacao + "'";
         }
         sql = sql + " order by a.cliente.nome";

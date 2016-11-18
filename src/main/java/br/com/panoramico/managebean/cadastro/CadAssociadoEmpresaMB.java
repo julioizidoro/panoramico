@@ -148,6 +148,7 @@ public class CadAssociadoEmpresaMB implements Serializable{
             associadoempresa = new Associadoempresa();
             gerarListaEmpresa();
             empresa = null;
+            Mensagem.lancarMensagemInfo("", "Sócio desvinculado a empresa.");
             botaoAssociar = "Associar a Empresa";
         }
     }
