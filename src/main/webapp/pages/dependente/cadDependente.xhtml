@@ -76,7 +76,7 @@
                     <f:attribute name="listaPlano" value="#{cadDependenteMB.listaPlano}"/>
                     <p:ajax event="change" listener="#{cadDependenteMB.pegarValorPlano()}" update="panelIdPlano, idValorPlano"/>
                 </p:selectOneMenu> 
-                <p:inputText class="form-control" id="idValorPlano" value="#{cadDependenteMB.valorPlano}" style="width: 70%;font-size: 12px;text-align: right;float: right;margin-right: 3%;">
+                <p:inputText class="form-control" id="idValorPlano" value="#{cadDependenteMB.valorPlano}" readonly="true" style="width: 70%;font-size: 12px;text-align: right;float: right;margin-right: 3%;">
                     <f:convertNumber pattern="##,###,###,###.##"/>  
                 </p:inputText>
             </h:panelGrid>
