@@ -32,7 +32,7 @@ public class CadClienteMB implements  Serializable{
     private Cliente cliente;
     private Boolean ePassaporte;
     private String cpfCliente;
-    private Boolean noveDigito = false;
+    private boolean noveDigito = false;
     
     
     @PostConstruct
@@ -85,14 +85,14 @@ public class CadClienteMB implements  Serializable{
         this.cpfCliente = cpfCliente;
     }
 
-    public Boolean getNoveDigito() {
+    public boolean isNoveDigito() {
         return noveDigito;
     }
 
-    public void setNoveDigito(Boolean noveDigito) {
+    public void setNoveDigito(boolean noveDigito) {
         this.noveDigito = noveDigito;
     }
-    
+
     
     
     

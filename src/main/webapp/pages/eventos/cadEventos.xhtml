@@ -67,7 +67,7 @@
                 <p:inputText class="form-control" value="#{cadEventoMB.evento.valor}" style="width:70%;text-align: right;float: left;font-size: 12px;">
                     <f:convertNumber pattern="##,###,###,###.##"/>  
                 </p:inputText>
-                <p:inputMask mask="99/99/9999"  class="form-control" value="#{cadEventoMB.dataEvento}" style="width:70%;font-size: 12px;">
+                <p:inputMask mask="99/99/9999"  class="form-control" value="#{cadEventoMB.evento.data}" style="width:70%;font-size: 12px;">
                     <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
                 </p:inputMask>   
                 <h:panelGroup>
