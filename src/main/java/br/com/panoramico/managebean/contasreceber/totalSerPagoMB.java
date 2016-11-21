@@ -364,4 +364,8 @@ public class totalSerPagoMB implements Serializable{
        String nome = contasreceber.getCliente().getAssociado().getAssociadoempresaList().get(0).getEmpresa().getRazaosocial();
        return nome;
    }
+   
+   public String voltarContasReceber(){
+       return "consContasReceber";
+   }
 }

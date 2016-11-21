@@ -34,11 +34,14 @@
                             <h:outputText class="titTela" id="idValorEmpresa" value="#{totalSerPagoMB.valorTotalEmpresa}" style="font-size: 18px;float: left;">
                                 <f:convertNumber pattern="##,###,###,###.##" minFractionDigits="2" />
                             </h:outputText> 
-                                <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" style="margin-top: -1%;float: right;"  action="#{totalSerPagoMB.boletoEmpresa()}" title="Boletos da Empresa">
-                                    <div class="icoAdd fa fa-file-text-o"></div>
-                                </p:commandLink> 
+                            <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" style="margin-top: -1%;float: right;"  action="#{totalSerPagoMB.boletoEmpresa()}" title="Boletos da Empresa">
+                                <div class="icoAdd fa fa-file-text-o"></div>
+                            </p:commandLink>
+                            <p:commandLink  action="#{totalSerPagoMB.voltarContasReceber()}">
+                                <div class="icoAdd fa fa-arrow-left" style="margin-top:-2%;"></div>
+                            </p:commandLink>
                             <h:dataTable id="idConsultaEmpresa" styleClass="table" value="#{totalSerPagoMB.listaTotalContasAssociadoEmpresa}" var="associadoempresa">
-                                
+ 
                                 <h:column>
                                     <f:facet name="header">Parcela</f:facet> 
                                     <h:outputText value="#{associadoempresa.numeroparcela}" styleClass="alinhamento" style="text-align: left !important;margin-right:40%;"/>
@@ -72,44 +75,47 @@
                         </p:tab>
                         <p:tab title="Associados">
                             <p:outputLabel value="Total R$" class="titTela" style="margin-left: 1%;float: left;font-size: 18px;"/>
-                                <h:outputText class="titTela" value="#{totalSerPagoMB.valorTotalAssociado}" style="font-size: 18px;float: left;">
-                                    <f:convertNumber pattern="##,###,###,###.##" minFractionDigits="2" />
-                                </h:outputText> 
-                                <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" style="margin-top: -1%;float: right;"  action="#{totalSerPagoMB.boletoAssociado()}" title="Boletos do Associado">
-                                    <div class="icoAdd fa fa-file-text-o"></div>
-                                </p:commandLink> 
-                                <h:dataTable id="idConsultaAssociado" styleClass="table" value="#{totalSerPagoMB.listaTotalContasAssociados}" var="associado">
-                                    <h:column>
-                                        <f:facet name="header">Cliente</f:facet> 
-                                        <h:outputText value="#{associado.cliente.nome}" styleClass="alinhamento" style="float: left;" />
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Parcela</f:facet> 
-                                        <h:outputText value="#{associado.numeroparcela}" styleClass="alinhamento" style="text-align: left !important;margin-right:40%;"/>
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Vencimento</f:facet> 
-                                        <h:outputText value="#{associado.datavencimento}" styleClass="alinhamento" style="text-align: left !important;margin-right:40%;">
-                                            <f:convertDateTime pattern="dd/MM/yyyy"
-                                                               timeZone="America/Sao_Paulo" />
-                                        </h:outputText>
-                                    </h:column>
-                                    <h:column>
-                                        <f:facet name="header">Valor</f:facet> 
-                                        <h:outputText value="#{associado .valorconta}" styleClass="alinhamento" style="float: right;">
-                                            <f:convertNumber pattern="##,###,###,###.##" minFractionDigits="2" />
-                                        </h:outputText>
-                                    </h:column>
-                                    <h:column>  
-                                        <f:facet name="header">
-                                            <p:selectBooleanCheckbox value="#{totalSerPagoMB.selecionadoTodosAssociado}" style="float: right;">
-                                                <p:ajax event="change" listener="#{totalSerPagoMB.selecionarTodasListaAssociado()}" update="idConsultaAssociado"/>
-                                            </p:selectBooleanCheckbox>
-                                        </f:facet>
-                                        <p:selectBooleanCheckbox value="#{associado.selecionado}" style="float: right;"/>
-                                    </h:column> 
-                                    
-                                </h:dataTable>
+                            <h:outputText class="titTela" value="#{totalSerPagoMB.valorTotalAssociado}" style="font-size: 18px;float: left;">
+                                <f:convertNumber pattern="##,###,###,###.##" minFractionDigits="2" />
+                            </h:outputText> 
+                            <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" style="margin-top: -1%;float: right;"  action="#{totalSerPagoMB.boletoAssociado()}" title="Boletos do Associado">
+                                <div class="icoAdd fa fa-file-text-o"></div>
+                            </p:commandLink> 
+                            <p:commandLink  action="#{totalSerPagoMB.voltarContasReceber()}">
+                                <div class="icoAdd fa fa-arrow-left" style="margin-top:-2%;"></div>
+                            </p:commandLink>
+                            <h:dataTable id="idConsultaAssociado" styleClass="table" value="#{totalSerPagoMB.listaTotalContasAssociados}" var="associado">
+                                <h:column>
+                                    <f:facet name="header">Cliente</f:facet> 
+                                    <h:outputText value="#{associado.cliente.nome}" styleClass="alinhamento" style="float: left;" />
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">Parcela</f:facet> 
+                                    <h:outputText value="#{associado.numeroparcela}" styleClass="alinhamento" style="text-align: left !important;margin-right:40%;"/>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">Vencimento</f:facet> 
+                                    <h:outputText value="#{associado.datavencimento}" styleClass="alinhamento" style="text-align: left !important;margin-right:40%;">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"
+                                                           timeZone="America/Sao_Paulo" />
+                                    </h:outputText>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">Valor</f:facet> 
+                                    <h:outputText value="#{associado .valorconta}" styleClass="alinhamento" style="float: right;">
+                                        <f:convertNumber pattern="##,###,###,###.##" minFractionDigits="2" />
+                                    </h:outputText>
+                                </h:column>
+                                <h:column>  
+                                    <f:facet name="header">
+                                        <p:selectBooleanCheckbox value="#{totalSerPagoMB.selecionadoTodosAssociado}" style="float: right;">
+                                            <p:ajax event="change" listener="#{totalSerPagoMB.selecionarTodasListaAssociado()}" update="idConsultaAssociado"/>
+                                        </p:selectBooleanCheckbox>
+                                    </f:facet>
+                                    <p:selectBooleanCheckbox value="#{associado.selecionado}" style="float: right;"/>
+                                </h:column> 
+
+                            </h:dataTable>
                         </p:tab>
                     </p:tabView> 
                 </h:form>
