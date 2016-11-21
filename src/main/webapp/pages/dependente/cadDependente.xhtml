@@ -36,7 +36,7 @@
             <br/>
             <h:panelGrid columns="4" columnClasses="tamanho45, tamanho20,tamanho20,tamanho20" style="margin-left:1%;width:95%;"> 
                 <p:outputLabel class="titTela" value="E-mail" style="font-size: 12px;text-align: left;"/> 
-                <p:outputLabel value="Cep" class="titTela" style="font-size: 12px;text-align: left;"/>
+                <p:outputLabel value="RG" class="titTela" style="font-size: 12px;text-align: left;"/>
                 <p:outputLabel class="titTela" value="Telefone" style="font-size: 12px;text-align: left;"/>
                 <p:outputLabel value="9°" class="titTela" style="margin-left:-48%;font-size: 14px;">
                     <p:selectBooleanCheckbox id="idNonoDigito"
@@ -46,7 +46,7 @@
                 </p:outputLabel>
 
                 <p:inputText class="form-control" value="#{cadDependenteMB.dependente.email}" style="width: 90%;font-size: 12px;"/>
-                <p:inputMask class="form-control" mask="99999-999" value="#{cadDependenteMB.dependente.cep}" style="width: 90%;font-size: 12px;"/>    
+                <p:inputMask class="form-control" mask="9.999.999" value="#{cadDependenteMB.dependente.rg}" style="width: 90%;font-size: 12px;"/>    
                 <p:inputMask class="form-control" id="idTelefone" mask="#{cadDependenteMB.habilitarNoveDigito()}" value="#{cadDependenteMB.dependente.telefone}" style="width: 100%;font-size: 12px;"/>
                 <p:outputLabel/>
             </h:panelGrid>
@@ -73,20 +73,6 @@
                     <f:selectItem itemLabel="Inativo" itemValue="Inativo" />  
                 </p:selectOneMenu>
             </h:panelGrid>
-            <h:panelGrid id="panelIdPlano" columnClasses="tamanho45, tamanho30" columns="2" style="margin-left:1%;width:95%;">
-                <p:outputLabel class="titTela" value="Plano" style="font-size: 12px;text-align: left;;"/>
-                <p:outputLabel class="titTela" value="Valor do plano" style="font-size: 12px;text-align: left;margin-left: 27%;;"/>
-                <p:selectOneMenu  class="form-control" id="plano"  style="width:70%;font-size: 12px;"  value="#{cadDependenteMB.plano}" converter="PlanoConverter"
-                                  filter="true" filterMatchMode="contains" panelStyle="width:180px" >
-                    <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
-                    <f:selectItems  value="#{cadDependenteMB.listaPlano}" var="planoselecionado" itemLabel="#{planoselecionado.descricao}" itemValue="#{planoselecionado}"/>
-                    <f:attribute name="listaPlano" value="#{cadDependenteMB.listaPlano}"/>
-                    <p:ajax event="change" listener="#{cadDependenteMB.pegarValorPlano()}" update="panelIdPlano, idValorPlano"/>
-                </p:selectOneMenu> 
-                <p:inputText class="form-control" id="idValorPlano" value="#{cadDependenteMB.valorPlano}" readonly="true" style="width: 70%;font-size: 12px;text-align: right;float: right;margin-right: 3%;">
-                    <f:convertNumber pattern="##,###,###,###.##"/>  
-                </p:inputText>
-            </h:panelGrid>
             <br/><br/>
             <hr/>
             <br/>
@@ -97,5 +83,5 @@
                 <div style="font-size: 16px" class="cancelar">Cancelar</div>
             </p:commandLink>
         </h:form>
-    </h:body>
+    </h:body> 
 </html>

@@ -54,8 +54,7 @@ public class CadDependenteMB implements Serializable{
             dependente = new Dependente(); 
         }else{
             associado = dependente.getAssociado();
-            plano = dependente.getPlano();
-            valorPlano = plano.getValor();
+            valorPlano = associado.getPlano().getValor();
         }
         gerarListaAssociado();
         gerarListaPlano();
@@ -151,7 +150,6 @@ public class CadDependenteMB implements Serializable{
         if (msg.length() > 0) {
             Mensagem.lancarMensagemInfo("Atenção!! ", msg);
         }else{
-            dependente.setPlano(plano);
             if(dependente.getIddependente()==null){
                 dependente.setSituacao("Ativo");
                 String matricula = associado.getMatricula()+"/";
@@ -181,8 +179,8 @@ public class CadDependenteMB implements Serializable{
     
     public String validarDados(){
         String mensagem = "";
-        if (plano == null) {
-            mensagem = mensagem + " Plano não selecionado \r\n";
+        if (associado == null) {
+            mensagem = mensagem + " Associado não selecionado \r\n";
         }
         return mensagem;
     }

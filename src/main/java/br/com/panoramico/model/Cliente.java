@@ -51,7 +51,16 @@ public class Cliente implements Serializable {
     private Date datanascimento;
     @Size(max = 20)
     @Column(name = "telefone")
-    private String telefone; 
+    private String telefone;
+    @Size(max = 20)
+    @Column(name = "telefone1")
+    private String telefone1; 
+    @Size(max = 20)
+    @Column(name = "telefone2")
+    private String telefone2; 
+    @Size(max = 20)
+    @Column(name = "rg")
+    private String rg; 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "cliente")
     private Associado associado;
     
@@ -117,6 +126,30 @@ public class Cliente implements Serializable {
 
     public void setAssociado(Associado associado) {
         this.associado = associado;
+    }
+
+    public String getTelefone1() {
+        return telefone1;
+    }
+
+    public void setTelefone1(String telefone1) {
+        this.telefone1 = telefone1;
+    }
+
+    public String getTelefone2() {
+        return telefone2;
+    }
+
+    public void setTelefone2(String telefone2) {
+        this.telefone2 = telefone2;
+    }
+
+    public String getRg() {
+        return rg;
+    }
+
+    public void setRg(String rg) {
+        this.rg = rg;
     }
 
     

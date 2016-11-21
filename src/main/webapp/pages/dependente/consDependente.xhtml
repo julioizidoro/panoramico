@@ -35,7 +35,8 @@
                         </p:tab>
                     </p:accordionPanel>  
                     <!-- TABELA CADASTROS -->
-                    <div class="col-6 titTela" style="margin-left:-14%;">Consulta Dependente</div>
+                    <br/>
+                    <div class="col-6 titTela" style="margin-left:-11%;">Consulta Dependente</div>
                     <p:commandLink rendered="#{dependenteMB.habilitarVoltar}" action="#{dependenteMB.voltarAssociado()}">
                         <div class="icoAdd fa fa-arrow-left" ></div>
                     </p:commandLink>
@@ -56,17 +57,13 @@
                             </h:outputText>
                         </h:column>
                         <h:column>
-                            <f:facet name="header">Email</f:facet> 
-                            <h:outputText value="#{dependente.email}" styleClass="alinhamento" style="float: left;"/>
+                            <f:facet name="header">RG</f:facet> 
+                            <h:outputText value="#{dependente.rg}" styleClass="alinhamento" style="float: left;"/>
                         </h:column>
                         <h:column>
-                            <f:facet name="header">Telefone</f:facet> 
-                            <h:outputText value="#{dependente.telefone}" styleClass="alinhamento" style="text-align: left !important;margin-right:40%;" />
+                            <f:facet name="header">Grau Parentesco</f:facet> 
+                            <h:outputText value="#{dependente.grauparentesco}" styleClass="alinhamento" style="text-align: left !important;float: left;" />
                         </h:column>
-                        <h:column>
-                                    <f:facet name="header">Matricula</f:facet>
-                                    <h:outputText value="#{dependente.matricula}" style="float: left;"/>
-                                </h:column>
                         <h:column>
                             <p:commandLink action="#{dependenteMB.editar(dependente)}" rendered="#{usuarioLogadoMB.editar}">
                                 <div class="fa fa-pencil-square-o">

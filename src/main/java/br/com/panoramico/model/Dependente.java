@@ -42,8 +42,8 @@ public class Dependente implements Serializable {
     @Column(name = "nome")
     private String nome;
     @Size(max = 14)
-    @Column(name = "cep")
-    private String cep;
+    @Column(name = "rg")
+    private String rg;
     @Column(name = "datanascimento")
     @Temporal(TemporalType.DATE)
     private Date datanascimento;
@@ -66,10 +66,6 @@ public class Dependente implements Serializable {
     private Associado associado;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "dependente")
     private List<Examedependente> examedependenteList;
-    @JoinColumn(name = "plano_idplano", referencedColumnName = "idplano")
-    @ManyToOne(optional = false)
-    private Plano plano;
-
     public Dependente() {
     }
 
@@ -91,14 +87,6 @@ public class Dependente implements Serializable {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public String getCep() {
-        return cep;
-    }
-
-    public void setCep(String cep) {
-        this.cep = cep;
     }
 
     public Date getDatanascimento() {
@@ -157,13 +145,16 @@ public class Dependente implements Serializable {
         this.grauparentesco = grauparentesco;
     }
 
-    public Plano getPlano() {
-        return plano;
+
+    public String getRg() {
+        return rg;
     }
 
-    public void setPlano(Plano plano) {
-        this.plano = plano;
+    public void setRg(String rg) {
+        this.rg = rg;
     }
+    
+    
     
     
 

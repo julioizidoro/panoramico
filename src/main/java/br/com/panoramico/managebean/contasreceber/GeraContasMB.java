@@ -173,9 +173,6 @@ public class GeraContasMB implements Serializable{
         float valorAssociado = associado.getPlano().getValor();
         float valorDependente = 0.0f;
         float valorTotal = 0.0f;
-        for (int i = 0; i < associado.getDependenteList().size(); i++) {
-            valorDependente = valorDependente + associado.getDependenteList().get(i).getPlano().getValor();
-        }
         valorTotal = (valorAssociado + valorDependente) - associado.getDescotomensalidade();
         return valorTotal;
     }

@@ -33,6 +33,9 @@ public class CadClienteMB implements  Serializable{
     private Boolean ePassaporte;
     private String cpfCliente;
     private boolean noveDigito = false;
+    private boolean noveDigito2 = false;
+    private boolean noveDigito3 = false;
+    private String telefone = "";
     
     
     @PostConstruct
@@ -97,6 +100,31 @@ public class CadClienteMB implements  Serializable{
         this.noveDigito = noveDigito;
     }
 
+    public boolean isNoveDigito2() {
+        return noveDigito2;
+    }
+
+    public void setNoveDigito2(boolean noveDigito2) {
+        this.noveDigito2 = noveDigito2;
+    }
+
+    public boolean isNoveDigito3() {
+        return noveDigito3;
+    }
+
+    public void setNoveDigito3(boolean noveDigito3) {
+        this.noveDigito3 = noveDigito3;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    
     
     
     
@@ -124,6 +152,32 @@ public class CadClienteMB implements  Serializable{
             return "(99)999999999";
         }else{
             return "(99)99999999";
+        }
+    }
+    
+    public String habilitarNoveDigito2(){
+        if (noveDigito2) {
+            return "(99)999999999";
+        }else{
+            return "(99)99999999";
+        }
+    }
+    
+    public String habilitarNoveDigito3(){
+        if (noveDigito3) {
+            return "(99)999999999";
+        }else{
+            return "(99)99999999";
+        }
+    }
+    
+    
+    public void metodoKeyUp(){
+        if (telefone != null && (telefone.length() > 0 && telefone.length() <= 1)) {
+            telefone = "(" + telefone;
+        }
+        if (telefone != null && telefone.length() == 3) {
+            telefone = telefone + ")";
         }
     }
 }

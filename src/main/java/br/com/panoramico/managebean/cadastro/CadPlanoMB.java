@@ -8,6 +8,7 @@ package br.com.panoramico.managebean.cadastro;
 import br.com.panoramico.dao.PlanoDao;
 import br.com.panoramico.model.Empresa;
 import br.com.panoramico.model.Plano;
+import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -60,11 +61,27 @@ public class CadPlanoMB implements Serializable{
     
     
     public void salvar(){
-        plano = planoDao.update(plano);
-        RequestContext.getCurrentInstance().closeDialog(plano);
+        String mensagem = validarDados();
+        if (mensagem.length() == 0) {
+            plano = planoDao.update(plano);
+            RequestContext.getCurrentInstance().closeDialog(plano);
+        }else{
+            Mensagem.lancarMensagemInfo("", mensagem);
+        }
     }
     
     public void cancelar(){
         RequestContext.getCurrentInstance().closeDialog(plano);
+    }
+    
+    public String validarDados(){
+        String msg = "";
+        if (plano.getDescricao() == null || plano.getDescricao().length() == 0) {
+            msg = msg + " Informe a descrição do plano \r\n";
+        }
+        if (plano.getValor() == null || plano.getValor() < 0.0f) {
+            msg = msg + " Informe um valor do plano igual ou maior que zero \r\n";
+        }
+        return msg;
     }
 }
