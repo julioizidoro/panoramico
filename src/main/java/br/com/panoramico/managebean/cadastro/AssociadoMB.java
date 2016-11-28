@@ -56,6 +56,7 @@ public class AssociadoMB implements Serializable {
     private String situacao;
     private boolean habilitarVoltar = false;
     private boolean habilitarVoltarFinanceiro = false;
+    private boolean temsql = false;
 
     @PostConstruct
     public void init() {
@@ -63,9 +64,7 @@ public class AssociadoMB implements Serializable {
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         sql = (String) session.getAttribute("sql");
         if (sql != null) {
-            gerarListaAssociado();
-        } else {
-            sql = "Select a from Associado a ";
+            temsql = true;
             gerarListaAssociado();
         }
         session.removeAttribute("sql");
@@ -166,10 +165,37 @@ public class AssociadoMB implements Serializable {
     public void setSituacao(String situacao) {
         this.situacao = situacao;
     }
+
+    public boolean isHabilitarVoltar() {
+        return habilitarVoltar;
+    }
+
+    public void setHabilitarVoltar(boolean habilitarVoltar) {
+        this.habilitarVoltar = habilitarVoltar;
+    }
+
+    public boolean isHabilitarVoltarFinanceiro() {
+        return habilitarVoltarFinanceiro;
+    }
+
+    public void setHabilitarVoltarFinanceiro(boolean habilitarVoltarFinanceiro) {
+        this.habilitarVoltarFinanceiro = habilitarVoltarFinanceiro;
+    }
+
+    public boolean isTemsql() {
+        return temsql;
+    }
+
+    public void setTemsql(boolean temsql) {
+        this.temsql = temsql;
+    }
     
     
 
     public void gerarListaAssociado() {
+        if (!temsql) {
+            sql = "Select a From Associado a order by a.cliente.nome";
+        }
         listaAssociado = associadoDao.list(sql);
         if (listaAssociado == null) {
             listaAssociado = new ArrayList<Associado>();
@@ -194,8 +220,8 @@ public class AssociadoMB implements Serializable {
         Associado associado = (Associado) event.getObject();
         if (associado.getIdassociado() != null) {
             Mensagem.lancarMensagemInfo("Salvou", "Cadastro de Associado realizado com sucesso");
+            listaAssociado.add(associado);
         }
-        gerarListaAssociado();
     }
 
     public void retornoDialogAlteracao(SelectEvent event) {
@@ -252,7 +278,7 @@ public class AssociadoMB implements Serializable {
 
     public void limpar() {
         sql = "Select a from Associado a where a.situacao='Ativo'";
-        gerarListaAssociado();
+        listaAssociado = new ArrayList<>();
         matricula = "";
         nome = "";
         cpf = "";

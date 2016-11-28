@@ -53,11 +53,11 @@ public class DependenteMB implements Serializable {
         associado = (Associado) session.getAttribute("associado");
         if (associado == null) {
         }else{
+            gerarListaDependente();
             habilitarVoltar = (boolean) session.getAttribute("habilitarVoltar");
             session.removeAttribute("habilitarVoltar");
         }
         session.removeAttribute("associado");
-        gerarListaDependente();
     }
 
     public DependenteDao getDependenteDao() {
@@ -166,8 +166,11 @@ public class DependenteMB implements Serializable {
         Dependente dependente = (Dependente) event.getObject();
         if (dependente.getIddependente() != null) {
             Mensagem.lancarMensagemInfo("Salvou", "Cadastro de Dependente realizado com sucesso");
+            if (listaDependente == null) {
+                listaDependente = new ArrayList<>();
+            }
+            listaDependente.add(dependente);
         }
-        gerarListaDependente();
     }
 
     public void retornoDialogAlteracao(SelectEvent event) {

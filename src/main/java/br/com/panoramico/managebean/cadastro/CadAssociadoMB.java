@@ -15,6 +15,7 @@ import br.com.panoramico.model.Cliente;
 import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.model.Dependente;
 import br.com.panoramico.model.Plano;
+import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -71,6 +72,7 @@ public class CadAssociadoMB implements Serializable {
             if (plano == null) {
                 plano = new Plano();
             }
+            associado.setEstado("PR");
         } else {
             cliente = associado.getCliente();
             plano = associado.getPlano();
@@ -183,33 +185,38 @@ public class CadAssociadoMB implements Serializable {
         associado.setCliente(cliente);
         associado.setAno(new Year().getYear());
         associado.setMes(new Month().getMonth() + 1);
-        if(associado.getIdassociado()==null){
-            associado.setDataassociacao(new Date());
-        }
-        if (associado.getSituacao().equalsIgnoreCase("Inativo")) {
-            if (associado.getDependenteList() != null && associado.getDependenteList().size() > 0) {
-                Dependente dependente;
-                for (int i = 0; i < associado.getDependenteList().size(); i++) {
-                    dependente = associado.getDependenteList().get(i);
-                    dependente.setSituacao("Inativo");
-                    dependenteDao.update(dependente);
+        String msg = validarDados();
+        if (msg.length() > 0) {
+            Mensagem.lancarMensagemInfo("", msg);
+        }else{
+            if(associado.getIdassociado()==null){
+                associado.setDataassociacao(new Date());
+            }
+            if (associado.getSituacao().equalsIgnoreCase("Inativo")) {
+                if (associado.getDependenteList() != null && associado.getDependenteList().size() > 0) {
+                    Dependente dependente;
+                    for (int i = 0; i < associado.getDependenteList().size(); i++) {
+                        dependente = associado.getDependenteList().get(i);
+                        dependente.setSituacao("Inativo");
+                        dependenteDao.update(dependente);
+                    }
+                }
+                List<Contasreceber> listaContasReceber = contasReceberDao.list("Select c from Contasreceber c where c.situacao<>'CANCELADO' and c.situacao<>'PAGO'");
+                if (listaContasReceber != null && listaContasReceber.size() > 0) {
+                    for (int i = 0; i < listaContasReceber.size(); i++) {
+                        listaContasReceber.get(i).setSituacao("CANCELADO");
+                        contasReceberDao.update(listaContasReceber.get(i));
+                    }
+                }
+            }else if (situacaoAntiga != null && situacaoAntiga.equalsIgnoreCase("Inativo")
+                    && !situacaoAntiga.equalsIgnoreCase(associado.getSituacao())) {
+                if (associado.getDependenteList() != null && associado.getDependenteList().size() > 0) {
+                    salvarDependentes();
                 }
             }
-            List<Contasreceber> listaContasReceber = contasReceberDao.list("Select c from Contasreceber c where c.situacao<>'CANCELADO' and c.situacao<>'PAGO'");
-            if (listaContasReceber != null && listaContasReceber.size() > 0) {
-                for (int i = 0; i < listaContasReceber.size(); i++) {
-                    listaContasReceber.get(i).setSituacao("CANCELADO");
-                    contasReceberDao.update(listaContasReceber.get(i));
-                }
-            }
-        }else if (situacaoAntiga != null && situacaoAntiga.equalsIgnoreCase("Inativo")
-                && !situacaoAntiga.equalsIgnoreCase(associado.getSituacao())) {
-            if (associado.getDependenteList() != null && associado.getDependenteList().size() > 0) {
-                salvarDependentes();
-            }
+            associado = associadoDao.update(associado);
+            RequestContext.getCurrentInstance().closeDialog(associado);
         }
-        associado = associadoDao.update(associado);
-        RequestContext.getCurrentInstance().closeDialog(associado);
     }
 
     public void salvarDependentes() {
@@ -245,6 +252,29 @@ public class CadAssociadoMB implements Serializable {
         if (plano != null) {
             valorPlano = plano.getValor();
         }
+    }
+     
+     
+    public String validarDados(){
+        Associado socio;
+        String mensagem = "";
+        
+        if (cliente == null) {
+            mensagem = mensagem + " Informe o cliente para esse associado \r\n";
+        }
+        if (associado.getMatricula() == null || associado.getMatricula().length() == 0) {
+            mensagem = mensagem + " Informe a matricula \r\n";
+        }else{
+            socio = associadoDao.find("Select a From Associado a Where a.matricula='" + associado.getMatricula() + "'");
+            if (socio == null || socio.getIdassociado() == null) {
+            }else{
+                mensagem = mensagem + " Matricula ja existente \r\n";
+            }
+        }
+        if (plano == null) {
+            mensagem = mensagem + " Informe o plano desde associado \r\n";
+        }
+        return mensagem;
     }
 
 }

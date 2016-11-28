@@ -44,6 +44,7 @@ public class ClienteMB implements Serializable{
     private String sql;
     @EJB
     private AssociadoDao associadoDao;
+    private boolean temSql = false;
     
     
     @PostConstruct
@@ -52,9 +53,7 @@ public class ClienteMB implements Serializable{
        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
        sql = (String) session.getAttribute("sql");
        if (sql!=null){
-           gerarListaCliente();
-       }else {
-           sql = "Select c from Cliente c";
+           temSql = true;
            gerarListaCliente();
        }
        session.removeAttribute("sql");
@@ -116,9 +115,36 @@ public class ClienteMB implements Serializable{
         this.telefone = telefone;
     }
 
+    public String getSql() {
+        return sql;
+    }
+
+    public void setSql(String sql) {
+        this.sql = sql;
+    }
+
+    public AssociadoDao getAssociadoDao() {
+        return associadoDao;
+    }
+
+    public void setAssociadoDao(AssociadoDao associadoDao) {
+        this.associadoDao = associadoDao;
+    }
+
+    public boolean isTemSql() {
+        return temSql;
+    }
+
+    public void setTemSql(boolean temSql) {
+        this.temSql = temSql;
+    }
+
     
     
     public void gerarListaCliente(){
+        if (!temSql) {
+            sql = "Select c From Cliente c order by c.nome";
+        }
         listaCliente = clienteDao.list(sql);
         if (listaCliente == null) {
             listaCliente = new ArrayList<Cliente>();
@@ -145,8 +171,8 @@ public class ClienteMB implements Serializable{
         Cliente cliente = (Cliente) event.getObject();
         if (cliente.getIdcliente() != null) {
             Mensagem.lancarMensagemInfo("Salvou", "Cadastro de cliente realizado com sucesso");
+            listaCliente.add(cliente);
         }
-        gerarListaCliente();
     }
     
     public void retornoDialogAlteracao(SelectEvent event){

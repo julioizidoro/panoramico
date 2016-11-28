@@ -8,9 +8,9 @@
             <br/>
             <div class="col-10 boxAzulClaro" style="margin-left:8.5%;width: 83.2%;">  
                 <br/> 
-                <h:form id="idFormConsultaAssociado" style="margin-left:6%; width:85%;">
+                <h:form id="idFormConsultaAssociado" style="margin-left:1%; width:96%;">
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:10%;width: 80%;"/>
-                    <p:accordionPanel activeIndex="-1" style="width:85%;margin-left: 8%;z-index:1">
+                    <p:accordionPanel activeIndex="-1" style="width:74%;margin-left: 15%;z-index:1">
                         <p:tab title="Pesquisar">
                             <p:outputLabel value="Matrícula" class="titTela" style="font-size: 12px;text-align: left;margin-left: 2%;float: left;"/>
                             <p:outputLabel value="Nome" class="titTela" style="font-size: 12px;text-align: left;margin-left:12%;float: left;"/>
@@ -47,7 +47,7 @@
                         <div class="icoAdd fa fa-plus-square-o"></div>
                         <p:ajax event="dialogReturn" update="messages, idConsultaAssociado" listener="#{associadoMB.retornoDialogNovo}"/>
                     </p:commandLink>
-                    <h:dataTable id="idConsultaAssociado" styleClass="table" value="#{associadoMB.listaAssociado}" var="associado" style="width: 100%;">
+                    <h:dataTable id="idConsultaAssociado" styleClass="table" value="#{associadoMB.listaAssociado}" var="associado">
                         <h:column>
                             <f:facet name="header">Cliente</f:facet> 
                             <h:outputText value="#{associado.cliente.nome}" styleClass="alinhamento" style="float: left;" />
@@ -75,6 +75,14 @@
                             <h:outputText value="#{associado.matricula}" style="float: left;"/>
                         </h:column> 
                         <h:column>
+                            <f:facet name="header">Fone</f:facet>
+                            <h:outputText value="#{associado.cliente.telefone}" style="float: left;"/>
+                        </h:column> 
+                        <h:column>
+                            <f:facet name="header">Email</f:facet>
+                            <h:outputText value="#{associado.cliente.email}" style="float: left;"/>
+                        </h:column> 
+                        <h:column>
                             <p:commandLink action="#{associadoMB.editar(associado)}" rendered="#{usuarioLogadoMB.editar}">
                                 <div class="fa fa-pencil-square-o">
                                 </div>
@@ -84,8 +92,13 @@
                                 <div class="fa fa-usd" >
                                 </div>
                             </p:commandLink>
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                <p:commandButton style="margin-left:20%;" value="Sim" type="button" action="#{associadoMB.excluir(associado)}" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
                             <p:commandLink rendered="#{usuarioLogadoMB.excluir}" style="text-decoration: none;" action="#{associadoMB.excluir(associado)}" update=":idFormConsultaAssociado:messages, @form">
                                 <div class="fa fa-trash-o"></div>
+                                <p:confirm header="Confirmação" message="Tem certeza que deseja excluir ?" icon="ui-icon-alert" />
                             </p:commandLink>
                             <p:commandLink rendered="#{usuarioLogadoMB.editar}" style="text-decoration: none;" title="Associar a Empresa" action="#{associadoMB.associarEmpresa(associado)}" update=":idFormConsultaAssociado:messages, @form">
                                 <div class="fa fa-university"></div>

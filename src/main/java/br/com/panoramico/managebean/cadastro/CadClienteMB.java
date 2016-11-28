@@ -123,19 +123,22 @@ public class CadClienteMB implements  Serializable{
     public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
-
-    
-    
     
     
     public void salvar(){
+        String msg = "";
         if (ePassaporte) {
             FacesContext fc = FacesContext.getCurrentInstance();
             HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
             session.setAttribute("cliente", cliente);
         }
-        cliente = clienteDao.update(cliente);
-        RequestContext.getCurrentInstance().closeDialog(cliente);
+        msg = validarDados();
+        if (msg.length() > 0) {
+            Mensagem.lancarMensagemInfo("", msg);
+        }else{
+            cliente = clienteDao.update(cliente);
+            RequestContext.getCurrentInstance().closeDialog(cliente);
+        }
     }
     
     public String cancelar(){
@@ -179,5 +182,19 @@ public class CadClienteMB implements  Serializable{
         if (telefone != null && telefone.length() == 3) {
             telefone = telefone + ")";
         }
+    }
+    
+    public String validarDados(){
+        String mensagem = "";
+        if (cliente.getCpf() == null || cliente.getCpf().length() == 0) {
+            mensagem = mensagem + " Informe o CPF \r\n";
+        }else{
+            Cliente c = clienteDao.find("Select c From Cliente c Where c.cpf='" + cliente.getCpf() + "'");
+            if (c == null || c.getIdcliente() == null) {
+            }else{
+                mensagem = mensagem + " Este CPF ja existe \r\n";
+            }
+        }
+        return mensagem;
     }
 }

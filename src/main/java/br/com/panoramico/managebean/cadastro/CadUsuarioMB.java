@@ -148,18 +148,24 @@ public class CadUsuarioMB implements Serializable{
     }
 
     public String salvar() {
+        String msg = "";
         List<Usuario> listaUsuario = usuarioDao.list("Select u from Usuario u where u.login='" + usuario.getLogin() + "'");
         if (listaUsuario == null || listaUsuario.isEmpty()) {
             usuario.setPerfil(perfil);
-            try {
-                usuario.setSenha(Criptografia.encript(usuario.getSenha()));
-            } catch (NoSuchAlgorithmException ex) {
-                Logger.getLogger(CadUsuarioMB.class.getName()).log(Level.SEVERE, null, ex);
+            msg = validarDados();
+            if (msg.length() > 0) {
+                Mensagem.lancarMensagemInfo("", msg);
+            }else{
+                try {
+                    usuario.setSenha(Criptografia.encript(usuario.getSenha()));
+                } catch (NoSuchAlgorithmException ex) {
+                    Logger.getLogger(CadUsuarioMB.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                usuario.setSituacao(true);
+                usuario = usuarioDao.update(usuario);
+                boasVindas();
+                RequestContext.getCurrentInstance().closeDialog(usuario);
             }
-            usuario.setSituacao(true);
-            usuario = usuarioDao.update(usuario);
-            boasVindas();
-            RequestContext.getCurrentInstance().closeDialog(usuario);
         } else if (usuario.getIdusuario() != null) {
             usuario.setPerfil(perfil);
             usuario = usuarioDao.update(usuario);
@@ -191,5 +197,24 @@ public class CadUsuarioMB implements Serializable{
     public void cancelar(){
         perfil = perfilDao.find(1);
         RequestContext.getCurrentInstance().closeDialog(new Usuario());
+    }
+    
+    
+    public String validarDados(){
+        Usuario user;
+        String mensagem = "";
+        if (perfil == null) {
+            mensagem = mensagem + " Informe o perfil de acesso desse usuário \r\n";
+        }
+        if (usuario.getCpf() == null || usuario.getCpf().length() == 0) {
+            mensagem = mensagem + " Informe o CPF \r\n";
+        }else{
+            user = usuarioDao.find("Select u From Usuario u Where u.cpf='" + usuario.getCpf() + "'");
+            if (user == null || user.getIdusuario() == null) {
+            }else{
+                mensagem = mensagem + " Esse CPF ja existe \r\n";
+            }
+        }
+        return mensagem;
     }
 }
