@@ -87,7 +87,7 @@ public class GerarRelatorios {
     public static Connection getConexao(){
     	Connection conexao = null;
 		try {
-			conexao = DriverManager.getConnection("jdbc:mysql://189.4.97.103:8082/panoramico", "root", "jfhmaster123");
+			conexao = DriverManager.getConnection("jdbc:mysql://192.168.1.100:8081/panoramico", "root", "simples");
 		} catch (SQLException e) {   
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -55,6 +55,8 @@ public class ClienteMB implements Serializable{
        if (sql!=null){
            temSql = true;
            gerarListaCliente();
+       }else {
+           gerarListaCliente();
        }
        session.removeAttribute("sql");
     }
@@ -143,7 +145,7 @@ public class ClienteMB implements Serializable{
     
     public void gerarListaCliente(){
         if (!temSql) {
-            sql = "Select c From Cliente c order by c.nome";
+            sql = "Select c From Cliente c order by c.idcliente DESC LIMIT 5";
         }
         listaCliente = clienteDao.list(sql);
         if (listaCliente == null) {
@@ -212,7 +214,7 @@ public class ClienteMB implements Serializable{
     }
     
     public String limpar(){
-        sql = "Select c from Cliente c";
+        temSql=false;
         gerarListaCliente();
         nome="";
         cpf="";
@@ -222,6 +224,7 @@ public class ClienteMB implements Serializable{
     }
     
     public String pesquisar(){
+        temSql=true;
         sql = "Select c from Cliente c where c.nome like '%" + nome + "%' ";
         if (cpf.length()>0){
             sql = sql + " and c.cpf='" + cpf + "' ";

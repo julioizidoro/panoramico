@@ -12,7 +12,6 @@ import br.com.panoramico.model.Associado;
 import br.com.panoramico.model.Associadoempresa;
 import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.model.Dependente;
-import br.com.panoramico.model.Evento;
 import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
 import java.sql.SQLException;
@@ -57,17 +56,26 @@ public class AssociadoMB implements Serializable {
     private boolean habilitarVoltar = false;
     private boolean habilitarVoltarFinanceiro = false;
     private boolean temsql = false;
+    private int idAssociado=0;
 
     @PostConstruct
     public void init() {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         sql = (String) session.getAttribute("sql");
-        if (sql != null) {
+        String idA = (String) session.getAttribute("idAssociado");
+        if (idA!=null){
+            idAssociado = Integer.parseInt(idA);
+        }else idAssociado=0;
+        if (idAssociado>0){
+            sql = null;
+             gerarListaAssociado();
+        }else if (sql != null) {
             temsql = true;
             gerarListaAssociado();
         }
         session.removeAttribute("sql");
+        session.removeAttribute("idAssociado");
     }
 
     public AssociadoDao getAssociadoDao() {
@@ -194,9 +202,13 @@ public class AssociadoMB implements Serializable {
 
     public void gerarListaAssociado() {
         if (!temsql) {
-            sql = "Select a From Associado a order by a.cliente.nome";
+            if (idAssociado>0){
+                sql = "Select a From Associado a where a.cliente.idcliente>" + (idAssociado-5) + " order by a.cliente.idcliente DESC";
+                listaAssociado = associadoDao.list(sql);
+            }
+        }else {
+            listaAssociado = associadoDao.list(sql);
         }
-        listaAssociado = associadoDao.list(sql);
         if (listaAssociado == null) {
             listaAssociado = new ArrayList<Associado>();
         }
@@ -216,12 +228,17 @@ public class AssociadoMB implements Serializable {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         sql = (String) session.getAttribute("sql");
+         String idA = (String) session.getAttribute("idAssociado");
+        if (idA!=null){
+            idAssociado = Integer.parseInt(idA);
+        }else idAssociado=0;
         session.removeAttribute("sql");
+        session.removeAttribute("idAssociado");
         Associado associado = (Associado) event.getObject();
         if (associado.getIdassociado() != null) {
             Mensagem.lancarMensagemInfo("Salvou", "Cadastro de Associado realizado com sucesso");
-            listaAssociado.add(associado);
         }
+        gerarListaAssociado();
     }
 
     public void retornoDialogAlteracao(SelectEvent event) {
@@ -229,6 +246,7 @@ public class AssociadoMB implements Serializable {
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         sql = (String) session.getAttribute("sql");
         session.removeAttribute("sql");
+        idAssociado=0;
         Associado associado = (Associado) event.getObject();
         if (associado.getIdassociado() != null) {
             Mensagem.lancarMensagemInfo("Salvou", "Alteração do Associado realizado com sucesso");
@@ -277,18 +295,19 @@ public class AssociadoMB implements Serializable {
     }
 
     public void limpar() {
-        sql = "Select a from Associado a where a.situacao='Ativo'";
-        listaAssociado = new ArrayList<>();
+        temsql = false;
         matricula = "";
         nome = "";
         cpf = "";
         email = "";
         telefone = "";
         situacao="";   
+        gerarListaAssociado();
     }
 
     public String pesquisar() {
         sql = "Select a from Associado a where a.cliente.nome like '%" + nome + "%' ";
+        temsql= true;
         if (cpf!=null && cpf.length() > 0) {
             sql = sql + " and a.cliente.cpf='" + cpf + "' ";
         }

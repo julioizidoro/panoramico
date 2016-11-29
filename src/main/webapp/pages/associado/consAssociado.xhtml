@@ -53,14 +53,6 @@
                             <h:outputText value="#{associado.cliente.nome}" styleClass="alinhamento" style="float: left;" />
                         </h:column>
                         <h:column>
-                            <f:facet name="header">Cidade</f:facet> 
-                            <h:outputText value="#{associado.cidade}" styleClass="alinhamento" style="float: left; width: 20%;" />
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">Estado</f:facet> 
-                            <h:outputText value="#{associado.estado}" styleClass="alinhamento" style="text-align: left !important;margin-right:30%;" />
-                        </h:column>
-                        <h:column>
                             <f:facet name="header">Desconto</f:facet> 
                             <h:outputText value="#{associado.descotomensalidade}" styleClass="alinhamento" style="float: right;">
                                 <f:convertNumber pattern="##,###,###,###.##" minFractionDigits="2" />

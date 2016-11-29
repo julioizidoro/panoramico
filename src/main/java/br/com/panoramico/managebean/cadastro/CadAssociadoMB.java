@@ -214,7 +214,14 @@ public class CadAssociadoMB implements Serializable {
                     salvarDependentes();
                 }
             }
+            boolean novo = false;
+            if (associado.getIdassociado()==null){
+                novo=true;
+            }
             associado = associadoDao.update(associado);
+            if (novo){
+                //joga id para sessao
+            }
             RequestContext.getCurrentInstance().closeDialog(associado);
         }
     }
