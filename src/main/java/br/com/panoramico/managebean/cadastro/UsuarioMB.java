@@ -7,8 +7,10 @@ package br.com.panoramico.managebean.cadastro;
 
 import br.com.panoramico.dao.UsuarioDao;
 import br.com.panoramico.model.Usuario;
+import br.com.panoramico.uil.Criptografia;
 import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -166,6 +168,22 @@ public class UsuarioMB implements Serializable {
             return "Usuário Ativo";
         }else{
             return "Usuário Inativo";
+        }
+    }
+    
+    
+    public void resetarSenhaUsuario(Usuario usuario) {
+        String senhaResetada;
+        try {
+            senhaResetada = Criptografia.encript("senha");
+            if (usuario != null) {
+                usuario.setSenha(senhaResetada);
+                usuarioDao.update(usuario);
+                Mensagem.lancarMensagemInfo("Senha alterada com sucesso", "");
+            }
+        } catch (NoSuchAlgorithmException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
     }
 }

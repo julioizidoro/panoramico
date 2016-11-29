@@ -288,7 +288,7 @@ public class AssociadoMB implements Serializable {
         if (listaDependente == null || listaDependente.isEmpty()) {
             associadoDao.remove(associado.getIdassociado());
             Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
-            gerarListaAssociado();
+            listaAssociado.remove(associado);
         } else {
             Mensagem.lancarMensagemInfo("Atenção", "este associado não pode ser excluido");
         }
@@ -301,7 +301,8 @@ public class AssociadoMB implements Serializable {
         cpf = "";
         email = "";
         telefone = "";
-        situacao="";   
+        situacao="";
+        listaAssociado = new ArrayList<>();
         gerarListaAssociado();
     }
 

@@ -10,35 +10,39 @@
                 <br/> 
                 <h:form id="idFormConsultaAssociado" style="margin-left:1%; width:96%;">
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:10%;width: 80%;"/>
-                    <p:accordionPanel activeIndex="-1" style="width:74%;margin-left: 15%;z-index:1">
+                    <p:accordionPanel activeIndex="-1" style="width:84%;margin-left: 7%;z-index:1">
                         <p:tab title="Pesquisar">
-                            <p:outputLabel value="Matrícula" class="titTela" style="font-size: 12px;text-align: left;margin-left: 2%;float: left;"/>
-                            <p:outputLabel value="Nome" class="titTela" style="font-size: 12px;text-align: left;margin-left:12%;float: left;"/>
-                            <p:outputLabel value="CPF" class="titTela" style="font-size: 12px;text-align: left;margin-left:29.4%;float: left;"/>
-                            <p:outputLabel value="Telefone" class="titTela" style="font-size: 12px;text-align: left;margin-left:18.4%;float: left;"/>
-
-                            <br/>
-                            <p:inputText id="matricula" value="#{associadoMB.matricula}"  style="width:115px;margin-left:1.4%;font-size: 12px;float: left;"/>
-                            <p:inputText id="nome" value="#{associadoMB.nome}"  style="width: 216px;margin-left:4%;font-size: 12px;float: left;"/>
-                            <p:inputMask id="cpf" mask="999.999.999-99" value="#{associadoMB.cpf}"  style="width:115px;margin-left:4%;font-size: 12px;float: left;"/>
-                            <p:inputText id="telefone" value="#{associadoMB.telefone}"  style="width:120px;margin-left:5%;font-size: 12px;float: left;"/>
-                            <br/><br/>
-                            <p:outputLabel value="Email" class="titTela" style="font-size: 12px;text-align: left;margin-right:29%;"/>
-                            <p:outputLabel value="Situação" class="titTela" style="font-size: 12px;text-align: left;margin-right:58.6%;"/>
-                            <br/>
-                            <p:inputText id="email" value="#{associadoMB.email}"  style="width: 216px;font-size: 12px;float: left;margin-left: 1%;"/>
-                            <p:selectOneMenu class="form-control" id="situacao" value="#{associadoMB.situacao}"  style="width:27%;font-size: 12px;margin-left:34%;">
-                                <f:selectItem itemLabel="Selecione" itemValue="" noSelectionOption="true"/> 
-                                <f:selectItem itemLabel="Ativo" itemValue="Ativo" />   
-                                <f:selectItem itemLabel="Inativo" itemValue="Inativo" />
-                                <f:selectItem itemLabel="Isento" itemValue="Isento" /> 
-                           </p:selectOneMenu>
-                            <p:commandLink style="text-decoration: none; margin-top: 2%;" actionListener="#{associadoMB.limpar()}" ajax="false" update=":idFormConsultaAssociado:idConsultaAssociado, matricula, nome, email, cpf, telefone, matricula">
-                                <div style="font-size: 16px;margin-right: 7%;float: right;margin-top:-4%;" class="limpar">Limpar</div>
-                            </p:commandLink>
-                            <p:commandLink style="text-decoration: none; margin-top: 10%;" actionListener="#{associadoMB.pesquisar()}" ajax="false" update=":idFormConsultaAssociado:idConsultaAssociado, messages">
-                                <div style="font-size: 16px;margin-right:2%;float: right;margin-top:-4%;" class="adicionar">Filtrar</div>
-                            </p:commandLink>
+                            <div class="row">
+                                <div class="col-10">
+                                    <p:outputLabel value="Matrícula" class="titTela" style="font-size: 12px;text-align: left;margin-left: 2%;float: left;"/>
+                                    <p:outputLabel value="Nome" class="titTela" style="font-size: 12px;text-align: left;margin-left:12%;float: left;"/>
+                                    <p:outputLabel value="CPF" class="titTela" style="font-size: 12px;text-align: left;margin-left:29.4%;float: left;"/>
+                                    <p:outputLabel value="Telefone" class="titTela" style="font-size: 12px;text-align: left;margin-left:18.4%;float: left;"/>
+                                    <br/>
+                                    <p:inputText id="matricula" value="#{associadoMB.matricula}"  style="width:115px;margin-left:1.4%;font-size: 12px;float: left;"/>
+                                    <p:inputText id="nome" value="#{associadoMB.nome}"  style="width: 216px;margin-left:4%;font-size: 12px;float: left;"/>
+                                    <p:inputMask id="cpf" mask="999.999.999-99" value="#{associadoMB.cpf}"  style="width:115px;margin-left:2%;font-size: 12px;float: left;"/>
+                                    <p:inputText id="telefone" value="#{associadoMB.telefone}"  style="width:120px;margin-left:5%;font-size: 12px;float: left;"/>
+                                </div>
+                                <div class="col-10">
+                                    <p:outputLabel value="Email" class="titTela" style="font-size: 12px;text-align: left;margin-right:29%;"/>
+                                    <p:outputLabel value="Situação" class="titTela" style="font-size: 12px;text-align: left;margin-right:56.6%;"/>
+                                    <br/>
+                                    <p:inputText id="email" value="#{associadoMB.email}"  style="width: 216px;font-size: 12px;float: left;margin-left: 1%;"/>
+                                    <p:selectOneMenu  id="situacao" value="#{associadoMB.situacao}"  style="width:27%;font-size: 12px;margin-right:11%;">
+                                        <f:selectItem itemLabel="Selecione" itemValue="" noSelectionOption="true"/> 
+                                        <f:selectItem itemLabel="Ativo" itemValue="Ativo" />   
+                                        <f:selectItem itemLabel="Inativo" itemValue="Inativo" />
+                                        <f:selectItem itemLabel="Isento" itemValue="Isento" /> 
+                                   </p:selectOneMenu>
+                                    <p:commandLink style="text-decoration: none; margin-top: 2%;" actionListener="#{associadoMB.limpar()}" ajax="false" update=":idFormConsultaAssociado:idConsultaAssociado, matricula, nome, email, cpf, telefone, matricula">
+                                        <div style="font-size: 16px;margin-right: 7%;float: right;margin-top:-0.5%;" class="limpar">Limpar</div>
+                                    </p:commandLink>
+                                    <p:commandLink style="text-decoration: none; margin-top: 10%;" actionListener="#{associadoMB.pesquisar()}" ajax="false" update=":idFormConsultaAssociado:idConsultaAssociado, messages">
+                                        <div style="font-size: 16px;margin-right:2%;float: right;margin-top:-0.5%;" class="adicionar">Filtrar</div>
+                                    </p:commandLink>
+                                </div>
+                            </div>
                         </p:tab>
                     </p:accordionPanel>  
                     <!-- TABELA CADASTROS -->

@@ -61,6 +61,9 @@
                                      <p:commandLink title="#{usuarioMB.retornarSituacao(usuario)}" rendered="#{usuarioLogadoMB.excluir}" action="#{usuarioMB.desativarUsuario(usuario)}" style="text-decoration: none;" update=":idFormConsultaUsuario:messages, @form">
                                          <div class="#{usuarioMB.pegarIcone(usuario)}"></div>
                                      </p:commandLink>
+                                     <p:commandLink title="Resetar Senha" rendered="#{usuarioLogadoMB.excluir}" action="#{usuarioMB.resetarSenhaUsuario(usuario)}" style="text-decoration: none;" update=":idFormConsultaUsuario:messages, @form">
+                                         <div class="fa fa-undo"></div>
+                                     </p:commandLink>
                                 </h:column> 
 
 

@@ -12,23 +12,30 @@
                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:10%;width: 80%;"/>
                    <p:accordionPanel activeIndex="-1" style="z-index:1">
                         <p:tab title="Pesquisar">
-                            <p:outputLabel value="Nome" class="titTela" style="font-size: 12px;text-align: left;margin-left: 2%;float: left;"/>
-                            <p:outputLabel value="CPF" class="titTela" style="font-size: 12px;text-align: left;margin-left: 26.7%;float: left;"/>
-                            <p:outputLabel value="Email" class="titTela" style="font-size: 12px;text-align: left;margin-left: 16%;float: left;"/>
-                            <p:outputLabel value="Telefone" class="titTela" style="font-size: 12px;text-align: left;margin-left: 29%;float: left;"/>
-                            <br/>
+                            <div class="row">
+                                <div class="col-10">
+                                    <p:outputLabel value="Nome" class="titTela" style="font-size: 12px;text-align: left;margin-right: 30%;"/>
+                                    <p:outputLabel value="CPF" class="titTela" style="font-size: 12px;text-align: left;margin-right: 17.7%;"/>
+                                    <p:outputLabel value="Email" class="titTela" style="font-size: 12px;text-align: left;margin-right: 24%;"/>
+                                    <br/>
 
-                            <p:inputText id="nome" value="#{clienteMB.nome}"  style="width: 216px;margin-left:2%;font-size: 12px;float: left;"/>
-                            <p:inputMask id="cpf" mask="999.999.999-99" value="#{clienteMB.cpf}"  style="width:115px;margin-left:3%;font-size: 12px;float: left;"/>
-                            <p:inputText id="email" value="#{clienteMB.email}"  style="width: 216px;margin-left:4%;font-size: 12px;float: left;"/>
-                            <p:inputText id="telefone" value="#{clienteMB.telefone}"  style="width:120px;margin-left:5%;font-size: 12px;float: left;"/>
+                                    <p:inputText id="nome" value="#{clienteMB.nome}"  style="width: 216px;margin-left:2%;font-size: 12px;"/>
+                                    <p:inputMask id="cpf" mask="999.999.999-99" value="#{clienteMB.cpf}"  style="width:115px;margin-left:3%;font-size: 12px;"/>
+                                    <p:inputText id="email" value="#{clienteMB.email}"  style="width: 216px;margin-left:4%;font-size: 12px;"/>
+                                </div>
+                                <div class="col-10">
+                                    <p:outputLabel value="Telefone" class="titTela" style="font-size: 12px;text-align: left;margin-left: -77%;"/>
+                                    <br/>
+                                    <p:inputText id="telefone" value="#{clienteMB.telefone}"  style="width:120px;margin-left:8%;font-size: 12px;float: left;"/>
+                                    <p:commandLink style="text-decoration: none; margin-top: 0%;float:left;" actionListener="#{clienteMB.pesquisar()}" ajax="false" update=":idFormConsultaCliente:idConsultaCliente, messages">
+                                        <div style="font-size: 16px;margin-left:87%;" class="adicionar">Filtrar</div>
+                                    </p:commandLink>
+                                    <p:commandLink style="text-decoration: none; margin-top: 2%;" actionListener="#{clienteMB.limpar()}" ajax="false" update=":idFormConsultaCliente:idConsultaCliente, nome, cpf, email, telefone">
+                                        <div style="font-size: 16px;margin-left: 2%;" class="limpar">Limpar</div>
+                                    </p:commandLink>
+                                </div>   
+                            </div>
                             <br/><br/>
-                            <p:commandLink style="text-decoration: none; margin-top: 10%;" actionListener="#{clienteMB.pesquisar()}" ajax="false" update=":idFormConsultaCliente:idConsultaCliente, messages">
-                                <div style="font-size: 16px;margin-left:79%;" class="adicionar">Filtrar</div>
-                            </p:commandLink>
-                            <p:commandLink style="text-decoration: none; margin-top: 2%;" actionListener="#{clienteMB.limpar()}" ajax="false" update=":idFormConsultaCliente:idConsultaCliente, nome, cpf, email, telefone">
-                                <div style="font-size: 16px;margin-left: 2%;" class="limpar">Limpar</div>
-                            </p:commandLink>
                         </p:tab>
                    </p:accordionPanel>  
                      <!-- TABELA CADASTROS -->

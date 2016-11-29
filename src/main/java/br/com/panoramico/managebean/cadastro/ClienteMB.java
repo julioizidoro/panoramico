@@ -45,6 +45,7 @@ public class ClienteMB implements Serializable{
     @EJB
     private AssociadoDao associadoDao;
     private boolean temSql = false;
+    private int idCliente = 0 ;
     
     
     @PostConstruct
@@ -52,13 +53,19 @@ public class ClienteMB implements Serializable{
        FacesContext fc = FacesContext.getCurrentInstance();
        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
        sql = (String) session.getAttribute("sql");
-       if (sql!=null){
-           temSql = true;
-           gerarListaCliente();
-       }else {
-           gerarListaCliente();
-       }
+       String idC = (String) session.getAttribute("idCliente");
+        if (idC!=null){
+            idCliente = Integer.parseInt(idC);
+        }else idCliente=0;
+         if (idCliente>0){
+            sql = null;
+             gerarListaCliente();
+        }else if (sql != null) {
+            temSql = true;
+            gerarListaCliente();
+        }
        session.removeAttribute("sql");
+       session.removeAttribute("idCliente");
     }
 
     public ClienteDao getClienteDao() {
@@ -145,9 +152,13 @@ public class ClienteMB implements Serializable{
     
     public void gerarListaCliente(){
         if (!temSql) {
-            sql = "Select c From Cliente c order by c.idcliente DESC LIMIT 5";
+            if (idCliente > 0) {
+                sql = "Select a From Cliente a where a.cliente.idcliente>" + (idCliente-5) + " order by a.cliente.idcliente DESC";
+                listaCliente = clienteDao.list(sql);
+            }
+        }else{
+            listaCliente = clienteDao.list(sql);
         }
-        listaCliente = clienteDao.list(sql);
         if (listaCliente == null) {
             listaCliente = new ArrayList<Cliente>();
         }
@@ -207,7 +218,7 @@ public class ClienteMB implements Serializable{
         if (listaAssociado == null || listaAssociado.isEmpty()) {
             clienteDao.remove(cliente.getIdcliente());
             Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
-            gerarListaCliente();
+            listaCliente.remove(cliente);
         }else{
             Mensagem.lancarMensagemInfo("Atenção", " este cliente não pode ser excluido");
         }
@@ -215,6 +226,7 @@ public class ClienteMB implements Serializable{
     
     public String limpar(){
         temSql=false;
+        listaCliente = new ArrayList<>();
         gerarListaCliente();
         nome="";
         cpf="";
@@ -237,6 +249,6 @@ public class ClienteMB implements Serializable{
         }
         sql = sql + " order by c.nome";
         gerarListaCliente();
-        return "";
+        return "";  
     }
 }

@@ -126,17 +126,24 @@ public class CadClienteMB implements  Serializable{
     
     
     public void salvar(){
+        FacesContext fc = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         String msg = "";
         if (ePassaporte) {
-            FacesContext fc = FacesContext.getCurrentInstance();
-            HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
             session.setAttribute("cliente", cliente);
         }
         msg = validarDados();
         if (msg.length() > 0) {
             Mensagem.lancarMensagemInfo("", msg);
         }else{
+            boolean novo = false;
+            if (cliente.getIdcliente()==null){
+                novo=true;
+            }
             cliente = clienteDao.update(cliente);
+            if (novo) {
+                session.setAttribute("idCliente", cliente.getIdcliente());
+            }
             RequestContext.getCurrentInstance().closeDialog(cliente);
         }
     }

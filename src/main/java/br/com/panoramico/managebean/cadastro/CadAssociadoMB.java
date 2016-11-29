@@ -181,6 +181,8 @@ public class CadAssociadoMB implements Serializable {
     
 
     public void salvar() {
+        FacesContext fc = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         associado.setPlano(plano);
         associado.setCliente(cliente);
         associado.setAno(new Year().getYear());
@@ -220,7 +222,7 @@ public class CadAssociadoMB implements Serializable {
             }
             associado = associadoDao.update(associado);
             if (novo){
-                //joga id para sessao
+                session.setAttribute("idAssociado", associado.getIdassociado());
             }
             RequestContext.getCurrentInstance().closeDialog(associado);
         }
