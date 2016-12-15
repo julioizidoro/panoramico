@@ -82,9 +82,6 @@ public class Banco implements Serializable {
     private String observacao2;
     @Column(name = "observacao3")
     private String observacao3;
-    @Column(name = "observacao4")
-    private String observacao4;
-
     public Banco() {
     }
 
@@ -235,15 +232,6 @@ public class Banco implements Serializable {
     public void setObservacao3(String observacao3) {
         this.observacao3 = observacao3;
     }
-
-    public String getObservacao4() {
-        return observacao4;
-    }
-
-    public void setObservacao4(String observacao4) {
-        this.observacao4 = observacao4;
-    }
-    
     
 
     @Override
