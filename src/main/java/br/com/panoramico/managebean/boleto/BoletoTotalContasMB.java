@@ -321,6 +321,16 @@ public class BoletoTotalContasMB implements Serializable {
             dadosBoletoBean.getEnderecoSacado().setLogradouro(associado.getTipologradouro() + " " + associado.getLogradouro());
             dadosBoletoBean.getEnderecoSacado().setNumero(associado.getNumero());
             dadosBoletoBean.getEnderecoSacado().setUF(UnidadeFederativa.valueOfSigla(associado.getEstado()));
+             if (associado.getDescotomensalidade()>0){
+                dadosBoletoBean.setInstrucao1("ATE O VENCIMENTO DESCONTO DE R$ " + Formatacao.foramtarFloatString(associado.getDescotomensalidade()));
+                dadosBoletoBean.setInstrucao2(banco.getObservacao1());
+                dadosBoletoBean.setInstrucao3(banco.getObservacao2());
+                dadosBoletoBean.setInstrucao4(banco.getObservacao3());
+            }else {
+                dadosBoletoBean.setInstrucao1(banco.getObservacao1());
+                dadosBoletoBean.setInstrucao2(banco.getObservacao2());
+                dadosBoletoBean.setInstrucao2(banco.getObservacao3());
+            }
         }
         String juros = Formatacao.converterValorFloatReal(banco.getValorjuros());
         String multa = Formatacao.converterValorFloatReal(banco.getValormulta());

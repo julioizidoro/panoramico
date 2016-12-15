@@ -6,7 +6,6 @@
 package br.com.panoramico.managebean.boleto;
 
 import br.com.panoramico.model.Contasreceber;
-import br.com.panoramico.model.Empresa;
 import br.com.panoramico.model.Proprietario;
 import java.io.IOException;
 

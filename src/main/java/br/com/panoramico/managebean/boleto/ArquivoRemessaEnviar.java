@@ -12,7 +12,6 @@ import br.com.panoramico.model.Empresa;
 import br.com.panoramico.model.Proprietario;
 import br.com.panoramico.uil.Formatacao;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -25,6 +24,8 @@ public class ArquivoRemessaEnviar implements ArquivoRemessaItau{
     private String zeros = "000000000000000000000";
     @EJB
     private ProprietarioDao proprietarioDao;
+    @EJB
+    private EmpresaDao empresaDao;
     private Proprietario proprietario;
     private List<Empresa> listaEmpresa;
     
@@ -142,49 +143,123 @@ public class ArquivoRemessaEnviar implements ArquivoRemessaItau{
         linha = linha  + (Formatacao.ConvercaoDataDDMMAA(new Date()));
         linha = linha  + ("00");
         linha = linha  + ("00");
-        linha = linha  + (valorJuros(conta.getValorconta(), proprietario.getBancoList().get(0).getValorjuros()));
-        linha = linha  + (Formatacao.ConvercaoDataDDMMAA(new Date()));
+        linha = linha  + ("00000000000");
+        float valorDesconto =0.0f;
+        if (conta.getIdempresa()==0){
+            if (conta.getCliente().getAssociado().getDescotomensalidade()>0){
+                valorDesconto = conta.getCliente().getAssociado().getDescotomensalidade();
+            }
+        }
+        if (valorDesconto>0){
+            linha = linha  + (Formatacao.ConvercaoDataDDMMAA(conta.getDatavencimento()));
+            valor = Formatacao.foramtarFloatString(conta.getCliente().getAssociado().getDescotomensalidade());
+            valor = Formatacao.retirarPontos(valor);
+            if (valor.length()<13){
+                valor = zeros.substring(0, 13 - valor.length()) + valor;
+            }
+            linha = linha  + (zeros.substring(0, 13));
+        }else {
+            linha = linha  + (Formatacao.ConvercaoDataDDMMAA(new Date()));
+            linha = linha  + (zeros.substring(0, 13));
+        }
         linha = linha  + (zeros.substring(0, 13));
         linha = linha  + (zeros.substring(0, 13));
-        linha = linha  + (zeros.substring(0, 13));
-        linha = linha  + ("01");
-        linha = linha  + (Formatacao.retirarPontos(conta.getCliente().getCpf())+ "   ");
-        String nomeCliente = conta.getCliente().getNome();
-        nomeCliente = nomeCliente.toUpperCase();
-        if (nomeCliente.length()<30){
-            nomeCliente = nomeCliente + branco.substring(0, 30 -nomeCliente.length());
-        }else nomeCliente.substring(0, 30);
-        linha = linha  + (nomeCliente);
-        linha = linha  + (branco.substring(0, 10));
-       // String logradouro = conta.getCliente().getAssociadoList() + " " + conta.getVendas().getCliente().getLogradouro() +
-          //    conta.getVendas().getCliente().getNumero();
-        String logradouro = "";
-        logradouro = logradouro.toUpperCase();
-        if (logradouro.length()<40){
-            logradouro = logradouro + branco.substring(0, 40 - logradouro.length());
-        }else logradouro = logradouro.substring(0, 40);
-        linha = linha  + (logradouro);
-        //String bairro = conta.getVendas().getCliente().getBairro();
-        //provisorio
-        String bairro = "";
-        bairro = bairro.toUpperCase();
-        if (bairro.length()<12){
-            bairro = bairro + branco.substring(0, 12 - bairro.length());
-        }else bairro = bairro.substring(0,12);
-        linha = linha  + (bairro);
-        //linha = linha  + (Formatacao.retirarPontos(conta.getVendas().getCliente().getCep()));
-        //String cidade = conta.getVendas().getCliente().getCidade();
-        String cidade = "";
-        cidade = cidade.toUpperCase();
-        if (cidade.length()<15){
-            cidade = cidade + branco.substring(0, 15 - cidade.length());
-        }else cidade = cidade.substring(0, 15);
-        linha = linha  + (cidade);
-        //linha = linha  + (conta.getVendas().getCliente().getEstado().toUpperCase());
+        //dados Cliente
+        if (conta.getIdempresa()==0) {
+            linha = linha + ("01");
+            linha = linha + (Formatacao.retirarPontos(conta.getCliente().getCpf()) + "   ");
+            String nomeCliente = conta.getCliente().getNome();
+            nomeCliente = nomeCliente.toUpperCase();
+            if (nomeCliente.length() < 30) {
+                nomeCliente = nomeCliente + branco.substring(0, 30 - nomeCliente.length());
+            } else {
+                nomeCliente.substring(0, 30);
+            }
+            linha = linha + (nomeCliente);
+            linha = linha + (branco.substring(0, 10));
+            String logradouro = conta.getCliente().getAssociado().getTipologradouro() + " " + conta.getCliente().getAssociado().getLogradouro()
+                    + conta.getCliente().getAssociado().getNumero();
+            logradouro = logradouro.toUpperCase();
+            if (logradouro.length() < 40) {
+                logradouro = logradouro + branco.substring(0, 40 - logradouro.length());
+            } else {
+                logradouro = logradouro.substring(0, 40);
+            }
+            linha = linha + (logradouro);
+            String bairro = conta.getCliente().getAssociado().getBairro();
+            bairro = bairro.toUpperCase();
+            if (bairro.length() < 12) {
+                bairro = bairro + branco.substring(0, 12 - bairro.length());
+            } else {
+                bairro = bairro.substring(0, 12);
+            }
+            linha = linha + (bairro);
+            linha = linha + (Formatacao.retirarPontos(conta.getCliente().getAssociado().getCep()));
+            String cidade = conta.getCliente().getAssociado().getCidade();
+            cidade = cidade.toUpperCase();
+            if (cidade.length() < 15) {
+                cidade = cidade + branco.substring(0, 15 - cidade.length());
+            } else {
+                cidade = cidade.substring(0, 15);
+            }
+            linha = linha + (cidade);
+            linha = linha + (conta.getCliente().getAssociado().getEstado().toUpperCase());
+
+        } else {
+            //Dados empresa
+            Empresa empresa = empresaDao.find(conta.getIdempresa());
+            linha = linha + ("02");
+            linha = linha + (Formatacao.retirarPontos(empresa.getCnpj()));
+            String nomeCliente = empresa.getRazaosocial();
+            nomeCliente = nomeCliente.toUpperCase();
+            if (nomeCliente.length() < 30) {
+                nomeCliente = nomeCliente + branco.substring(0, 30 - nomeCliente.length());
+            } else {
+                nomeCliente.substring(0, 30);
+            }
+            linha = linha + (nomeCliente);
+            linha = linha + (branco.substring(0, 10));
+            String logradouro = empresa.getTipologradouro() + " " + empresa.getLogradouro()
+                    + empresa.getNumero();
+            logradouro = logradouro.toUpperCase();
+            if (logradouro.length() < 40) {
+                logradouro = logradouro + branco.substring(0, 40 - logradouro.length());
+            } else {
+                logradouro = logradouro.substring(0, 40);
+            }
+            linha = linha + (logradouro);
+            String bairro = empresa.getBairro();
+            bairro = bairro.toUpperCase();
+            if (bairro.length() < 12) {
+                bairro = bairro + branco.substring(0, 12 - bairro.length());
+            } else {
+                bairro = bairro.substring(0, 12);
+            }
+            linha = linha + (bairro);
+            linha = linha + (Formatacao.retirarPontos(empresa.getCep()));
+            String cidade = empresa.getCidade();
+            cidade = cidade.toUpperCase();
+            if (cidade.length() < 15) {
+                cidade = cidade + branco.substring(0, 15 - cidade.length());
+            } else {
+                cidade = cidade.substring(0, 15);
+            }
+            linha = linha + (cidade);
+            linha = linha + (empresa.getEstado().toUpperCase());
+        }
+        
+        
+        
+        
+                
+                
+                
+                
+        
         linha = linha  + (branco.substring(0,30));
         linha = linha  + ("    ");
         linha = linha  + (Formatacao.SubtarirDatas(conta.getDatalancamento(), -1, "ddMMyy"));
-        linha = linha  + ("00");
+        linha = linha  + ("13");
         linha = linha  + (" ");
         String ns;
         if (numeroSequencial<10){

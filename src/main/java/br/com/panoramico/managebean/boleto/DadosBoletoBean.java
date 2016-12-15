@@ -5,11 +5,9 @@
  */
 package br.com.panoramico.managebean.boleto;
 
-import br.com.panoramico.uil.Formatacao;
 import br.com.panoramico.uil.GerarDacNossoNumero;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -18,7 +16,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import org.jrimum.bopepo.BancosSuportados;
 import org.jrimum.bopepo.Boleto;
@@ -32,7 +29,6 @@ import org.jrimum.domkee.financeiro.banco.febraban.NumeroDaConta;
 import org.jrimum.domkee.financeiro.banco.febraban.Sacado;
 import org.jrimum.domkee.financeiro.banco.febraban.TipoDeTitulo;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
-import org.primefaces.context.RequestContext;
 
 
 public class DadosBoletoBean {
@@ -60,6 +56,10 @@ public class DadosBoletoBean {
     private Endereco enderecoSacado;
     private String valorJuros;
     private String valorMulta;
+    private String instrucao1;
+    private String instrucao2;
+    private String instrucao3;
+    private String instrucao4;
     
     public String getNossoNumeros() {
         return nossoNumeros;
@@ -216,6 +216,38 @@ public class DadosBoletoBean {
     public void setValorMulta(String valorMulta) {
         this.valorMulta = valorMulta;
     }
+
+    public String getInstrucao1() {
+        return instrucao1;
+    }
+
+    public void setInstrucao1(String instrucao1) {
+        this.instrucao1 = instrucao1;
+    }
+
+    public String getInstrucao2() {
+        return instrucao2;
+    }
+
+    public void setInstrucao2(String instrucao2) {
+        this.instrucao2 = instrucao2;
+    }
+
+    public String getInstrucao3() {
+        return instrucao3;
+    }
+
+    public void setInstrucao3(String instrucao3) {
+        this.instrucao3 = instrucao3;
+    }
+
+    public String getInstrucao4() {
+        return instrucao4;
+    }
+
+    public void setInstrucao4(String instrucao4) {
+        this.instrucao4 = instrucao4;
+    }
   
     
     public byte[] gerarBoleto() {
@@ -251,11 +283,18 @@ public class DadosBoletoBean {
         boleto.addTextosExtras("txtRsAgenciaCodigoCedente", codigoCedente);
         boleto.addTextosExtras("txtFcNossoNumero", nossoNumeroExibicao); 
         boleto.addTextosExtras("txtRsNossoNumero", nossoNumeroExibicao);
-        boleto.setInstrucao1("APOS O VENCIMENTO COBRAR JUROS DE..........R$ " + valorJuros + " AO DIA");
-        boleto.setInstrucao2("APOS O VENCIMENTO COBRAR MULTA DE..........R$ " + valorMulta);
-        boleto.setInstrucao3("ATÉ O VENCIMENTO PAGUE PREFERENCIALMENTE NO ITAÚ");
-        boleto.setInstrucao4("APÓS O VENCIMENTO PAGUE SOMENTE NO ITAÚ");
-        
+        if (instrucao1.length()>0){
+            boleto.setInstrucao1(instrucao1);
+        }
+        if (instrucao1.length()>0){
+            boleto.setInstrucao1(instrucao2);
+        }
+        if (instrucao1.length()>0){
+            boleto.setInstrucao1(instrucao3);
+        }
+        if (instrucao1.length()>0){
+            boleto.setInstrucao1(instrucao4);
+        }
     } 
      
     
