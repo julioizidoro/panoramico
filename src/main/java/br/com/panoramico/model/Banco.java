@@ -76,6 +76,14 @@ public class Banco implements Serializable {
     @JoinColumn(name = "proprietario_idproprietario", referencedColumnName = "idproprietario")
     @ManyToOne(optional = false)
     private Proprietario proprietario;
+    @Column(name = "observacao1")
+    private String observacao1;
+    @Column(name = "observacao2")
+    private String observacao2;
+    @Column(name = "observacao3")
+    private String observacao3;
+    @Column(name = "observacao4")
+    private String observacao4;
 
     public Banco() {
     }
@@ -203,6 +211,40 @@ public class Banco implements Serializable {
     public void setProprietario(Proprietario proprietario) {
         this.proprietario = proprietario;
     }
+
+    public String getObservacao1() {
+        return observacao1;
+    }
+
+    public void setObservacao1(String observacao1) {
+        this.observacao1 = observacao1;
+    }
+
+    public String getObservacao2() {
+        return observacao2;
+    }
+
+    public void setObservacao2(String observacao2) {
+        this.observacao2 = observacao2;
+    }
+
+    public String getObservacao3() {
+        return observacao3;
+    }
+
+    public void setObservacao3(String observacao3) {
+        this.observacao3 = observacao3;
+    }
+
+    public String getObservacao4() {
+        return observacao4;
+    }
+
+    public void setObservacao4(String observacao4) {
+        this.observacao4 = observacao4;
+    }
+    
+    
 
     @Override
     public int hashCode() {
