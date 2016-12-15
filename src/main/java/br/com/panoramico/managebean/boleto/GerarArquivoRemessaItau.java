@@ -136,7 +136,7 @@ public class GerarArquivoRemessaItau {
     private void iniciarRemessa() {
         if (this.listaContas != null) {
             String nome = System.getProperty("user.name");
-            String nomeA = "C:\\Users\\" + nome + "\\Documents\\" + gerarNomeArquivo();
+            String nomeA = "C:\\remessa\\" + gerarNomeArquivo();
             nomeArquivo = nomeA;
             File arquivo = new File(nomeA);
             try {
