@@ -82,6 +82,10 @@ public class Banco implements Serializable {
     private String observacao2;
     @Column(name = "observacao3")
     private String observacao3;
+    @Column(name = "emitiboleto")
+    private boolean emitiboleto;
+    
+    
     public Banco() {
     }
 
@@ -232,6 +236,16 @@ public class Banco implements Serializable {
     public void setObservacao3(String observacao3) {
         this.observacao3 = observacao3;
     }
+
+    public boolean isEmitiboleto() {
+        return emitiboleto;
+    }
+
+    public void setEmitiboleto(boolean emitiboleto) {
+        this.emitiboleto = emitiboleto;
+    }
+    
+    
     
 
     @Override

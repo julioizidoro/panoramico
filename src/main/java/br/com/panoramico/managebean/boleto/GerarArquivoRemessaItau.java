@@ -9,6 +9,7 @@ import br.com.panoramico.dao.ContasReceberDao;
 import br.com.panoramico.dao.EmpresaDao;
 import br.com.panoramico.dao.ProprietarioDao;
 import br.com.panoramico.managebean.UsuarioLogadoMB;
+import br.com.panoramico.model.Banco;
 import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.model.Empresa;
 import br.com.panoramico.model.Proprietario;
@@ -16,16 +17,12 @@ import br.com.panoramico.uil.Formatacao;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
 public class GerarArquivoRemessaItau {
@@ -41,15 +38,15 @@ public class GerarArquivoRemessaItau {
     private ProprietarioDao proprietarioDao;
     private Proprietario proprietario;
     private List<Empresa> listaEmpresa;
-    private StreamedContent stream;
     private String nomeArquivo;
+    private Banco banco;
 
-    public GerarArquivoRemessaItau(List<Contasreceber> lista, UsuarioLogadoMB usuarioLogadoMB, Proprietario proprietario, StreamedContent stream, List<Contasreceber> listaContas) {
+    public GerarArquivoRemessaItau(List<Contasreceber> lista, UsuarioLogadoMB usuarioLogadoMB, Proprietario proprietario, List<Contasreceber> listaContas, Banco banco) {
         this.listaContas = lista;
         this.usuarioLogadoMB = usuarioLogadoMB;
         this.proprietario = proprietario;
-        this.stream = stream;
         this.listaContas = listaContas;
+        this.banco = banco;
         iniciarRemessa();
     }
 
@@ -117,14 +114,6 @@ public class GerarArquivoRemessaItau {
         this.listaEmpresa = listaEmpresa;
     }
 
-    public StreamedContent getStream() {
-        return stream;
-    }
-
-    public void setStream(StreamedContent stream) {
-        this.stream = stream;
-    }
-
     public String getNomeArquivo() {
         return nomeArquivo;
     }
@@ -138,14 +127,11 @@ public class GerarArquivoRemessaItau {
             String nome = System.getProperty("user.name");
             String nomeA = "C:\\remessa\\" + gerarNomeArquivo();
             nomeArquivo = nomeA;
-            File arquivo = new File(nomeA);
             try {
-                remessa = new FileWriter(arquivo);
+                remessa = new FileWriter(new File(nomeArquivo));
                 try {
                     lerConta();
-                    InputStream inputStream = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream(nomeA);
-                    stream = new DefaultStreamedContent(inputStream, "application/REM", "downloaded_optimus.jpg");
-                } catch (Exception ex) {
+                } catch (Exception ex) {  
                     Logger.getLogger(ArquivoRemessaEnviar.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } catch (IOException ex) {
@@ -172,6 +158,7 @@ public class GerarArquivoRemessaItau {
                 enviarBoleto(listaContas.get(i));
             }
         }
+        remessa.close();
     }
 
     private void atualizarBoleto(Contasreceber conta) throws IOException, Exception {
@@ -197,15 +184,15 @@ public class GerarArquivoRemessaItau {
     private void enviarBoleto(Contasreceber conta) throws IOException, Exception {
         numeroSequencial++;
         ArquivoRemessaEnviar arquivoRemessaNormal = new ArquivoRemessaEnviar();
-        remessa.write(arquivoRemessaNormal.gerarHeader(conta, numeroSequencial, proprietario));
+        remessa.write(arquivoRemessaNormal.gerarHeader(conta, numeroSequencial, proprietario, banco));
         numeroSequencial++;
-        remessa.write(arquivoRemessaNormal.gerarDetalhe(conta, numeroSequencial, proprietario));
+        remessa.write(arquivoRemessaNormal.gerarDetalhe(conta, numeroSequencial, proprietario, banco));
         numeroSequencial++;
-        remessa.write(arquivoRemessaNormal.gerarMulta(conta, numeroSequencial, proprietario));
+        remessa.write(arquivoRemessaNormal.gerarMulta(conta, numeroSequencial, banco));
         numeroSequencial++;
         remessa.write(arquivoRemessaNormal.gerarTrailer(numeroSequencial));
-    }
-
+    }  
+ 
     private void confirmarContas() {
         for (int i = 0; i < listaContas.size(); i++) {
             Contasreceber conta = listaContas.get(i);

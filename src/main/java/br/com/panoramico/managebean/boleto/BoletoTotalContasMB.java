@@ -77,7 +77,7 @@ public class BoletoTotalContasMB implements Serializable {
         session.removeAttribute("listaContasReceber");
         session.removeAttribute("empresa");
         proprietario = proprietarioDao.find(1);
-        banco = bancoDao.find("Select b From Banco b Where b.proprietario.idproprietario=" + proprietario.getIdproprietario());
+        banco = bancoDao.find("Select b From Banco b Where b.proprietario.idproprietario=" + proprietario.getIdproprietario() + " and b.emitiboleto=1");
     }
 
     public Contasreceber getContasreceber() {
@@ -428,7 +428,7 @@ public class BoletoTotalContasMB implements Serializable {
             lista = listaContasReceber;
         }
         if (lista.size() > 0) {
-            GerarArquivoRemessaItau arquivoRemessaItau = new GerarArquivoRemessaItau(lista, usuarioLogadoMB, proprietario, stream, lista);
+            GerarArquivoRemessaItau arquivoRemessaItau = new GerarArquivoRemessaItau(lista, usuarioLogadoMB, proprietario, lista, banco);
             confirmarContas(lista);
             FacesMessage msg = new FacesMessage("Sucesso! ", "Arquivo Remessa Gerado");
             FacesContext.getCurrentInstance().addMessage(null, msg);

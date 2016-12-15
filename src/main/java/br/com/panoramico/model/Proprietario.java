@@ -11,6 +11,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -67,7 +68,7 @@ public class Proprietario implements Serializable {
     @Size(max = 18)
     @Column(name = "cnpj")
     private String cnpj;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "proprietario")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "proprietario")
     private List<Banco> bancoList;
 
     public Proprietario() {
@@ -180,6 +181,7 @@ public class Proprietario implements Serializable {
     public void setCnpj(String cnpj) {
         this.cnpj = cnpj;
     }
+
 
     @Override
     public int hashCode() {

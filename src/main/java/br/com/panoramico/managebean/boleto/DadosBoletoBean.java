@@ -287,14 +287,14 @@ public class DadosBoletoBean {
             boleto.setInstrucao1(instrucao1);
         }
         if (instrucao1.length()>0){
-            boleto.setInstrucao1(instrucao2);
+            boleto.setInstrucao2(instrucao2);
+        }  
+        if (instrucao1.length()>0){
+            boleto.setInstrucao3(instrucao3);
         }
         if (instrucao1.length()>0){
-            boleto.setInstrucao1(instrucao3);
-        }
-        if (instrucao1.length()>0){
-            boleto.setInstrucao1(instrucao4);
-        }
+            boleto.setInstrucao4(instrucao4);
+        }   
     } 
      
     

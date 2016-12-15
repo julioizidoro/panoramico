@@ -122,7 +122,7 @@ public class CadContasReceberMB implements Serializable{
     public List<Cliente> getListaCliente() {
         return listaCliente;
     }
-
+ 
     public void setListaCliente(List<Cliente> listaCliente) {
         this.listaCliente = listaCliente;
     }
@@ -201,6 +201,11 @@ public class CadContasReceberMB implements Serializable{
             contasreceber.setSituacao("PAGAR");
             String mensagem = validarDados(contasreceber);
             if (mensagem.length() < 5) {
+                if (cliente.getAssociado().getAssociadoempresaList() != null && !cliente.getAssociado().getAssociadoempresaList().isEmpty()) {
+                    contasreceber.setIdempresa(cliente.getAssociado().getAssociadoempresaList().get(0).getEmpresa().getIdempresa());
+                }else{
+                    contasreceber.setIdempresa(0);
+                }
                 if (contasreceber.getTipopagamento().equalsIgnoreCase("Boleto") && contasreceber.getIdcontasreceber() == null) {
                     contasreceber.setSituacaoboleto("Novo");
                     contasreceber.setEnviado(false);
@@ -248,6 +253,11 @@ public class CadContasReceberMB implements Serializable{
             contasreceber.setSituacao("PAGAR");
             String mensagem = validarDados(contasreceber);
             if (mensagem.length() < 5) {
+                if (cliente.getAssociado().getAssociadoempresaList() != null) {
+                    contasreceber.setIdempresa(cliente.getAssociado().getAssociadoempresaList().get(0).getEmpresa().getIdempresa());
+                }else{
+                    contasreceber.setIdempresa(0);
+                }
                 if (contasreceber.getTipopagamento().equalsIgnoreCase("Boleto") && contasreceber.getIdcontasreceber() == null) {
                     contasreceber.setSituacaoboleto("Novo");
                     contasreceber.setEnviado(false);

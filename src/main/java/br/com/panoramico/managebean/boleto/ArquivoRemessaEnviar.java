@@ -7,6 +7,7 @@ package br.com.panoramico.managebean.boleto;
 
 import br.com.panoramico.dao.EmpresaDao;
 import br.com.panoramico.dao.ProprietarioDao;
+import br.com.panoramico.model.Banco;
 import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.model.Empresa;
 import br.com.panoramico.model.Proprietario;
@@ -78,17 +79,17 @@ public class ArquivoRemessaEnviar implements ArquivoRemessaItau{
     
     
     
-    public String gerarHeader(Contasreceber conta, int numeroSequencial, Proprietario proprietario) throws IOException{
+    public String gerarHeader(Contasreceber conta, int numeroSequencial, Proprietario proprietario, Banco banco) throws IOException{
         String linha="";
         linha = linha  + ("0");
         linha = linha  + ("1");
         linha = linha  + ("REMESSA");
         linha = linha  + ("01");
         linha = linha  + ("COBRANCA       ");
-        linha = linha  + (proprietario.getBancoList().get(0).getAgencia());
+        linha = linha  + (banco.getAgencia());
         linha = linha  + ("00");
-        linha = linha  + (proprietario.getBancoList().get(0).getConta()); 
-        linha = linha  + (proprietario.getBancoList().get(0).getDigitoconta());
+        linha = linha  + (banco.getConta()); 
+        linha = linha  + (banco.getDigitoconta());
         linha = linha  + (branco.substring(0, 8));
         String nomeEmpresa = proprietario.getRazaosocial();
         nomeEmpresa = nomeEmpresa.toUpperCase();
@@ -110,15 +111,15 @@ public class ArquivoRemessaEnviar implements ArquivoRemessaItau{
         return linha;
     }
     
-    public String gerarDetalhe(Contasreceber conta, int numeroSequencial, Proprietario proprietario) throws IOException, Exception{
+    public String gerarDetalhe(Contasreceber conta, int numeroSequencial, Proprietario proprietario, Banco banco) throws IOException, Exception{
         String linha="";
         linha = linha  + ("1");
         linha = linha  + ("02");
         linha = linha  + (Formatacao.retirarPontos(proprietario.getCnpj()));
         linha = linha  + (proprietario.getBancoList().get(0).getAgencia());
         linha = linha  + ("00");
-        linha = linha  + (proprietario.getBancoList().get(0).getConta());
-        linha = linha  + (proprietario.getBancoList().get(0).getDigitoconta());
+        linha = linha  + (banco.getConta());
+        linha = linha  + (banco.getDigitoconta());
         linha = linha  + (branco.substring(0, 4));
         linha = linha  + ("0000");
         linha = linha  + (branco.substring(0, 25));
@@ -270,13 +271,13 @@ public class ArquivoRemessaEnviar implements ArquivoRemessaItau{
         linha = linha  + (ns + "\r\n");
         return linha;
     }
-    
-    public String gerarMulta(Contasreceber conta, int numeroSequencial, Proprietario proprietario) throws IOException, Exception{
+        public String gerarMulta(Contasreceber conta, int numeroSequencial, Banco banco) throws IOException, Exception{
+
         String linha="";
         linha = linha  + ("2");
         linha = linha  + ("1");
         linha = linha  + (Formatacao.SubtarirDatas(conta.getDatalancamento(), -1, "ddMMyyyy"));
-        linha = linha  + (valorJuros(conta.getValorconta(), proprietario.getBancoList().get(0).getValormulta()));
+        linha = linha  + (valorJuros(conta.getValorconta(), banco.getValormulta()));
         linha = linha  + (branco + branco + branco + branco + branco + branco + branco + branco + branco + branco.substring(0,11));
         String ns;
         if (numeroSequencial<10){
@@ -286,7 +287,7 @@ public class ArquivoRemessaEnviar implements ArquivoRemessaItau{
         }else ns = "000" + String.valueOf(numeroSequencial);
         linha = linha  + (ns + "\r\n");
         return linha;
-    }
+    }  
     
     public String gerarTrailer(int numeroSequencial) throws IOException{
         String linha="";

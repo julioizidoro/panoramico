@@ -1,8 +1,10 @@
 package br.com.panoramico.managebean.boleto;
  
+import br.com.panoramico.dao.BancoDao;
 import br.com.panoramico.dao.ContasReceberDao; 
 import br.com.panoramico.dao.ProprietarioDao;
 import br.com.panoramico.managebean.UsuarioLogadoMB; 
+import br.com.panoramico.model.Banco;
 import br.com.panoramico.model.Contasreceber; 
 import br.com.panoramico.model.Proprietario;
 import br.com.panoramico.uil.Formatacao; 
@@ -34,6 +36,8 @@ public class BoletoMB implements Serializable {
     private ProprietarioDao proprietarioDao;
     private Proprietario proprietario;
     private StreamedContent stream;
+    @EJB
+    private BancoDao bancoDao;
 
     public BoletoMB() {
         FacesContext fc = FacesContext.getCurrentInstance();
@@ -106,6 +110,7 @@ public class BoletoMB implements Serializable {
 
     public String enviarBoleto() {
         proprietario = proprietarioDao.find(1);
+        Banco banco = bancoDao.find("Select b From  Banco b Where b.proprietario.idproprietario=" + proprietario.getIdproprietario() + " and b.emitiboleto=1");
         List<Contasreceber> lista = new ArrayList<Contasreceber>();
         for (int i = 0; i < listarSelecionados.size(); i++) {
             if (listarSelecionados.get(i).isSelecionado()) {
@@ -114,9 +119,9 @@ public class BoletoMB implements Serializable {
         }
         if (lista.size() == 0) {
             lista = listarSelecionados;
-        }
+        }  
         if (lista.size() > 0) {
-            GerarArquivoRemessaItau arquivoRemessaItau = new GerarArquivoRemessaItau(lista, usuarioLogadoMB, proprietario, stream, lista);
+            GerarArquivoRemessaItau arquivoRemessaItau = new GerarArquivoRemessaItau(lista, usuarioLogadoMB, proprietario, lista, banco);
             confirmarContas(lista);
             FacesMessage msg = new FacesMessage("Sucesso! ", "Arquivo Remessa Gerado no caminho: "
                     + arquivoRemessaItau.getNomeArquivo());
