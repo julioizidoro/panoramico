@@ -65,10 +65,12 @@ public class Contasreceber implements Serializable{
     private boolean selecionado;
     @Column(name = "nossonumero")
     private String nossonumero;
+    @Column(name = "idempresa")
+    private Integer idempresa;
 
     public Contasreceber() {
         situacaoboleto = "Não";
-    }
+    }   
 
     public Integer getIdcontasreceber() {
         return idcontasreceber;
@@ -189,6 +191,15 @@ public class Contasreceber implements Serializable{
     public void setDatavencimento(Date datavencimento) {
         this.datavencimento = datavencimento;
     }
+
+    public Integer getIdempresa() {
+        return idempresa;
+    }
+
+    public void setIdempresa(Integer idempresa) {
+        this.idempresa = idempresa;
+    }
+    
     
     
 
