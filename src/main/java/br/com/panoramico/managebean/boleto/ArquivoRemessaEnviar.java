@@ -116,7 +116,7 @@ public class ArquivoRemessaEnviar implements ArquivoRemessaItau{
         linha = linha  + ("1");
         linha = linha  + ("02");
         linha = linha  + (Formatacao.retirarPontos(proprietario.getCnpj()));
-        linha = linha  + (proprietario.getBancoList().get(0).getAgencia());
+        linha = linha  + (banco.getAgencia());
         linha = linha  + ("00");
         linha = linha  + (banco.getConta());
         linha = linha  + (banco.getDigitoconta());
