@@ -137,7 +137,7 @@ public class GerarArquivoRemessaItau {
             } catch (IOException ex) {
                 Logger.getLogger(GerarArquivoRemessaItau.class.getName()).log(Level.SEVERE, null, ex);
             }
-
+  
         }
     }
 

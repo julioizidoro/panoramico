@@ -1,3 +1,5 @@
+package br.com.panoramico.managebean.contasreceber;
+
 
 import br.com.panoramico.dao.AssociadoDao;
 import br.com.panoramico.dao.BancoDao;

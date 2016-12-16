@@ -109,7 +109,7 @@ public class ArquivoRemessaEnviar implements ArquivoRemessaItau{
         }else ns = "000" + String.valueOf(numeroSequencial);
         linha = linha  + (ns + "\r\n");
         return linha;
-    }
+    } 
     
     public String gerarDetalhe(Contasreceber conta, int numeroSequencial, Proprietario proprietario, Banco banco) throws IOException, Exception{
         String linha="";
@@ -129,8 +129,8 @@ public class ArquivoRemessaEnviar implements ArquivoRemessaItau{
         linha = linha  + ("000000000000000000000");
         linha = linha  + ("I");
         linha = linha  + ("01");
-        linha = linha  + (proprietario.getNumero() + "  ");
-        linha = linha  + (Formatacao.ConvercaoDataDDMMAA(conta.getDatalancamento()));
+        linha = linha  + (conta.getNossonumero() + "  ");
+        linha = linha  + (Formatacao.ConvercaoDataDDMMAA(conta.getDatavencimento()));
         String valor = Formatacao.foramtarFloatString(conta.getValorconta());
         valor = Formatacao.retirarPontos(valor);
         if (valor.length()<13){
@@ -139,12 +139,12 @@ public class ArquivoRemessaEnviar implements ArquivoRemessaItau{
         linha = linha  + (valor);
         linha = linha  + ("341");
         linha = linha  + ("00000");
-        linha = linha  + ("01");
+        linha = linha  + ("08");
         linha = linha  + ("N");
         linha = linha  + (Formatacao.ConvercaoDataDDMMAA(new Date()));
         linha = linha  + ("00");
         linha = linha  + ("00");
-        linha = linha  + ("00000000000");
+        linha = linha  + ("00000000000000");
         float valorDesconto =0.0f;
         if (conta.getIdempresa()==0){
             if (conta.getCliente().getAssociado().getDescotomensalidade()>0){
@@ -259,7 +259,7 @@ public class ArquivoRemessaEnviar implements ArquivoRemessaItau{
         
         linha = linha  + (branco.substring(0,30));
         linha = linha  + ("    ");
-        linha = linha  + (Formatacao.SubtarirDatas(conta.getDatalancamento(), -1, "ddMMyy"));
+        linha = linha  + (Formatacao.SubtarirDatas(conta.getDatavencimento(), -1, "ddMMyy"));
         linha = linha  + ("13");
         linha = linha  + (" ");
         String ns;
@@ -276,7 +276,7 @@ public class ArquivoRemessaEnviar implements ArquivoRemessaItau{
         String linha="";
         linha = linha  + ("2");
         linha = linha  + ("1");
-        linha = linha  + (Formatacao.SubtarirDatas(conta.getDatalancamento(), -1, "ddMMyyyy"));
+        linha = linha  + (Formatacao.SubtarirDatas(conta.getDatavencimento(), -1, "ddMMyyyy"));
         linha = linha  + (valorJuros(conta.getValorconta(), banco.getValormulta()));
         linha = linha  + (branco + branco + branco + branco + branco + branco + branco + branco + branco + branco.substring(0,11));
         String ns;
