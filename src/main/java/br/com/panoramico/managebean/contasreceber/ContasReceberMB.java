@@ -607,7 +607,7 @@ public class ContasReceberMB implements Serializable {
         dadosBoletoBean.setDataDocumento(new Date());
         dadosBoletoBean.setDigitoAgencias(banco.getDigitoagencia());
         dadosBoletoBean.setDigitoContas(banco.getDigitoconta());
-        dadosBoletoBean.setDataVencimento(conta.getDatalancamento());
+        dadosBoletoBean.setDataVencimento(conta.getDatavencimento());
         dadosBoletoBean.setNomeCedente(proprietario.getRazaosocial());
         dadosBoletoBean.setNomeSacado(conta.getCliente().getNome());
         dadosBoletoBean.setNumeroContas(banco.getConta());
@@ -690,7 +690,7 @@ public class ContasReceberMB implements Serializable {
         dadosBoletoBean.setDataDocumento(new Date());
         dadosBoletoBean.setDigitoAgencias(banco.getDigitoagencia());
         dadosBoletoBean.setDigitoContas(banco.getDigitoconta());
-        dadosBoletoBean.setDataVencimento(conta.getDatalancamento());
+        dadosBoletoBean.setDataVencimento(conta.getDatavencimento());
         dadosBoletoBean.setNomeCedente(proprietario.getRazaosocial());
         dadosBoletoBean.setNomeSacado(conta.getCliente().getNome());
         dadosBoletoBean.setNumeroContas(banco.getConta());
