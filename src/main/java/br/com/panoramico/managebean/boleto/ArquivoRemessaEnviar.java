@@ -144,7 +144,7 @@ public class ArquivoRemessaEnviar implements ArquivoRemessaItau{
         linha = linha  + (Formatacao.ConvercaoDataDDMMAA(new Date()));
         linha = linha  + ("00");
         linha = linha  + ("00");
-        linha = linha  + ("00000000000000");
+        linha = linha  + ("0000000000000");
         float valorDesconto =0.0f;
         if (conta.getIdempresa()==0){
             if (conta.getCliente().getAssociado().getDescotomensalidade()>0){
