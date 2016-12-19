@@ -277,7 +277,7 @@ public class ArquivoRemessaEnviar implements ArquivoRemessaItau{
         linha = linha  + ("2");
         linha = linha  + ("1");
         linha = linha  + (Formatacao.SubtarirDatas(conta.getDatavencimento(), -1, "ddMMyyyy"));
-        linha = linha  + (valorJuros(conta.getValorconta(), banco.getValormulta()));
+        linha = linha  + (valorJuros(0f, 0f));
         linha = linha  + (branco + branco + branco + branco + branco + branco + branco + branco + branco + branco.substring(0,11));
         String ns;
         if (numeroSequencial<10){
