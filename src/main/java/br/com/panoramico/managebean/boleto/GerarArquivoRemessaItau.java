@@ -187,7 +187,7 @@ public class GerarArquivoRemessaItau {
         remessa.write(arquivoRemessaNormal.gerarHeader(conta, numeroSequencial, proprietario, banco));
         numeroSequencial++;
         remessa.write(arquivoRemessaNormal.gerarDetalhe(conta, numeroSequencial, proprietario, banco));
-        numeroSequencial++;
+        //numeroSequencial++;
         //remessa.write(arquivoRemessaNormal.gerarMulta(conta, numeroSequencial, banco));
         numeroSequencial++;
         remessa.write(arquivoRemessaNormal.gerarTrailer(numeroSequencial));
