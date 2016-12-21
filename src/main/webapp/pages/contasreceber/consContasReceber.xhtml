@@ -10,7 +10,7 @@
                 <br/> 
                 <h:form id="idFormConsultaContasReceber" style="margin-left:5%;width: 90%;">
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:10%;width: 80%;" />
-                    <p:accordionPanel id="idtab" rendered="#{contasReceberMB.habilitarPesquisa()}" style="text-align: left;" activeIndex="-1">
+                    <p:accordionPanel id="idtab" rendered="#{contasReceberMB.habilitarPesquisa()}" style="text-align: left;">
                         <p:tab title="Pesquisar" >
                             <p:outputLabel class="titTela" value="Periodo" style="font-size: 12px;text-align: left;float: left;margin-left:0%;"/>
 
@@ -24,7 +24,7 @@
                                 <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
                             </p:inputMask>
                             <p:selectOneMenu  id="cliente"  style="width: 250px;font-size: 12px;margin-left:3%;"  value="#{contasReceberMB.cliente}" converter="ClienteConverter"
-                                               filter="true" filterMatchMode="contains" panelStyle="width:180px">
+                                              filter="true" filterMatchMode="contains" panelStyle="width:180px">
                                 <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
                                 <f:selectItems  value="#{contasReceberMB.listaCliente}" var="clienteselecionado" itemLabel="#{clienteselecionado.nome}" itemValue="#{clienteselecionado}"/>
                                 <f:attribute name="listaCliente" value="#{contasReceberMB.listaCliente}"/>
@@ -80,7 +80,7 @@
                     </p:accordionPanel>
                     <br/><br/>
                     <!-- TABELA CADASTROS --> 
-                    <div class="col-6 titTela" style="margin-left:-10%;">Consulta Contas a Receber</div> 
+                    <div class="col-6 titTela" style="text-align: right;">Consulta Contas a Receber</div> 
                     <p:commandLink rendered="#{contasReceberMB.habilitarVoltarFinanceiro}" action="#{contasReceberMB.voltarAssociado()}">
                         <div class="icoAdd fa fa-arrow-left" ></div>
                     </p:commandLink>
@@ -95,19 +95,32 @@
                         <p:ajax event="dialogReturn" listener="#{contasReceberMB.retornoDialogNovo}" update="messages, idConsultaContasReceber"/>
                     </p:commandLink>
 
-                    <p:commandButton id="bntboleto" style="font-size:12px;"
-                                     rendered="#{contasReceberMB.btnGerarBoleto}" value="Gerar Boletos"
-                                     action="#{contasReceberMB.gerarBoleto()}"
-                                     update=":idFormConsultaContasReceber:messages" ajax="false"
-                                     onclick="this.form.target = '_blank'" />
-                    <p:commandButton id="bntSegundaVia" style="font-size:12px;"  
-                                     rendered="#{contasReceberMB.btnGerarSegundaVia}"
-                                     value="Gerar 2º via"
-                                     action="#{contasReceberMB.gerarBoletoSegundaVia()}" ajax="false"
-                                     update="growl" onclick="this.form.target = '_blank'" />
-                    <p:commandButton id="bntenviarboleto" style="font-size:12px;"
-                                     rendered="#{contasReceberMB.btnEnviarBoleto}"
-                                     value="Gerar Remessa" action="#{contasReceberMB.dialogBoletos()}" />
+                    <p:commandLink id="bntreceberArquivo" rendered="#{usuarioLogadoMB.cadastrar}"
+                                    update=":dialogUpload:dialog_uploadboleto" oncomplete="PF('uploadboleto').show()" 
+                                   title="Retorno boleto" >
+                        <div class="icoAdd fa fa-download"></div> 
+                    </p:commandLink>
+
+
+                    <p:commandLink id="bntboleto" rendered="#{contasReceberMB.btnGerarBoleto}" title="Gerar Boletos" action="#{contasReceberMB.gerarBoleto()}"
+                                   update=":idFormConsultaContasReceber:messages" ajax="false"
+                                   onclick="this.form.target = '_blank'" >
+                        <div class="icoAdd fa fa-file-text"></div> 
+                    </p:commandLink>
+
+                    <p:commandLink id="bntSegundaVia" rendered="#{contasReceberMB.btnGerarSegundaVia}" title="Gerar 2º via" action="#{contasReceberMB.gerarBoletoSegundaVia()}"
+                                   update=":idFormConsultaContasReceber:messages" ajax="false"
+                                   onclick="this.form.target = '_blank'" >
+                        <div class="icoAdd fa fa-files-o"></div> 
+                    </p:commandLink> 
+
+                    <p:commandLink id="bntenviarboleto" rendered="#{contasReceberMB.btnEnviarBoleto}" title="Gerar Remessa" action="#{contasReceberMB.dialogBoletos()}"
+                                   update=":idFormConsultaContasReceber:messages" ajax="false"
+                                   onclick="this.form.target = '_blank'" >
+                        <div class="icoAdd fa fa-send"></div> 
+                    </p:commandLink>  
+
+
                     <h:dataTable  id="idConsultaContasReceber" class="table" styleClass="table" value="#{contasReceberMB.listaContasReceber}" var="contaReceber">
                         <p:column style="width:32px;text-align: center">
                             <p:selectBooleanCheckbox value="#{contaReceber.selecionado}" />
@@ -165,7 +178,20 @@
                                 </div>
                             </p:commandLink>
                         </h:column> 
-                    </h:dataTable>
+                    </h:dataTable> 
+                </h:form>
+                <h:form id="dialogUpload">
+                    <p:dialog id="dialog_uploadboleto" header="Carregar Boleto"
+                              widgetVar="uploadboleto" style="background:#d0e9c6">
+                        <p:fileUpload id="upload"
+                                      fileUploadListener="#{contasReceberMB.uploadRetorno}"
+                                      mode="advanced" update="@all" auto="true"
+                                      allowTypes="/(\.|\/)(ret|RET)$/" uploadLabel="Abrir"
+                                      cancelLabel="Cancelar" label="Selecionar"
+                                      oncomplete="uploadboleto.hide()">
+                        </p:fileUpload>
+                        <p:growl id="messages" showDetail="true" />
+                    </p:dialog>
                 </h:form>
             </div>
         </ui:define> 

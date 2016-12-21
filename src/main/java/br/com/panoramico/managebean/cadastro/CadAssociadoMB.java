@@ -274,10 +274,12 @@ public class CadAssociadoMB implements Serializable {
         if (associado.getMatricula() == null || associado.getMatricula().length() == 0) {
             mensagem = mensagem + " Informe a matricula \r\n";
         }else{
-            socio = associadoDao.find("Select a From Associado a Where a.matricula='" + associado.getMatricula() + "'");
-            if (socio == null || socio.getIdassociado() == null) {
-            }else{
-                mensagem = mensagem + " Matricula ja existente \r\n";
+            if(associado.getIdassociado()==null){
+                socio = associadoDao.find("Select a From Associado a Where a.matricula='" + associado.getMatricula() + "'");
+                if (socio == null || socio.getIdassociado() == null) {
+                }else{
+                    mensagem = mensagem + " Matricula ja existente \r\n";
+                }
             }
         }
         if (plano == null) {

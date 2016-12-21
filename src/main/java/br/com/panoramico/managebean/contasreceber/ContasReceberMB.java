@@ -1,6 +1,5 @@
 package br.com.panoramico.managebean.contasreceber;
 
-
 import br.com.panoramico.dao.AssociadoDao;
 import br.com.panoramico.dao.BancoDao;
 import br.com.panoramico.dao.ClienteDao;
@@ -10,6 +9,7 @@ import br.com.panoramico.dao.ProprietarioDao;
 import br.com.panoramico.managebean.RelatorioErroBean;
 import br.com.panoramico.managebean.UsuarioLogadoMB;
 import br.com.panoramico.managebean.boleto.DadosBoletoBean;
+import br.com.panoramico.managebean.boleto.LerRetornoItauBean;
 import br.com.panoramico.model.Associado;
 import br.com.panoramico.model.Banco;
 import br.com.panoramico.model.Cliente;
@@ -26,8 +26,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -37,7 +40,9 @@ import org.jrimum.bopepo.Boleto;
 import org.jrimum.domkee.comum.pessoa.endereco.Endereco;
 import org.jrimum.domkee.comum.pessoa.endereco.UnidadeFederativa;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.UploadedFile;
 
 @Named
 @ViewScoped
@@ -83,7 +88,7 @@ public class ContasReceberMB implements Serializable {
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         associado = (Associado) session.getAttribute("associado");
         if (associado == null) {
-        }else{
+        } else {
             habilitarVoltarFinanceiro = (boolean) session.getAttribute("habilitarVoltarFinanceiro");
             session.removeAttribute("habilitarVoltarFinanceiro");
         }
@@ -302,9 +307,6 @@ public class ContasReceberMB implements Serializable {
     public void setHabilitarVoltarFinanceiro(boolean habilitarVoltarFinanceiro) {
         this.habilitarVoltarFinanceiro = habilitarVoltarFinanceiro;
     }
-
-    
-    
 
     public void gerarListaContasReceber() {
         if (associado == null || associado.getIdassociado() == null) {
@@ -626,12 +628,12 @@ public class ContasReceberMB implements Serializable {
             dadosBoletoBean.getEnderecoSacado().setLogradouro(associado.getTipologradouro() + " " + associado.getLogradouro());
             dadosBoletoBean.getEnderecoSacado().setNumero(associado.getNumero());
             dadosBoletoBean.getEnderecoSacado().setUF(UnidadeFederativa.valueOfSigla(associado.getEstado()));
-            if (associado.getDescotomensalidade()>0){
+            if (associado.getDescotomensalidade() > 0) {
                 dadosBoletoBean.setInstrucao1("ATE O VENCIMENTO DESCONTO DE R$ " + Formatacao.foramtarFloatString(associado.getDescotomensalidade()));
                 dadosBoletoBean.setInstrucao2(banco.getObservacao1());
                 dadosBoletoBean.setInstrucao3(banco.getObservacao2());
                 dadosBoletoBean.setInstrucao4(banco.getObservacao3());
-            }else {
+            } else {
                 dadosBoletoBean.setInstrucao1(banco.getObservacao1());
                 dadosBoletoBean.setInstrucao2(banco.getObservacao2());
                 dadosBoletoBean.setInstrucao2(banco.getObservacao3());
@@ -745,8 +747,25 @@ public class ContasReceberMB implements Serializable {
         }
         return pago;
     }
-    
-    public String voltarAssociado(){
+
+    public String voltarAssociado() {
         return "consAssociado";
+    }
+
+    public void uploadRetorno(FileUploadEvent event) {
+        FacesMessage msg = new FacesMessage("Sucesso! ", event.getFile().getFileName() + " carregado");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+        UploadedFile uFile = event.getFile();
+        lerRetorno(uFile);
+    }
+
+    public String lerRetorno(UploadedFile retorno) {
+        try {
+            LerRetornoItauBean lerRetornoItauBean = new LerRetornoItauBean(
+                    Formatacao.converterUploadedFileToFile(retorno));
+        } catch (Exception ex) {
+            Logger.getLogger(ContasReceberMB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 }
