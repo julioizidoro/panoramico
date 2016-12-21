@@ -73,6 +73,12 @@ public class Formatacao {
         String valorFormatado = format.format(valor);
         return valorFormatado;
     }
+    
+    public static String colcoarVirgulaValor(String valor){
+    	String inteiro = valor.substring(0, valor.length()-2);
+    	String decimal = valor.substring(valor.length()-2, valor.length());
+    	return inteiro + "," + decimal;
+    }
 
     public static Float formatarStringfloat(String valor){
         String novoValor = "";

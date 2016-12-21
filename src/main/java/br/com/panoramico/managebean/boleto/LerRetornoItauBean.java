@@ -50,14 +50,17 @@ public class LerRetornoItauBean {
         if (linha != null) {
             String registro = linha.substring(0, 1);
             if (registro.equalsIgnoreCase("1")) {
-                String nossoNumero = linha.substring(63, 71);
+                String nossoNumero = linha.substring(62, 71);
                 nossoNumero = nossoNumero.trim();
                 String dataPagamento = linha.substring(110, 116);
                 dataPagamento.trim();
-                String juros = linha.substring(266, 288);
+                String juros = linha.substring(266, 279);
                 juros.trim();
-                String valorPago = linha.substring(253, 266);
+                juros = Formatacao.colcoarVirgulaValor(juros);
+                String valorPago = linha.substring(153, 165);
                 valorPago.trim();
+                valorPago = Formatacao.colcoarVirgulaValor(valorPago);
+                registarRecebimento(nossoNumero, dataPagamento, valorPago, juros);
             }
         }
     }
@@ -71,7 +74,7 @@ public class LerRetornoItauBean {
             if (vJuros>0){
                 recebimento.setJuros(vJuros);
             }
-            recebimento.setValorrecebido(converterValorPago(valorPago));
+            recebimento.setValorrecebido(Formatacao.formatarStringfloat(valorPago));
             recebimento.setDatarecebimento(converterData(dataPagamento));
             recebimento.setContasreceber(conta);
             recebimento.setFormarecebimento(conta.getTipopagamento());
