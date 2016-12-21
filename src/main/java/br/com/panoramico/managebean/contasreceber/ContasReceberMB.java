@@ -466,7 +466,7 @@ public class ContasReceberMB implements Serializable {
                         Mensagem.lancarMensagemInfo("Atenção", "Selecione a função desejada.");
                     } else {
                         if (funcaoBotaoBoleto.equalsIgnoreCase("Gerar")) {
-                            sql = sql + " and c.nossonumero is null and c.situacao='PAGAR' and c.situacaoboleto='Novo' and c.datavencimento>='" + Formatacao.ConvercaoDataSql(new Date()) + "'";
+                            sql = sql + " and c.nossonumero='0' and c.situacao='PAGAR' and c.situacaoboleto='Novo' and c.datavencimento>='" + Formatacao.ConvercaoDataSql(new Date()) + "'";
                             btnGerarBoleto = true;
                             btnGerarSegundaVia = false;
                             btnEnviarBoleto = false;
@@ -476,7 +476,7 @@ public class ContasReceberMB implements Serializable {
                             btnGerarBoleto = false;
                             btnEnviarBoleto = false;
                         } else if (funcaoBotaoBoleto.equalsIgnoreCase("Enviar")) {
-                            sql = sql + " and c.nossonumero>0 and c.situacaoboleto='Gerado' and c.situacao='PAGAR' and c.datavencimento>='" + Formatacao.ConvercaoDataSql(new Date()) + "'";
+                            sql = sql + " and c.nossonumero<>'0' and c.situacaoboleto='Gerado' and c.situacao='PAGAR' and c.datavencimento>='" + Formatacao.ConvercaoDataSql(new Date()) + "'";
                             btnEnviarBoleto = true;
                             btnGerarBoleto = false;
                             btnGerarSegundaVia = false;
@@ -573,7 +573,7 @@ public class ContasReceberMB implements Serializable {
         for (int i = 0; i < listaContasReceber.size(); i++) {
             if ((listaContasReceber.get(i).isSelecionado())
                     && (listaContasReceber.get(i).getTipopagamento().equalsIgnoreCase("Boleto"))) {
-                if (!listaContasReceber.get(i).getSituacaoboleto().equalsIgnoreCase("enviado")) {
+                if (listaContasReceber.get(i).getSituacaoboleto().equalsIgnoreCase("Novo")) {
                     listaSelecionada.add(listaContasReceber.get(i));
                 }
             }

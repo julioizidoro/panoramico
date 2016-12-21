@@ -7,7 +7,6 @@ package br.com.panoramico.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.inject.Named;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -70,6 +69,7 @@ public class Contasreceber implements Serializable{
 
     public Contasreceber() {
         situacaoboleto = "Não";
+        setNossonumero("0");
     }   
 
     public Integer getIdcontasreceber() {
