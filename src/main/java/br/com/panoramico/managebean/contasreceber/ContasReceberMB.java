@@ -500,6 +500,7 @@ public class ContasReceberMB implements Serializable {
         btnEnviarBoleto = false;
         tipoDocumento = null;
         funcaoBotaoBoleto = null;
+        comboBoleto = false;
         gerarListaCliente();
         gerarListaContasReceber();
     }
