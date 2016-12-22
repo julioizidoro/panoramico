@@ -70,20 +70,20 @@
                                     <f:selectItem itemLabel="Enviar" itemValue="Enviar" />
                                 </p:selectOneMenu>
                             </h:panelGroup> 
-                            <p:commandLink style="text-decoration: none; margin-top: 10%;" actionListener="#{contasReceberMB.filtrar()}" ajax="false" update="@form">  
-                                <div style="font-size: 16px;margin-left: 2%;" class="adicionar">Filtrar</div>
+                            <p:commandLink style="text-decoration: none; margin-top: 10%;" actionListener="#{contasReceberMB.filtrar()}" update="@form">  
+                                <div style="font-size: 16px;margin-left: 2%;" class="adicionar">Filtrar</div>  
                             </p:commandLink>
                             <p:commandLink style="text-decoration: none; margin-top: 2%;" actionListener="#{contasReceberMB.limparFiltro()}" ajax="false" update="@form">
                                 <div style="font-size: 16px;margin-left: 2%;" class="limpar">Limpar</div>
                             </p:commandLink>
                         </p:tab> 
                     </p:accordionPanel>
-                    <br/><br/>
+                    <br/><br/>   
                     <!-- TABELA CADASTROS --> 
-                    <div class="col-6 titTela" style="text-align: right;">Consulta Contas a Receber</div> 
+                    <div class="col-6 titTela" style="text-align: right;margin-left:15%;">Consulta Contas a Receber</div> 
                     <p:commandLink rendered="#{contasReceberMB.habilitarVoltarFinanceiro}" action="#{contasReceberMB.voltarAssociado()}">
                         <div class="icoAdd fa fa-arrow-left" ></div>
-                    </p:commandLink>
+                    </p:commandLink>     
                     <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}"  action="#{contasReceberMB.totalPagar()}" title="Total a ser pago">
                         <div class="icoAdd fa fa-usd"></div>
                     </p:commandLink> 
@@ -104,20 +104,19 @@
 
                     <p:commandLink id="bntboleto" rendered="#{contasReceberMB.btnGerarBoleto}" title="Gerar Boletos" action="#{contasReceberMB.gerarBoleto()}"
                                    update=":idFormConsultaContasReceber:messages" ajax="false"
-                                   onclick="this.form.target = '_blank'" >
+                                   target="_blank" >
                         <div class="icoAdd fa fa-file-text"></div> 
                     </p:commandLink>
 
                     <p:commandLink id="bntSegundaVia" rendered="#{contasReceberMB.btnGerarSegundaVia}" title="Gerar 2º via" action="#{contasReceberMB.gerarBoletoSegundaVia()}"
                                    update=":idFormConsultaContasReceber:messages" ajax="false"
-                                   onclick="this.form.target = '_blank'" >
+                                   target="_blank">  
                         <div class="icoAdd fa fa-files-o"></div> 
                     </p:commandLink> 
 
-                    <p:commandLink id="bntenviarboleto" rendered="#{contasReceberMB.btnEnviarBoleto}" title="Gerar Remessa" action="#{contasReceberMB.dialogBoletos()}"
-                                   update=":idFormConsultaContasReceber:messages" ajax="false"
-                                   onclick="this.form.target = '_blank'" >
-                        <div class="icoAdd fa fa-send"></div> 
+                    <p:commandLink id="bntenviarboleto" rendered="#{contasReceberMB.btnEnviarBoleto}" title="Gerar Remessa" 
+                                   action="#{contasReceberMB.dialogBoletos()}" update=":idFormConsultaContasReceber:messages" >
+                        <div class="icoAdd fa fa-send"></div>    
                     </p:commandLink>  
 
 

@@ -283,16 +283,16 @@ public class DadosBoletoBean {
         boleto.addTextosExtras("txtRsAgenciaCodigoCedente", codigoCedente);
         boleto.addTextosExtras("txtFcNossoNumero", nossoNumeroExibicao); 
         boleto.addTextosExtras("txtRsNossoNumero", nossoNumeroExibicao);
-        if (instrucao1.length()>0){
+        if (instrucao1!=null && instrucao1.length()>0){
             boleto.setInstrucao1(instrucao1);
         }
-        if (instrucao1.length()>0){
+        if (instrucao2!=null && instrucao2.length()>0){
             boleto.setInstrucao2(instrucao2);
         }  
-        if (instrucao1.length()>0){
+        if (instrucao3!=null && instrucao3.length()>0){
             boleto.setInstrucao3(instrucao3);
         }
-        if (instrucao1.length()>0){
+        if (instrucao4!=null && instrucao4.length()>0){
             boleto.setInstrucao4(instrucao4);
         }   
     } 
