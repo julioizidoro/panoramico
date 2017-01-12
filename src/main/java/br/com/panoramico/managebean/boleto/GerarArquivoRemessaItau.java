@@ -7,13 +7,16 @@ package br.com.panoramico.managebean.boleto;
 
 import br.com.panoramico.dao.ContasReceberDao;
 import br.com.panoramico.dao.EmpresaDao;
+import br.com.panoramico.dao.FtpDadosDao;
 import br.com.panoramico.dao.ProprietarioDao;
 import br.com.panoramico.managebean.UsuarioLogadoMB;
 import br.com.panoramico.model.Banco;
 import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.model.Empresa;
+import br.com.panoramico.model.Ftpdados;
 import br.com.panoramico.model.Proprietario;
 import br.com.panoramico.uil.Formatacao;
+import br.com.panoramico.uil.Ftp;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -40,13 +43,20 @@ public class GerarArquivoRemessaItau {
     private List<Empresa> listaEmpresa;
     private String nomeArquivo;
     private Banco banco;
+    private String nomeFtp;
+//    @EJB
+//    private FtpDadosDao ftpDadosDao;
+    private Ftpdados ftpdados;
 
-    public GerarArquivoRemessaItau(List<Contasreceber> lista, UsuarioLogadoMB usuarioLogadoMB, Proprietario proprietario, List<Contasreceber> listaContas, Banco banco) {
+    public GerarArquivoRemessaItau(List<Contasreceber> lista, UsuarioLogadoMB usuarioLogadoMB, Proprietario proprietario, List<Contasreceber> listaContas, Banco banco, String nomeArquivo, String nomeFtp, Ftpdados ftpdados) {
         this.listaContas = lista;
         this.usuarioLogadoMB = usuarioLogadoMB;
         this.proprietario = proprietario;
         this.listaContas = listaContas;
         this.banco = banco;
+        this.nomeArquivo = nomeArquivo;
+        this.nomeFtp = nomeFtp;
+        this.ftpdados  = ftpdados;
         iniciarRemessa();
     }
 
@@ -124,9 +134,9 @@ public class GerarArquivoRemessaItau {
 
     private void iniciarRemessa() {
         if (this.listaContas != null) {
-            String nome = System.getProperty("user.name");
-            String nomeA = "C:\\remessa\\" + gerarNomeArquivo();
-            nomeArquivo = nomeA;
+//            String nome = System.getProperty("user.name");
+//            String nomeA = "C:\\remessa\\" + gerarNomeArquivo();
+//            nomeArquivo = nomeA;
             try {
                 remessa = new FileWriter(new File(nomeArquivo));
                 try {
@@ -159,6 +169,8 @@ public class GerarArquivoRemessaItau {
             }
         }
         remessa.close();
+        enviarArquivoFTP();
+        
     }
 
     private void atualizarBoleto(Contasreceber conta) throws IOException, Exception {
@@ -199,6 +211,22 @@ public class GerarArquivoRemessaItau {
             conta.setEnviado(true);
             conta.setSituacaoboleto("Enviado");
             contasReceberDao.update(conta);
+        }
+    }
+    
+    
+    public void enviarArquivoFTP() {
+        //Ftpdados dadosFTP = null;
+        try {
+            //dadosFTP = ftpDadosDao.find(1);
+            Ftp ftp = new Ftp(ftpdados.getHostupload(), ftpdados.getUser(), ftpdados.getPassword());
+            ftp.conectar();
+            File file = new File(nomeArquivo);
+            ftp.enviarArquivo(file, nomeFtp, "/panoramico/remessa/");
+            ftp.desconectar();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
     }
 }

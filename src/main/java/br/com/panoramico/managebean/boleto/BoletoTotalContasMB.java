@@ -9,15 +9,20 @@ import br.com.panoramico.dao.AssociadoDao;
 import br.com.panoramico.dao.BancoDao;
 import br.com.panoramico.dao.ContasReceberDao;
 import br.com.panoramico.dao.EmpresaDao;
+import br.com.panoramico.dao.FtpDadosDao;
 import br.com.panoramico.dao.ProprietarioDao;
 import br.com.panoramico.managebean.UsuarioLogadoMB;
 import br.com.panoramico.model.Associado;
 import br.com.panoramico.model.Banco;
 import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.model.Empresa;
+import br.com.panoramico.model.Ftpdados;
 import br.com.panoramico.model.Proprietario;
 import br.com.panoramico.uil.Formatacao;
+import br.com.panoramico.uil.Ftp;
 import br.com.panoramico.uil.Mensagem;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,10 +34,12 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import org.jrimum.bopepo.Boleto;
 import org.jrimum.domkee.comum.pessoa.endereco.Endereco;
 import org.jrimum.domkee.comum.pessoa.endereco.UnidadeFederativa;
+import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
 @Named
@@ -66,6 +73,13 @@ public class BoletoTotalContasMB implements Serializable {
     private boolean habilitarEmpresa;
     private Empresa empresa;
     private float valorTotalEmpresa;
+    private Ftpdados ftpDados;
+    @EJB
+    private FtpDadosDao ftpDadosDao;
+    private String nomearquivo;
+    private String nomeFtp;
+    private Ftp ftp;
+    private StreamedContent file;
 
     @PostConstruct
     public void init() {
@@ -78,6 +92,10 @@ public class BoletoTotalContasMB implements Serializable {
         session.removeAttribute("empresa");
         proprietario = proprietarioDao.find(1);
         banco = bancoDao.find("Select b From Banco b Where b.proprietario.idproprietario=" + proprietario.getIdproprietario() + " and b.emitiboleto=1");
+        nomearquivo = Formatacao.ConvercaoDataPadrao(new Date());
+        nomeFtp = nomearquivo.substring(6, 10) + nomearquivo.substring(3, 5) + nomearquivo.substring(0, 2) + ".REM";
+        ServletContext servletContext = (ServletContext) fc.getExternalContext().getContext();
+        nomearquivo = servletContext.getRealPath("/remessa/" + nomeFtp);
     }
 
     public Contasreceber getContasreceber() {
@@ -247,6 +265,48 @@ public class BoletoTotalContasMB implements Serializable {
     public void setValorTotalEmpresa(float valorTotalEmpresa) {
         this.valorTotalEmpresa = valorTotalEmpresa;
     }
+
+    public Ftpdados getFtpDados() {
+        return ftpDados;
+    }
+
+    public void setFtpDados(Ftpdados ftpDados) {
+        this.ftpDados = ftpDados;
+    }
+
+    public String getNomearquivo() {
+        return nomearquivo;
+    }
+
+    public void setNomearquivo(String nomearquivo) {
+        this.nomearquivo = nomearquivo;
+    }
+
+    public String getNomeFtp() {
+        return nomeFtp;
+    }
+
+    public void setNomeFtp(String nomeFtp) {
+        this.nomeFtp = nomeFtp;
+    }
+
+    public Ftp getFtp() {
+        return ftp;
+    }
+
+    public void setFtp(Ftp ftp) {
+        this.ftp = ftp;
+    }
+
+    public StreamedContent getFile() {
+        return file;
+    }
+
+    public void setFile(StreamedContent file) {
+        this.file = file;
+    }
+    
+    
     
     
 
@@ -428,9 +488,12 @@ public class BoletoTotalContasMB implements Serializable {
             lista = listaContasReceber;
         }
         if (lista.size() > 0) {
-            GerarArquivoRemessaItau arquivoRemessaItau = new GerarArquivoRemessaItau(lista, usuarioLogadoMB, proprietario, lista, banco);
+            ftpDados = ftpDadosDao.find(1);
+            GerarArquivoRemessaItau arquivoRemessaItau = new GerarArquivoRemessaItau(lista, usuarioLogadoMB, proprietario, lista, banco, nomearquivo, nomeFtp, ftpDados);
             confirmarContas(lista);
-            FacesMessage msg = new FacesMessage("Sucesso! ", "Arquivo Remessa Gerado");
+             InputStream stream = procurarArquivo();
+            file = new DefaultStreamedContent(stream, "", nomeFtp);
+            FacesMessage msg = new FacesMessage("Enviado! ", "Disponivel para download, aperte novamente");
             FacesContext.getCurrentInstance().addMessage(null, msg);
         } else {
             FacesMessage msg = new FacesMessage("Erro! ", "Nenhuma Conta Selecionada");
@@ -485,6 +548,22 @@ public class BoletoTotalContasMB implements Serializable {
             return associadoo;
         }
         return null;
+    }
+    
+    
+    public InputStream procurarArquivo() {
+        InputStream is = null;
+        ftpDados = ftpDadosDao.find(1);
+        ftp = new Ftp(ftpDados.getHost(), ftpDados.getUser(), ftpDados.getPassword());
+        try {
+            ftp.conectar();
+            is = ftp.receberArquivo("", nomeFtp, "/panoramico/remessa/");
+            ftp.desconectar();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return is;
     }
     
 }
