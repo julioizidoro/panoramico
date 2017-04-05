@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relatorioAniversariantes" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="feecb075-5a7f-42f6-832b-1a654a7aa009">
+	<property name="ireport.zoom" value="1.3660269107301424"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<parameter name="logo" class="java.awt.Image"/>
+	<parameter name="dataInicio" class="java.util.Date"/>
+	<parameter name="dataFinal" class="java.util.Date"/>
+	<queryString>
+		<![CDATA[SELECT distinct idassociado
+from associado
+where idassociado =1;]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="127" splitType="Stretch">
+			<textField>
+				<reportElement style="Detail" x="3" y="94" width="553" height="33" uuid="7ab278a3-567e-4655-aabb-0e815544389f"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="23" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Sem Associado neste periodo inserido"]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="1" y="0" width="173" height="71" uuid="44120e79-a716-4d1c-8cf1-2ba645175b59"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="15" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="162" height="15" uuid="64d7f30a-4fdb-49d6-82f0-f2d203399bcd"/>
+				<text><![CDATA[Periodo da Data de Associação]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="14" width="554" height="1" uuid="5b24f4af-8a73-4b8f-aa6b-ec4f5a5b1e07"/>
+			</line>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="3" y="3" width="100" height="16" uuid="71df476c-71ce-4878-bcb3-360910b47177"/>
+				<textFieldExpression><![CDATA[$P{dataInicio}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="129" y="3" width="100" height="16" uuid="e7d264fd-9b75-4160-a4ae-adb50ebbe36a"/>
+				<textFieldExpression><![CDATA[$P{dataFinal}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="19" splitType="Stretch">
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="2" y="3" width="127" height="14" uuid="7ae4e633-e737-4a5a-acbf-bd9d128532ca"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="0" width="554" height="1" uuid="322a6f90-f07e-48a5-b311-fa594943ceb1"/>
+			</line>
+		</band>
+	</pageFooter>
+</jasperReport>

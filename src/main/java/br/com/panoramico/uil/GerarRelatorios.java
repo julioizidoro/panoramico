@@ -12,12 +12,17 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.context.FacesContext;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.persistence.EntityManager; 
 import javax.persistence.PersistenceContext;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -72,7 +77,12 @@ public class GerarRelatorios {
         facesContext.responseComplete();    
         ServletOutputStream servletOutputStream = response.getOutputStream();
         RequestContext.getCurrentInstance().closeDialog(null);
-        Connection conn = getConexao();
+        Connection conn = null;
+        try {
+            conn = getConexao();
+        } catch (NamingException ex) {
+            Logger.getLogger(GerarRelatorios.class.getName()).log(Level.SEVERE, null, ex);
+        }
         // envia para o navegador o PDF gerado  
         JasperRunManager.runReportToPdfStream(reportStream,
                 servletOutputStream, parameters, conn);
@@ -84,14 +94,22 @@ public class GerarRelatorios {
     } 
     
     
-    public static Connection getConexao(){
-    	Connection conexao = null;
-		try {
-			conexao = DriverManager.getConnection("jdbc:mysql://192.168.1.100:8081/panoramico", "root", "simples");
-		} catch (SQLException e) {   
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}    
-    	return conexao;
+    
+    
+    
+    public static Connection getConexao() throws NamingException{
+        InitialContext context = null;
+        try {
+            context = new InitialContext();
+        } catch (NamingException ex) {
+            Logger.getLogger(GerarRelatorios.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        DataSource ds = (DataSource) context.lookup("java:/panoramicoDS");
+        try {
+            return ds.getConnection();
+        } catch (SQLException ex) {
+            Logger.getLogger(GerarRelatorios.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 }
