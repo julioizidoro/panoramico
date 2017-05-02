@@ -78,11 +78,8 @@ public class GerarRelatorios {
         ServletOutputStream servletOutputStream = response.getOutputStream();
         RequestContext.getCurrentInstance().closeDialog(null);
         Connection conn = null;
-        try {
-            conn = getConexao();
-        } catch (NamingException ex) {
-            Logger.getLogger(GerarRelatorios.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
+            conn = getConexaoo();
         // envia para o navegador o PDF gerado  
         JasperRunManager.runReportToPdfStream(reportStream,
                 servletOutputStream, parameters, conn);
@@ -96,7 +93,7 @@ public class GerarRelatorios {
     
     
     
-    
+      
     public static Connection getConexao() throws NamingException{
         InitialContext context = null;
         try {
@@ -112,4 +109,17 @@ public class GerarRelatorios {
         }
         return null;
     }
+    
+    
+    public static Connection getConexaoo() {
+		Connection conexao = null;
+		try { 
+			conexao = DriverManager.getConnection("jdbc:mysql://localhost:8081/panoramico", "root", "simples");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+   
+		return conexao;
+	}
 }

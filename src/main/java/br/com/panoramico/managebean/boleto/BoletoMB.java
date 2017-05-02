@@ -52,6 +52,7 @@ public class BoletoMB implements Serializable {
     private FtpDadosDao ftpDadosDao;
     private Ftpdados ftpdados;
     private Ftp ftp;
+    private String nomeBotao = "Enviar";
     
     
     public BoletoMB() {
@@ -139,32 +140,46 @@ public class BoletoMB implements Serializable {
     public void setFile(StreamedContent file) {
         this.file = file;
     }
+
+    public String getNomeBotao() {
+        return nomeBotao;
+    }
+
+    public void setNomeBotao(String nomeBotao) {
+        this.nomeBotao = nomeBotao;
+    }
     
     
 
     public String enviarBoleto() {
-        proprietario = proprietarioDao.find(1);
-        Banco banco = bancoDao.find("Select b From  Banco b Where b.proprietario.idproprietario=" + proprietario.getIdproprietario() + " and b.emitiboleto=1");
-        List<Contasreceber> lista = new ArrayList<Contasreceber>();
-        for (int i = 0; i < listarSelecionados.size(); i++) {
-            if (listarSelecionados.get(i).isSelecionado()) {
-                lista.add(listarSelecionados.get(i));
+        if (nomeBotao.equalsIgnoreCase("Enviar")) {
+            proprietario = proprietarioDao.find(1);
+            Banco banco = bancoDao.find("Select b From  Banco b Where b.proprietario.idproprietario=" + proprietario.getIdproprietario() + " and b.emitiboleto=1");
+            List<Contasreceber> lista = new ArrayList<Contasreceber>();
+            for (int i = 0; i < listarSelecionados.size(); i++) {
+                if (listarSelecionados.get(i).isSelecionado()) {
+                    lista.add(listarSelecionados.get(i));
+                }
             }
-        }
-        if (lista.size() == 0) {
-            lista = listarSelecionados;
-        }  
-        if (lista.size() > 0) {
-            ftpdados = ftpDadosDao.find(1);
-            GerarArquivoRemessaItau arquivoRemessaItau = new GerarArquivoRemessaItau(lista, usuarioLogadoMB, proprietario, lista, banco, nomearquivo, nomeFtp, ftpdados);
-            confirmarContas(lista);
-            InputStream stream = procurarArquivo();
-            file = new DefaultStreamedContent(stream, "", nomeFtp);
-            FacesMessage msg = new FacesMessage("Enviado! ", "Disponivel para download, aperte novamente");
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-        } else {
-            FacesMessage msg = new FacesMessage("Erro! ", "Nenhuma Conta Selecionada");
-            FacesContext.getCurrentInstance().addMessage(null, msg);
+            if (lista.size() == 0) {
+                lista = listarSelecionados;
+            }  
+            if (lista.size() > 0) {
+                ftpdados = ftpDadosDao.find(1);
+                GerarArquivoRemessaItau arquivoRemessaItau = new GerarArquivoRemessaItau(lista, usuarioLogadoMB, proprietario, lista, banco, nomearquivo, nomeFtp, ftpdados);
+                confirmarContas(lista);
+                InputStream stream = procurarArquivo();
+                file = new DefaultStreamedContent(stream, "", nomeFtp);
+                FacesMessage msg = new FacesMessage("Enviado! ", "Disponivel para download, aperte novamente");
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+                nomeBotao = "Download";
+            } else {
+                FacesMessage msg = new FacesMessage("Erro! ", "Nenhuma Conta Selecionada");
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+            }
+        }else if(nomeBotao.equalsIgnoreCase("Download")){
+             InputStream stream = procurarArquivo();
+             file = new DefaultStreamedContent(stream, "", nomeFtp);
         }
         return "";
     }
