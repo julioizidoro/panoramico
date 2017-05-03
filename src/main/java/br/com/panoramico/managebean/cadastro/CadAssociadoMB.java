@@ -222,7 +222,9 @@ public class CadAssociadoMB implements Serializable {
             }
             associado = associadoDao.update(associado);
             if (novo){
-                session.setAttribute("idAssociado", associado.getIdassociado());
+                session.setAttribute("idAssociado",  associado.getIdassociado());
+            }else{
+                session.setAttribute("idAssociado", 0);
             }
             RequestContext.getCurrentInstance().closeDialog(associado);
         }

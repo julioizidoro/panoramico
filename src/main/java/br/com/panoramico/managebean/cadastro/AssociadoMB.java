@@ -63,10 +63,11 @@ public class AssociadoMB implements Serializable {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         sql = (String) session.getAttribute("sql");
-        String idA = (String) session.getAttribute("idAssociado");
-        if (idA!=null){
-            idAssociado = Integer.parseInt(idA);
-        }else idAssociado=0;
+        Integer idA = (Integer) session.getAttribute("idAssociado");
+        if (idA == null) {
+            idA = 0;
+        }
+        idAssociado = idA;
         if (idAssociado>0){
             sql = null;
              gerarListaAssociado();
@@ -228,10 +229,11 @@ public class AssociadoMB implements Serializable {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         sql = (String) session.getAttribute("sql");
-         String idA = (String) session.getAttribute("idAssociado");
-        if (idA!=null){
-            idAssociado = Integer.parseInt(idA);
-        }else idAssociado=0;
+        Integer idA = (Integer) session.getAttribute("idAssociado");
+        if (idA == null) {
+            idA = 0;
+        }
+        idAssociado = idA;
         session.removeAttribute("sql");
         session.removeAttribute("idAssociado");
         Associado associado = (Associado) event.getObject();

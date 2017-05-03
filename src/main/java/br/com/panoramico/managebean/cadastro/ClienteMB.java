@@ -53,10 +53,11 @@ public class ClienteMB implements Serializable{
        FacesContext fc = FacesContext.getCurrentInstance();
        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
        sql = (String) session.getAttribute("sql");
-       String idC = (String) session.getAttribute("idCliente");
-        if (idC!=null){
-            idCliente = Integer.parseInt(idC);
-        }else idCliente=0;
+       Integer idC = (Integer) session.getAttribute("idCliente");
+        if (idC == null) {
+            idC = 0;
+        }
+        idCliente = idC;
          if (idCliente>0){
             sql = null;
              gerarListaCliente();
@@ -184,6 +185,9 @@ public class ClienteMB implements Serializable{
         Cliente cliente = (Cliente) event.getObject();
         if (cliente.getIdcliente() != null) {
             Mensagem.lancarMensagemInfo("Salvou", "Cadastro de cliente realizado com sucesso");
+            if (listaCliente == null) {
+                listaCliente = new ArrayList<>();
+            }
             listaCliente.add(cliente);
         }
     }

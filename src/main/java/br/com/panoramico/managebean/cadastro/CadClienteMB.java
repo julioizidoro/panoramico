@@ -143,6 +143,8 @@ public class CadClienteMB implements  Serializable{
             cliente = clienteDao.update(cliente);
             if (novo) {
                 session.setAttribute("idCliente", cliente.getIdcliente());
+            }else{
+                session.setAttribute("idCliente", 0);
             }
             RequestContext.getCurrentInstance().closeDialog(cliente);
         }
