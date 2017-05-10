@@ -5,6 +5,7 @@
  */
 package br.com.panoramico.managebean.boleto;
 
+import br.com.panoramico.bean.RetornoBean;
 import br.com.panoramico.dao.ContasReceberDao;
 import br.com.panoramico.dao.EmpresaDao;
 import br.com.panoramico.dao.FtpDadosDao;
@@ -20,13 +21,15 @@ import br.com.panoramico.uil.Ftp;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import org.primefaces.model.StreamedContent;
+import javax.servlet.ServletContext;
 
 public class GerarArquivoRemessaItau {
 
@@ -44,10 +47,9 @@ public class GerarArquivoRemessaItau {
     private String nomeArquivo;
     private Banco banco;
     private String nomeFtp;
-//    @EJB
-//    private FtpDadosDao ftpDadosDao;
     private Ftpdados ftpdados;
-
+    private List<RetornoBean> listaEnviada;
+            
     public GerarArquivoRemessaItau(List<Contasreceber> lista, UsuarioLogadoMB usuarioLogadoMB, Proprietario proprietario, List<Contasreceber> listaContas, Banco banco, String nomeArquivo, String nomeFtp, Ftpdados ftpdados) {
         this.listaContas = lista;
         this.usuarioLogadoMB = usuarioLogadoMB;
@@ -57,6 +59,7 @@ public class GerarArquivoRemessaItau {
         this.nomeArquivo = nomeArquivo;
         this.nomeFtp = nomeFtp;
         this.ftpdados  = ftpdados;
+        listaEnviada = new ArrayList<>();
         iniciarRemessa();
     }
 
@@ -133,13 +136,15 @@ public class GerarArquivoRemessaItau {
     }
 
     private void iniciarRemessa() {
+        FacesContext facesContext = FacesContext.getCurrentInstance(); 
+    	ServletContext request = (ServletContext) facesContext.getExternalContext().getContext();
+        String pasta = request.getRealPath("");
         if (this.listaContas != null) {
-//            String nome = System.getProperty("user.name");
-//            String nomeA = "C:\\remessa\\" + gerarNomeArquivo();
-//            nomeArquivo = nomeA;
             try {
-                remessa = new FileWriter(new File(nomeArquivo));
-                try {
+                pasta = pasta + "\\remessa\\" + nomeArquivo;
+                File arquivo = new File(pasta);
+                remessa = new FileWriter(arquivo);
+                try {  
                     lerConta();
                 } catch (Exception ex) {  
                     Logger.getLogger(ArquivoRemessaEnviar.class.getName()).log(Level.SEVERE, null, ex);
@@ -203,6 +208,13 @@ public class GerarArquivoRemessaItau {
         //remessa.write(arquivoRemessaNormal.gerarMulta(conta, numeroSequencial, banco));
         numeroSequencial++;
         remessa.write(arquivoRemessaNormal.gerarTrailer(numeroSequencial));
+        RetornoBean retornoBean = new RetornoBean();
+        retornoBean.setCodigoOcorrencia("01");
+        retornoBean.setDataPagamento(Formatacao.ConvercaoDataPadrao(conta.getDatavencimento()));
+        retornoBean.setNomePagador(conta.getCliente().getNome());
+        retornoBean.setValorJuros(0.0f);
+        retornoBean.setValorTitulo(conta.getValorconta());
+        listaEnviada.add(retornoBean);
     }  
  
     private void confirmarContas() {
@@ -216,13 +228,15 @@ public class GerarArquivoRemessaItau {
     
     
     public void enviarArquivoFTP() {
-        //Ftpdados dadosFTP = null;
+    	FacesContext facesContext = FacesContext.getCurrentInstance(); 
+    	ServletContext request = (ServletContext) facesContext.getExternalContext().getContext();
+        String pasta = request.getRealPath("");
         try {
-            //dadosFTP = ftpDadosDao.find(1);
             Ftp ftp = new Ftp(ftpdados.getHostupload(), ftpdados.getUser(), ftpdados.getPassword());
             ftp.conectar();
-            File file = new File(nomeArquivo);
-            ftp.enviarArquivo(file, nomeFtp, "/panoramico/remessa/");
+            pasta = pasta + "\\remessa\\" + nomeArquivo;
+            File file = new File(pasta);
+            ftp.enviarArquivoRemessa(file, nomeFtp, "/panoramico/remessa/");
             ftp.desconectar();
         } catch (Exception e) {
             // TODO Auto-generated catch block

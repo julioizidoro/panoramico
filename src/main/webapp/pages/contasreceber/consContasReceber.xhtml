@@ -84,6 +84,9 @@
                     <p:commandLink rendered="#{contasReceberMB.habilitarVoltarFinanceiro}" action="#{contasReceberMB.voltarAssociado()}">
                         <div class="icoAdd fa fa-arrow-left" ></div>
                     </p:commandLink>     
+                    <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}"  onclick="PF('relatorioRemessaRetorno').show();" title="Boletos">
+                        <div class="icoAdd fa fa-exchange"></div>
+                    </p:commandLink> 
                     <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}"  action="#{contasReceberMB.totalPagar()}" title="Total a ser pago">
                         <div class="icoAdd fa fa-usd"></div>
                     </p:commandLink> 
@@ -193,6 +196,18 @@
                     </p:dialog>
                 </h:form>
             </div>
+            <h:form>
+                <p:dialog  widgetVar="relatorioRemessaRetorno"
+                           width="23%">
+                    <div align="center">
+                        <p:outputLabel value="Relatório Remessa ou Retorno ?"/>
+                        <br/>
+                        <p:commandButton action="#{contasReceberMB.boletosRemessaRetorno('Remessa')}" value="Remessa" onclick="PF('relatorioRemessaRetorno').hide();"/>
+                        <p:commandButton action="#{contasReceberMB.boletosRemessaRetorno('Retorno')}" value="Retorno" onclick="PF('relatorioRemessaRetorno').hide();"/>
+                        <br></br>
+                    </div>
+                </p:dialog> 
+            </h:form>
         </ui:define> 
     </ui:composition>
 </html>

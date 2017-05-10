@@ -92,6 +92,9 @@ public class ArquivoRemessaEnviar implements ArquivoRemessaItau{
         linha = linha  + (banco.getDigitoconta());
         linha = linha  + (branco.substring(0, 8));
         String nomeEmpresa = proprietario.getRazaosocial();
+        if (nomeEmpresa == null) {
+            nomeEmpresa = " Sem nome da empresa";
+        }
         nomeEmpresa = nomeEmpresa.toUpperCase();
         if (nomeEmpresa.length()<30){
             nomeEmpresa = nomeEmpresa + branco.substring(0, 30 - nomeEmpresa.length());
@@ -170,6 +173,9 @@ public class ArquivoRemessaEnviar implements ArquivoRemessaItau{
             linha = linha + ("01");
             linha = linha + (Formatacao.retirarPontos(conta.getCliente().getCpf()) + "   ");
             String nomeCliente = conta.getCliente().getNome();
+            if (nomeCliente == null) {
+                nomeCliente = " Sem Cliente";
+            }
             nomeCliente = nomeCliente.toUpperCase();
             if (nomeCliente.length() < 30) {
                 nomeCliente = nomeCliente + branco.substring(0, 30 - nomeCliente.length());
@@ -180,6 +186,9 @@ public class ArquivoRemessaEnviar implements ArquivoRemessaItau{
             linha = linha + (branco.substring(0, 10));
             String logradouro = conta.getCliente().getAssociado().getTipologradouro() + " " + conta.getCliente().getAssociado().getLogradouro()
                     + conta.getCliente().getAssociado().getNumero();
+            if (logradouro.length() < 2) {
+                logradouro = " Sem endereço ";
+            }
             logradouro = logradouro.toUpperCase();
             if (logradouro.length() < 40) {
                 logradouro = logradouro + branco.substring(0, 40 - logradouro.length());
@@ -188,6 +197,9 @@ public class ArquivoRemessaEnviar implements ArquivoRemessaItau{
             }
             linha = linha + (logradouro);
             String bairro = conta.getCliente().getAssociado().getBairro();
+            if (bairro == null) {
+                bairro = " Sem bairro ";
+            }
             bairro = bairro.toUpperCase();
             if (bairro.length() < 12) {
                 bairro = bairro + branco.substring(0, 12 - bairro.length());
@@ -197,6 +209,9 @@ public class ArquivoRemessaEnviar implements ArquivoRemessaItau{
             linha = linha + (bairro);
             linha = linha + (Formatacao.retirarPontos(conta.getCliente().getAssociado().getCep()));
             String cidade = conta.getCliente().getAssociado().getCidade();
+            if (cidade == null) {
+                cidade = " Sem cidade ";
+            }
             cidade = cidade.toUpperCase();
             if (cidade.length() < 15) {
                 cidade = cidade + branco.substring(0, 15 - cidade.length());
@@ -212,6 +227,9 @@ public class ArquivoRemessaEnviar implements ArquivoRemessaItau{
             linha = linha + ("02");
             linha = linha + (Formatacao.retirarPontos(empresa.getCnpj()));
             String nomeCliente = empresa.getRazaosocial();
+            if (nomeCliente == null) {
+                nomeCliente = " Sem Cliente ";
+            }
             nomeCliente = nomeCliente.toUpperCase();
             if (nomeCliente.length() < 30) {
                 nomeCliente = nomeCliente + branco.substring(0, 30 - nomeCliente.length());
@@ -222,6 +240,9 @@ public class ArquivoRemessaEnviar implements ArquivoRemessaItau{
             linha = linha + (branco.substring(0, 10));
             String logradouro = empresa.getTipologradouro() + " " + empresa.getLogradouro()
                     + empresa.getNumero();
+            if (logradouro.length() < 2) {
+                logradouro = " Sem logradouro ";
+            }
             logradouro = logradouro.toUpperCase();
             if (logradouro.length() < 40) {
                 logradouro = logradouro + branco.substring(0, 40 - logradouro.length());
@@ -230,6 +251,9 @@ public class ArquivoRemessaEnviar implements ArquivoRemessaItau{
             }
             linha = linha + (logradouro);
             String bairro = empresa.getBairro();
+            if (bairro == null) {
+                bairro = " Sem bairro ";
+            }
             bairro = bairro.toUpperCase();
             if (bairro.length() < 12) {
                 bairro = bairro + branco.substring(0, 12 - bairro.length());
@@ -239,6 +263,9 @@ public class ArquivoRemessaEnviar implements ArquivoRemessaItau{
             linha = linha + (bairro);
             linha = linha + (Formatacao.retirarPontos(empresa.getCep()));
             String cidade = empresa.getCidade();
+            if (cidade == null) {
+                cidade = " Sem cidade ";
+            }
             cidade = cidade.toUpperCase();
             if (cidade.length() < 15) {
                 cidade = cidade + branco.substring(0, 15 - cidade.length());

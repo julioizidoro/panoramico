@@ -81,6 +81,7 @@ public class ContasReceberMB implements Serializable {
     @EJB
     private AssociadoDao associadoDao;
     private boolean habilitarVoltarFinanceiro = false;
+    private String tipo;
 
     @PostConstruct
     public void init() {
@@ -763,10 +764,19 @@ public class ContasReceberMB implements Serializable {
     public String lerRetorno(UploadedFile retorno) {
         try {
             LerRetornoItauBean lerRetornoItauBean = new LerRetornoItauBean(
-                    Formatacao.converterUploadedFileToFile(retorno));
+                    Formatacao.converterUploadedFileToFile(retorno), retorno.getFileName());
         } catch (Exception ex) {
             Logger.getLogger(ContasReceberMB.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+    
+    public void boletosRemessaRetorno(String tipo){
+        FacesContext fc = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+        Map<String, Object> options = new HashMap<String, Object>();
+        options.put("contentWidth", 600);
+        session.setAttribute("tipo", tipo);
+        RequestContext.getCurrentInstance().openDialog("relatorioRemessaRetorno", options, null);
     }
 }

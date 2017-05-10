@@ -14,8 +14,36 @@
     <class>br.com.panoramico.model.Associado</class>
     <class>br.com.panoramico.model.Usuario</class>
     <class>br.com.panoramico.model.Perfil</class>
+    <class>br.com.panoramico.model.Banco</class>
+    <class>br.com.panoramico.model.Cobranca</class>
+    <class>br.com.panoramico.model.Cobrancasparcelas</class>
+    <class>br.com.panoramico.model.Contaspagar</class>
+    <class>br.com.panoramico.model.Contasreceber</class>
+    <class>br.com.panoramico.model.Controleacesso</class>
+    <class>br.com.panoramico.model.Crcancelamento</class>
+    <class>br.com.panoramico.model.Evento</class>
+    <class>br.com.panoramico.model.Eventocancelamento</class>
+    <class>br.com.panoramico.model.Eventoconvidados</class>
+    <class>br.com.panoramico.model.Exame</class>
+    <class>br.com.panoramico.model.Exameassociado</class>
+    <class>br.com.panoramico.model.Exameconvidado</class>
+    <class>br.com.panoramico.model.Examedependente</class>
+    <class>br.com.panoramico.model.Ftpdados</class>
+    <class>br.com.panoramico.model.Historicocobranca</class>
+    <class>br.com.panoramico.model.Medico</class>
+    <class>br.com.panoramico.model.Notificacao</class>
+    <class>br.com.panoramico.model.Pagamento</class>
+    <class>br.com.panoramico.model.Parametros</class>
+    <class>br.com.panoramico.model.Passaporte</class>
+    <class>br.com.panoramico.model.Passaportevalor</class>
+    <class>br.com.panoramico.model.Planoconta</class>
+    <class>br.com.panoramico.model.Recebimento</class>
+    <class>br.com.panoramico.model.Remessaarquivo</class>
+    <class>br.com.panoramico.model.Remessacontas</class>
+    <class>br.com.panoramico.model.Retornoarquivo</class>
+    <class>br.com.panoramico.model.Retornocontas</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <validation-mode>NONE</validation-mode>
     <properties/>
   </persistence-unit>
-</persistence>  
+</persistence>
