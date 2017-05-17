@@ -69,15 +69,11 @@
                 </p:inputText>
             </h:panelGrid> 
             <br/>
-            <h:panelGrid columns="1" columnClasses="tamanho45" style="margin-left:1%;width:50%;"> 
+            <h:panelGrid columns="2" columnClasses="tamanho45" style="margin-left:1%;width:96%;"> 
                 <p:outputLabel class="titTela" value="Observação 1" style="font-size: 14px;text-align: left;"/>
-  
-                <p:inputTextarea class="form-control" value="#{cadBancoMB.banco.observacao1}" style="width: 93%;float: left;font-size: 12px;"/>
-            </h:panelGrid>
-            <br/>
-            <h:panelGrid columns="1" columnClasses="tamanho45" style="margin-left:1%;width:50%;"> 
                 <p:outputLabel class="titTela" value="Observação 2" style="font-size: 14px;text-align: left;"/>
   
+                <p:inputTextarea class="form-control" value="#{cadBancoMB.banco.observacao1}" style="width: 93%;float: left;font-size: 12px;"/>
                 <p:inputTextarea class="form-control" value="#{cadBancoMB.banco.observacao2}" style="width: 93%;float: left;font-size: 12px;"/>
             </h:panelGrid>
             <br/>
@@ -89,7 +85,7 @@
             <br/>
             <p:selectBooleanCheckbox value="#{cadBancoMB.banco.emitiboleto}" label="Emiti Boleto" style="margin-left: 1%;font-size: 12px;"/>
             <p:outputLabel value="Emiti Boleto" class="titTela" style="font-size: 14px;margin-left: 1%;"/> 
-            <br/><br/>
+            <br/>
             <hr style="color: #367587; background: #367587"/>
             <br/>  
             <p:commandLink style="text-decoration: none;" actionListener="#{cadBancoMB.salvar()}" ajax="false">

@@ -31,6 +31,7 @@ public class CadPlanosContasMB implements Serializable{
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         planoconta = (Planoconta) session.getAttribute("planoconta");
+        session.removeAttribute("planoconta");
         if (planoconta == null) {
             planoconta = new Planoconta();
         }

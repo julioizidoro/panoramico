@@ -89,10 +89,10 @@ public class ContasReceberMB implements Serializable {
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         associado = (Associado) session.getAttribute("associado");
         if (associado == null) {
-        } else {
+        } else {   
             habilitarVoltarFinanceiro = (boolean) session.getAttribute("habilitarVoltarFinanceiro");
             session.removeAttribute("habilitarVoltarFinanceiro");
-        }
+        }  
         session.removeAttribute("associado");
         gerarListaContasReceber();
         gerarListaCliente();

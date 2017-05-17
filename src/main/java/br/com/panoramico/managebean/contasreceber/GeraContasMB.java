@@ -44,6 +44,7 @@ public class GeraContasMB implements Serializable{
     private String matricula;
     private String cpf;
     private String anoReferencia;
+    private boolean habilitarVoltarFinanceiro;
     
     
     @PostConstruct
@@ -155,6 +156,14 @@ public class GeraContasMB implements Serializable{
     public void setAnoReferencia(String anoReferencia) {
         this.anoReferencia = anoReferencia;
     }
+
+    public boolean isHabilitarVoltarFinanceiro() {
+        return habilitarVoltarFinanceiro;
+    }
+
+    public void setHabilitarVoltarFinanceiro(boolean habilitarVoltarFinanceiro) {
+        this.habilitarVoltarFinanceiro = habilitarVoltarFinanceiro;
+    }
     
     
     
@@ -226,11 +235,13 @@ public class GeraContasMB implements Serializable{
         anoReferencia = "";
         return "";
     }
-    
+      
     public String financeiro(Associado associado) {
+        habilitarVoltarFinanceiro = false;
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         session.setAttribute("associado", associado);
+        session.setAttribute("habilitarVoltarFinanceiro", habilitarVoltarFinanceiro);
         return "consContasReceber";
     }
     
