@@ -65,6 +65,10 @@
                             <h:outputText value="#{dependente.grauparentesco}" styleClass="alinhamento" style="text-align: left !important;float: left;" />
                         </h:column>
                         <h:column>
+                            <f:facet name="header">Matricula</f:facet>   
+                            <h:outputText value="#{dependente.matricula}" styleClass="alinhamento" style="text-align: left !important;float: left;" />
+                        </h:column>
+                        <h:column>
                             <p:commandLink action="#{dependenteMB.editar(dependente)}" rendered="#{usuarioLogadoMB.editar}">
                                 <div class="fa fa-pencil-square-o">
                                 </div>

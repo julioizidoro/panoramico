@@ -279,13 +279,7 @@ public class CadEventoMB implements Serializable {
         }
         if (cliente == null) {
             mensagem = mensagem + " Cliente não selecionado";
-        }
-        if (Formatacao.ConvercaoDataSql(evento.getData()).equals(Formatacao.ConvercaoDataSql(new Date()))) {
-            if (evento.getData().compareTo(new Date()) == 0) {
-            }else{
-                mensagem = mensagem + " Data do evento inferior a data de hoje \r\n";
-            }
-        }
+        }    
         return mensagem;
     }
 }
