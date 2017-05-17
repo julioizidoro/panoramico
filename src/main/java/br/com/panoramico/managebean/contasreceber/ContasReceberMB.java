@@ -548,9 +548,15 @@ public class ContasReceberMB implements Serializable {
 
     public boolean habilitarPesquisa() {
         if (associado == null || associado.getIdassociado() == null) {
+            if (habilitarVoltarFinanceiro) {
+                return false;
+            }
             return true;
         } else {
-            return false;
+            if (habilitarVoltarFinanceiro) {
+                return false;
+            }
+            return true;
         }
     }
 
