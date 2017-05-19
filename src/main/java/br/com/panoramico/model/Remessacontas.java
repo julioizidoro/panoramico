@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 
 /**
@@ -41,6 +42,8 @@ public class Remessacontas implements Serializable{
     @JoinColumn(name = "contasreceber_idcontasreceber", referencedColumnName = "idcontasreceber")
     @ManyToOne(optional = false)
     private Contasreceber contasreceber;
+    @Transient
+    private boolean selecionado;
 
     public Remessacontas() {
     }
@@ -81,6 +84,14 @@ public class Remessacontas implements Serializable{
 
     public void setContasreceber(Contasreceber contasreceber) {
         this.contasreceber = contasreceber;
+    }
+
+    public boolean isSelecionado() {
+        return selecionado;
+    }
+
+    public void setSelecionado(boolean selecionado) {
+        this.selecionado = selecionado;
     }
 
     @Override

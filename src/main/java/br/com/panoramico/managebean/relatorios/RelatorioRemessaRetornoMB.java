@@ -63,6 +63,8 @@ public class RelatorioRemessaRetornoMB implements Serializable {
     private RemessaContasDao remessaContasDao;
     @EJB
     private RetornoContasDao retornoContasDao;
+    private boolean todasremessa;
+    private boolean todosretorno;
 
     @PostConstruct
     public void init() {
@@ -175,6 +177,22 @@ public class RelatorioRemessaRetornoMB implements Serializable {
     public void setListaRemessaContas(List<Remessacontas> listaRemessaContas) {
         this.listaRemessaContas = listaRemessaContas;
     }
+
+    public boolean isTodasremessa() {
+        return todasremessa;
+    }
+
+    public void setTodasremessa(boolean todasremessa) {
+        this.todasremessa = todasremessa;
+    }
+
+    public boolean isTodosretorno() {
+        return todosretorno;
+    }
+
+    public void setTodosretorno(boolean todosretorno) {
+        this.todosretorno = todosretorno;
+    }
      
     
     
@@ -233,29 +251,37 @@ public class RelatorioRemessaRetornoMB implements Serializable {
         }
     }
 
-    public void imprimirRemessa(Remessacontas remessacontas) {
+    public void imprimirRemessa() {
         listaEnviada = new ArrayList<>();
-        RetornoBean retornoBean = new RetornoBean();
-        retornoBean.setNomePagador(remessacontas.getContasreceber().getCliente().getNome());
-        retornoBean.setValorJuros(0.0f);
-        retornoBean.setNossoNumero(remessacontas.getContasreceber().getNossonumero());
-        retornoBean.setValorTitulo(remessacontas.getContasreceber().getValorconta());
-        retornoBean.setDataPagamento(Formatacao.ConvercaoDataPadrao(remessacontas.getContasreceber().getDatavencimento()));
-        retornoBean.setCodigoOcorrencia(remessacontas.getCodigoocorrencia());
-        listaEnviada.add(retornoBean);
+        for (int i = 0; i < listaRemessaContas.size(); i++) {
+            if (listaRemessaContas.get(i).isSelecionado()) {
+                RetornoBean retornoBean = new RetornoBean();
+                retornoBean.setNomePagador(listaRemessaContas.get(i).getContasreceber().getCliente().getNome());
+                retornoBean.setValorJuros(0.0f);
+                retornoBean.setNossoNumero(listaRemessaContas.get(i).getContasreceber().getNossonumero());
+                retornoBean.setValorTitulo(listaRemessaContas.get(i).getContasreceber().getValorconta());
+                retornoBean.setDataPagamento(Formatacao.ConvercaoDataPadrao(listaRemessaContas.get(i).getContasreceber().getDatavencimento()));
+                retornoBean.setCodigoOcorrencia(listaRemessaContas.get(i).getCodigoocorrencia());
+                listaEnviada.add(retornoBean);
+            }
+        }
         imprimirListaRemessa();
     }
 
-    public void imprimirRetorno(Retornocontas retornocontas) {
+    public void imprimirRetorno() {
         listaEnviada = new ArrayList<>();
-        RetornoBean retornoBean = new RetornoBean();
-        retornoBean.setNomePagador(retornocontas.getContasreceber().getCliente().getNome());
-        retornoBean.setValorJuros(0.0f);
-        retornoBean.setNossoNumero(retornocontas.getContasreceber().getNossonumero());
-        retornoBean.setValorTitulo(retornocontas.getContasreceber().getValorconta());
-        retornoBean.setDataPagamento(Formatacao.ConvercaoDataPadrao(retornocontas.getContasreceber().getDatavencimento()));
-        retornoBean.setCodigoOcorrencia(retornocontas.getCodigoocorrencia());
-        listaEnviada.add(retornoBean);
+        for (int i = 0; i < listaRetornoContas.size(); i++) {
+            if (listaRetornoContas.get(i).isSelecionado()) {
+                RetornoBean retornoBean = new RetornoBean();
+                retornoBean.setNomePagador(listaRetornoContas.get(i).getContasreceber().getCliente().getNome());
+                retornoBean.setValorJuros(0.0f);
+                retornoBean.setNossoNumero(listaRetornoContas.get(i).getContasreceber().getNossonumero());
+                retornoBean.setValorTitulo(listaRetornoContas.get(i).getContasreceber().getValorconta());
+                retornoBean.setDataPagamento(Formatacao.ConvercaoDataPadrao(listaRetornoContas.get(i).getContasreceber().getDatavencimento()));
+                retornoBean.setCodigoOcorrencia(listaRetornoContas.get(i).getCodigoocorrencia());
+                listaEnviada.add(retornoBean);
+            }
+        }
         imprimirListaRemessa();
     }
 
@@ -292,5 +318,19 @@ public class RelatorioRemessaRetornoMB implements Serializable {
             relatorioErroBean.iniciarRelatorioErro("Lista de remessa vazia.");
         }
         return "";
+    }
+    
+    
+    public void selecionarTodasRemessa(){
+        for (int i = 0; i < listaRemessaContas.size(); i++) {
+            listaRemessaContas.get(i).setSelecionado(todasremessa);
+        }
+    }
+    
+    
+    public void selecionarTodasRetorno(){
+        for (int i = 0; i < listaRetornoContas.size(); i++) {
+            listaRetornoContas.get(i).setSelecionado(todosretorno);
+        }
     }
 }
