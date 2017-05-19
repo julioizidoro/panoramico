@@ -73,6 +73,7 @@ public class CadAssociadoMB implements Serializable {
                 plano = new Plano();
             }
             associado.setEstado("PR");
+            associado.setDescotomensalidade(0f);
         } else {
             cliente = associado.getCliente();
             plano = associado.getPlano();
@@ -286,6 +287,9 @@ public class CadAssociadoMB implements Serializable {
         }
         if (plano == null) {
             mensagem = mensagem + " Informe o plano desde associado \r\n";
+        }
+        if (associado.getDescotomensalidade() == null) {
+            associado.setDescotomensalidade(0f);
         }
         return mensagem;
     }
