@@ -133,6 +133,28 @@
                     <f:convertNumber pattern="##,###,###,###.##"/>  
                 </p:inputText>
             </h:panelGrid>
+            <h:panelGrid columns="2" style="width:100%;">
+                <div  style="width:100%">
+                    <h:panelGrid id="panelVinculoEmpresa" columns="2" style="width:100%;">
+                        <h:panelGroup id="panelCheckBox">
+                            <p:selectBooleanCheckbox value="#{cadAssociadoMB.vinculaEmpresa}">
+                                <p:ajax event="change" update="empresa, panelEmpresa, panelCheckBox, panelVinculoEmpresa"/>
+                            </p:selectBooleanCheckbox>
+                            <p:outputLabel class="titTela" style="font-size: 12px;" value="Vinculado Com Empresa ?"/>
+                        </h:panelGroup>
+                        <p:outputLabel rendered="#{cadAssociadoMB.vinculaEmpresa}" class="titTela" style="font-size: 12px;" value="Empresa"/>
+                        <h:panelGroup/>
+                        <h:panelGroup id="panelEmpresa" rendered="#{cadAssociadoMB.vinculaEmpresa}">
+                            <p:selectOneMenu  id="empresa"  style="width: 280px;font-size: 12px;"  value="#{cadAssociadoMB.empresa}" converter="EmpresaConverter"
+                                              filter="true" filterMatchMode="contains" panelStyle="width:180px" >
+                                <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
+                                <f:selectItems  value="#{cadAssociadoMB.listaEmpresa}" var="empresaselecionado" itemLabel="#{empresaselecionado.razaosocial}" itemValue="#{empresaselecionado}"/>
+                                <f:attribute name="listaEmpresa" value="#{cadAssociadoMB.listaEmpresa}"/>
+                            </p:selectOneMenu> 
+                        </h:panelGroup>
+                    </h:panelGrid>
+                </div>
+            </h:panelGrid>
             <br/><br/> 
             <hr style="color: #367587; background: #367587"/>
             <br/>   

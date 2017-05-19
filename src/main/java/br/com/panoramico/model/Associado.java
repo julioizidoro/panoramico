@@ -86,9 +86,6 @@ public class Associado implements Serializable {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "associado")
     private List<Dependente> dependenteList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "associado")
-    @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Associadoempresa> associadoempresaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "associado")
     private List<Exameassociado> exameassociadoList;
 
     public Associado() {
@@ -200,14 +197,6 @@ public class Associado implements Serializable {
 
     public void setDependenteList(List<Dependente> dependenteList) {
         this.dependenteList = dependenteList;
-    }
-
-    public List<Associadoempresa> getAssociadoempresaList() {
-        return associadoempresaList;
-    }
-
-    public void setAssociadoempresaList(List<Associadoempresa> associadoempresaList) {
-        this.associadoempresaList = associadoempresaList;
     }
 
     public List<Exameassociado> getExameassociadoList() {

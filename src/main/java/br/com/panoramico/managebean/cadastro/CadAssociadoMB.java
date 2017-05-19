@@ -6,14 +6,18 @@
 package br.com.panoramico.managebean.cadastro;
 
 import br.com.panoramico.dao.AssociadoDao;
+import br.com.panoramico.dao.AssociadoEmpresaDao;
 import br.com.panoramico.dao.ClienteDao;
 import br.com.panoramico.dao.ContasReceberDao;
 import br.com.panoramico.dao.DependenteDao;
+import br.com.panoramico.dao.EmpresaDao;
 import br.com.panoramico.dao.PlanoDao;
 import br.com.panoramico.model.Associado;
+import br.com.panoramico.model.Associadoempresa;
 import br.com.panoramico.model.Cliente;
 import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.model.Dependente;
+import br.com.panoramico.model.Empresa;
 import br.com.panoramico.model.Plano;
 import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
@@ -55,6 +59,14 @@ public class CadAssociadoMB implements Serializable {
     private ContasReceberDao contasReceberDao;
     private String situacaoAntiga;
     private float valorPlano = 0.0f;
+    private boolean vinculaEmpresa;
+    @EJB
+    private AssociadoEmpresaDao associadoEmpresaDao;
+    private Empresa empresa;
+    private List<Empresa> listaEmpresa;
+    @EJB
+    private EmpresaDao empresaDao;
+    private Associadoempresa associadoempresa;
 
     @PostConstruct
     public void init() {
@@ -64,6 +76,7 @@ public class CadAssociadoMB implements Serializable {
         session.removeAttribute("associado");
         gerarListaCliente();
         gerarListaPlano();
+        gerarListaEmpresa();
         if (associado == null) {
             associado = new Associado();
             if (cliente == null) {
@@ -74,11 +87,17 @@ public class CadAssociadoMB implements Serializable {
             }
             associado.setEstado("PR");
             associado.setDescotomensalidade(0f);
+            vinculaEmpresa = false;
         } else {
             cliente = associado.getCliente();
             plano = associado.getPlano();
             situacaoAntiga = associado.getSituacao();
             valorPlano = plano.getValor();
+            associadoempresa = associadoEmpresaDao.find("Select a From Associadoempresa a Where a.associado.idassociado=" + associado.getIdassociado());
+            if (associadoempresa != null) {
+                vinculaEmpresa = true;
+                empresa = associadoempresa.getEmpresa();
+            }
         }
 
     }
@@ -178,10 +197,43 @@ public class CadAssociadoMB implements Serializable {
     public void setValorPlano(float valorPlano) {
         this.valorPlano = valorPlano;
     }
+
+    public boolean isVinculaEmpresa() {
+        return vinculaEmpresa;
+    }
+
+    public void setVinculaEmpresa(boolean vinculaEmpresa) {
+        this.vinculaEmpresa = vinculaEmpresa;
+    }
+
+    public Empresa getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(Empresa empresa) {
+        this.empresa = empresa;
+    }
+
+    public Associadoempresa getAssociadoempresa() {
+        return associadoempresa;
+    }
+
+    public void setAssociadoempresa(Associadoempresa associadoempresa) {
+        this.associadoempresa = associadoempresa;
+    }
+
+    public List<Empresa> getListaEmpresa() {
+        return listaEmpresa;
+    }
+
+    public void setListaEmpresa(List<Empresa> listaEmpresa) {
+        this.listaEmpresa = listaEmpresa;
+    }
     
     
 
     public void salvar() {
+        Associadoempresa associadoempresa;
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         associado.setPlano(plano);
@@ -224,8 +276,25 @@ public class CadAssociadoMB implements Serializable {
             associado = associadoDao.update(associado);
             if (novo){
                 session.setAttribute("idAssociado",  associado.getIdassociado());
+                if (vinculaEmpresa && empresa != null) {
+                    associadoempresa = new Associadoempresa();
+                    associadoempresa.setAssociado(associado);
+                    associadoempresa.setEmpresa(empresa);
+                    associadoEmpresaDao.update(associadoempresa);
+                }
             }else{
                 session.setAttribute("idAssociado", 0);
+                if (vinculaEmpresa && empresa != null) {
+                    associadoempresa = new Associadoempresa();
+                    associadoempresa.setAssociado(associado);
+                    associadoempresa.setEmpresa(empresa);
+                    associadoEmpresaDao.update(associadoempresa);
+                }else if (!vinculaEmpresa) {
+                    associadoempresa = associadoEmpresaDao.find("Select a From Associadoempresa a Where a.associado.idassociado=" + associado.getIdassociado());
+                    if (associadoempresa != null) {
+                        desvincularAssociado(associadoempresa);
+                    }
+                }  
             }
             RequestContext.getCurrentInstance().closeDialog(associado);
         }
@@ -293,5 +362,20 @@ public class CadAssociadoMB implements Serializable {
         }
         return mensagem;
     }
+    
+    
+    public void gerarListaEmpresa(){
+        listaEmpresa = empresaDao.list("Select e From Empresa e");
+        if (listaEmpresa == null) {
+            listaEmpresa = new ArrayList<>();
+        }
+    }
+    
+    
+    public void desvincularAssociado(Associadoempresa associadoempresa){
+        associadoEmpresaDao.remove(associadoempresa.getIdassociadoempresa());
+    }
+            
+            
 
 }

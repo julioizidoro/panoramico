@@ -224,9 +224,10 @@ public class totalSerPagoMB implements Serializable{
             listaAssociado = new ArrayList<>();
         }
         for (int i = 0; i < listaAssociado.size(); i++) {
-            if (listaAssociado.get(i).getAssociadoempresaList().size() > 0) {
-                for (int j = 0; j < listaAssociado.get(i).getAssociadoempresaList().size(); j++) {
-                    gerarListaContasAssociadoEmpresa(listaAssociado.get(i).getAssociadoempresaList().get(j));
+            List<Associadoempresa> lista = associadoEmpresaDao.list("Select a From Associadoempresa a Where a.associado.idassociado=" + listaAssociado.get(i).getIdassociado());
+            if (lista.size() > 0) {
+                for (int j = 0; j < lista.size(); j++) {
+                    gerarListaContasAssociadoEmpresa(lista.get(j));
                 }
             }else{
                     gerarListaContasAssociado(listaAssociado.get(i));
@@ -361,8 +362,9 @@ public class totalSerPagoMB implements Serializable{
     }
     
    public String pegarNomeEmpresa(Contasreceber contasreceber){
-       String nome = contasreceber.getCliente().getAssociado().getAssociadoempresaList().get(0).getEmpresa().getRazaosocial();
-       return nome;
+       List<Associadoempresa> lista = associadoEmpresaDao.list("Select a From Associadoempresa a Where a.associado.idassociado=" + contasreceber.getCliente().getAssociado().getIdassociado());
+       String nome = lista.get(0).getEmpresa().getRazaosocial();
+       return nome;   
    }
    
    public String voltarContasReceber(){

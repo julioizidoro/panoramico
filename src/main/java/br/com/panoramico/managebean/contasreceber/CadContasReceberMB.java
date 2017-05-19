@@ -5,10 +5,12 @@
  */
 package br.com.panoramico.managebean.contasreceber;
 
+import br.com.panoramico.dao.AssociadoEmpresaDao;
 import br.com.panoramico.dao.ClienteDao;
 import br.com.panoramico.dao.ContasReceberDao;
 import br.com.panoramico.dao.PlanoContaDao;
 import br.com.panoramico.managebean.UsuarioLogadoMB;
+import br.com.panoramico.model.Associadoempresa;
 import br.com.panoramico.model.Cliente;
 import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.model.Planoconta;
@@ -49,6 +51,8 @@ public class CadContasReceberMB implements Serializable{
     private ClienteDao clienteDao;
     private String tipoPagamento;
     private String numeroParcela;
+    @EJB
+    private AssociadoEmpresaDao asssociadoEmpresaDao;
     
     
     @PostConstruct
@@ -201,8 +205,9 @@ public class CadContasReceberMB implements Serializable{
             contasreceber.setSituacao("PAGAR");
             String mensagem = validarDados(contasreceber);
             if (mensagem.length() < 5) {
-                if (cliente.getAssociado().getAssociadoempresaList() != null && !cliente.getAssociado().getAssociadoempresaList().isEmpty()) {
-                    contasreceber.setIdempresa(cliente.getAssociado().getAssociadoempresaList().get(0).getEmpresa().getIdempresa());
+                List<Associadoempresa> lista = asssociadoEmpresaDao.list("Select a From Associadoempresa a Where a.associado.idassociado=" + cliente.getAssociado().getIdassociado());
+                if (lista != null && !lista.isEmpty()) {
+                    contasreceber.setIdempresa(lista.get(0).getEmpresa().getIdempresa());
                 }else{
                     contasreceber.setIdempresa(0);
                 }
@@ -253,8 +258,9 @@ public class CadContasReceberMB implements Serializable{
             contasreceber.setSituacao("PAGAR");
             String mensagem = validarDados(contasreceber);
             if (mensagem.length() < 5) {
-                if (cliente.getAssociado().getAssociadoempresaList() != null) {
-                    contasreceber.setIdempresa(cliente.getAssociado().getAssociadoempresaList().get(0).getEmpresa().getIdempresa());
+               List<Associadoempresa> lista = asssociadoEmpresaDao.list("Select a From Associadoempresa a Where a.associado.idassociado=" + cliente.getAssociado().getIdassociado());
+               if (lista != null) {  
+                    contasreceber.setIdempresa(lista.get(0).getEmpresa().getIdempresa());
                 }else{
                     contasreceber.setIdempresa(0);
                 }

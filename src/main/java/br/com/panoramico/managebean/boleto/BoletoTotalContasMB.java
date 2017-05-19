@@ -6,6 +6,7 @@
 package br.com.panoramico.managebean.boleto;
 
 import br.com.panoramico.dao.AssociadoDao;
+import br.com.panoramico.dao.AssociadoEmpresaDao;
 import br.com.panoramico.dao.BancoDao;
 import br.com.panoramico.dao.ContasReceberDao;
 import br.com.panoramico.dao.EmpresaDao;
@@ -13,6 +14,7 @@ import br.com.panoramico.dao.FtpDadosDao;
 import br.com.panoramico.dao.ProprietarioDao;
 import br.com.panoramico.managebean.UsuarioLogadoMB;
 import br.com.panoramico.model.Associado;
+import br.com.panoramico.model.Associadoempresa;
 import br.com.panoramico.model.Banco;
 import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.model.Empresa;
@@ -80,6 +82,8 @@ public class BoletoTotalContasMB implements Serializable {
     private String nomeFtp;
     private Ftp ftp;
     private StreamedContent file;
+    @EJB
+    private AssociadoEmpresaDao associadoEmpresaDao;
 
     @PostConstruct
     public void init() {
@@ -425,10 +429,11 @@ public class BoletoTotalContasMB implements Serializable {
                 }
             }
             if (associado == null) {
-            }else{
-                empresa = associado.getAssociadoempresaList().get(0).getEmpresa();
+            }else{  
+                List<Associadoempresa> lista = associadoEmpresaDao.list("Select a From Associadoempresa a Where a.associado.idassociado="+ associado.getIdassociado());
+                empresa = lista.get(0).getEmpresa();
                 for (int j = 0; j < listaContasReceber.size(); j++) {
-                    if (listaContasReceber.get(j).getCliente().getIdcliente() == associado.getAssociadoempresaList().get(0).getAssociado().getCliente().getIdcliente()) {
+                    if (listaContasReceber.get(j).getCliente().getIdcliente() == lista.get(0).getAssociado().getCliente().getIdcliente()) {
                         valorTotalPorEmpresa = valorTotalPorEmpresa + listaContasReceber.get(j).getValorconta();
                     }
                 }
