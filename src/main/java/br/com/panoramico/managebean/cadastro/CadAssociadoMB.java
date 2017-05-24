@@ -358,7 +358,7 @@ public class CadAssociadoMB implements Serializable {
             mensagem = mensagem + " Informe o plano desde associado \r\n";
         }
         if (associado.getDescotomensalidade() == null) {
-            associado.setDescotomensalidade(0f);
+            mensagem = mensagem + " Informe o valor do desconto de mensalidade";
         }
         return mensagem;
     }

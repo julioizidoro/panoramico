@@ -352,7 +352,7 @@ public class ContasReceberMB implements Serializable {
         if (crcancelamento.getIdcrcancelamento() != null) {
             Mensagem.lancarMensagemInfo("Salvou", "Cancelamento de uma conta a receber realizado com sucesso");
         }
-        gerarListaContasReceber();
+        listaContasReceber.remove(crcancelamento.getContasreceber());
     }
 
     public void retornoDialogRecebimento(SelectEvent event) {
@@ -752,6 +752,8 @@ public class ContasReceberMB implements Serializable {
         String pago = "NÃO";
         if (contasreceber.getSituacao().equalsIgnoreCase("PAGO")) {
             pago = "SIM";
+        }else if(contasreceber.getSituacao().equalsIgnoreCase("CANCELADO")){
+            pago = "CANCELADO";
         }
         return pago;
     }
@@ -785,4 +787,11 @@ public class ContasReceberMB implements Serializable {
         session.setAttribute("tipo", tipo);
         RequestContext.getCurrentInstance().openDialog("relatorioRemessaRetorno", options, null);
     }
+     
+    public boolean verificarSituacao(Contasreceber contasreceber){
+        if(contasreceber.getSituacao().equalsIgnoreCase("CANCELADO")) {
+            return true;
+        }
+        return false;
+    }   
 }

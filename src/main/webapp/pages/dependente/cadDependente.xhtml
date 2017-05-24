@@ -30,7 +30,7 @@
                     <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
                     <f:selectItems  value="#{cadDependenteMB.listaAssociado}" var="associadoselecionado" itemLabel="#{associadoselecionado.cliente.nome}" itemValue="#{associadoselecionado}"/>
                     <f:attribute name="listaAssociado" value="#{cadDependenteMB.listaAssociado}"/>
-                </p:selectOneMenu>
+                </p:selectOneMenu>  
                 <p:inputText class="form-control" value="#{cadDependenteMB.dependente.nome}" style="width: 90%;font-size: 12px;"/>
             </h:panelGrid>  
             <br/>

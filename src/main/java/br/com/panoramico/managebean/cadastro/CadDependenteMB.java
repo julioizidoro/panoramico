@@ -179,8 +179,9 @@ public class CadDependenteMB implements Serializable{
     
     public String validarDados(){
         String mensagem = "";
-        if (associado == null) {
+        if (associado == null || associado.getIdassociado() == null) {
             mensagem = mensagem + " Associado não selecionado \r\n";
+            associado = associadoDao.find(1);
         }
         return mensagem;
     }
