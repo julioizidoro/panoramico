@@ -221,6 +221,7 @@ public class AssociadoMB implements Serializable {
         session.setAttribute("sql", sql);
         Map<String, Object> options = new HashMap<String, Object>();
         options.put("contentWidth", 580);
+        options.put("closable", false);
         RequestContext.getCurrentInstance().openDialog("cadAssociado", options, null);
         return "";
     }
@@ -264,6 +265,7 @@ public class AssociadoMB implements Serializable {
             session.setAttribute("associado", associado);
             session.setAttribute("sql", sql);
             options.put("contentWidth", 580);
+            options.put("closable", false);
             RequestContext.getCurrentInstance().openDialog("cadAssociado", options, null);
         }
     }
@@ -281,6 +283,7 @@ public class AssociadoMB implements Serializable {
             session.setAttribute("associado", associado);
             session.setAttribute("associadoempresa", associadoempresa);
             options.put("contentWidth", 300);
+            options.put("closable", false);
             RequestContext.getCurrentInstance().openDialog("cadAssociadoEmpresa", options, null);
         }
     }

@@ -335,6 +335,7 @@ public class ContasReceberMB implements Serializable {
         }
         Map<String, Object> options = new HashMap<String, Object>();
         options.put("contentWidth", 580);
+        options.put("closable", false);
         RequestContext.getCurrentInstance().openDialog("cadContasReceber", options, null);
         return "";
     }
@@ -378,6 +379,7 @@ public class ContasReceberMB implements Serializable {
             HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
             session.setAttribute("contasreceber", contasreceber);
             options.put("contentWidth", 580);
+            options.put("closable", false);
             RequestContext.getCurrentInstance().openDialog("cadContasReceber", options, null);
         }
     }
@@ -386,6 +388,7 @@ public class ContasReceberMB implements Serializable {
         if (contasreceber != null) {
             Map<String, Object> options = new HashMap<String, Object>();
             options.put("contentWidth", 400);
+            options.put("closable", false);
             FacesContext fc = FacesContext.getCurrentInstance();
             HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
             session.setAttribute("contasreceber", contasreceber);

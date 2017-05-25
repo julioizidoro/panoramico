@@ -49,6 +49,8 @@ public class CadAssociadoEmpresaMB implements Serializable{
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         associado = (Associado) session.getAttribute("associado");
         associadoempresa = (Associadoempresa) session.getAttribute("associadoempresa");
+        session.removeAttribute("associado");
+        session.removeAttribute("associadoempresa");
         gerarListaEmpresa();
         if (associado != null) {
             if (associadoempresa == null) {

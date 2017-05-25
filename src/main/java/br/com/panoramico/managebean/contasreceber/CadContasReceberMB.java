@@ -206,7 +206,10 @@ public class CadContasReceberMB implements Serializable{
             String mensagem = validarDados(contasreceber);
             if (mensagem.length() < 5) {
                 List<Associadoempresa> lista = asssociadoEmpresaDao.list("Select a From Associadoempresa a Where a.associado.idassociado=" + cliente.getAssociado().getIdassociado());
-                if (lista != null && !lista.isEmpty()) {
+                if (lista == null) {
+                    lista = new ArrayList<>();
+                }
+                if (lista.size() > 0) {
                     contasreceber.setIdempresa(lista.get(0).getEmpresa().getIdempresa());
                 }else{
                     contasreceber.setIdempresa(0);
@@ -259,7 +262,10 @@ public class CadContasReceberMB implements Serializable{
             String mensagem = validarDados(contasreceber);
             if (mensagem.length() < 5) {
                List<Associadoempresa> lista = asssociadoEmpresaDao.list("Select a From Associadoempresa a Where a.associado.idassociado=" + cliente.getAssociado().getIdassociado());
-               if (lista != null) {  
+                if (lista == null) {
+                    lista = new ArrayList<>();
+                }
+               if (lista.size() > 0) {  
                     contasreceber.setIdempresa(lista.get(0).getEmpresa().getIdempresa());
                 }else{
                     contasreceber.setIdempresa(0);
