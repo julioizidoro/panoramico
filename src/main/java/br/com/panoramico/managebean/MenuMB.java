@@ -169,4 +169,12 @@ public class MenuMB implements Serializable{
         RequestContext.getCurrentInstance().openDialog("cadProprietario", options, null);
         return "";
     }
+       
+    
+    public void gerarRelatorioCancelamentoCliente(){ 
+        Map<String, Object> options = new HashMap<String, Object>();
+        options.put("contentWidth", 450);
+        options.put("closable", false);
+        RequestContext.getCurrentInstance().openDialog("relatorioCancelamentoCliente", options, null);
+    }
 }

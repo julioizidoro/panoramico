@@ -10,6 +10,7 @@ import br.com.panoramico.dao.AssociadoEmpresaDao;
 import br.com.panoramico.dao.DependenteDao;
 import br.com.panoramico.model.Associado;
 import br.com.panoramico.model.Associadoempresa;
+import br.com.panoramico.model.Cliente;
 import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.model.Dependente;
 import br.com.panoramico.uil.Mensagem;
@@ -404,5 +405,15 @@ public class AssociadoMB implements Serializable {
         }
         associadoDao.update(associado);
         gerarListaAssociado();
+    }
+    
+    
+    public boolean desabilitarBotao(Associado associado){
+        if (associado != null) {
+            if (associado.getSituacao().equalsIgnoreCase("Inativo")) {
+                return true;
+            }
+        }
+        return false;
     }
 }

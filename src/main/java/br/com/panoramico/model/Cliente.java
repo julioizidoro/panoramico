@@ -61,6 +61,9 @@ public class Cliente implements Serializable {
     @Size(max = 20)
     @Column(name = "rg")
     private String rg; 
+    @Size(max = 10)
+    @Column(name = "situacao")
+    private String situacao;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "cliente")
     private Associado associado;
     
@@ -150,6 +153,14 @@ public class Cliente implements Serializable {
 
     public void setRg(String rg) {
         this.rg = rg;
+    }
+
+    public String getSituacao() {
+        return situacao;
+    }
+
+    public void setSituacao(String situacao) {
+        this.situacao = situacao;
     }
 
     

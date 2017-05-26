@@ -267,6 +267,16 @@
 		</navigation-case> 
     </navigation-rule>
     
+    
+    <navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>relatorioCancelamentoCliente</from-outcome> 
+			<to-view-id>/pages/relatorios/relatorioCancelamentoCliente.xhtml</to-view-id>
+			<redirect />
+		</navigation-case> 
+    </navigation-rule>
+    
     <navigation-rule>
 		<from-view-id>*</from-view-id>
 		<navigation-case>

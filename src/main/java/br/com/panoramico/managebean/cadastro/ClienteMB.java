@@ -8,7 +8,9 @@ package br.com.panoramico.managebean.cadastro;
 import br.com.panoramico.dao.AssociadoDao;
 import br.com.panoramico.dao.ClienteDao;
 import br.com.panoramico.model.Associado;
+import br.com.panoramico.model.Ccancelamento;
 import br.com.panoramico.model.Cliente;
+import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -46,6 +48,7 @@ public class ClienteMB implements Serializable{
     private AssociadoDao associadoDao;
     private boolean temSql = false;
     private int idCliente = 0 ;
+    private String situacao;
     
     
     @PostConstruct
@@ -149,12 +152,20 @@ public class ClienteMB implements Serializable{
         this.temSql = temSql;
     }
 
+    public String getSituacao() {
+        return situacao;
+    }
+
+    public void setSituacao(String situacao) {
+        this.situacao = situacao;
+    }
+
     
     
     public void gerarListaCliente(){
         if (!temSql) {
             if (idCliente > 0) {
-                sql = "Select a From Cliente a where a.cliente.idcliente>" + (idCliente-5) + " order by a.cliente.idcliente DESC";
+                sql = "Select a From Cliente a where a.cliente.idcliente>" + (idCliente-5) + " and a.situacao<>'Inativo' order by a.cliente.idcliente DESC";
                 listaCliente = clienteDao.list(sql);
             }
         }else{
@@ -228,6 +239,20 @@ public class ClienteMB implements Serializable{
         }
     }
     
+    
+    public String novoCancelamento(Cliente cliente) {
+        if (cliente != null) {
+            Map<String, Object> options = new HashMap<String, Object>();
+            options.put("contentWidth", 400);
+            options.put("closable", false);
+            FacesContext fc = FacesContext.getCurrentInstance();
+            HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+            session.setAttribute("cliente", cliente);
+            RequestContext.getCurrentInstance().openDialog("cadCancelamentoCliente", options, null);
+        }
+        return "";
+    }
+    
     public String limpar(){
         temSql=false;
         listaCliente = new ArrayList<>();
@@ -251,8 +276,25 @@ public class ClienteMB implements Serializable{
         if (telefone.length()>0){
             sql = sql + " and c.telefone='" + telefone + "' ";
         }
+        if (situacao != null && !situacao.equalsIgnoreCase("sn")) {
+            sql = sql + " and c.situacao='" + situacao + "' ";
+        }
         sql = sql + " order by c.nome";
         gerarListaCliente();
         return "";  
+    }
+    
+    public boolean desabilitarBotao(Cliente cliente){
+        if (cliente.getSituacao().equalsIgnoreCase("Inativo")) {
+            return true;
+        }
+        return false;
+    }
+    
+    public void retornoDialogCencelamento(SelectEvent event){
+        Ccancelamento ccancelamento = (Ccancelamento) event.getObject();
+        if (ccancelamento.getIdccancelamento() != null) {
+            Mensagem.lancarMensagemFatal("Cancalmento feito com sucesso", "");
+        }
     }
 }
