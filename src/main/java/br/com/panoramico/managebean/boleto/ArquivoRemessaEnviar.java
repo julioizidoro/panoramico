@@ -13,13 +13,15 @@ import br.com.panoramico.model.Empresa;
 import br.com.panoramico.model.Proprietario;
 import br.com.panoramico.uil.Formatacao;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 
-
-public class ArquivoRemessaEnviar implements ArquivoRemessaItau{
+public class ArquivoRemessaEnviar implements ArquivoRemessaItau{ 
     
     private String branco = "                                        ";
     private String zeros = "000000000000000000000";
@@ -223,7 +225,7 @@ public class ArquivoRemessaEnviar implements ArquivoRemessaItau{
 
         } else {
             //Dados empresa
-            Empresa empresa = empresaDao.find(conta.getIdempresa());
+            Empresa empresa = conta.getEmpresa();
             linha = linha + ("02");
             linha = linha + (Formatacao.retirarPontos(empresa.getCnpj()));
             String nomeCliente = empresa.getRazaosocial();

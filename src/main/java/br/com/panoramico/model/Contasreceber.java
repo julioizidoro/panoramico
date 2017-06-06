@@ -66,6 +66,8 @@ public class Contasreceber implements Serializable{
     private String nossonumero;
     @Column(name = "idempresa")
     private Integer idempresa;
+    @Transient
+    private Empresa empresa;
 
     public Contasreceber() {
         situacaoboleto = "Não";
@@ -198,6 +200,14 @@ public class Contasreceber implements Serializable{
 
     public void setIdempresa(Integer idempresa) {
         this.idempresa = idempresa;
+    }
+
+    public Empresa getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(Empresa empresa) {
+        this.empresa = empresa;
     }
     
     

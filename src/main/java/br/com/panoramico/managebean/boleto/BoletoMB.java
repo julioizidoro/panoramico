@@ -2,6 +2,7 @@ package br.com.panoramico.managebean.boleto;
  
 import br.com.panoramico.dao.BancoDao;
 import br.com.panoramico.dao.ContasReceberDao; 
+import br.com.panoramico.dao.EmpresaDao;
 import br.com.panoramico.dao.FtpDadosDao;
 import br.com.panoramico.dao.ProprietarioDao;
 import br.com.panoramico.dao.RemessaArquivoDao;
@@ -9,6 +10,7 @@ import br.com.panoramico.dao.RemessaContasDao;
 import br.com.panoramico.managebean.UsuarioLogadoMB; 
 import br.com.panoramico.model.Banco;
 import br.com.panoramico.model.Contasreceber; 
+import br.com.panoramico.model.Empresa;
 import br.com.panoramico.model.Ftpdados;
 import br.com.panoramico.model.Proprietario;
 import br.com.panoramico.model.Recebimento;
@@ -62,6 +64,9 @@ public class BoletoMB implements Serializable {
     private RemessaArquivoDao remesssaArquivoDao;
     @EJB
     private RemessaContasDao remessaContasDao;
+    @EJB
+    private EmpresaDao empresaDao;
+    private Empresa empresa;
     
     
     public BoletoMB() {
@@ -177,6 +182,12 @@ public class BoletoMB implements Serializable {
             }  
             if (lista.size() > 0) {
                 ftpdados = ftpDadosDao.find(1);
+                for (int i = 0; i < lista.size(); i++) {
+                    if (lista.get(i).getIdempresa() > 0) {
+                        empresa = empresaDao.find(lista.get(i).getIdempresa());
+                        lista.get(i).setEmpresa(empresa);
+                    }
+                }
                 GerarArquivoRemessaItau arquivoRemessaItau = new GerarArquivoRemessaItau(lista, usuarioLogadoMB, proprietario, lista, banco, nomearquivo, nomeFtp, ftpdados);
                 confirmarContas(lista);
                 InputStream stream = procurarArquivo();
