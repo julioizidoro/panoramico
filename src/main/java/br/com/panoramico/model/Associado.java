@@ -21,6 +21,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -72,6 +74,7 @@ public class Associado implements Serializable {
     @Column(name = "situacao")
     private String situacao;
     @Column(name = "dataassociacao")
+    @Temporal(TemporalType.DATE)
     private Date dataassociacao;
     @Column(name = "mes")
     private Integer mes;
@@ -87,6 +90,10 @@ public class Associado implements Serializable {
     private List<Dependente> dependenteList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "associado")
     private List<Exameassociado> exameassociadoList;
+     @Column(name = "dataaquisicao")
+    @Temporal(TemporalType.DATE)
+    private Date dataaquisicao;
+    
 
     public Associado() {
     }
@@ -245,6 +252,14 @@ public class Associado implements Serializable {
 
     public void setAno(Integer ano) {
         this.ano = ano;
+    }
+
+    public Date getDataaquisicao() {
+        return dataaquisicao;
+    }
+
+    public void setDataaquisicao(Date dataaquisicao) {
+        this.dataaquisicao = dataaquisicao;
     }
 
     

@@ -83,6 +83,10 @@
                     <br/><br/>   
                     <!-- TABELA CADASTROS --> 
                     <div class="col-6 titTela" style="text-align: right;margin-left:15%;">Consulta Contas a Receber</div> 
+                    
+                    <p:commandLink rendered="#{usuarioLogadoMB.excluir}" update=":idFormConsultaContasReceber:idConsultaContasReceber, :idFormConsultaContasReceber:messages"  action="#{contasReceberMB.excluirContaLote()}" title="Excluir conta">
+                        <div class="icoAdd fa fa-trash-o"></div>
+                    </p:commandLink> 
                     <p:commandLink rendered="#{contasReceberMB.habilitarVoltarFinanceiro}" action="#{contasReceberMB.voltarAssociado()}">
                         <div class="icoAdd fa fa-arrow-left" ></div>
                     </p:commandLink>     
@@ -160,6 +164,10 @@
                         <h:column>
                             <f:facet name="header">Pago?</f:facet> 
                             <h:outputText value="#{contasReceberMB.pegarRecebimento(contaReceber)}" styleClass="alinhamento" style="float: left;" />
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Tipo</f:facet> 
+                            <h:outputText value="#{contaReceber.tipopagamento}" styleClass="alinhamento" style="float: left;" />
                         </h:column>
                         <h:column>
                             <p:commandLink disabled="#{contasReceberMB.verificarSituacao(contaReceber)}" rendered="#{usuarioLogadoMB.editar}" title="Editar" action="#{contasReceberMB.editar(contaReceber)}" style="text-decoration: none;">

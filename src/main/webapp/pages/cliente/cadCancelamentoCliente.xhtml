@@ -37,8 +37,18 @@
                 </p:inputMask>
                 <p:inputText class="form-control" readonly="true" value="#{cadCancelamentoClienteMB.ccancelamento.hora}" style="width:60%;font-size: 12px;"/>
             </h:panelGrid>   
-            <h:panelGrid style="margin-left:2%;width:100%;"> 
-                <p:outputLabel class="titTela" value="Motivo" style="font-size: 14px;text-align: left;"/>
+            <h:panelGrid columns="1" style="margin-left:2%;width:100%;"> 
+                <p:outputLabel class="titTela" value="Motivo Cancelamento" style="font-size: 14px;text-align: left;"/>
+                
+                <p:selectOneMenu  class="form-control" id="motivo"  style="width:80%;font-size: 12px;"  value="#{cadCancelamentoClienteMB.motivocancelamento}" converter="MotivoCancelamentoConverter"
+                                  filter="true" filterMatchMode="contains" panelStyle="width:180px" >
+                    <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
+                    <f:selectItems  value="#{cadCancelamentoClienteMB.listaMotivoCancelamento}" var="motivo" itemLabel="#{motivo.descricao}" itemValue="#{motivo}"/>
+                    <f:attribute name="listaMotivoCancelamento" value="#{cadCancelamentoClienteMB.listaMotivoCancelamento}"/>
+                </p:selectOneMenu> 
+                
+                
+                <p:outputLabel class="titTela" value="Descrição" style="font-size: 14px;text-align: left;"/>
 
                 <p:inputTextarea class="form-control" value="#{cadCancelamentoClienteMB.ccancelamento.motivo}" style="width: 90%;font-size: 12px;"/>
             </h:panelGrid>   

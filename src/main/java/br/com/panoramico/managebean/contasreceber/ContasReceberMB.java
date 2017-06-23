@@ -6,6 +6,7 @@ import br.com.panoramico.dao.ClienteDao;
 import br.com.panoramico.dao.CobrancasParcelasDao;
 import br.com.panoramico.dao.ContasReceberDao;
 import br.com.panoramico.dao.ProprietarioDao;
+import br.com.panoramico.dao.RemessaContasDao;
 import br.com.panoramico.managebean.RelatorioErroBean;
 import br.com.panoramico.managebean.UsuarioLogadoMB;
 import br.com.panoramico.managebean.boleto.DadosBoletoBean;
@@ -18,6 +19,7 @@ import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.model.Crcancelamento;
 import br.com.panoramico.model.Proprietario;
 import br.com.panoramico.model.Recebimento;
+import br.com.panoramico.model.Remessacontas;
 import br.com.panoramico.uil.Formatacao;
 import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
@@ -82,6 +84,8 @@ public class ContasReceberMB implements Serializable {
     private AssociadoDao associadoDao;
     private boolean habilitarVoltarFinanceiro = false;
     private String tipo;
+    @EJB
+    private RemessaContasDao remessaContasDao;
 
     @PostConstruct
     public void init() {
@@ -796,5 +800,25 @@ public class ContasReceberMB implements Serializable {
             return true;
         }
         return false;
-    }   
+    } 
+    
+    
+    public void excluirContaLote(){
+        List<Contasreceber> listaNaoSelecionada = new ArrayList<>();
+        List<Remessacontas> listaRemessa = new ArrayList<>();
+        for (int i = 0; i < listaContasReceber.size(); i++) {
+            if (listaContasReceber.get(i).isSelecionado()) {
+                listaRemessa = remessaContasDao.list("Select r From Remessacontas r where r.contasreceber.idcontasreceber=" +
+                        listaContasReceber.get(i).getIdcontasreceber());
+                for (int j = 0; j < listaRemessa.size(); j++) {
+                    remessaContasDao.remove(listaRemessa.get(j).getIdremessacontas());
+                }
+                contasReceberDao.remove(listaContasReceber.get(i).getIdcontasreceber());
+            }else{
+                listaNaoSelecionada.add(listaContasReceber.get(i));
+            }
+        }
+        listaContasReceber = listaNaoSelecionada;
+        Mensagem.lancarMensagemInfo("Excluido com sucesso", "");
+    }
 }

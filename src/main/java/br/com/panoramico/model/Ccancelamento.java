@@ -47,6 +47,9 @@ public class Ccancelamento implements Serializable{
     @JoinColumn(name = "usuario_idusuario", referencedColumnName = "idusuario")
     @ManyToOne(optional = false)
     private Usuario usuario;
+    @JoinColumn(name = "motivocancelamento_idmotivocancelamento", referencedColumnName = "idmotivocancelamento")
+    @ManyToOne(optional = false)
+    private Motivocancelamento motivocancelamento;
 
     public Ccancelamento() {
     }
@@ -102,6 +105,14 @@ public class Ccancelamento implements Serializable{
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+
+    public Motivocancelamento getMotivocancelamento() {
+        return motivocancelamento;
+    }
+
+    public void setMotivocancelamento(Motivocancelamento motivocancelamento) {
+        this.motivocancelamento = motivocancelamento;
     }
     
     

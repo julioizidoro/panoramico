@@ -1,8 +1,10 @@
 package br.com.panoramico.managebean.relatorios;
 
 import br.com.panoramico.dao.AssociadoDao;
+import br.com.panoramico.dao.PlanoDao;
 import br.com.panoramico.managebean.contasreceber.ImprimieContasRecebidasMB;
 import br.com.panoramico.model.Associado;
+import br.com.panoramico.model.Plano;
 import br.com.panoramico.uil.Formatacao;
 import br.com.panoramico.uil.GerarRelatorios;
 import java.awt.image.BufferedImage;
@@ -10,12 +12,14 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.sql.SQLException; 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
@@ -35,8 +39,18 @@ public class RelatorioAssociadoMB implements Serializable {
  
     private Date dataInicio;
     private Date dataFinal;
+    private String status;
     @EJB
     private AssociadoDao associadoDao;
+    private List<Plano> listaPlano;
+    @EJB
+    private PlanoDao planoDao;
+    private Plano plano;
+    
+    @PostConstruct
+    public void init(){
+        gerarListaPlano();
+    }
     
     public Date getDataInicio() {
         return dataInicio;
@@ -52,6 +66,30 @@ public class RelatorioAssociadoMB implements Serializable {
 
     public void setDataFinal(Date dataFinal) {
         this.dataFinal = dataFinal;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public List<Plano> getListaPlano() {
+        return listaPlano;
+    }
+
+    public void setListaPlano(List<Plano> listaPlano) {
+        this.listaPlano = listaPlano;
+    }
+
+    public Plano getPlano() {
+        return plano;
+    }
+
+    public void setPlano(Plano plano) {
+        this.plano = plano;
     }
  
     public String iniciarRelatorio() {
@@ -93,8 +131,16 @@ public class RelatorioAssociadoMB implements Serializable {
         String sqlData = "";
         String sql = "SELECT distinct associado.dataassociacao, associado.matricula, cliente.nome, cliente.telefone"
                 + " from associado"
-                + " join cliente on associado.cliente_idcliente = cliente.idcliente";
-        sql = sql + " where associado.situacao='Ativo'";
+                + " join cliente on associado.cliente_idcliente = cliente.idcliente"
+                + " join plano on associado.plano_idplano=plano.idplano";
+        if (status != null) {
+            sql = sql + " Where associado.situacao='" + status + "'";
+        }else{
+            sql = sql + " where associado.situacao='Ativo'";
+        }
+        if (plano != null) {
+            sql = sql + " and plano.idplano=" + plano.getIdplano();
+        }
         if (dataInicio != null && dataInicio != null) {
             sql = sql + " and associado.dataassociacao>='" + Formatacao.ConvercaoDataSql(dataInicio) + "'"
                     + " and associado.dataassociacao<='" + Formatacao.ConvercaoDataSql(dataFinal) + "'"; 
@@ -124,5 +170,13 @@ public class RelatorioAssociadoMB implements Serializable {
             }
         }
         return false;
+    }
+    
+    
+    public void gerarListaPlano() {
+        listaPlano = planoDao.list("Select p from Plano p");
+        if (listaPlano == null) {
+            listaPlano = new ArrayList<Plano>();
+        }
     }
 }

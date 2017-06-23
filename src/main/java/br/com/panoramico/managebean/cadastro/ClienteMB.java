@@ -165,7 +165,7 @@ public class ClienteMB implements Serializable{
     public void gerarListaCliente(){
         if (!temSql) {
             if (idCliente > 0) {
-                sql = "Select a From Cliente a where a.cliente.idcliente>" + (idCliente-5) + " and a.situacao<>'Inativo' order by a.cliente.idcliente DESC";
+                sql = "Select a From Cliente a where a.idcliente>" + (idCliente-5) + " and a.situacao<>'Inativo' order by a.idcliente DESC";
                 listaCliente = clienteDao.list(sql);
             }
         }else{
@@ -285,9 +285,9 @@ public class ClienteMB implements Serializable{
     }
     
     public boolean desabilitarBotao(Cliente cliente){
-        if (cliente.getSituacao().equalsIgnoreCase("Inativo")) {
-            return true;
-        }
+            if (cliente != null && cliente.getSituacao().equalsIgnoreCase("Inativo")) {
+                return true;
+            }
         return false;
     }
     

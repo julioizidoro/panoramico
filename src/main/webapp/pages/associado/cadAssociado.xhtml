@@ -24,6 +24,20 @@
 
             <title>Novo Associado</title>
             <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+            <h:panelGrid columns="2" style="width: 100%;">
+                <h:panelGroup>
+                    <p:outputLabel class="titTela" value="Data Aquisição" style="font-size: 12px;text-align: left;"/>
+                    <br/>
+                    <p:inputMask mask="99/99/9999"  class="form-control" value="#{cadAssociadoMB.associado.dataaquisicao}" style="width: 16%;font-size: 12px;">
+                        <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+                    </p:inputMask>
+                </h:panelGroup>
+                <h:panelGroup>
+                    <p:commandLink  action="#{cadAssociadoMB.lancarContasReceber()}" title="Lançar Contas a Receber">
+                        <div class="icoAdd fa fa-money"></div>
+                    </p:commandLink> 
+                </h:panelGroup>
+            </h:panelGrid>
             <h:panelGrid id="panelIdPlanoMatricula" columns="3" columnClasses="tamanho30, tamanho45, tamanho30" style="margin-left:1%;width:95%;">
                 <p:outputLabel class="titTela" value="Matrícula" style="font-size: 12px;text-align: left;"/>
                 <p:outputLabel class="titTela" value="Plano" style="font-size: 12px;text-align: left;"/>
@@ -87,7 +101,12 @@
 
                 <p:inputText class="form-control" value="#{cadAssociadoMB.associado.complemento}" style="width: 90%; float: left;font-size: 12px;"/> 
                 <p:inputText class="form-control" value="#{cadAssociadoMB.associado.bairro}" style="width: 90%;font-size: 12px;float: left"/>
-                <p:inputMask class="form-control" mask="99999-999" value="#{cadAssociadoMB.associado.cep}" style="width: 90%; float: left;font-size: 12px;"/>
+                <h:panelGroup>
+                    <p:inputMask class="form-control" mask="99999-999" value="#{cadAssociadoMB.associado.cep}" style="width: 71%; float: left;font-size: 12px;"/>
+                     <p:commandLink  action="#" title="Confirmar CEP">
+                        <div class="icoAdd fa fa-check"></div>
+                    </p:commandLink> 
+                </h:panelGroup>    
             </h:panelGrid>
             <br/>
             <h:panelGrid columns="3" columnClasses="tamanho30, tamanho30, tamanho30" style="margin-left:1%;width:95%;">  

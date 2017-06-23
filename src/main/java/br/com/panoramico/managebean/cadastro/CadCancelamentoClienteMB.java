@@ -10,11 +10,13 @@ import br.com.panoramico.dao.CCancelamentoDao;
 import br.com.panoramico.dao.ClienteDao;
 import br.com.panoramico.dao.ContasReceberDao;
 import br.com.panoramico.dao.DependenteDao;
+import br.com.panoramico.dao.MotivoCancelamentoDao;
 import br.com.panoramico.managebean.UsuarioLogadoMB;
 import br.com.panoramico.model.Ccancelamento;
 import br.com.panoramico.model.Cliente;
 import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.model.Crcancelamento;
+import br.com.panoramico.model.Motivocancelamento;
 import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -56,6 +58,10 @@ public class CadCancelamentoClienteMB implements Serializable{
     private DependenteDao dependenteDao;
     @EJB
     private AssociadoDao associadoDao;
+    private Motivocancelamento motivocancelamento;
+    private List<Motivocancelamento> listaMotivoCancelamento;
+    @EJB
+    private MotivoCancelamentoDao motivoCancelamentoDao;
     
     
     
@@ -65,6 +71,7 @@ public class CadCancelamentoClienteMB implements Serializable{
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         cliente = (Cliente) session.getAttribute("cliente");
         session.removeAttribute("cliente");
+        gerarListaMotivoCancelamento();
         if (cliente == null) {
             Mensagem.lancarMensagemInfo("",  " Cliente não selecionado");
             RequestContext.getCurrentInstance().closeDialog(new Ccancelamento());
@@ -98,6 +105,30 @@ public class CadCancelamentoClienteMB implements Serializable{
     public void setCcancelamento(Ccancelamento ccancelamento) {
         this.ccancelamento = ccancelamento;
     }
+
+    public List<Contasreceber> getListaContasReceber() {
+        return listaContasReceber;
+    }
+
+    public void setListaContasReceber(List<Contasreceber> listaContasReceber) {
+        this.listaContasReceber = listaContasReceber;
+    }
+
+    public Motivocancelamento getMotivocancelamento() {
+        return motivocancelamento;
+    }
+
+    public void setMotivocancelamento(Motivocancelamento motivocancelamento) {
+        this.motivocancelamento = motivocancelamento;
+    }
+
+    public List<Motivocancelamento> getListaMotivoCancelamento() {
+        return listaMotivoCancelamento;
+    }
+
+    public void setListaMotivoCancelamento(List<Motivocancelamento> listaMotivoCancelamento) {
+        this.listaMotivoCancelamento = listaMotivoCancelamento;
+    }
     
     
     public void cancelar(){
@@ -109,6 +140,7 @@ public class CadCancelamentoClienteMB implements Serializable{
         ccancelamento.setCliente(cliente);
         String mensagem = validarDados(ccancelamento);
         if (mensagem.length() < 5) {
+            ccancelamento.setMotivocancelamento(motivocancelamento);
             ccancelamento = cCancelamentoDao.update(ccancelamento);
             cliente.setSituacao("Inativo");
             cliente = clienteDao.update(cliente);
@@ -145,6 +177,10 @@ public class CadCancelamentoClienteMB implements Serializable{
         if (ccancelamento.getMotivo().equalsIgnoreCase("")) {
             msg = msg + " você não informou o motivo do cancelamento \r\n";
         }
+        
+        if (motivocancelamento == null) {
+            msg = msg + " Selecione o motivo do cancelamento \r\n";
+        }
         return msg;
     }
     
@@ -152,6 +188,13 @@ public class CadCancelamentoClienteMB implements Serializable{
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         Date hora = Calendar.getInstance().getTime();
         ccancelamento.setHora(sdf.format(hora));
+    }
+    
+    public void gerarListaMotivoCancelamento(){
+        listaMotivoCancelamento = motivoCancelamentoDao.list("Select m From Motivocancelamento m");
+        if (listaMotivoCancelamento == null) {
+            listaMotivoCancelamento = new ArrayList<>();
+        }
     }
     
     

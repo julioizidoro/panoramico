@@ -88,6 +88,7 @@ public class CadAssociadoMB implements Serializable {
             associado.setEstado("PR");
             associado.setDescotomensalidade(0f);
             vinculaEmpresa = false;
+            associado.setDataaquisicao(new Date());
         } else {
             cliente = associado.getCliente();
             plano = associado.getPlano();
@@ -374,6 +375,11 @@ public class CadAssociadoMB implements Serializable {
     
     public void desvincularAssociado(Associadoempresa associadoempresa){
         associadoEmpresaDao.remove(associadoempresa.getIdassociadoempresa());
+    }
+    
+    
+    public String lancarContasReceber(){
+        return "cadContasReceberAssociado";
     }
             
             
