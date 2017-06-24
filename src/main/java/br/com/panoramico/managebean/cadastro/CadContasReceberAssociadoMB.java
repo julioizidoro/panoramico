@@ -10,6 +10,7 @@ import br.com.panoramico.dao.ClienteDao;
 import br.com.panoramico.dao.ContasReceberDao;
 import br.com.panoramico.dao.PlanoContaDao;
 import br.com.panoramico.managebean.UsuarioLogadoMB;
+import br.com.panoramico.model.Associado;
 import br.com.panoramico.model.Associadoempresa;
 import br.com.panoramico.model.Cliente;
 import br.com.panoramico.model.Contasreceber;
@@ -58,6 +59,7 @@ public class CadContasReceberAssociadoMB implements Serializable{
     private String numeroParcela;
     @EJB
     private AssociadoEmpresaDao asssociadoEmpresaDao;
+    private Associado associado;
     
     
     @PostConstruct
@@ -66,8 +68,10 @@ public class CadContasReceberAssociadoMB implements Serializable{
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         contasreceber = (Contasreceber) session.getAttribute("contasreceber");
         cliente = (Cliente) session.getAttribute("cliente");
+        associado = (Associado) session.getAttribute("associado");
         session.removeAttribute("cliente"); 
         session.removeAttribute("contasreceber");
+        session.removeAttribute("associado");
         if (contasreceber == null) {
             contasreceber = new Contasreceber();
         } else {
@@ -193,6 +197,10 @@ public class CadContasReceberAssociadoMB implements Serializable{
     }
     
     public String cancelar(){
+        FacesContext fc = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+        session.setAttribute("associado", associado);
+        session.setAttribute("cliente", cliente);
         return "cadAssociado";
     }
     
@@ -227,6 +235,10 @@ public class CadContasReceberAssociadoMB implements Serializable{
                     contasreceber.setEnviado(false);
                 }
                 contasreceber = contasReceberDao.update(contasreceber);
+                FacesContext fc = FacesContext.getCurrentInstance();
+                HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+                session.setAttribute("associado", associado);
+                session.setAttribute("cliente", cliente);
                 return "cadAssociado";
             } else {
                 Mensagem.lancarMensagemInfo("", mensagem);

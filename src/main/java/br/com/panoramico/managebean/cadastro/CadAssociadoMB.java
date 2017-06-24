@@ -93,7 +93,9 @@ public class CadAssociadoMB implements Serializable {
             cliente = associado.getCliente();
             plano = associado.getPlano();
             situacaoAntiga = associado.getSituacao();
-            valorPlano = plano.getValor();
+            if (plano != null) {
+                valorPlano = plano.getValor();
+            }
             associadoempresa = associadoEmpresaDao.find("Select a From Associadoempresa a Where a.associado.idassociado=" + associado.getIdassociado());
             if (associadoempresa != null) {
                 vinculaEmpresa = true;
@@ -379,6 +381,10 @@ public class CadAssociadoMB implements Serializable {
     
     
     public String lancarContasReceber(){
+        FacesContext fc = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+        session.setAttribute("associado", associado);
+        session.setAttribute("cliente", cliente);
         return "cadContasReceberAssociado";
     }
             
