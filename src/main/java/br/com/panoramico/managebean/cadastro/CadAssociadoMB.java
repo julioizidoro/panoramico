@@ -385,6 +385,7 @@ public class CadAssociadoMB implements Serializable {
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         session.setAttribute("associado", associado);
         session.setAttribute("cliente", cliente);
+        session.setAttribute("plano", plano);
         return "cadContasReceberAssociado";
     }
             

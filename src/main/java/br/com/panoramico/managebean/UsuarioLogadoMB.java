@@ -43,6 +43,7 @@ public class UsuarioLogadoMB implements Serializable{
     private boolean editar;
     private boolean excluir;
     private boolean financeiro;
+    private boolean cancelamento;
 
     public UsuarioLogadoMB() {
         this.usuario = new Usuario();
@@ -130,6 +131,14 @@ public class UsuarioLogadoMB implements Serializable{
 
     public void setFinanceiro(boolean financeiro) {
         this.financeiro = financeiro;
+    }
+
+    public boolean isCancelamento() {
+        return cancelamento;
+    }
+
+    public void setCancelamento(boolean cancelamento) {
+        this.cancelamento = cancelamento;
     }
     
     
@@ -308,6 +317,68 @@ public class UsuarioLogadoMB implements Serializable{
              editar = true;
          }else if(usuario.getPerfil().getAcesso().getIdacesso() == 15){
              cadastrar = true;
+         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 17){
+             cadastrar = true;
+             editar = true;
+             excluir = true;
+             financeiro = true;
+             cancelamento = true;
+         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 18){
+             cadastrar = true;
+             editar = true;
+             excluir = true;
+             cancelamento = true;
+         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 19){
+             cadastrar = true;
+             editar = true;
+             financeiro = true;
+             cancelamento = true;
+         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 20){
+             cadastrar = true;
+             editar = true;
+             cancelamento = true;
+         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 21){
+             cadastrar = true;
+             excluir = true;
+             financeiro = true;
+             cancelamento = true;
+         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 22){
+             cadastrar = true;
+             excluir = true;
+             cancelamento = true;
+         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 23){
+             cadastrar = true;
+             financeiro = true;
+             cancelamento = true;
+         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 24){
+             cadastrar = true;
+             cancelamento = true;
+         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 25){
+             editar = true;
+             excluir = true;
+             financeiro = true;
+             cancelamento = true;
+         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 26){
+             editar = true;
+             excluir = true;
+             cancelamento = true;
+         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 27){
+             editar = true;
+             financeiro = true;
+             cancelamento = true;
+         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 28){
+             editar = true;
+             cancelamento = true;
+         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 29){
+             excluir = true;
+             financeiro = true;
+             cancelamento = true;
+         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 30){
+             excluir = true;
+             cancelamento = true;
+         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 31){
+             financeiro = true;
+             cancelamento = true;
          }
      }
 }

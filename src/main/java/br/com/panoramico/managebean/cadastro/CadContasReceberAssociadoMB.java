@@ -14,6 +14,7 @@ import br.com.panoramico.model.Associado;
 import br.com.panoramico.model.Associadoempresa;
 import br.com.panoramico.model.Cliente;
 import br.com.panoramico.model.Contasreceber;
+import br.com.panoramico.model.Plano;
 import br.com.panoramico.model.Planoconta;
 import br.com.panoramico.uil.Formatacao;
 import br.com.panoramico.uil.Mensagem;
@@ -60,6 +61,7 @@ public class CadContasReceberAssociadoMB implements Serializable{
     @EJB
     private AssociadoEmpresaDao asssociadoEmpresaDao;
     private Associado associado;
+    private Plano plano;
     
     
     @PostConstruct
@@ -69,9 +71,11 @@ public class CadContasReceberAssociadoMB implements Serializable{
         contasreceber = (Contasreceber) session.getAttribute("contasreceber");
         cliente = (Cliente) session.getAttribute("cliente");
         associado = (Associado) session.getAttribute("associado");
+        plano = (Plano) session.getAttribute("plano");
         session.removeAttribute("cliente"); 
         session.removeAttribute("contasreceber");
         session.removeAttribute("associado");
+        session.removeAttribute("plano");
         if (contasreceber == null) {
             contasreceber = new Contasreceber();
         } else {
@@ -201,6 +205,7 @@ public class CadContasReceberAssociadoMB implements Serializable{
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         session.setAttribute("associado", associado);
         session.setAttribute("cliente", cliente);
+        session.setAttribute("plano", plano);
         return "cadAssociado";
     }
     
@@ -235,17 +240,19 @@ public class CadContasReceberAssociadoMB implements Serializable{
                     contasreceber.setEnviado(false);
                 }
                 contasreceber = contasReceberDao.update(contasreceber);
-                FacesContext fc = FacesContext.getCurrentInstance();
-                HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
-                session.setAttribute("associado", associado);
-                session.setAttribute("cliente", cliente);
-                return "cadAssociado";
             } else {
                 Mensagem.lancarMensagemInfo("", mensagem);
             }
 
         }
-        return "";
+        
+                FacesContext fc = FacesContext.getCurrentInstance();
+                HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+                session.setAttribute("associado", associado);
+                session.setAttribute("cliente", cliente);
+                session.setAttribute("plano", plano);
+                Mensagem.lancarMensagemInfo("Salvo com Sucesso", "");
+        return "cadAssociado";
     }
     
     public String validarDados(Contasreceber contasreceber){
@@ -310,6 +317,5 @@ public class CadContasReceberAssociadoMB implements Serializable{
             }
 
         }
-        RequestContext.getCurrentInstance().closeDialog(contasreceber);
     }
 }

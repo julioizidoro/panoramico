@@ -81,7 +81,7 @@
                                         </div>   
                                          <p:ajax  event="dialogReturn" listener="#{clienteMB.retornoDialogAlteracao}" update=":idFormConsultaCliente:messages, @form"/>
                                      </p:commandLink>
-                                     <p:commandLink  rendered="#{usuarioLogadoMB.excluir}" disabled="#{clienteMB.desabilitarBotao(cliente)}" style="text-decoration: none;" action="#{clienteMB.novoCancelamento(cliente)}" >
+                                     <p:commandLink  rendered="#{usuarioLogadoMB.cancelamento}" disabled="#{clienteMB.desabilitarBotao(cliente)}" style="text-decoration: none;" action="#{clienteMB.novoCancelamento(cliente)}" >
                                         <div class="fa fa-times"></div>
                                         <p:ajax event="dialogReturn" listener="#{clienteMB.retornoDialogCencelamento}" update=":idFormConsultaCliente:messages, @form"/> 
                                      </p:commandLink>    

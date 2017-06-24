@@ -97,11 +97,11 @@
             <br/><br/>
             <hr style="color: #367587; background: #367587"/>
             <br/>  
-            <p:commandLink style="text-decoration: none;" actionListener="#{cadContasReceberAssociadoMB.salvar()}" ajax="false">
+            <p:commandLink style="text-decoration: none;" actionListener="#{cadContasReceberAssociadoMB.salvar()}" update=":idFormCadastroContasReceber:messages" ajax="false">
                 <div style="font-size: 16px;margin-left: 32%;" class="cadastrar">Cadastrar</div>
             </p:commandLink>
             <p:commandLink style="text-decoration: none;" action="#{cadContasReceberAssociadoMB.cancelar()}" ajax="false">
-                <div style="font-size: 16px" class="cancelar">Cancelar</div>
+                <div style="font-size: 16px" class="cancelar">Voltar</div>
             </p:commandLink>
         </h:form>
     </h:body>
