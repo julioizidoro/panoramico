@@ -79,7 +79,7 @@
                                 </div>
                                 <p:ajax event="dialogReturn" listener="#{exameMB.retornoDialogAlteracao}" update=":idFormConsultaExame:messages, @form"/>
                             </p:commandLink>
-                            <p:commandLink rendered="#{usuarioLogadoMB.excluir}" action="#{exameMB.excluir(exame)}" style="text-decoration: none;" update=":idFormConsultaExame:messages, @form">
+                            <p:commandLink rendered="#{usuarioLogadoMB.usuario.perfil.acesso.excluir}" action="#{exameMB.excluir(exame)}" style="text-decoration: none;" update=":idFormConsultaExame:messages, @form">
                                 <div class="fa fa-trash-o" style="font-size: 20px;"></div>
                             </p:commandLink> 
                         </h:column> 

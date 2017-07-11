@@ -47,7 +47,7 @@
                     </p:accordionPanel>  
                     <!-- TABELA CADASTROS -->
                     <div class="col-6 titTela" style="margin-left:-13%;">Consulta Associado</div>
-                    <p:commandLink action="#{associadoMB.novoCadastroAssociado()}" rendered="#{usuarioLogadoMB.cadastrar}">
+                    <p:commandLink action="#{associadoMB.novoCadastroAssociado()}" rendered="#{usuarioLogadoMB.usuario.perfil.acesso.cadastro}">
                         <div class="icoAdd fa fa-plus-square-o"></div>
                         <p:ajax event="dialogReturn" update="messages, idConsultaAssociado" listener="#{associadoMB.retornoDialogNovo}"/>
                     </p:commandLink>
@@ -68,7 +68,7 @@
                         </h:column>
                         <h:column>
                             <f:facet name="header">Matricula</f:facet>
-                            <h:outputText value="#{associado.matricula}" style="float: left;"/>
+                            <h:outputText  value="#{associado.matricula}" style="float: left;"/>
                         </h:column> 
                         <h:column>
                             <f:facet name="header">Fone</f:facet>
@@ -77,14 +77,18 @@
                         <h:column>
                             <f:facet name="header">Email</f:facet>
                             <h:outputText value="#{associado.cliente.email}" style="float: left;"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">Situação</f:facet>
+                            <h:outputText value="#{associado.situacao}" style="float: left;"/>
                         </h:column> 
                         <h:column >
-                            <p:commandLink disabled="#{associadoMB.desabilitarBotao(associado)}" action="#{associadoMB.editar(associado)}" rendered="#{usuarioLogadoMB.editar}">
+                            <p:commandLink disabled="#{associadoMB.desabilitarBotao(associado)}" action="#{associadoMB.editar(associado)}" rendered="#{usuarioLogadoMB.usuario.perfil.acesso.editar}">
                                 <div class="fa fa-pencil-square-o">
                                 </div>
                                 <p:ajax event="dialogReturn" listener="#{associadoMB.retornoDialogAlteracao}" update=":idFormConsultaAssociado:messages, @form"/>
                             </p:commandLink>
-                            <p:commandLink disabled="#{associadoMB.desabilitarBotao(associado)}" title="Lançar Conta a receber" style="text-decoration: none;"  rendered="#{usuarioLogadoMB.cadastrar}" action="#{associadoMB.lancarContaReceber(associado)}">
+                            <p:commandLink disabled="#{associadoMB.desabilitarBotao(associado)}" title="Lançar Conta a receber" style="text-decoration: none;"  rendered="#{usuarioLogadoMB.usuario.perfil.acesso.cadastro}" action="#{associadoMB.lancarContaReceber(associado)}">
                                 <div class="fa fa-usd" >
                                 </div>
                             </p:commandLink>   
@@ -92,20 +96,20 @@
                                 <p:commandButton style="margin-left:20%;" value="Sim" type="button" action="#{associadoMB.excluir(associado)}" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                                 <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                             </p:confirmDialog>
-                            <p:commandLink disabled="#{associadoMB.desabilitarBotao(associado)}" rendered="#{usuarioLogadoMB.excluir}" style="text-decoration: none;" action="#{associadoMB.excluir(associado)}" update=":idFormConsultaAssociado:messages, @form">
+                            <p:commandLink disabled="#{associadoMB.desabilitarBotao(associado)}" rendered="#{usuarioLogadoMB.usuario.perfil.acesso.excluir}" style="text-decoration: none;" action="#{associadoMB.excluir(associado)}" update=":idFormConsultaAssociado:messages, @form">
                                 <div class="fa fa-trash-o"></div>
                                 <p:confirm header="Confirmação" message="Tem certeza que deseja excluir ?" icon="ui-icon-alert" />
                             </p:commandLink>
-                            <p:commandLink disabled="#{associadoMB.desabilitarBotao(associado)}" rendered="#{usuarioLogadoMB.editar}" style="text-decoration: none;" title="Associar a Empresa" action="#{associadoMB.associarEmpresa(associado)}" update=":idFormConsultaAssociado:messages, @form">
+                            <p:commandLink disabled="#{associadoMB.desabilitarBotao(associado)}" rendered="#{usuarioLogadoMB.usuario.perfil.acesso.editar}" style="text-decoration: none;" title="Associar a Empresa" action="#{associadoMB.associarEmpresa(associado)}" update=":idFormConsultaAssociado:messages, @form">
                                 <div class="fa fa-university"></div>
                             </p:commandLink>
-                            <p:commandLink  disabled="#{associadoMB.desabilitarBotao(associado)}" rendered="#{usuarioLogadoMB.editar}" style="text-decoration: none;" title="Dependentes" action="#{associadoMB.dependentes(associado)}" update=":idFormConsultaAssociado:messages, @form">
+                            <p:commandLink  disabled="#{associadoMB.desabilitarBotao(associado)}" rendered="#{usuarioLogadoMB.usuario.perfil.acesso.editar}" style="text-decoration: none;" title="Dependentes" action="#{associadoMB.dependentes(associado)}" update=":idFormConsultaAssociado:messages, @form">
                                 <div class="fa fa-users"></div>
                             </p:commandLink>
-                            <p:commandLink disabled="#{associadoMB.desabilitarBotao(associado)}" rendered="#{usuarioLogadoMB.editar}" style="text-decoration: none;" title="Financeiro" action="#{associadoMB.financeiro(associado)}" update=":idFormConsultaAssociado:messages, @form">
+                            <p:commandLink disabled="#{associadoMB.desabilitarBotao(associado)}" rendered="#{usuarioLogadoMB.usuario.perfil.acesso.editar}" style="text-decoration: none;" title="Financeiro" action="#{associadoMB.financeiro(associado)}" update=":idFormConsultaAssociado:messages, @form">
                                 <div class="fa fa-money"></div>
                             </p:commandLink>
-                            <p:commandLink title="#{associadoMB.retornarSituacao(associado)}" rendered="#{usuarioLogadoMB.excluir}" action="#{associadoMB.desativarAssociado(associado)}" style="text-decoration: none;" update=":idFormConsultaAssociado:messages, @form">
+                            <p:commandLink title="#{associadoMB.retornarSituacao(associado)}" rendered="#{usuarioLogadoMB.usuario.perfil.acesso.excluir}" action="#{associadoMB.desativarAssociado(associado)}" style="text-decoration: none;" update=":idFormConsultaAssociado:messages, @form">
                                 <div class="#{associadoMB.pegarIcone(associado)}"></div>
                             </p:commandLink>
                         </h:column>

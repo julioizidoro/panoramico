@@ -34,7 +34,7 @@
                             <h:outputText class="titTela" id="idValorEmpresa" value="#{totalSerPagoMB.valorTotalEmpresa}" style="font-size: 18px;float: left;">
                                 <f:convertNumber pattern="##,###,###,###.##" minFractionDigits="2" />
                             </h:outputText> 
-                            <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" style="margin-top: -1%;float: right;"  action="#{totalSerPagoMB.boletoEmpresa()}" title="Boletos da Empresa">
+                            <p:commandLink rendered="#{usuarioLogadoMB.usuario.perfil.acesso.cadastro}" style="margin-top: -1%;float: right;"  action="#{totalSerPagoMB.boletoEmpresa()}" title="Boletos da Empresa">
                                 <div class="icoAdd fa fa-file-text-o"></div>
                             </p:commandLink>
                             <p:commandLink  action="#{totalSerPagoMB.voltarContasReceber()}">
@@ -78,7 +78,7 @@
                             <h:outputText class="titTela" value="#{totalSerPagoMB.valorTotalAssociado}" style="font-size: 18px;float: left;">
                                 <f:convertNumber pattern="##,###,###,###.##" minFractionDigits="2" />
                             </h:outputText> 
-                            <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" style="margin-top: -1%;float: right;"  action="#{totalSerPagoMB.boletoAssociado()}" title="Boletos do Associado">
+                            <p:commandLink rendered="#{usuarioLogadoMB.usuario.perfil.acesso.cadastro}" style="margin-top: -1%;float: right;"  action="#{totalSerPagoMB.boletoAssociado()}" title="Boletos do Associado">
                                 <div class="icoAdd fa fa-file-text-o"></div>
                             </p:commandLink> 
                             <p:commandLink  action="#{totalSerPagoMB.voltarContasReceber()}">

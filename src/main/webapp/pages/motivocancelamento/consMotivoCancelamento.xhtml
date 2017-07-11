@@ -13,7 +13,7 @@
 
                     <!-- TABELA CADASTROS -->
                             <div class="col-6 titTela" style="margin-left:-9%;">Consulta Motivo de Cancelamento</div>
-                            <p:commandLink action="#{motivoCancelamentoMB.novoCadastroMotivoCancelamento()}" rendered="#{usuarioLogadoMB.cadastrar}">
+                            <p:commandLink action="#{motivoCancelamentoMB.novoCadastroMotivoCancelamento()}" rendered="#{usuarioLogadoMB.usuario.perfil.acesso.cadastro}">
                                 <div class="icoAdd fa fa-plus-square-o"></div>
                                 <p:ajax event="dialogReturn" update="messages, idConsultaMotivoCancelamento" listener="#{motivoCancelamentoMB.retornoDialogNovo}"/>
                             </p:commandLink>
@@ -24,12 +24,12 @@
                                 </h:column>
 
                                  <h:column>
-                                     <p:commandLink action="#{motivoCancelamentoMB.editar(motivo)}" rendered="#{usuarioLogadoMB.editar}">
+                                     <p:commandLink action="#{motivoCancelamentoMB.editar(motivo)}" rendered="#{usuarioLogadoMB.usuario.perfil.acesso.editar}">
                                          <div class="fa fa-pencil-square-o" style="margin-left: 78%;">
                                         </div>   
                                          <p:ajax event="dialogReturn" listener="#{motivoCancelamentoMB.retornoDialogAlteracao}" update=":idFormConsultaMoticoCancelamento:messages, @form"/>
                                      </p:commandLink>
-                                     <p:commandLink rendered="#{usuarioLogadoMB.excluir}" style="text-decoration: none;" action="#{motivoCancelamentoMB.excluir(motivo)}" update=":idFormConsultaMoticoCancelamento:messages, @form">
+                                     <p:commandLink rendered="#{usuarioLogadoMB.usuario.perfil.acesso.excluir}" style="text-decoration: none;" action="#{motivoCancelamentoMB.excluir(motivo)}" update=":idFormConsultaMoticoCancelamento:messages, @form">
                                         <div class="fa fa-trash-o"></div>
                                      </p:commandLink>
                                 </h:column>

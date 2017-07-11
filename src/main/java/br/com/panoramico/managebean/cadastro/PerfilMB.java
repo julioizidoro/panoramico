@@ -5,9 +5,11 @@
  */
 package br.com.panoramico.managebean.cadastro;
 
+import br.com.panoramico.dao.AcessoDao;
 import br.com.panoramico.dao.PerfilDao;
 import br.com.panoramico.dao.UsuarioDao;
 import br.com.panoramico.managebean.UsuarioLogadoMB;
+import br.com.panoramico.model.Acesso;
 import br.com.panoramico.model.Perfil;
 import br.com.panoramico.model.Usuario;
 import br.com.panoramico.uil.Mensagem;
@@ -43,6 +45,8 @@ public class PerfilMB implements  Serializable{
     private UsuarioDao usuarioDao;
     @Inject
     private UsuarioLogadoMB usuarioLogadoMB;
+    @EJB
+    private AcessoDao acessoDao;
     
     
     @PostConstruct
@@ -89,6 +93,14 @@ public class PerfilMB implements  Serializable{
 
     public void setListaPerfil(List<Perfil> listaPerfil) {
         this.listaPerfil = listaPerfil;
+    }
+
+    public AcessoDao getAcessoDao() {
+        return acessoDao;
+    }
+
+    public void setAcessoDao(AcessoDao acessoDao) {
+        this.acessoDao = acessoDao;
     }
     
     

@@ -12,7 +12,7 @@
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" style="margin-left:10%;width: 80%;"/>
                     
                     <div class="col-6 titTela" style="margin-left:-15%;">Eventos do Dia</div>
-                    <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" action="#{eventoDiaMB.voltarAcesso()}">
+                    <p:commandLink rendered="#{usuarioLogadoMB.usuario.perfil.acesso.cadastro}" action="#{eventoDiaMB.voltarAcesso()}">
                         <div class="icoAdd fa fa-arrow-left"></div>
                     </p:commandLink>
                     <h:dataTable  id="idConsultaEvento" class="table" styleClass="table" value="#{eventoDiaMB.listaEvento}" var="evento">
@@ -40,11 +40,11 @@
                             <h:outputText value="#{eventoDiaMB.possuiPiscina(evento)}" styleClass="alinhamento" style="float: left;" />
                         </h:column> 
                         <h:column>
-                            <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" title="Lista de Convidados" action="#{eventoDiaMB.listaConvidados(evento)}">
+                            <p:commandLink rendered="#{usuarioLogadoMB.usuario.perfil.acesso.cadastro}" title="Lista de Convidados" action="#{eventoDiaMB.listaConvidados(evento)}">
                                 <div class="fa fa-list">
                                 </div>
                             </p:commandLink> 
-                            <p:commandLink title="Concluir Evento" style="text-decoration: none;" update=":idFormConsultaEventoDia:messages, @form" rendered="#{usuarioLogadoMB.excluir}"  action="#{eventoDiaMB.realizadoEvento(evento)}">
+                            <p:commandLink title="Concluir Evento" style="text-decoration: none;" update=":idFormConsultaEventoDia:messages, @form" rendered="#{usuarioLogadoMB.usuario.perfil.acesso.excluir}"  action="#{eventoDiaMB.realizadoEvento(evento)}">
                                 <div class="fa fa-check" >
                                 </div>
                             </p:commandLink>

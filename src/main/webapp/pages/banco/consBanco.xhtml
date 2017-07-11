@@ -14,7 +14,7 @@
 
                     <!-- TABELA CADASTROS -->
                     <div class="col-6 titTela" style="margin-left:-7%;">Consulta Bancos</div>
-                    <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" action="#{bancoMB.novoBanco()}">
+                    <p:commandLink rendered="#{usuarioLogadoMB.usuario.perfil.acesso.cadastro}" action="#{bancoMB.novoBanco()}">
                         <div class="icoAdd fa fa-plus-square-o" style="margin-right: 4%;"></div>
                         <p:ajax event="dialogReturn" listener="#{bancoMB.retornoDialogNovo}" update="messages, idConsultaBanco"/>
                     </p:commandLink>
@@ -36,12 +36,12 @@
                             <h:outputText value="#{banco.gerente}" styleClass="alinhamento" style="float: left;"/>
                         </h:column>
                         <h:column>
-                            <p:commandLink rendered="#{usuarioLogadoMB.editar}" title="Editar" action="#{bancoMB.editar(banco)}" style="text-decoration: none;">
+                            <p:commandLink rendered="#{usuarioLogadoMB.usuario.perfil.acesso.editar}" title="Editar" action="#{bancoMB.editar(banco)}" style="text-decoration: none;">
                                 <div class="fa fa-pencil-square-o">
                                 </div>
                                 <p:ajax event="dialogReturn" listener="#{contasPagarMB.retornoDialogAlteracao}" update=":idFormConsultaBanco:messages, @form"/>
                             </p:commandLink> 
-                            <p:commandLink title="Excluir" style="text-decoration: none;" update=":idFormConsultaBanco:messages, @form" rendered="#{usuarioLogadoMB.excluir}"  action="#{bancoMB.excluir(banco)}">
+                            <p:commandLink title="Excluir" style="text-decoration: none;" update=":idFormConsultaBanco:messages, @form" rendered="#{usuarioLogadoMB.usuario.perfil.acesso.excluir}"  action="#{bancoMB.excluir(banco)}">
                                 <div class="fa fa-trash" >
                                 </div>
                             </p:commandLink>

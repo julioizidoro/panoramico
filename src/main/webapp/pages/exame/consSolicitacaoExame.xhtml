@@ -13,7 +13,7 @@
 
                     <!-- TABELA CADASTROS -->
                             <div class="col-6 titTela" style="margin-left:-7%;">Consulta Solicitação de Exame</div>
-                            <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" action="#{solicitacaoExameMB.novaSolicitacaoExame()}">
+                            <p:commandLink rendered="#{usuarioLogadoMB.usuario.perfil.acesso.cadastro}" action="#{solicitacaoExameMB.novaSolicitacaoExame()}">
                                 <div class="icoAdd fa fa-plus-square-o"></div>
                                 <p:ajax event="dialogReturn" update="messages, idConsultaSolicitacaoExame" listener="#{solicitacaoExameMB.retornoDialogNovo}"/>
                             </p:commandLink>
@@ -45,12 +45,12 @@
                                     <h:outputText value="#{exame.formapagamento}" styleClass="alinhamento" style="float: left;" />
                                 </h:column>
                                  <h:column>
-                                     <p:commandLink rendered="#{usuarioLogadoMB.editar}" action="#{solicitacaoExameMB.editar(exame)}">
+                                     <p:commandLink rendered="#{usuarioLogadoMB.usuario.perfil.acesso.editar}" action="#{solicitacaoExameMB.editar(exame)}">
                                         <div class="fa fa-pencil-square-o">
                                         </div>
                                          <p:ajax event="dialogReturn" listener="#{solicitacaoExameMB.retornoDialogAlteracao}" update=":idFormConsultaSolicitacaoExame:messages, @form"/>
                                      </p:commandLink>
-                                     <p:commandLink rendered="#{usuarioLogadoMB.excluir}" action="#{solicitacaoExameMB.excluir(exame)}" style="text-decoration: none;" update=":idFormConsultaSolicitacaoExame:messages, @form">
+                                     <p:commandLink rendered="#{usuarioLogadoMB.usuario.perfil.acesso.excluir}" action="#{solicitacaoExameMB.excluir(exame)}" style="text-decoration: none;" update=":idFormConsultaSolicitacaoExame:messages, @form">
                                         <div class="fa fa-trash-o"></div>
                                      </p:commandLink> 
                                 </h:column> 

@@ -34,6 +34,7 @@
 
                 <p:inputMask mask="99/99/9999" readonly="true" class="form-control" value="#{cadCancelamentoClienteMB.ccancelamento.data}" style="width:60%;font-size: 12px;">
                     <f:convertDateTime   pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+                    <p:ajax event="change"/>
                 </p:inputMask>
                 <p:inputText class="form-control" readonly="true" value="#{cadCancelamentoClienteMB.ccancelamento.hora}" style="width:60%;font-size: 12px;"/>
             </h:panelGrid>   
@@ -45,20 +46,26 @@
                     <f:selectItem  itemLabel="Selecione" itemValue="0" noSelectionOption="true"/> 
                     <f:selectItems  value="#{cadCancelamentoClienteMB.listaMotivoCancelamento}" var="motivo" itemLabel="#{motivo.descricao}" itemValue="#{motivo}"/>
                     <f:attribute name="listaMotivoCancelamento" value="#{cadCancelamentoClienteMB.listaMotivoCancelamento}"/>
+                    <p:ajax event="change"/>
                 </p:selectOneMenu> 
                 
                 
                 <p:outputLabel class="titTela" value="Descrição" style="font-size: 14px;text-align: left;"/>
 
-                <p:inputTextarea class="form-control" value="#{cadCancelamentoClienteMB.ccancelamento.motivo}" style="width: 90%;font-size: 12px;"/>
+                <p:inputTextarea class="form-control" value="#{cadCancelamentoClienteMB.ccancelamento.motivo}" style="width: 90%;font-size: 12px;">
+                    <p:ajax event="change"/>
+                </p:inputTextarea>
             </h:panelGrid>   
             <br/><br/>
             <hr style="color: #367587; background: #367587"/> 
             <br/>    
-            <p:commandLink style="text-decoration: none;" actionListener="#{cadCancelamentoClienteMB.salvar()}" ajax="false">
-                <div style="font-size: 16px;margin-left: 32%;" class="cadastrar">Confirmar</div>
+            <p:commandLink style="text-decoration: none;" actionListener="#{cadCancelamentoClienteMB.salvar()}">
+                <div style="font-size: 16px;margin-left: 20%;" class="cadastrar">Confirmar</div>
             </p:commandLink> 
-            <p:commandLink style="text-decoration: none;" action="#{cadCancelamentoClienteMB.cancelar()}" ajax="false">
+            <p:commandLink style="text-decoration: none;" target="_blank" action="#{cadCancelamentoClienteMB.iniciarRelatorio()}" ajax="false">
+                <div style="font-size: 16px" class="cadastrar">Termo</div>
+            </p:commandLink>
+            <p:commandLink style="text-decoration: none;" action="#{cadCancelamentoClienteMB.cancelar()}">
                 <div style="font-size: 16px" class="cancelar">Cancelar</div>
             </p:commandLink>
         </h:form>  

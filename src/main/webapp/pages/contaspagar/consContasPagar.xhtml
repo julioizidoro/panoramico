@@ -39,7 +39,7 @@
                             <br/><br/>
                     <!-- TABELA CADASTROS -->
                             <div class="col-6 titTela" style="margin-left:-10%;">Consulta Contas a Pagar</div>
-                            <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" action="#{contasPagarMB.novoCadastroContasPagar()}">
+                            <p:commandLink rendered="#{usuarioLogadoMB.usuario.perfil.acesso.cadastro}" action="#{contasPagarMB.novoCadastroContasPagar()}">
                                 <div class="icoAdd fa fa-plus-square-o"></div>
                                 <p:ajax event="dialogReturn" listener="#{contasPagarMB.retornoDialogNovo}" update="messages, idConsultaContasPagar"/>
                             </p:commandLink>
@@ -69,21 +69,21 @@
                                     <h:outputText value="#{contapagar.numeroparcela}" styleClass="alinhamento" style="margin-right:50%;"/>
                                 </h:column>
                                 <h:column>
-                                    <p:commandLink rendered="#{usuarioLogadoMB.editar}" title="Editar" action="#{contasPagarMB.editar(contapagar)}" style="text-decoration: none;">
+                                    <p:commandLink rendered="#{usuarioLogadoMB.usuario.perfil.acesso.editar}" title="Editar" action="#{contasPagarMB.editar(contapagar)}" style="text-decoration: none;">
                                         <div class="fa fa-pencil-square-o">
                                         </div>
                                          <p:ajax event="dialogReturn" listener="#{contasPagarMB.retornoDialogAlteracao}" update=":idFormConsultaContasPagar:messages, @form"/>
                                      </p:commandLink> 
-                                    <p:commandLink title="Excluir" style="text-decoration: none;" update=":idFormConsultaContasPagar:messages, @form" rendered="#{usuarioLogadoMB.excluir}"  action="#{contasPagarMB.excluir(contapagar)}">
+                                    <p:commandLink title="Excluir" style="text-decoration: none;" update=":idFormConsultaContasPagar:messages, @form" rendered="#{usuarioLogadoMB.usuario.perfil.acesso.excluir}"  action="#{contasPagarMB.excluir(contapagar)}">
                                         <div class="fa fa-trash" >
                                         </div>
                                     </p:commandLink>
-                                    <p:commandLink title="Pagamento" style="text-decoration: none;" rendered="#{usuarioLogadoMB.cadastrar}"  action="#{contasPagarMB.novoPagamento(contapagar)}">
+                                    <p:commandLink title="Pagamento" style="text-decoration: none;" rendered="#{usuarioLogadoMB.usuario.perfil.acesso.cadastro}"  action="#{contasPagarMB.novoPagamento(contapagar)}">
                                         <div class="fa fa-money" >
                                         </div>
                                         <p:ajax event="dialogReturn" listener="#{contasPagarMB.retornoDialogPagamento}" update=":idFormConsultaContasPagar:messages, @form"/>
                                      </p:commandLink>
-                                    <p:commandLink title="Visualizar Pagamentos" style="text-decoration: none;" rendered="#{usuarioLogadoMB.editar}"  action="#{contasPagarMB.visualizarPagamento(contapagar)}">
+                                    <p:commandLink title="Visualizar Pagamentos" style="text-decoration: none;" rendered="#{usuarioLogadoMB.usuario.perfil.acesso.editar}"  action="#{contasPagarMB.visualizarPagamento(contapagar)}">
                                         <div class="fa fa-eye" >
                                         </div>
                                      </p:commandLink>

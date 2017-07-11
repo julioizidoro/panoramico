@@ -12,25 +12,39 @@ import br.com.panoramico.dao.ContasReceberDao;
 import br.com.panoramico.dao.DependenteDao;
 import br.com.panoramico.dao.MotivoCancelamentoDao;
 import br.com.panoramico.managebean.UsuarioLogadoMB;
+import br.com.panoramico.managebean.relatorios.RelatorioAssociadoMB;
+import br.com.panoramico.managebean.relatorios.RelatorioCancelamentoClienteMB;
 import br.com.panoramico.model.Ccancelamento;
 import br.com.panoramico.model.Cliente;
 import br.com.panoramico.model.Contasreceber;
-import br.com.panoramico.model.Crcancelamento;
 import br.com.panoramico.model.Motivocancelamento;
+import br.com.panoramico.uil.Formatacao;
+import br.com.panoramico.uil.GerarRelatorios;
 import br.com.panoramico.uil.Mensagem;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
+import net.sf.jasperreports.engine.JRException;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -196,6 +210,61 @@ public class CadCancelamentoClienteMB implements Serializable{
             listaMotivoCancelamento = new ArrayList<>();
         }
     }
+    
+    
+    public void iniciarRelatorio() {
+        ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        String caminhoRelatorio = "";
+        caminhoRelatorio = "reports/relatorios/cliente/termoCancelamento.jasper";
+       parameters.put("sql", gerarSQL());
+        if (cliente.getAssociado() == null) {
+            parameters.put("matricula", 0);
+        }else{
+            parameters.put("matricula", cliente.getAssociado().getMatricula());
+        }
+        if (motivocancelamento == null) {
+            parameters.put("motivo", "");
+        }else{
+            parameters.put("motivo", motivocancelamento.getDescricao());
+        }
+        parameters.put("descricao", ccancelamento.getMotivo());
+        parameters.put("data", ccancelamento.getData());
+        File f = new File(servletContext.getRealPath("resources/img/logo.png"));
+        BufferedImage logo = null;
+        try {
+            logo = ImageIO.read(f); 
+        } catch (IOException ex) {
+            Logger.getLogger(RelatorioAssociadoMB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        parameters.put("logo", logo);
+        GerarRelatorios gerarRelatorio = new GerarRelatorios();
+        try {  
+            try {
+                gerarRelatorio.gerarRelatorioSqlPDF(caminhoRelatorio, parameters, "cliente", null);
+            } catch (IOException ex) {
+                Logger.getLogger(RelatorioCancelamentoClienteMB.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(RelatorioCancelamentoClienteMB.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        } catch (JRException ex) {
+            Logger.getLogger(RelatorioCancelamentoClienteMB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        RequestContext.getCurrentInstance().closeDialog(ccancelamento);
+    }
+ 
+    public String gerarSQL() {
+        String sql = "SELECT distinct cliente.nome, cliente.cpf, cliente.rg"
+                + " from cliente";
+        sql = sql + " where cliente.idcliente=" + cliente.getIdcliente();
+//        if (dataInicio != null && dataInicio != null) {
+//            sql = sql + " and ccancelamento.data>='" + Formatacao.ConvercaoDataSql(dataInicio) + "'"
+//                    + " and ccancelamento.data<='" + Formatacao.ConvercaoDataSql(dataFinal) + "'"; 
+//        }
+        sql = sql + " order by cliente.nome";
+        return sql;
+    }  
     
     
     

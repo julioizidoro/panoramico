@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Relatório de Pagamentos" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="feecb075-5a7f-42f6-832b-1a654a7aa009">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="144"/>
+	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<parameter name="periodo" class="java.lang.String"/>
+	<parameter name="sql" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="logo" class="java.awt.Image"/>
+	<parameter name="cliente" class="java.lang.String"/>
+	<parameter name="motivo" class="java.lang.String"/>
+	<parameter name="cpf" class="java.lang.String"/>
+	<parameter name="rg" class="java.lang.String"/>
+	<parameter name="matricula" class="java.lang.String"/>
+	<parameter name="descricao" class="java.lang.String"/>
+	<parameter name="data" class="java.util.Date"/>
+	<queryString>
+		<![CDATA[$P!{sql}]]>
+	</queryString>
+	<field name="nome" class="java.lang.String"/>
+	<field name="cpf" class="java.lang.String"/>
+	<field name="rg" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="96" splitType="Stretch">
+			<textField>
+				<reportElement style="Detail" x="1" y="71" width="553" height="24" uuid="7ab278a3-567e-4655-aabb-0e815544389f"/>
+				<textElement textAlignment="Center">
+					<font size="18" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Termo de Cancelamento"]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="28" y="6" width="166" height="65" uuid="44120e79-a716-4d1c-8cf1-2ba645175b59"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<detail>
+		<band height="291" splitType="Stretch">
+			<staticText>
+				<reportElement x="228" y="26" width="36" height="20" uuid="557269a4-008b-409f-893f-dbe29fc23f37"/>
+				<textElement>
+					<font size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- RG:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="28" y="46" width="240" height="20" uuid="69d0e079-a601-4930-87ae-06feac53b204"/>
+				<textElement>
+					<font size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[pedido de cancelamento do certificado Série/N°:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="133" y="6" width="374" height="20" uuid="9fbccedb-4acf-42b0-bae3-17c55af1f91d"/>
+				<textElement>
+					<font size="10" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="28" y="6" width="107" height="20" uuid="1f28d2ac-91b0-4425-ac00-1f4a50b57628"/>
+				<textElement>
+					<font size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Recebemos do Sr(a): ]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="139" y="26" width="87" height="20" uuid="3eba8f4c-b040-47be-adb8-592a3c3071bc"/>
+				<textElement>
+					<font size="10" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cpf}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="262" y="46" width="124" height="20" forecolor="#FF0000" uuid="beb058a3-ad4d-4a77-a5d1-d120b890f913"/>
+				<textElement>
+					<font size="10" isBold="true" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{matricula}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="254" y="26" width="87" height="20" uuid="ab9da515-2a61-4188-88c2-f7c8aa2bfc63"/>
+				<textElement>
+					<font size="10" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rg}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="28" y="26" width="117" height="20" uuid="0b1312ed-a07b-4f6d-aa96-10745fcdc61d"/>
+				<textElement>
+					<font size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Portador(a) do CPF n.°:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="32" y="247" width="217" height="1" uuid="964743db-225d-4344-a8ab-f62a9e276f85"/>
+			</line>
+			<line>
+				<reportElement x="305" y="246" width="217" height="1" uuid="7e90c4a4-1c52-46c2-9271-befcd88259d3"/>
+			</line>
+			<staticText>
+				<reportElement x="33" y="248" width="216" height="20" uuid="4ed86e1e-a692-4f64-bce7-1ba5d06d04cf"/>
+				<textElement>
+					<font size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[PANORÂMICO PARQUE CLUBE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="305" y="248" width="216" height="20" uuid="09dde64f-8010-474c-b301-b95baf07c0bd"/>
+				<textElement>
+					<font size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Assinatura Portador do Certificado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="299" y="231" width="14" height="20" uuid="590a2c60-7e87-4c35-8c7e-ca0b23f452ef"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[x]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="28" y="76" width="150" height="20" uuid="af6af102-2281-4cb4-b4d8-a5164d532ac4"/>
+				<textElement>
+					<font size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Motivo do Cancelamento]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="28" y="96" width="500" height="73" uuid="188085a6-89a5-4948-bbb0-7516c50f452c"/>
+				<textElement>
+					<font size="10" isBold="true" isUnderline="true" isStrikeThrough="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{motivo} + " - " + $P{descricao}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="29" y="179" width="318" height="20" uuid="11bbc593-ac4f-42bf-bab8-f6d64150d52b"/>
+				<textElement>
+					<font size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[E por ser verdade, datam e assinam o presente termo.]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="67" y="206" width="56" height="20" uuid="9453d9cf-ab73-4d20-a735-b94a79ad231e"/>
+				<textElement>
+					<font size="11" isBold="true" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{data}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="29" y="206" width="41" height="20" uuid="86682b6f-f703-40b7-a675-aed8a080d4c9"/>
+				<textElement>
+					<font size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Pinhas, ]]></text>
+			</staticText>
+		</band>
+		<band height="109">
+			<textField>
+				<reportElement style="Detail" x="1" y="81" width="553" height="23" uuid="ddc81583-bd15-4f9d-9be3-5dd32018c5a3"/>
+				<textElement textAlignment="Center">
+					<font size="18" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Termo de Cancelamento"]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="28" y="13" width="166" height="65" uuid="f905a3dc-3386-4e1f-a0b4-7d1838754125"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+		</band>
+		<band height="259">
+			<line>
+				<reportElement x="29" y="232" width="217" height="1" uuid="470420b9-4694-4c70-8115-229ce3cbb46d"/>
+			</line>
+			<staticText>
+				<reportElement x="28" y="25" width="127" height="20" uuid="ac395979-5f4e-45de-8ee3-c64cbdf5b9d9"/>
+				<textElement>
+					<font size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Portador(a) do CPF n.°:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="302" y="231" width="217" height="1" uuid="ef615a88-165a-4e4d-9fd8-53bcba359613"/>
+			</line>
+			<staticText>
+				<reportElement x="28" y="73" width="150" height="20" uuid="86c1c775-0e6a-4bc4-b5c3-7fb8d81aade4"/>
+				<textElement>
+					<font size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Motivo do Cancelamento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="28" y="3" width="107" height="20" uuid="7ac64d41-2f88-4dea-990b-c679afb61f7d"/>
+				<textElement>
+					<font size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Recebemos do Sr(a): ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="228" y="25" width="31" height="20" uuid="369d58c7-a2ea-484b-9109-900786654e32"/>
+				<textElement>
+					<font size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[- RG:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="302" y="233" width="216" height="20" uuid="fd238d7c-52b7-473b-829a-18dcefdbeb3d"/>
+				<textElement>
+					<font size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Assinatura Portador do Certificado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="296" y="216" width="14" height="20" uuid="5fff950b-dc63-4783-bf1c-1c548c00d7d0"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[x]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="235" width="216" height="20" uuid="03e12979-34ae-4f45-af06-dc9f7ba88613"/>
+				<textElement>
+					<font size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[PANORÂMICO PARQUE CLUBE]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="263" y="45" width="124" height="20" forecolor="#FF0000" uuid="534de5b2-1a2e-4c9e-a86d-ad3d95f44db6"/>
+				<textElement>
+					<font size="10" isBold="true" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{matricula}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="28" y="45" width="244" height="20" uuid="47164e06-9758-45f0-ad1b-d60cf3c23134"/>
+				<textElement>
+					<font size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[pedido de cancelamento do certificado Série/N°:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="30" y="94" width="500" height="53" uuid="62ce1bea-3edb-47db-bf16-931826d5a742"/>
+				<textElement>
+					<font size="10" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{motivo} + " - " + $P{descricao}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="30" y="152" width="318" height="20" uuid="e781d0ce-0bbf-487c-ba58-01e175c57745"/>
+				<textElement>
+					<font size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[E por ser verdade, datam e assinam o presente termo.]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="135" y="3" width="374" height="20" uuid="43bafa0d-e5bb-472a-95c7-179be44f2546"/>
+				<textElement>
+					<font size="10" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="254" y="25" width="87" height="20" uuid="9f3f1324-e694-40a2-a4bc-272cf97df9fd"/>
+				<textElement>
+					<font size="10" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rg}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="142" y="25" width="87" height="20" uuid="08a96138-3beb-4dfe-a338-c19defe3db8d"/>
+				<textElement>
+					<font size="10" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cpf}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="29" y="184" width="41" height="20" uuid="6335a41d-dc08-464e-9c64-294ea64b2818"/>
+				<textElement>
+					<font size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Pinhas, ]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="67" y="184" width="56" height="20" uuid="20e1952e-77a8-4824-b9c4-97596f00cab2"/>
+				<textElement>
+					<font size="11" isBold="true" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{data}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

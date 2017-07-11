@@ -79,11 +79,11 @@
                             <h:outputText value="#{associado.ano}" styleClass="alinhamento" style="width: 20%;" />
                         </h:column>
                         <h:column>
-                            <p:commandLink title="Lançar Conta a receber" style="text-decoration: none;"  rendered="#{usuarioLogadoMB.cadastrar}" action="#{geraContasMB.lancarContaReceber(associado)}">
+                            <p:commandLink title="Lançar Conta a receber" style="text-decoration: none;"  rendered="#{usuarioLogadoMB.usuario.perfil.acesso.cadastro}" action="#{geraContasMB.lancarContaReceber(associado)}">
                                 <div class="fa fa-usd" >
                                 </div>
                             </p:commandLink>
-                            <p:commandLink rendered="#{usuarioLogadoMB.editar}" style="text-decoration: none;" title="Financeiro" action="#{geraContasMB.financeiro(associado)}" update=":idFormConsultaAssociado:messages, @form">
+                            <p:commandLink rendered="#{usuarioLogadoMB.usuario.perfil.acesso.editar}" style="text-decoration: none;" title="Financeiro" action="#{geraContasMB.financeiro(associado)}" update=":idFormConsultaAssociado:messages, @form">
                                 <div class="fa fa-money"></div>
                             </p:commandLink>
                         </h:column>

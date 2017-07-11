@@ -114,3 +114,22 @@
     border:1px solid #E14444;
     background-color: #E14444;
 }
+
+
+
+.btnAzul {
+    padding: 1%;
+    margin:1%;
+    border:1px solid #ccc;
+    position:relative;
+    float: left;
+    border-radius: 10px;
+    color:#fff;
+    cursor: pointer;
+    background-color: #0080FF;
+}
+.brnAzul:hover {
+    color:#fff;
+    border:1px solid #014B95;
+    background-color: #014B95;
+}

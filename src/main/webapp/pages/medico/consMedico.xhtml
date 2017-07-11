@@ -26,7 +26,7 @@
                     </p:accordionPanel>  
                     <!-- TABELA CADASTROS -->
                             <div class="col-6 titTela" style="margin-left:-15%;">Consulta Médico</div>
-                            <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" action="#{medicoMB.novoCadastroMedico()}">
+                            <p:commandLink rendered="#{usuarioLogadoMB.usuario.perfil.acesso.cadastro}" action="#{medicoMB.novoCadastroMedico()}">
                                 <div class="icoAdd fa fa-plus-square-o"></div>
                                 <p:ajax event="dialogReturn" update="messages, idConsultaMedico" listener="#{medicoMB.retornoDialogNovo}"/>
                             </p:commandLink>
@@ -48,12 +48,12 @@
                                     <h:outputText value="#{medico.especialidade}" styleClass="alinhamento" style="float: left;" />
                                 </h:column>
                                  <h:column>
-                                     <p:commandLink rendered="#{usuarioLogadoMB.editar}" action="#{medicoMB.editar(medico)}">
+                                     <p:commandLink rendered="#{usuarioLogadoMB.usuario.perfil.acesso.editar}" action="#{medicoMB.editar(medico)}">
                                         <div class="fa fa-pencil-square-o">
                                         </div>
                                          <p:ajax event="dialogReturn" listener="#{medicoMB.retornoDialogAlteracao}" update=":idFormConsultaMedico:messages, @form"/>
                                      </p:commandLink>
-                                     <p:commandLink rendered="#{usuarioLogadoMB.excluir}" action="#{medicoMB.desativarMedico(medico)}" title="#{medicoMB.retornarSituacao(medico)}" style="text-decoration: none;" update=":idFormConsultaMedico:messages, @form">
+                                     <p:commandLink rendered="#{usuarioLogadoMB.usuario.perfil.acesso.excluir}" action="#{medicoMB.desativarMedico(medico)}" title="#{medicoMB.retornarSituacao(medico)}" style="text-decoration: none;" update=":idFormConsultaMedico:messages, @form">
                                          <div class="#{medicoMB.pegarIcone(medico)}"></div>
                                      </p:commandLink> 
                                 </h:column> 

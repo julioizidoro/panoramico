@@ -62,11 +62,11 @@
                             <br/><br/>
                     <!-- TABELA CADASTROS -->
                             <div class="col-6 titTela" style="margin-left:-15%;">Consulta Eventos</div>
-                            <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" action="#{eventoMB.novoCadastroEvento()}">
+                            <p:commandLink rendered="#{usuarioLogadoMB.usuario.perfil.acesso.cadastro}" action="#{eventoMB.novoCadastroEvento()}">
                                 <div class="icoAdd fa fa-plus-square-o"></div>
                                 <p:ajax event="dialogReturn" listener="#{eventoMB.retornoDialogNovo}" update="messages, idConsultaEvento"/>
                             </p:commandLink>
-                            <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" action="#{eventoMB.novoRelatorio()}" title="Relatórios">
+                            <p:commandLink rendered="#{usuarioLogadoMB.usuario.perfil.acesso.cadastro}" action="#{eventoMB.novoRelatorio()}" title="Relatórios">
                                 <div class="icoAdd fa fa-bar-chart"></div>
                             </p:commandLink>
                             <h:dataTable  id="idConsultaEvento" class="table" styleClass="table" value="#{eventoMB.listaEvento}" var="evento">
@@ -100,26 +100,26 @@
                                     <h:outputText value="sim" styleClass="alinhamento" style="float: left;#{eventoMB.verificarSituacao(evento)}" />
                                 </h:column>
                                  <h:column>
-                                     <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" title="Lista Convidados" action="#{eventoMB.novoConvidados(evento)}">
+                                     <p:commandLink rendered="#{usuarioLogadoMB.usuario.perfil.acesso.cadastro}" title="Lista Convidados" action="#{eventoMB.novoConvidados(evento)}">
                                         <div class="fa fa-list">
                                         </div>
                                          <p:ajax listener="#{eventoMB.retornoDialogConvidados}" event="dialogReturn" update=":idFormConsultaEvento:messages, @form"/>
                                      </p:commandLink>
-                                     <p:commandLink rendered="#{usuarioLogadoMB.editar}" title="Editar" action="#{eventoMB.editar(evento)}" style="text-decoration: none;">
+                                     <p:commandLink rendered="#{usuarioLogadoMB.usuario.perfil.acesso.editar}" title="Editar" action="#{eventoMB.editar(evento)}" style="text-decoration: none;">
                                         <div class="fa fa-pencil-square-o">
                                         </div>
                                          <p:ajax event="dialogReturn" listener="#{eventoMB.retornoDialogAlteracao}" update=":idFormConsultaEvento:messages, @form"/>
                                      </p:commandLink> 
-                                     <p:commandLink title="Cancelamento" style="text-decoration: none;" rendered="#{usuarioLogadoMB.excluir}" disabled="#{eventoMB.verificarSituacaoCancelada(evento)}" action="#{eventoMB.novoCancelamento(evento)}">
+                                     <p:commandLink title="Cancelamento" style="text-decoration: none;" rendered="#{usuarioLogadoMB.usuario.perfil.acesso.excluir}" disabled="#{eventoMB.verificarSituacaoCancelada(evento)}" action="#{eventoMB.novoCancelamento(evento)}">
                                         <div class="fa fa-times" >
                                         </div>
                                          <p:ajax event="dialogReturn" listener="#{eventoMB.retornoDialogCancelamento}" update=":idFormConsultaEvento:messages, @form"/>
                                      </p:commandLink>
-                                     <p:commandLink title="Lançar Conta a receber" style="text-decoration: none;"  rendered="#{usuarioLogadoMB.cadastrar}" action="#{eventoMB.lancarContaReceber(evento)}">
+                                     <p:commandLink title="Lançar Conta a receber" style="text-decoration: none;"  rendered="#{usuarioLogadoMB.usuario.perfil.acesso.cadastro}" action="#{eventoMB.lancarContaReceber(evento)}">
                                         <div class="fa fa-usd" >
                                         </div>
                                      </p:commandLink>
-                                     <p:commandLink title="Concluir Evento" style="text-decoration: none;" update=":idFormConsultaEvento:messages, @form" rendered="#{usuarioLogadoMB.excluir}" disabled="#{eventoMB.verificarSituacaoRealizada(evento)}" action="#{eventoMB.realizadoEvento(evento)}">
+                                     <p:commandLink title="Concluir Evento" style="text-decoration: none;" update=":idFormConsultaEvento:messages, @form" rendered="#{usuarioLogadoMB.usuario.perfil.acesso.excluir}" disabled="#{eventoMB.verificarSituacaoRealizada(evento)}" action="#{eventoMB.realizadoEvento(evento)}">
                                         <div class="fa fa-check" >
                                         </div>
                                      </p:commandLink>

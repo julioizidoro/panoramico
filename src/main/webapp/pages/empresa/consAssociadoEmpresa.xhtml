@@ -67,14 +67,14 @@
                             <h:outputText value="#{associadoempresa.associado.matricula}" style="float: left;"/>
                         </h:column> 
                         <h:column>
-                            <p:commandLink title="Lançar Conta a receber" style="text-decoration: none;"  rendered="#{usuarioLogadoMB.cadastrar}" action="#{associadoEmpresaMB.lancarContaReceber(associadoempresa.associado)}">
+                            <p:commandLink title="Lançar Conta a receber" style="text-decoration: none;"  rendered="#{usuarioLogadoMB.usuario.perfil.acesso.cadastro}" action="#{associadoEmpresaMB.lancarContaReceber(associadoempresa.associado)}">
                                 <div class="fa fa-usd" >
                                 </div>
                             </p:commandLink>
-                            <p:commandLink rendered="#{usuarioLogadoMB.editar}" style="text-decoration: none;" title="Dependentes" action="#{associadoEmpresaMB.dependentes(associadoempresa.associado)}" update="@form">
+                            <p:commandLink rendered="#{usuarioLogadoMB.usuario.perfil.acesso.editar}" style="text-decoration: none;" title="Dependentes" action="#{associadoEmpresaMB.dependentes(associadoempresa.associado)}" update="@form">
                                 <div class="fa fa-users"></div>
                             </p:commandLink>
-                            <p:commandLink rendered="#{usuarioLogadoMB.editar}" style="text-decoration: none;" title="Financeiro" action="#{associadoEmpresaMB.financeiro(associadoempresa.associado)}" update="@form">
+                            <p:commandLink rendered="#{usuarioLogadoMB.usuario.perfil.acesso.editar}" style="text-decoration: none;" title="Financeiro" action="#{associadoEmpresaMB.financeiro(associadoempresa.associado)}" update="@form">
                                 <div class="fa fa-money"></div>
                             </p:commandLink>
                         </h:column>

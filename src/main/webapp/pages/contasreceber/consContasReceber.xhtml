@@ -84,27 +84,27 @@
                     <!-- TABELA CADASTROS --> 
                     <div class="col-6 titTela" style="text-align: right;margin-left:15%;">Consulta Contas a Receber</div> 
                     
-                    <p:commandLink rendered="#{usuarioLogadoMB.excluir}" update=":idFormConsultaContasReceber:idConsultaContasReceber, :idFormConsultaContasReceber:messages"  action="#{contasReceberMB.excluirContaLote()}" title="Excluir conta">
+                    <p:commandLink rendered="#{usuarioLogadoMB.usuario.perfil.acesso.excluir}" update=":idFormConsultaContasReceber:idConsultaContasReceber, :idFormConsultaContasReceber:messages"  action="#{contasReceberMB.excluirContaLote()}" title="Excluir conta">
                         <div class="icoAdd fa fa-trash-o"></div>
                     </p:commandLink> 
                     <p:commandLink rendered="#{contasReceberMB.habilitarVoltarFinanceiro}" action="#{contasReceberMB.voltarAssociado()}">
                         <div class="icoAdd fa fa-arrow-left" ></div>
                     </p:commandLink>     
-                    <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}"  onclick="PF('relatorioRemessaRetorno').show();" title="Boletos">
+                    <p:commandLink rendered="#{usuarioLogadoMB.usuario.perfil.acesso.cadastro}"  onclick="PF('relatorioRemessaRetorno').show();" title="Boletos">
                         <div class="icoAdd fa fa-exchange"></div>
                     </p:commandLink> 
-                    <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}"  action="#{contasReceberMB.totalPagar()}" title="Total a ser pago">
+                    <p:commandLink rendered="#{usuarioLogadoMB.usuario.perfil.acesso.cadastro}"  action="#{contasReceberMB.totalPagar()}" title="Total a ser pago">
                         <div class="icoAdd fa fa-usd"></div>
                     </p:commandLink> 
-                    <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" action="#{contasReceberMB.novoRelatorio()}" title="Relatórios">
+                    <p:commandLink rendered="#{usuarioLogadoMB.usuario.perfil.acesso.cadastro}" action="#{contasReceberMB.novoRelatorio()}" title="Relatórios">
                         <div class="icoAdd fa fa-bar-chart"></div>
                     </p:commandLink>  
-                    <p:commandLink rendered="#{usuarioLogadoMB.cadastrar}" title="Lançar nova conta" action="#{contasReceberMB.novoCadastroContasReceber()}">
+                    <p:commandLink rendered="#{usuarioLogadoMB.usuario.perfil.acesso.cadastro}" title="Lançar nova conta" action="#{contasReceberMB.novoCadastroContasReceber()}">
                         <div class="icoAdd fa fa-plus-square-o"></div>
                         <p:ajax event="dialogReturn" listener="#{contasReceberMB.retornoDialogNovo}" update="messages, idConsultaContasReceber, idtab"/>
                     </p:commandLink>
 
-                    <p:commandLink id="bntreceberArquivo" rendered="#{usuarioLogadoMB.cadastrar}"
+                    <p:commandLink id="bntreceberArquivo" rendered="#{usuarioLogadoMB.usuario.perfil.acesso.cadastro}"
                                     update=":dialogUpload:dialog_uploadboleto" oncomplete="PF('uploadboleto').show()" 
                                    title="Retorno boleto" >
                         <div class="icoAdd fa fa-download"></div> 
@@ -170,22 +170,22 @@
                             <h:outputText value="#{contaReceber.tipopagamento}" styleClass="alinhamento" style="float: left;" />
                         </h:column>
                         <h:column>
-                            <p:commandLink disabled="#{contasReceberMB.verificarSituacao(contaReceber)}" rendered="#{usuarioLogadoMB.editar}" title="Editar" action="#{contasReceberMB.editar(contaReceber)}" style="text-decoration: none;">
+                            <p:commandLink disabled="#{contasReceberMB.verificarSituacao(contaReceber)}" rendered="#{usuarioLogadoMB.usuario.perfil.acesso.editar}" title="Editar" action="#{contasReceberMB.editar(contaReceber)}" style="text-decoration: none;">
                                 <div class="fa fa-pencil-square-o">
                                 </div>
                                 <p:ajax event="dialogReturn" listener="#{contasReceberMB.retornoDialogAlteracao}" update=":idFormConsultaContasReceber:messages, @form"/>
                             </p:commandLink> 
-                            <p:commandLink disabled="#{contasReceberMB.verificarSituacao(contaReceber)}" title="Cancelamento" style="text-decoration: none;" rendered="#{usuarioLogadoMB.excluir}"  action="#{contasReceberMB.novoCancelamento(contaReceber)}">
+                            <p:commandLink disabled="#{contasReceberMB.verificarSituacao(contaReceber)}" title="Cancelamento" style="text-decoration: none;" rendered="#{usuarioLogadoMB.usuario.perfil.acesso.excluir}"  action="#{contasReceberMB.novoCancelamento(contaReceber)}">
                                 <div class="fa fa-times" >
                                 </div>
                                 <p:ajax event="dialogReturn" listener="#{contasReceberMB.retornoDialogCancelamento}" update=":idFormConsultaContasReceber:messages, @form"/>
                             </p:commandLink>
-                            <p:commandLink disabled="#{contasReceberMB.verificarSituacao(contaReceber)}" title="Recebimento" style="text-decoration: none;" rendered="#{usuarioLogadoMB.cadastrar}"  action="#{contasReceberMB.novoRecebimento(contaReceber)}">
+                            <p:commandLink disabled="#{contasReceberMB.verificarSituacao(contaReceber)}" title="Recebimento" style="text-decoration: none;" rendered="#{usuarioLogadoMB.usuario.perfil.acesso.cadastro}"  action="#{contasReceberMB.novoRecebimento(contaReceber)}">
                                 <div class="fa fa-money" >
                                 </div>
                                 <p:ajax event="dialogReturn" listener="#{contasReceberMB.retornoDialogRecebimento}" update=":idFormConsultaContasReceber:messages, @form"/>
                             </p:commandLink>
-                            <p:commandLink disabled="#{contasReceberMB.verificarSituacao(contaReceber)}" title="Visualizar Recebimentos" style="text-decoration: none;" rendered="#{usuarioLogadoMB.editar}"  action="#{contasReceberMB.visualizarRecebimento(contaReceber)}">
+                            <p:commandLink disabled="#{contasReceberMB.verificarSituacao(contaReceber)}" title="Visualizar Recebimentos" style="text-decoration: none;" rendered="#{usuarioLogadoMB.usuario.perfil.acesso.editar}"  action="#{contasReceberMB.visualizarRecebimento(contaReceber)}">
                                 <div class="fa fa-eye" >
                                 </div>
                             </p:commandLink>  

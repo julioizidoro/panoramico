@@ -27,6 +27,16 @@ public class Acesso implements Serializable {
     @Basic(optional = false)
     @Column(name = "idacesso")
     private Integer idacesso;
+    @Column(name = "cadastro")
+    private boolean cadastro;
+    @Column(name = "editar")
+    private boolean editar;
+    @Column(name = "financeiro")
+    private boolean financeiro;
+    @Column(name = "cancelamento")
+    private boolean cancelamento;
+    @Column(name = "excluir")
+    private boolean excluir;
 
     public Acesso() {
     }
@@ -41,6 +51,46 @@ public class Acesso implements Serializable {
 
     public void setIdacesso(Integer idacesso) {
         this.idacesso = idacesso;
+    }
+
+    public boolean isCadastro() {
+        return cadastro;
+    }
+
+    public void setCadastro(boolean cadastro) {
+        this.cadastro = cadastro;
+    }
+
+    public boolean isEditar() {
+        return editar;
+    }
+
+    public void setEditar(boolean editar) {
+        this.editar = editar;
+    }
+
+    public boolean isFinanceiro() {
+        return financeiro;
+    }
+
+    public void setFinanceiro(boolean financeiro) {
+        this.financeiro = financeiro;
+    }
+
+    public boolean isCancelamento() {
+        return cancelamento;
+    }
+
+    public void setCancelamento(boolean cancelamento) {
+        this.cancelamento = cancelamento;
+    }
+
+    public boolean isExcluir() {
+        return excluir;
+    }
+
+    public void setExcluir(boolean excluir) {
+        this.excluir = excluir;
     }
     
     @Override
