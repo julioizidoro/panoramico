@@ -58,17 +58,19 @@
                 <p:outputLabel /> 
             </h:panelGrid> 
             <br/> 
-            <h:panelGrid id="idPanelTelefone2" columns="2" columnClasses="tamanho12, tamanho12" style="margin-left:1%;width:95%;">  
+            <h:panelGrid id="idPanelTelefone2" columns="3" columnClasses="tamanho16, tamanho12" style="margin-left:1%;width:95%;">  
                 <p:outputLabel value="Telefone 3" class="titTela" style="font-size: 12px;text-align: left;"/>
-                <p:outputLabel value="9°" class="titTela" style="margin-left:-70%;font-size: 14px;">
+                <p:outputLabel value="9°" class="titTela" style="margin-left:-118px;font-size: 14px;">
                     <p:selectBooleanCheckbox id="idNonoDigito3"
                                              value="#{cadClienteMB.noveDigito3}">
                         <p:ajax event="change" listener="#{cadClienteMB.habilitarNoveDigito3()}" update="idNonoDigito3, idTelefone3"/>
                     </p:selectBooleanCheckbox>
                 </p:outputLabel>
+                <p:outputLabel value="RG" class="titTela" style="font-size: 12px;text-align: left;"/>
 
-                <p:inputMask id="idTelefone3" mask="#{cadClienteMB.habilitarNoveDigito3()}" class="form-control" value="#{cadClienteMB.cliente.telefone2}" style="width: 45%;font-size: 12px;"/> 
+                <p:inputMask id="idTelefone3" mask="#{cadClienteMB.habilitarNoveDigito3()}" class="form-control" value="#{cadClienteMB.cliente.telefone2}" style="width: 111px;font-size: 12px;"/> 
                 <p:outputLabel /> 
+                <p:inputMask mask="9.999.999" class="form-control" value="#{cadClienteMB.cliente.rg}" style="width: 31%;font-size: 12px;"/> 
             </h:panelGrid> 
             <br/><br/>    
             <hr/>
