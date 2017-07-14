@@ -5,6 +5,8 @@
  */
 package br.com.panoramico.managebean.cadastro;
 
+import br.com.panoramico.bean.wsCep.ControladorCEPBean;
+import br.com.panoramico.bean.wsCep.EnderecoBean;
 import br.com.panoramico.dao.AssociadoDao;
 import br.com.panoramico.dao.AssociadoEmpresaDao;
 import br.com.panoramico.dao.ClienteDao;
@@ -387,6 +389,29 @@ public class CadAssociadoMB implements Serializable {
         session.setAttribute("cliente", cliente);
         session.setAttribute("plano", plano);
         return "cadContasReceberAssociado";
+    }
+    
+    
+     public void buscarendereco() {
+        ControladorCEPBean cep = new ControladorCEPBean();
+        cep.setCep(associado.getCep());
+        EnderecoBean endereco = cep.carregarEndereco();
+        if (endereco.getLogradouro() != null) {
+            associado.setBairro(endereco.getBairro());
+            associado.setEstado(endereco.getUf());
+            associado.setCidade(endereco.getLocalidade());
+            associado.setComplemento(endereco.getComplemento());
+            String logradouro = endereco.getLogradouro().substring(endereco.getLogradouro().indexOf(" "), endereco.getLogradouro().length());
+            int posicao = endereco.getLogradouro().length();
+            for (int i = 0; i <= logradouro.length(); i++) {
+                posicao = posicao - 1;
+            }
+            String tipo = endereco.getLogradouro().substring(0, posicao + 1);
+            associado.setLogradouro(logradouro);
+            associado.setTipologradouro(tipo);
+        }else{
+            Mensagem.lancarMensagemInfo("Endereço não encontrado!!", "");
+        }
     }
             
             

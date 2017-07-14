@@ -90,7 +90,7 @@
                     <f:selectItem itemLabel="Parque" itemValue="Parque" />  
                     <f:selectItem itemLabel="Travessa" itemValue="Travessa" />  
                 </p:selectOneMenu>
-                <p:inputText class="form-control" value="#{cadAssociadoMB.associado.logradouro}" style="width: 95%; font-size: 12px;"/>
+                <p:inputText id="logradouro" class="form-control" value="#{cadAssociadoMB.associado.logradouro}" style="width: 95%; font-size: 12px;"/>
                 <p:inputText class="form-control" value="#{cadAssociadoMB.associado.numero}" style="width: 90%;font-size: 12px;float: left;"/>
             </h:panelGrid>
             <br/>
@@ -99,12 +99,12 @@
                 <p:outputLabel class="titTela" value="Bairro" style="font-size: 12px;text-align: left;"/>
                 <p:outputLabel class="titTela" value="Cep" style="font-size: 12px;text-align: left;"/>
 
-                <p:inputText class="form-control" value="#{cadAssociadoMB.associado.complemento}" style="width: 90%; float: left;font-size: 12px;"/> 
-                <p:inputText class="form-control" value="#{cadAssociadoMB.associado.bairro}" style="width: 90%;font-size: 12px;float: left"/>
+                <p:inputText id="complemento" class="form-control" value="#{cadAssociadoMB.associado.complemento}" style="width: 90%; float: left;font-size: 12px;"/> 
+                <p:inputText id="bairro" class="form-control" value="#{cadAssociadoMB.associado.bairro}" style="width: 90%;font-size: 12px;float: left"/>
                 <h:panelGroup>
                     <p:inputMask class="form-control" mask="99999-999" value="#{cadAssociadoMB.associado.cep}" style="width: 71%; float: left;font-size: 12px;"/>
-                     <p:commandLink  action="#" title="Confirmar CEP">
-                        <div class="icoAdd fa fa-check"></div>
+                    <p:commandLink  action="#{cadAssociadoMB.buscarendereco()}" update=":idFormCadastroAssociado:messages, complemento, bairro, logradouro, estado, cidade, tipoLogradouro" title="Confirmar CEP">
+                        <div class="icoAdd fa fa-search"></div>
                     </p:commandLink> 
                 </h:panelGroup>    
             </h:panelGrid>
@@ -116,7 +116,7 @@
                 
                 
                 
-                <p:inputText class="form-control" value="#{cadAssociadoMB.associado.cidade}" style="width: 90%; float: left;font-size: 12px;"/> 
+                <p:inputText id="cidade" class="form-control" value="#{cadAssociadoMB.associado.cidade}" style="width: 90%; float: left;font-size: 12px;"/> 
                 <p:selectOneMenu class="form-control" id="estado" value="#{cadAssociadoMB.associado.estado}"  style="width:80%;font-size: 12px;">
                     <f:selectItem itemLabel="Selecione" itemValue="sn" noSelectionOption="true"/> 
                     <f:selectItem itemLabel="Acre" itemValue="AC" /> 
