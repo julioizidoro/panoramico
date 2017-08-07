@@ -12,7 +12,6 @@ import br.com.panoramico.model.Associado;
 import br.com.panoramico.model.Associadoempresa;
 import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.model.Empresa;
-import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,11 +25,10 @@ import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
 
-
 @Named
 @ViewScoped
-public class AssociadoEmpresaMB implements Serializable{
-    
+public class AssociadoEmpresaMB implements Serializable {
+
     private Empresa empresa;
     private Associado associado;
     private Associadoempresa associadoempresa;
@@ -46,10 +44,9 @@ public class AssociadoEmpresaMB implements Serializable{
     private String matricula;
     private String email;
     private String cpf;
-    
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         empresa = (Empresa) session.getAttribute("empresa");
@@ -152,27 +149,22 @@ public class AssociadoEmpresaMB implements Serializable{
     public void setCpf(String cpf) {
         this.cpf = cpf;
     }
-    
-    
-    
-    
-    public void gerarListaAssociadoEmpresa(){
-        listaAssociadoEmpresa = associadoEmpresaDao.list("Select ae From Associadoempresa ae Where ae.empresa.idempresa=" + empresa.getIdempresa()
-                    + " order by ae.idassociadoempresa");
+
+    public void gerarListaAssociadoEmpresa() {
+        listaAssociadoEmpresa = associadoEmpresaDao.list("select ae from Associadoempresa ae where ae.empresa.idempresa=" + empresa.getIdempresa()
+                + " order by ae.idassociadoempresa");
         if (listaAssociadoEmpresa == null || listaAssociadoEmpresa.isEmpty()) {
             listaAssociadoEmpresa = new ArrayList<>();
         }
     }
-    
-    
-    public String voltar(){
+
+    public String voltar() {
         return "consEmpresa";
     }
-    
-    
+
     public String pesquisar() {
         String sql = "";
-        sql = "Select ae from Associadoempresa ae where ae.empresa.idempresa="+ empresa.getIdempresa() +" and ae.associado.cliente.nome like '%" + nome + "%' ";
+        sql = "select ae from Associadoempresa ae where ae.empresa.idempresa=" + empresa.getIdempresa() + " and ae.associado.cliente.nome like '%" + nome + "%' ";
         if (cpf.length() > 0) {
             sql = sql + " and ae.associado.cliente.cpf='" + cpf + "' ";
         }
@@ -192,8 +184,7 @@ public class AssociadoEmpresaMB implements Serializable{
         }
         return "";
     }
-    
-    
+
     public String limpar() {
         gerarListaAssociadoEmpresa();
         matricula = "";
@@ -203,24 +194,22 @@ public class AssociadoEmpresaMB implements Serializable{
         telefone = "";
         return "";
     }
-    
-    
+
     public String dependentes(Associado associado) {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         session.setAttribute("associado", associado);
         return "consDependente";
     }
-    
+
     public String financeiro(Associado associado) {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         session.setAttribute("associado", associado);
         return "consContasReceber";
     }
-    
-    
-    public void lancarContaReceber(Associado associado){
+
+    public void lancarContaReceber(Associado associado) {
         if (associado != null) {
             Contasreceber contasreceber = new Contasreceber();
             contasreceber.setCliente(associado.getCliente());
@@ -232,5 +221,5 @@ public class AssociadoEmpresaMB implements Serializable{
             RequestContext.getCurrentInstance().openDialog("cadContasReceber", options, null);
         }
     }
-    
+
 }

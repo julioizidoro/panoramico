@@ -9,7 +9,6 @@ import br.com.panoramico.dao.ContasPagarDao;
 import br.com.panoramico.dao.PlanoContaDao;
 import br.com.panoramico.managebean.UsuarioLogadoMB;
 import br.com.panoramico.model.Contaspagar;
-import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.model.Planoconta;
 import br.com.panoramico.uil.Formatacao;
 import br.com.panoramico.uil.Mensagem;
@@ -30,8 +29,8 @@ import org.primefaces.context.RequestContext;
 
 @Named
 @ViewScoped
-public class CadContasPagarMB implements Serializable{
-    
+public class CadContasPagarMB implements Serializable {
+
     private Contaspagar contaspagar;
     @EJB
     private ContasPagarDao contasPagarDao;
@@ -43,16 +42,15 @@ public class CadContasPagarMB implements Serializable{
     private String numeroParcela;
     @EJB
     private PlanoContaDao planoContaDao;
-    
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         contaspagar = (Contaspagar) session.getAttribute("contaspagar");
         if (contaspagar == null) {
             contaspagar = new Contaspagar();
-        }else{
+        } else {
             planoconta = contaspagar.getPlanoconta();
             numeroParcela = contaspagar.getNumeroparcela();
             tipoPagamento = contaspagar.getFormapagamento();
@@ -75,8 +73,6 @@ public class CadContasPagarMB implements Serializable{
     public void setNumeroParcela(String numeroParcela) {
         this.numeroParcela = numeroParcela;
     }
-    
-    
 
     public Contaspagar getContaspagar() {
         return contaspagar;
@@ -125,25 +121,23 @@ public class CadContasPagarMB implements Serializable{
     public void setPlanoContaDao(PlanoContaDao planoContaDao) {
         this.planoContaDao = planoContaDao;
     }
-    
-    
-    
-    public void cancelar(){
+
+    public void cancelar() {
         RequestContext.getCurrentInstance().closeDialog(new Contaspagar());
     }
-    
-    public void gerarListaPlanoContas(){
-        listaPlanoContas = planoContaDao.list("Select p from Planoconta p");
+
+    public void gerarListaPlanoContas() {
+        listaPlanoContas = planoContaDao.list("select p from Planoconta p");
         if (listaPlanoContas == null) {
             listaPlanoContas = new ArrayList<Planoconta>();
         }
     }
-    
+
     public void salvar() {
         Float formataNParcela = Formatacao.formatarStringfloat(numeroParcela);
         contaspagar.setDatalancamento(new Date());
         if (formataNParcela > 1) {
-             calcularParcelamentoMensal(formataNParcela, contaspagar);
+            calcularParcelamentoMensal(formataNParcela, contaspagar);
         } else {
             contaspagar.setFormapagamento(tipoPagamento);
             contaspagar.setNumeroparcela(numeroParcela);
@@ -159,8 +153,8 @@ public class CadContasPagarMB implements Serializable{
             }
         }
     }
-    
-    public String validarDados(Contaspagar contaspagar){
+
+    public String validarDados(Contaspagar contaspagar) {
         String msg = "";
         if (contaspagar.getNumeroparcela().equalsIgnoreCase("")) {
             msg = msg + " Número de parcela não selecionada \r\n";
@@ -171,12 +165,12 @@ public class CadContasPagarMB implements Serializable{
         if (contaspagar.getDatavencimento() == null) {
             msg = msg + " Data de vencimento não informada \r\n";
         }
-        if (contaspagar.getValor()== null) {
+        if (contaspagar.getValor() == null) {
             msg = msg + " Valor da conta não informada \r\n";
         }
         return msg;
     }
-    
+
     public void calcularParcelamentoMensal(Float nParcela, Contaspagar contaspagar) {
         Float valorPagar = contaspagar.getValor() / nParcela;
         for (int i = 1; i <= nParcela; i++) {
@@ -207,4 +201,3 @@ public class CadContasPagarMB implements Serializable{
         RequestContext.getCurrentInstance().closeDialog(contaspagar);
     }
 }
- 

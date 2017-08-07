@@ -28,11 +28,10 @@ import org.primefaces.context.RequestContext;
  *
  * @author Kamilla Rodrigues
  */
-
 @Named
 @ViewScoped
-public class cadCancelamentoEventoMB implements Serializable{
-    
+public class cadCancelamentoEventoMB implements Serializable {
+
     private Eventocancelamento eventocancelamento;
     private Evento evento;
     @Inject
@@ -41,9 +40,9 @@ public class cadCancelamentoEventoMB implements Serializable{
     private EventoCancelamentoDao eventoCancelamentoDao;
     @EJB
     private EventoDao eventoDao;
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         evento = (Evento) session.getAttribute("evento");
@@ -94,37 +93,34 @@ public class cadCancelamentoEventoMB implements Serializable{
     public void setEventoDao(EventoDao eventoDao) {
         this.eventoDao = eventoDao;
     }
-    
-    
-    
-    public void cancelar(){
+
+    public void cancelar() {
         RequestContext.getCurrentInstance().closeDialog(new Eventocancelamento());
     }
-    
-    public void salvar(){
+
+    public void salvar() {
         String msg = validarDados(eventocancelamento);
         if (msg.length() < 5) {
             evento.setSituacao("C");
             evento = eventoDao.update(evento);
             eventocancelamento.setUsuario(usuarioLogadoMB.getUsuario());
-            eventocancelamento.setEvento(evento); 
+            eventocancelamento.setEvento(evento);
             eventocancelamento = eventoCancelamentoDao.update(eventocancelamento);
             RequestContext.getCurrentInstance().closeDialog(eventocancelamento);
-        }else{
+        } else {
             Mensagem.lancarMensagemInfo("", msg);
         }
     }
-    
-    public String validarDados(Eventocancelamento cancelamento){
+
+    public String validarDados(Eventocancelamento cancelamento) {
         String mensagem = "";
         if (cancelamento.getMotivo().equalsIgnoreCase("")) {
             mensagem = mensagem + " motivo do cancelamento não informado \r\n";
         }
         return mensagem;
     }
-    
-    
-     public void retornarHoraAtual() {
+
+    public void retornarHoraAtual() {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         Date hora = Calendar.getInstance().getTime();
         eventocancelamento.setHora(sdf.format(hora));

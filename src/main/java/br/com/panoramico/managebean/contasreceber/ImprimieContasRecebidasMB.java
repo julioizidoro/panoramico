@@ -95,9 +95,9 @@ public class ImprimieContasRecebidasMB implements Serializable {
         Map<String, Object> parameters = new HashMap<String, Object>();
         if (tipoRelatorio.equalsIgnoreCase("contasrecebidas")) {
             caminhoRelatorio = "reports/relatorios/contasReceber/reportContasReceber.jasper";
-        } else if(tipoRelatorio.equalsIgnoreCase("inadimplentes")) {
+        } else if (tipoRelatorio.equalsIgnoreCase("inadimplentes")) {
             caminhoRelatorio = "reports/relatorios/contasReceber/reportInadimplentes.jasper";
-        } else{
+        } else {
             caminhoRelatorio = "reports/relatorios/contasReceber/reportHistoricoCobranca.jasper";
         }
         parameters.put("sql", gerarSql());
@@ -122,26 +122,26 @@ public class ImprimieContasRecebidasMB implements Serializable {
     public String gerarSql() {
         String sql = "";
         if (tipoRelatorio.equalsIgnoreCase("contasrecebidas")) {
-            sql = "Select distinct contasreceber.datalancamento, contasreceber.tipopagamento, ";
+            sql = "select distinct contasreceber.datalancamento, contasreceber.tipopagamento, ";
             sql = sql + "contasreceber.idcontasreceber, contasreceber.valorconta, contasreceber.numeroparcela, "
                     + "cliente.nome, recebimento.juros, recebimento.desagio, recebimento.valorrecebido, recebimento.datarecebimento, "
-                    + "contasreceber.numerodocumento From recebimento Join contasreceber on recebimento.contasreceber_idcontasreceber"
+                    + "contasreceber.numerodocumento from recebimento Join contasreceber on recebimento.contasreceber_idcontasreceber"
                     + "= contasreceber.idcontasreceber Join cliente on contasreceber.cliente_idcliente= cliente.idcliente";
 
             if ((dataInicio != null) && (dataFinal != null)) {
-                sql = sql + " Where recebimento.datarecebimento>='" + Formatacao.ConvercaoDataSql(dataInicio)
+                sql = sql + " where recebimento.datarecebimento>='" + Formatacao.ConvercaoDataSql(dataInicio)
                         + "' and recebimento.datarecebimento<='" + Formatacao.ConvercaoDataSql(dataFinal) + "' ";
             }
         } else if (tipoRelatorio.equalsIgnoreCase("inadimplentes")) {
-            sql = "Select distinct contasreceber.datalancamento, contasreceber.numeroparcela, contasreceber.valorconta, contasreceber.idcontasreceber, cliente.nome"
-                    + " from contasreceber Join cliente on contasreceber.cliente_idcliente=cliente.idcliente Where  contasreceber.situacao='PAGAR' ";
+            sql = "select distinct contasreceber.datalancamento, contasreceber.numeroparcela, contasreceber.valorconta, contasreceber.idcontasreceber, cliente.nome"
+                    + " from contasreceber Join cliente on contasreceber.cliente_idcliente=cliente.idcliente where  contasreceber.situacao='PAGAR' ";
 
             if ((dataInicio != null) && (dataFinal != null)) {
                 if (dataInicio.before(new Date())) {
                     sql = sql + " and contasreceber.datalancamento>='" + Formatacao.ConvercaoDataSql(dataInicio) + "' ";
                     if (dataFinal.before(new Date())) {
-                       sql = sql + " and contasreceber.datalancamento<='" + Formatacao.ConvercaoDataSql(dataFinal) + "' ";
-                    }else{
+                        sql = sql + " and contasreceber.datalancamento<='" + Formatacao.ConvercaoDataSql(dataFinal) + "' ";
+                    } else {
                         sql = sql + " and contasreceber.datalancamento<'" + Formatacao.ConvercaoDataSql(new Date()) + "' ";
                     }
                 }
@@ -149,20 +149,20 @@ public class ImprimieContasRecebidasMB implements Serializable {
 
             sql = sql + " Group by cliente.nome, contasreceber.idcontasreceber, contasreceber.valorconta, contasreceber.datalancamento"
                     + " ,contasreceber.numeroparcela";
-        }else if(tipoRelatorio.equalsIgnoreCase("historicocob")){
-            sql = "Select distinct contasreceber.idcontasreceber, contasreceber.numeroparcela, contasreceber.valorconta,"
-                    + " cliente.nome, historicocobranca.descricao, historicocobranca.data, contasreceber.situacao From contasreceber Join"
+        } else if (tipoRelatorio.equalsIgnoreCase("historicocob")) {
+            sql = "select distinct contasreceber.idcontasreceber, contasreceber.numeroparcela, contasreceber.valorconta,"
+                    + " cliente.nome, historicocobranca.descricao, historicocobranca.data, contasreceber.situacao from contasreceber Join"
                     + " cobrancasparcelas on contasreceber.idcontasreceber=cobrancasparcelas.contasreceber_idcontasreceber "
                     + "Join cobranca on cobrancasparcelas.cobranca_idcobranca=cobranca.idcobranca Join historicocobranca on"
                     + " historicocobranca.cobranca_idcobranca=cobranca.idcobranca Join cliente on contasreceber.cliente_idcliente="
                     + "cliente.idcliente";
-            
+
             if ((dataInicio != null) && (dataFinal != null)) {
-                sql = sql + " Where historicocobranca.data>='" + Formatacao.ConvercaoDataSql(dataInicio) + "' " +
-                        " and historicocobranca.data<='" + Formatacao.ConvercaoDataSql(dataFinal) + "'";
+                sql = sql + " where historicocobranca.data>='" + Formatacao.ConvercaoDataSql(dataInicio) + "' "
+                        + " and historicocobranca.data<='" + Formatacao.ConvercaoDataSql(dataFinal) + "'";
             }
         }
         return sql;
-    } 
+    }
 
 }

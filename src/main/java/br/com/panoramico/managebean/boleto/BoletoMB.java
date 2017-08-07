@@ -1,37 +1,35 @@
 package br.com.panoramico.managebean.boleto;
- 
+
 import br.com.panoramico.dao.BancoDao;
-import br.com.panoramico.dao.ContasReceberDao; 
+import br.com.panoramico.dao.ContasReceberDao;
 import br.com.panoramico.dao.EmpresaDao;
 import br.com.panoramico.dao.FtpDadosDao;
 import br.com.panoramico.dao.ProprietarioDao;
 import br.com.panoramico.dao.RemessaArquivoDao;
 import br.com.panoramico.dao.RemessaContasDao;
-import br.com.panoramico.managebean.UsuarioLogadoMB; 
+import br.com.panoramico.managebean.UsuarioLogadoMB;
 import br.com.panoramico.model.Banco;
-import br.com.panoramico.model.Contasreceber; 
+import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.model.Empresa;
 import br.com.panoramico.model.Ftpdados;
 import br.com.panoramico.model.Proprietario;
 import br.com.panoramico.model.Recebimento;
 import br.com.panoramico.model.Remessaarquivo;
 import br.com.panoramico.model.Remessacontas;
-import br.com.panoramico.uil.Formatacao; 
+import br.com.panoramico.uil.Formatacao;
 import br.com.panoramico.uil.Ftp;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List; 
+import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.DefaultStreamedContent;
@@ -67,8 +65,7 @@ public class BoletoMB implements Serializable {
     @EJB
     private EmpresaDao empresaDao;
     private Empresa empresa;
-    
-    
+
     public BoletoMB() {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
@@ -161,8 +158,6 @@ public class BoletoMB implements Serializable {
     public void setNomeBotao(String nomeBotao) {
         this.nomeBotao = nomeBotao;
     }
-    
-    
 
     public String enviarBoleto() {
         Remessaarquivo remessaarquivo;
@@ -170,7 +165,7 @@ public class BoletoMB implements Serializable {
         List<Recebimento> listaRecebimento;
         if (nomeBotao.equalsIgnoreCase("Enviar")) {
             proprietario = proprietarioDao.find(1);
-            Banco banco = bancoDao.find("Select b From  Banco b Where b.proprietario.idproprietario=" + proprietario.getIdproprietario() + " and b.emitiboleto=1");
+            Banco banco = bancoDao.find("select b from  Banco b where b.proprietario.idproprietario=" + proprietario.getIdproprietario() + " and b.emitiboleto=1");
             List<Contasreceber> lista = new ArrayList<Contasreceber>();
             for (int i = 0; i < listarSelecionados.size(); i++) {
                 if (listarSelecionados.get(i).isSelecionado()) {
@@ -179,7 +174,7 @@ public class BoletoMB implements Serializable {
             }
             if (lista.size() == 0) {
                 lista = listarSelecionados;
-            }  
+            }
             if (lista.size() > 0) {
                 ftpdados = ftpDadosDao.find(1);
                 for (int i = 0; i < lista.size(); i++) {
@@ -211,9 +206,9 @@ public class BoletoMB implements Serializable {
                 remessacontas.setRemessaarquivo(remessaarquivo);
                 remessaContasDao.update(remessacontas);
             }
-        }else if(nomeBotao.equalsIgnoreCase("Download")){
-             InputStream stream = procurarArquivo();
-             file = new DefaultStreamedContent(stream, "", nomeFtp);
+        } else if (nomeBotao.equalsIgnoreCase("Download")) {
+            InputStream stream = procurarArquivo();
+            file = new DefaultStreamedContent(stream, "", nomeFtp);
         }
         return "";
     }
@@ -226,9 +221,8 @@ public class BoletoMB implements Serializable {
             contasReceberDao.update(conta);
             listarSelecionados.remove(conta);
         }
-    } 
-    
-    
+    }
+
     public InputStream procurarArquivo() {
         InputStream is = null;
         ftpdados = ftpDadosDao.find(1);

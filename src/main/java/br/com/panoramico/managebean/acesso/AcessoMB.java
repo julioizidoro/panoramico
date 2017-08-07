@@ -31,10 +31,8 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 
@@ -136,8 +134,6 @@ public class AcessoMB implements Serializable {
     public void setContasreceber(Contasreceber contasreceber) {
         this.contasreceber = contasreceber;
     }
-
-    
 
     public String getNome() {
         return nome;
@@ -251,7 +247,6 @@ public class AcessoMB implements Serializable {
         this.corDataExame = corDataExame;
     }
 
-
     public boolean isHabilitarResultado() {
         return habilitarResultado;
     }
@@ -308,7 +303,6 @@ public class AcessoMB implements Serializable {
         this.passaporteDao = passaporteDao;
     }
 
-   
     public int getAdultos() {
         return adultos;
     }
@@ -436,8 +430,6 @@ public class AcessoMB implements Serializable {
     public void setCodigoPesquisa(String codigoPesquisa) {
         this.codigoPesquisa = codigoPesquisa;
     }
-    
-    
 
     public void pesquisar() {
         boolean habilitarcampo = false;
@@ -445,7 +437,7 @@ public class AcessoMB implements Serializable {
         dependente = null;
         passaporte = null;
         if (codigoAssociado.length() >= 1) {
-            List<Associado> listaAssociado = associadoDao.list("Select a From Associado a Where a.matricula='" + codigoAssociado + "'");
+            List<Associado> listaAssociado = associadoDao.list("select a from Associado a where a.matricula='" + codigoAssociado + "'");
             for (int i = 0; i < listaAssociado.size(); i++) {
                 associado = listaAssociado.get(i);
             }
@@ -460,7 +452,7 @@ public class AcessoMB implements Serializable {
                 nome = "";
                 exameassociado = null;
                 dataExame = null;
-                List<Exameassociado> listaExameAssociado = exameAssociadoDao.list("Select ea From Exameassociado ea Where associado.idassociado=" + associado.getIdassociado());
+                List<Exameassociado> listaExameAssociado = exameAssociadoDao.list("select ea from Exameassociado ea where associado.idassociado=" + associado.getIdassociado());
                 for (int i = 0; i < listaExameAssociado.size(); i++) {
                     exameassociado = listaExameAssociado.get(i);
                     habilitarAcessoPassaporte = false;
@@ -476,13 +468,13 @@ public class AcessoMB implements Serializable {
                 } else {
                     if (exameassociado.getExame().getDatavalidade() == null) {
                         Mensagem.lancarMensagemInfo("Atenção", " Associado não passou por exame medico!!");
-                    }else{
+                    } else {
                         nome = associado.getCliente().getNome();
                         dataExame = exameassociado.getExame().getDatavalidade();
                         if (verificarInadimplente()) {
                             popularAcesso(false, false);
                             Mensagem.lancarMensagemInfo("Acesso negado, cliente inadimplente!!", "");
-                        }else{
+                        } else {
                             if ((dataExame.compareTo(new Date()) == 1)
                                     || (dataExame.compareTo(new Date()) == 0)) {
                                 if (exameassociado.getAssociado().getSituacao().equalsIgnoreCase("Ativo")) {
@@ -506,7 +498,7 @@ public class AcessoMB implements Serializable {
                 }
             }
         } else if (codigoDependente.length() >= 1) {
-            List<Dependente> listaDependente = dependenteDao.list("Select d From Dependente d Where d.matricula='" + codigoDependente + "'");
+            List<Dependente> listaDependente = dependenteDao.list("select d from Dependente d where d.matricula='" + codigoDependente + "'");
             for (int i = 0; i < listaDependente.size(); i++) {
                 dependente = listaDependente.get(i);
             }
@@ -521,7 +513,7 @@ public class AcessoMB implements Serializable {
                 nome = "";
                 examedependente = null;
                 dataExame = null;
-                List<Examedependente> listaExameDependente = exameDependenteDao.list("Select ed From Examedependente ed Where dependente.iddependente=" + dependente.getIddependente());
+                List<Examedependente> listaExameDependente = exameDependenteDao.list("select ed from Examedependente ed where dependente.iddependente=" + dependente.getIddependente());
                 for (int i = 0; i < listaExameDependente.size(); i++) {
                     examedependente = listaExameDependente.get(i);
                 }
@@ -535,13 +527,13 @@ public class AcessoMB implements Serializable {
                 } else {
                     if (examedependente.getExame().getDatavalidade() == null) {
                         Mensagem.lancarMensagemInfo("Atenção", " Dependente não passou por exame medico!!");
-                    }else{
+                    } else {
                         nome = dependente.getNome();
                         dataExame = examedependente.getExame().getDatavalidade();
                         if (verificarInadimplente()) {
                             popularAcesso(false, false);
                             Mensagem.lancarMensagemInfo("Acesso negado, cliente inadimplente!!", "");
-                        }else{
+                        } else {
                             if ((dataExame.compareTo(new Date()) == 1)
                                     || (dataExame.compareTo(new Date()) == 0)) {
                                 if (examedependente.getDependente().getAssociado().getSituacao().equalsIgnoreCase("Ativo")) {
@@ -560,11 +552,11 @@ public class AcessoMB implements Serializable {
                         habilitarBotaoDependente = false;
                         habilitarcampo = true;
                         consultaFinanceira();
-                    }   
+                    }
                 }
             }
         } else if (codigoPassaporte.length() >= 1) {
-            List<Passaporte> listaPassaportes = passaporteDao.list("Select p From Passaporte p Where p.localizador='" + codigoPassaporte + "'");
+            List<Passaporte> listaPassaportes = passaporteDao.list("select p from Passaporte p where p.localizador='" + codigoPassaporte + "'");
             for (int i = 0; i < listaPassaportes.size(); i++) {
                 passaporte = listaPassaportes.get(i);
             }
@@ -576,11 +568,11 @@ public class AcessoMB implements Serializable {
                 codigoDependente = "";
                 codigoPassaporte = "";
             } else {
-                contasreceber = contasReceberDao.find("Select c From Contasreceber c Where c.numerodocumento='Passaporte-" + passaporte.getIdpassaporte() + "'");
-                listaRecebimento = recebimentoDao.list("Select r From Recebimento r where r.contasreceber.idcontasreceber=" + contasreceber.getIdcontasreceber());
+                contasreceber = contasReceberDao.find("select c from Contasreceber c where c.numerodocumento='Passaporte-" + passaporte.getIdpassaporte() + "'");
+                listaRecebimento = recebimentoDao.list("select r from Recebimento r where r.contasreceber.idcontasreceber=" + contasreceber.getIdcontasreceber());
                 if (listaRecebimento == null || listaRecebimento.isEmpty()) {
                     Mensagem.lancarMensagemInfo("Valor para receber do passaporte ainda pendente!!", "");
-                }else{
+                } else {
                     nome = passaporte.getCliente().getNome();
                     adultos = passaporte.getAdultos();
                     criancas = passaporte.getCriancas();
@@ -626,13 +618,13 @@ public class AcessoMB implements Serializable {
             controleacesso.setTipo("D");
             controleacesso = controleAcessoDao.update(controleacesso);
             Mensagem.lancarMensagemInfo("Salvo com sucesso", "");
-        }else if(guardaPassaporte.length() >= 1){
+        } else if (guardaPassaporte.length() >= 1) {
             if (nomeStatus.equalsIgnoreCase("NEGADO")) {
                 passaporte.setDataacesso(new Date());
                 passaporte.setHoraacesso(retornarHoraAtual());
                 passaporte = passaporteDao.update(passaporte);
                 Mensagem.lancarMensagemInfo("Salvo com sucesso", "");
-            }else{
+            } else {
                 Associado associado = associadoDao.find(12);
                 passaporte.setDataacesso(new Date());
                 passaporte.setHoraacesso(retornarHoraAtual());
@@ -645,8 +637,7 @@ public class AcessoMB implements Serializable {
             }
         }
     }
-    
-    
+
     public void controleAcessoDependenteAssociado(Dependente dependente) {
         controleacesso = new Controleacesso();
         controleacesso.setSituacao(nomeStatus);
@@ -660,8 +651,8 @@ public class AcessoMB implements Serializable {
             Mensagem.lancarMensagemInfo("Salvo com sucesso", "");
         }
     }
-    
-    public void retornoDialogPassaporte(SelectEvent event){
+
+    public void retornoDialogPassaporte(SelectEvent event) {
         Passaporte passaporte = (Passaporte) event.getObject();
         if (passaporte.getIdpassaporte() != null) {
             Mensagem.lancarMensagemInfo("Acesso liberado com sucesso", "");
@@ -670,7 +661,7 @@ public class AcessoMB implements Serializable {
         habilitarFinanceiro = false;
         habilitarBotaoDependente = true;
         habilitarConsulta = true;
-        habilitarResultado =false;
+        habilitarResultado = false;
     }
 
     public String retornarHoraAtual() {
@@ -685,7 +676,7 @@ public class AcessoMB implements Serializable {
         RequestContext.getCurrentInstance().openDialog("cadPassaporte", options, null);
         return "";
     }
-    
+
     public String novaPesquisaCpf() {
         Map<String, Object> options = new HashMap<String, Object>();
         options.put("contentWidth", 550);
@@ -693,23 +684,21 @@ public class AcessoMB implements Serializable {
         return "";
     }
 
-
     public String novoRelatorio() {
         Map<String, Object> options = new HashMap<String, Object>();
         options.put("contentWidth", 580);
         RequestContext.getCurrentInstance().openDialog("imprimirAcesso", options, null);
         return "";
     }
-    
-    
+
     public void consultaFinanceira() {
         Date dataInicio = treisMesesAtrais();
         Date dataFinal = treisMesesDepois();
         String sql = "";
         if (associado != null) {
-            sql = "Select c From Contasreceber c Where c.cliente.idcliente=" + associado.getCliente().getIdcliente();
+            sql = "select c from Contasreceber c where c.cliente.idcliente=" + associado.getCliente().getIdcliente();
         } else if (dependente != null) {
-            sql = "Select c From Contasreceber c Where c.cliente.idcliente=" + dependente.getAssociado().getCliente().getIdcliente();
+            sql = "select c from Contasreceber c where c.cliente.idcliente=" + dependente.getAssociado().getCliente().getIdcliente();
         }
         if (sql.length() > 5) {
             sql = sql + " and c.datavencimento>='" + Formatacao.ConvercaoDataSql(dataInicio) + "' and "
@@ -721,8 +710,7 @@ public class AcessoMB implements Serializable {
         habilitarConsulta = false;
         habilitarFinanceiro = true;
     }
-    
-    
+
     public Date treisMesesAtrais() {
         Calendar c = new GregorianCalendar();
         c.setTime(new Date());
@@ -738,7 +726,7 @@ public class AcessoMB implements Serializable {
         Date data = c.getTime();
         return data;
     }
-    
+
     public String contaVencida(Contasreceber contasreceber) {
         if (contasreceber.getDatalancamento().before(new Date()) && contasreceber.getSituacao().equalsIgnoreCase("PAGAR")) {
             return " color:red;";
@@ -746,10 +734,9 @@ public class AcessoMB implements Serializable {
             return " color:black;";
         }
     }
-    
-    
+
     public void listaDependentes() {
-        listaDependente = dependenteDao.list("Select d From Dependente d Where d.associado.idassociado=" + associado.getIdassociado());
+        listaDependente = dependenteDao.list("select d from Dependente d where d.associado.idassociado=" + associado.getIdassociado());
         if (listaDependente == null || listaDependente.isEmpty()) {
             listaDependente = new ArrayList<Dependente>();
         }
@@ -758,45 +745,43 @@ public class AcessoMB implements Serializable {
         habilitarConsulta = false;
         habilitarFinanceiro = false;
     }
-    
-    
-    public boolean verificarInadimplente(){
+
+    public boolean verificarInadimplente() {
         boolean inadimplente = false;
-         String sql = "";
-         List<Contasreceber> listaFinanceira;
+        String sql = "";
+        List<Contasreceber> listaFinanceira;
         if (associado != null) {
-            sql = "Select c From Contasreceber c Where c.cliente.idcliente=" + associado.getCliente().getIdcliente();
+            sql = "select c from Contasreceber c where c.cliente.idcliente=" + associado.getCliente().getIdcliente();
         } else if (dependente != null) {
-            sql = "Select c From Contasreceber c Where c.cliente.idcliente=" + dependente.getAssociado().getCliente().getIdcliente();
+            sql = "select c from Contasreceber c where c.cliente.idcliente=" + dependente.getAssociado().getCliente().getIdcliente();
         }
         sql = sql + " and c.situacao='PAGAR' and c.datavencimento<'" + Formatacao.ConvercaoDataSql(new Date()) + "'";
         listaFinanceira = contasReceberDao.list(sql);
         if (listaFinanceira == null || listaFinanceira.isEmpty()) {
             return inadimplente;
-        }else{
+        } else {
             inadimplente = true;
             return inadimplente;
         }
     }
-    
-    public void popularAcesso(boolean liberado, boolean dataVencida){
+
+    public void popularAcesso(boolean liberado, boolean dataVencida) {
         if (liberado) {
             tipoClasse = "cadastrar";
             nomeStatus = "LIBERADO";
             descricaoNegado = "";
-        }else{
+        } else {
             tipoClasse = "cancelar";
             nomeStatus = "NEGADO";
         }
-        
+
         if (dataVencida) {
-           corDataExame = "color:#FB4C4C;";
-        }else{
-           corDataExame = "color:black;";
+            corDataExame = "color:#FB4C4C;";
+        } else {
+            corDataExame = "color:black;";
         }
     }
-    
-    
+
     public void pesquisarDependente() {
         associado = null;
         dependente = null;
@@ -818,36 +803,35 @@ public class AcessoMB implements Serializable {
         codigoPesquisa = "";
         pesquisar();
     }
-    
-    public String eventosDia(){
+
+    public String eventosDia() {
         return "consEventosDia";
     }
-    
-    
+
     public void pesquisarTudo() {
         String msg = "";
         dependente = null;
         associado = null;
-        List<Associado> listaAssociado = associadoDao.list("Select a From Associado a Where a.matricula='" + codigoPesquisa + "'");
-        List<Dependente> listaDependente = dependenteDao.list("Select d From Dependente d Where d.matricula='" + codigoPesquisa + "'");
-        List<Passaporte> listaPassaporte = passaporteDao.list("Select p From Passaporte p Where p.localizador='" + codigoPesquisa + "'");
+        List<Associado> listaAssociado = associadoDao.list("select a from Associado a where a.matricula='" + codigoPesquisa + "'");
+        List<Dependente> listaDependente = dependenteDao.list("select d from Dependente d where d.matricula='" + codigoPesquisa + "'");
+        List<Passaporte> listaPassaporte = passaporteDao.list("select p from Passaporte p where p.localizador='" + codigoPesquisa + "'");
         if (listaAssociado == null || listaAssociado.isEmpty()) {
             msg = "Identificador não encontrada";
             if (listaDependente == null || listaDependente.isEmpty()) {
                 msg = "Identificador não encontrada";
                 if (listaPassaporte == null || listaPassaporte.isEmpty()) {
                     msg = "Identificador não encontrada";
-                }else{
+                } else {
                     codigoPesquisa = listaPassaporte.get(0).getLocalizador();
                     codigoPassaporte = codigoPesquisa;
                     msg = "";
                 }
-            }else{
+            } else {
                 codigoPesquisa = listaDependente.get(0).getMatricula();
                 codigoDependente = codigoPesquisa;
                 msg = "";
             }
-        }else{
+        } else {
             codigoPesquisa = listaAssociado.get(0).getMatricula();
             codigoAssociado = codigoPesquisa;
             msg = "";
@@ -860,8 +844,8 @@ public class AcessoMB implements Serializable {
             habilitarBotaoDependente = true;
             habilitarConsulta = true;
             habilitarResultado = false;
-        }else{
-            pesquisar(); 
+        } else {
+            pesquisar();
         }
     }
 }

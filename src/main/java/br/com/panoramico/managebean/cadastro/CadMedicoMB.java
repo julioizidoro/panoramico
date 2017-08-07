@@ -23,8 +23,8 @@ import org.primefaces.context.RequestContext;
 
 @Named
 @ViewScoped
-public class CadMedicoMB implements Serializable{
-    
+public class CadMedicoMB implements Serializable {
+
     private Medico medico;
     private Usuario usuario;
     @EJB
@@ -32,16 +32,15 @@ public class CadMedicoMB implements Serializable{
     @EJB
     private UsuarioDao usuarioDao;
     private List<Usuario> listaUsuarios;
-    
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         medico = (Medico) session.getAttribute("medico");
         if (medico == null) {
             medico = new Medico();
-        }else{
+        } else {
             usuario = usuarioDao.find(medico.getIdusuario());
         }
         gerarListaUsuarios();
@@ -86,32 +85,31 @@ public class CadMedicoMB implements Serializable{
     public void setListaUsuarios(List<Usuario> listaUsuarios) {
         this.listaUsuarios = listaUsuarios;
     }
-    
-    
-    public void gerarListaUsuarios(){
-        listaUsuarios = usuarioDao.list("Select u from Usuario u Where u.situacao=true");
+
+    public void gerarListaUsuarios() {
+        listaUsuarios = usuarioDao.list("select u from Usuario u where u.situacao=true");
         if (listaUsuarios == null) {
             listaUsuarios = new ArrayList<Usuario>();
         }
     }
-    
-    public void cancelar(){
+
+    public void cancelar() {
         RequestContext.getCurrentInstance().closeDialog(new Medico());
     }
-    
-    public void salvar(){
+
+    public void salvar() {
         medico.setIdusuario(usuario.getIdusuario());
         String mensagem = validarDados();
         if (mensagem.length() < 5) {
             medico.setSituacao("Ativo");
             medico = medicoDao.update(medico);
             RequestContext.getCurrentInstance().closeDialog(medico);
-        }else{
+        } else {
             Mensagem.lancarMensagemInfo("", mensagem);
         }
     }
-    
-    public String validarDados(){
+
+    public String validarDados() {
         String msg = "";
         if (medico.getNome().equalsIgnoreCase("")) {
             msg = msg + " Nome não informado \r\n";
@@ -125,4 +123,3 @@ public class CadMedicoMB implements Serializable{
         return msg;
     }
 }
- 

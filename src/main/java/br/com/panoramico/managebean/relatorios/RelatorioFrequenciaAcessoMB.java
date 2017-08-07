@@ -135,11 +135,11 @@ public class RelatorioFrequenciaAcessoMB implements Serializable {
     }
 
     public String gerarSql() {
-        String sql = "Select distinct controleacesso.data, controleacesso.hora, controleacesso.tipo, cliente.nome From controleacesso"
+        String sql = "select distinct controleacesso.data, controleacesso.hora, controleacesso.tipo, cliente.nome from controleacesso"
                 + " join associado on controleacesso.associado_idassociado = associado.idassociado"
                 + " join cliente on associado.cliente_idcliente = cliente.idcliente"
-                + " Where associado.situacao='Ativo' and controleacesso.situacao='LIBERADO'";
-        if (associado != null && associado.getIdassociado()!=null) {
+                + " where associado.situacao='Ativo' and controleacesso.situacao='LIBERADO'";
+        if (associado != null && associado.getIdassociado() != null) {
             sql = sql + " and associado.idassociado=" + associado.getIdassociado();
         }
         if (dataInicio != null && dataFinal != null) {
@@ -154,7 +154,7 @@ public class RelatorioFrequenciaAcessoMB implements Serializable {
     }
 
     public void gerarListaAssociado() {
-        listaAssociado = associadoDao.list("Select a from Associado a where a.situacao='Ativo'");
+        listaAssociado = associadoDao.list("select a from Associado a where a.situacao='Ativo'");
         if (listaAssociado == null) {
             listaAssociado = new ArrayList<Associado>();
         }

@@ -19,13 +19,12 @@ import org.primefaces.context.RequestContext;
 
 @Named
 @ViewScoped
-public class CadPlanosContasMB implements Serializable{
-    
+public class CadPlanosContasMB implements Serializable {
+
     private Planoconta planoconta;
     @EJB
     private PlanoContaDao planoContaDao;
-    
-    
+
     @PostConstruct
     public void init() {
         FacesContext fc = FacesContext.getCurrentInstance();
@@ -52,23 +51,22 @@ public class CadPlanosContasMB implements Serializable{
     public void setPlanoContaDao(PlanoContaDao planoContaDao) {
         this.planoContaDao = planoContaDao;
     }
-    
-    
-    public void cancelar(){
+
+    public void cancelar() {
         RequestContext.getCurrentInstance().closeDialog(new Planoconta());
     }
-    
-    public void salvar(){
+
+    public void salvar() {
         String mensagem = validarDados(planoconta);
         if (mensagem.length() < 5) {
             planoconta = planoContaDao.update(planoconta);
             RequestContext.getCurrentInstance().closeDialog(planoconta);
-        }else{
+        } else {
             Mensagem.lancarMensagemInfo("", mensagem);
         }
     }
-    
-    public String validarDados(Planoconta planoconta){
+
+    public String validarDados(Planoconta planoconta) {
         String msg = "";
         if (planoconta.getDescricao().equalsIgnoreCase("")) {
             msg = msg + " Descrição não informada \r\n";

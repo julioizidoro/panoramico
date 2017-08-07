@@ -6,10 +6,7 @@
 package br.com.panoramico.managebean.relatorios;
 
 import br.com.panoramico.dao.ClienteDao;
-import br.com.panoramico.managebean.evento.ImprimirEventoMB;
-import br.com.panoramico.model.Associado;
 import br.com.panoramico.model.Cliente;
-import br.com.panoramico.model.Notificacao;
 import br.com.panoramico.uil.Formatacao;
 import br.com.panoramico.uil.GerarRelatorios;
 import br.com.panoramico.uil.Mensagem;
@@ -19,14 +16,11 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
@@ -80,17 +74,17 @@ public class RelatorioDataNascimentoMB implements Serializable {
     public String iniciarConsulta() throws IOException, SQLException {
         relatorioData = new RelatorioDataNascimentoFactory();
         relatorioData.setLista(new ArrayList<RelatorioDataNascimnetoBean>());
-        String sqlCliente = ""; 
+        String sqlCliente = "";
         List<Cliente> listaCliente = new ArrayList<Cliente>();
         for (int m = 0; m < listaMesSelecionado.length; m++) {
-            sqlCliente = "SELECT c FROM Cliente c where MONTH(c.datanascimento)=" + listaMesSelecionado[m] + " order by c.datanascimento, c.nome";
+            sqlCliente = "select c from Cliente c where MONTH(c.datanascimento)=" + listaMesSelecionado[m] + " order by c.datanascimento, c.nome";
             List<Cliente> lista = clienteDao.list(sqlCliente);
             if (lista != null) {
                 for (int c = 0; c < lista.size(); c++) {
                     listaCliente.add(lista.get(c));
                 }
             }
-        } 
+        }
         if (listaCliente != null) {
             for (int i = 0; i < listaCliente.size(); i++) {
                 RelatorioDataNascimnetoBean relatorio = new RelatorioDataNascimnetoBean();
@@ -104,7 +98,7 @@ public class RelatorioDataNascimentoMB implements Serializable {
                     relatorio.setTipo("Associado");
                 }
                 int numeroMes = Formatacao.getMesData(listaCliente.get(i).getDatanascimento());
-                relatorio.setNumeromes(numeroMes+1);
+                relatorio.setNumeromes(numeroMes + 1);
                 relatorio.setMes(Formatacao.nomeMes(relatorio.getNumeromes()));
                 if (tipo.equalsIgnoreCase("Todos")) {
                     relatorioData.getLista().add(relatorio);

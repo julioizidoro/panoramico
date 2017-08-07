@@ -19,20 +19,18 @@ import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
 
-
 @Named
 @ViewScoped
-public class CadBancoMB implements Serializable{
-    
+public class CadBancoMB implements Serializable {
+
     private Banco banco;
     @EJB
     private BancoDao bancoDao;
     @EJB
     private ProprietarioDao proprietarioDao;
-    
-   
+
     @PostConstruct
-    public void init(){
+    public void init() {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         banco = (Banco) session.getAttribute("banco");
@@ -40,7 +38,7 @@ public class CadBancoMB implements Serializable{
         if (banco == null) {
             banco = new Banco();
             Proprietario proprietario = null;
-            List<Proprietario> lista = proprietarioDao.list("Select p From Proprietario p");
+            List<Proprietario> lista = proprietarioDao.list("select p from Proprietario p");
             for (int i = 0; i < lista.size(); i++) {
                 proprietario = lista.get(i);
             }
@@ -63,23 +61,22 @@ public class CadBancoMB implements Serializable{
     public void setBancoDao(BancoDao bancoDao) {
         this.bancoDao = bancoDao;
     }
-    
-    
-    public void salvar(){
+
+    public void salvar() {
         String msg = validarDados();
         if (msg.length() < 5) {
             banco = bancoDao.update(banco);
             RequestContext.getCurrentInstance().closeDialog(banco);
-        } 
+        }
     }
-    
-    public void cancelar(){
+
+    public void cancelar() {
         RequestContext.getCurrentInstance().closeDialog(new Banco());
     }
-    
-    public String validarDados(){
+
+    public String validarDados() {
         String mensagem = "";
-        
+
         if (banco.getAgencia().equalsIgnoreCase("")) {
             mensagem = mensagem + " Você não informou a agência \r\n";
         }

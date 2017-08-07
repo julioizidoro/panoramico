@@ -21,12 +21,10 @@ import org.primefaces.context.RequestContext;
  *
  * @author Julio
  */
-
 @Named
 @ViewScoped
-public class CadClienteMB implements  Serializable{
-    
-    
+public class CadClienteMB implements Serializable {
+
     @EJB
     private ClienteDao clienteDao;
     private Cliente cliente;
@@ -36,10 +34,9 @@ public class CadClienteMB implements  Serializable{
     private boolean noveDigito2 = false;
     private boolean noveDigito3 = false;
     private String telefone = "";
-    
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         cliente = (Cliente) session.getAttribute("cliente");
@@ -50,7 +47,7 @@ public class CadClienteMB implements  Serializable{
         session.removeAttribute("cliente");
         if (cliente == null) {
             cliente = new Cliente();
-        }else{
+        } else {
             if (cliente.getTelefone().length() > 12) {
                 noveDigito = true;
             }
@@ -123,9 +120,8 @@ public class CadClienteMB implements  Serializable{
     public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
-    
-    
-    public void salvar(){
+
+    public void salvar() {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         String msg = "";
@@ -135,57 +131,55 @@ public class CadClienteMB implements  Serializable{
         msg = validarDados();
         if (msg.length() > 0) {
             Mensagem.lancarMensagemInfo("", msg);
-        }else{
+        } else {
             boolean novo = false;
-            if (cliente.getIdcliente()==null){
-                novo=true;
+            if (cliente.getIdcliente() == null) {
+                novo = true;
             }
             cliente.setSituacao("Ativo");
             cliente = clienteDao.update(cliente);
             if (novo) {
                 session.setAttribute("idCliente", cliente.getIdcliente());
-            }else{
+            } else {
                 session.setAttribute("idCliente", 0);
             }
             RequestContext.getCurrentInstance().closeDialog(cliente);
         }
     }
-    
-    public String cancelar(){
+
+    public String cancelar() {
         if (ePassaporte) {
             return "cadPassaporte";
         }
         RequestContext.getCurrentInstance().closeDialog(cliente);
         return "";
     }
-    
-    
-    public String habilitarNoveDigito(){
+
+    public String habilitarNoveDigito() {
         if (noveDigito) {
             return "(99)999999999";
-        }else{
+        } else {
             return "(99)99999999";
         }
     }
-    
-    public String habilitarNoveDigito2(){
+
+    public String habilitarNoveDigito2() {
         if (noveDigito2) {
             return "(99)999999999";
-        }else{
+        } else {
             return "(99)99999999";
         }
     }
-    
-    public String habilitarNoveDigito3(){
+
+    public String habilitarNoveDigito3() {
         if (noveDigito3) {
             return "(99)999999999";
-        }else{
+        } else {
             return "(99)99999999";
         }
     }
-    
-    
-    public void metodoKeyUp(){
+
+    public void metodoKeyUp() {
         if (telefone != null && (telefone.length() > 0 && telefone.length() <= 1)) {
             telefone = "(" + telefone;
         }
@@ -193,15 +187,15 @@ public class CadClienteMB implements  Serializable{
             telefone = telefone + ")";
         }
     }
-    
-    public String validarDados(){
+
+    public String validarDados() {
         String mensagem = "";
         if (cliente.getCpf() == null || cliente.getCpf().length() == 0) {
             mensagem = mensagem + " Informe o CPF \r\n";
-        }else{
-            Cliente c = clienteDao.find("Select c From Cliente c Where c.cpf='" + cliente.getCpf() + "'");
+        } else {
+            Cliente c = clienteDao.find("select c from Cliente c where c.cpf='" + cliente.getCpf() + "'");
             if (c == null || c.getIdcliente() == null) {
-            }else{
+            } else {
                 mensagem = mensagem + " Este CPF ja existe \r\n";
             }
         }

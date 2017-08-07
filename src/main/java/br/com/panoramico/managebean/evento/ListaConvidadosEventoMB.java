@@ -99,7 +99,6 @@ public class ListaConvidadosEventoMB implements Serializable {
     public void setPresentes(boolean presentes) {
         this.presentes = presentes;
     }
- 
 
     public void confirmarPresencaConvidado(Eventoconvidados eventoconvidados) {
         eventoconvidados.setSituacao("S");
@@ -115,7 +114,7 @@ public class ListaConvidadosEventoMB implements Serializable {
 
     public void gerarListaConvidados() {
         if (tipoConvidado.equalsIgnoreCase("Pendentes")) {
-            listaConvidados = eventoConvidadosDao.list("Select e from Eventoconvidados e where e.situacao='N'"
+            listaConvidados = eventoConvidadosDao.list("select e from Eventoconvidados e where e.situacao='N'"
                     + " and e.evento.idevento=" + evento.getIdevento()
                     + " and e.nome like '" + nome + "%'");
             if (listaConvidados == null) {
@@ -123,9 +122,9 @@ public class ListaConvidadosEventoMB implements Serializable {
             }
             pendentes = true;
             presentes = false;
-            
+
         } else {
-            listaConvidados = eventoConvidadosDao.list("Select e from Eventoconvidados e where e.situacao='S'"
+            listaConvidados = eventoConvidadosDao.list("select e from Eventoconvidados e where e.situacao='S'"
                     + " and e.evento.idevento=" + evento.getIdevento()
                     + " and e.nome like '" + nome + "%'");
             if (listaConvidados == null) {
@@ -135,7 +134,7 @@ public class ListaConvidadosEventoMB implements Serializable {
             presentes = true;
         }
     }
- 
+
     public void botaoMudarLista() {
         if (tipoConvidado.equalsIgnoreCase("Pendentes")) {
             tipoConvidado = "Presentes";
@@ -144,8 +143,7 @@ public class ListaConvidadosEventoMB implements Serializable {
         }
         gerarListaConvidados();
     }
-    
-    
+
     public void fechar() {
         RequestContext.getCurrentInstance().closeDialog(null);
     }

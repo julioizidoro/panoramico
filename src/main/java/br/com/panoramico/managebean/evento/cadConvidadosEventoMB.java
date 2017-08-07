@@ -248,8 +248,6 @@ public class cadConvidadosEventoMB implements Serializable {
     public void setGerarContasReceber(boolean gerarContasReceber) {
         this.gerarContasReceber = gerarContasReceber;
     }
-    
-    
 
     public void salvar() {
         mensagem = "";
@@ -297,7 +295,7 @@ public class cadConvidadosEventoMB implements Serializable {
     }
 
     public void gerarListaConvidados() {
-        listaConvidados = eventoConvidadosDao.list("Select c from Eventoconvidados c where c.evento.idevento=" + evento.getIdevento());
+        listaConvidados = eventoConvidadosDao.list("select c from Eventoconvidados c where c.evento.idevento=" + evento.getIdevento());
         if (listaConvidados == null) {
             listaConvidados = new ArrayList<Eventoconvidados>();
         }
@@ -318,7 +316,7 @@ public class cadConvidadosEventoMB implements Serializable {
             exameconvidado.setEventoconvidados(listaConvidados.get(i));
             exameconvidado = exameConvidadoDao.update(exameconvidado);
         }
-        if(gerarContasReceber){
+        if (gerarContasReceber) {
             totalPagar = (valorExame - descontoExame) * listaConvidados.size();
             lancarContaReceber();
         }

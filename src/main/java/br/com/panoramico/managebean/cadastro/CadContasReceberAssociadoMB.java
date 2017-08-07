@@ -31,7 +31,6 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
-import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -39,9 +38,8 @@ import org.primefaces.context.RequestContext;
  */
 @Named
 @ViewScoped
-public class CadContasReceberAssociadoMB implements Serializable{
-    
-    
+public class CadContasReceberAssociadoMB implements Serializable {
+
     private Contasreceber contasreceber;
     private Planoconta planoconta;
     private Cliente cliente;
@@ -62,17 +60,16 @@ public class CadContasReceberAssociadoMB implements Serializable{
     private AssociadoEmpresaDao asssociadoEmpresaDao;
     private Associado associado;
     private Plano plano;
-    
-    
+
     @PostConstruct
-    public void init() { 
+    public void init() {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         contasreceber = (Contasreceber) session.getAttribute("contasreceber");
         cliente = (Cliente) session.getAttribute("cliente");
         associado = (Associado) session.getAttribute("associado");
         plano = (Plano) session.getAttribute("plano");
-        session.removeAttribute("cliente"); 
+        session.removeAttribute("cliente");
         session.removeAttribute("contasreceber");
         session.removeAttribute("associado");
         session.removeAttribute("plano");
@@ -86,7 +83,7 @@ public class CadContasReceberAssociadoMB implements Serializable{
         }
         gerarListaCliente();
         gerarListaPlanoConta();
-    } 
+    }
 
     public Contasreceber getContasreceber() {
         return contasreceber;
@@ -139,7 +136,7 @@ public class CadContasReceberAssociadoMB implements Serializable{
     public List<Cliente> getListaCliente() {
         return listaCliente;
     }
- 
+
     public void setListaCliente(List<Cliente> listaCliente) {
         this.listaCliente = listaCliente;
     }
@@ -183,24 +180,22 @@ public class CadContasReceberAssociadoMB implements Serializable{
     public void setNumeroParcela(String numeroParcela) {
         this.numeroParcela = numeroParcela;
     }
-    
-    
-    
-    public void gerarListaPlanoConta(){
-        listaPlanoContas = planoContaDao.list("Select p from Planoconta p");
+
+    public void gerarListaPlanoConta() {
+        listaPlanoContas = planoContaDao.list("select p from Planoconta p");
         if (listaPlanoContas == null) {
             listaPlanoContas = new ArrayList<Planoconta>();
         }
     }
-    
-    public void gerarListaCliente(){
-        listaCliente = clienteDao.list("Select c from Cliente c");
+
+    public void gerarListaCliente() {
+        listaCliente = clienteDao.list("select c from Cliente c");
         if (listaCliente == null) {
             listaCliente = new ArrayList<Cliente>();
         }
     }
-    
-    public String cancelar(){
+
+    public String cancelar() {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         session.setAttribute("associado", associado);
@@ -208,7 +203,7 @@ public class CadContasReceberAssociadoMB implements Serializable{
         session.setAttribute("plano", plano);
         return "cadAssociado";
     }
-    
+
     public String salvar() {
         Float formataNParcela = Formatacao.formatarStringfloat(numeroParcela);
         contasreceber.setDatalancamento(new Date());
@@ -223,19 +218,19 @@ public class CadContasReceberAssociadoMB implements Serializable{
             contasreceber.setSituacao("PAGAR");
             String mensagem = validarDados(contasreceber);
             if (mensagem.length() < 5) {
-                List<Associadoempresa> lista = asssociadoEmpresaDao.list("Select a From Associadoempresa a Where a.associado.idassociado=" + cliente.getAssociado().getIdassociado());
+                List<Associadoempresa> lista = asssociadoEmpresaDao.list("select a from Associadoempresa a where a.associado.idassociado=" + cliente.getAssociado().getIdassociado());
                 if (lista == null) {
                     lista = new ArrayList<>();
                 }
                 if (lista.size() > 0) {
                     contasreceber.setIdempresa(lista.get(0).getEmpresa().getIdempresa());
-                }else{
+                } else {
                     contasreceber.setIdempresa(0);
                 }
                 if (contasreceber.getTipopagamento().equalsIgnoreCase("Boleto") && contasreceber.getIdcontasreceber() == null) {
                     contasreceber.setSituacaoboleto("Novo");
                     contasreceber.setEnviado(false);
-                }else if(!contasreceber.getTipopagamento().equalsIgnoreCase("Boleto")  && contasreceber.getIdcontasreceber() == null){
+                } else if (!contasreceber.getTipopagamento().equalsIgnoreCase("Boleto") && contasreceber.getIdcontasreceber() == null) {
                     contasreceber.setSituacaoboleto("Não");
                     contasreceber.setEnviado(false);
                 }
@@ -245,17 +240,17 @@ public class CadContasReceberAssociadoMB implements Serializable{
             }
 
         }
-        
-                FacesContext fc = FacesContext.getCurrentInstance();
-                HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
-                session.setAttribute("associado", associado);
-                session.setAttribute("cliente", cliente);
-                session.setAttribute("plano", plano);
-                Mensagem.lancarMensagemInfo("Salvo com Sucesso", "");
+
+        FacesContext fc = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+        session.setAttribute("associado", associado);
+        session.setAttribute("cliente", cliente);
+        session.setAttribute("plano", plano);
+        Mensagem.lancarMensagemInfo("Salvo com Sucesso", "");
         return "cadAssociado";
     }
-    
-    public String validarDados(Contasreceber contasreceber){
+
+    public String validarDados(Contasreceber contasreceber) {
         String msg = "";
         if (contasreceber.getNumeroparcela().equalsIgnoreCase("")) {
             msg = msg + " Número de parcela não selecionada \r\n";
@@ -271,7 +266,7 @@ public class CadContasReceberAssociadoMB implements Serializable{
         }
         return msg;
     }
-    
+
     public void calculoParcelaMensal(Float nParcela, Contasreceber contasreceber) {
         float valorParcela = contasreceber.getValorconta() / nParcela;
         contasreceber.setValorconta(valorParcela);
@@ -286,22 +281,22 @@ public class CadContasReceberAssociadoMB implements Serializable{
             contasreceber.setSituacao("PAGAR");
             String mensagem = validarDados(contasreceber);
             if (mensagem.length() < 5) {
-               List<Associadoempresa> lista = asssociadoEmpresaDao.list("Select a From Associadoempresa a Where a.associado.idassociado=" + cliente.getAssociado().getIdassociado());
+                List<Associadoempresa> lista = asssociadoEmpresaDao.list("select a from Associadoempresa a where a.associado.idassociado=" + cliente.getAssociado().getIdassociado());
                 if (lista == null) {
                     lista = new ArrayList<>();
                 }
-               if (lista.size() > 0) {  
+                if (lista.size() > 0) {
                     contasreceber.setIdempresa(lista.get(0).getEmpresa().getIdempresa());
-                }else{
+                } else {
                     contasreceber.setIdempresa(0);
                 }
                 if (contasreceber.getTipopagamento().equalsIgnoreCase("Boleto") && contasreceber.getIdcontasreceber() == null) {
                     contasreceber.setSituacaoboleto("Novo");
                     contasreceber.setEnviado(false);
-                }else if(!contasreceber.getTipopagamento().equalsIgnoreCase("Boleto")  && contasreceber.getIdcontasreceber() == null){
+                } else if (!contasreceber.getTipopagamento().equalsIgnoreCase("Boleto") && contasreceber.getIdcontasreceber() == null) {
                     contasreceber.setSituacaoboleto("Não");
                     contasreceber.setEnviado(false);
-                } 
+                }
                 contasreceber = contasReceberDao.update(contasreceber);
                 Calendar c = new GregorianCalendar();
                 c.setTime(copia.getDatavencimento());

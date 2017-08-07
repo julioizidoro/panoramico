@@ -22,9 +22,8 @@ import org.primefaces.context.RequestContext;
 
 @Named
 @ViewScoped
-public class NotificacaoMB implements Serializable{
-    
-    
+public class NotificacaoMB implements Serializable {
+
     private Notificacao notificacao;
     private List<Notificacao> listaNotificacao;
     @EJB
@@ -33,10 +32,9 @@ public class NotificacaoMB implements Serializable{
     private UsuarioLogadoMB usuarioLogadoMB;
     private Usuario usuario;
     private List<Usuario> listaUsuario;
-    
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         gerarListaNotificacoes();
     }
 
@@ -87,18 +85,16 @@ public class NotificacaoMB implements Serializable{
     public void setListaUsuario(List<Usuario> listaUsuario) {
         this.listaUsuario = listaUsuario;
     }
-    
-    
-    
-    public void gerarListaNotificacoes(){
-        listaNotificacao = notificacaoDao.list("Select n from Notificacao n where n.usuariorecebe.idusuario=" + usuarioLogadoMB.getUsuario().getIdusuario()
-                            + " and n.visto=0");
+
+    public void gerarListaNotificacoes() {
+        listaNotificacao = notificacaoDao.list("select n from Notificacao n where n.usuariorecebe.idusuario=" + usuarioLogadoMB.getUsuario().getIdusuario()
+                + " and n.visto=0");
         if (listaNotificacao == null || listaNotificacao.isEmpty()) {
             listaNotificacao = new ArrayList<Notificacao>();
         }
     }
-    
-    public void vistoMensagem(Notificacao notificacao){
+
+    public void vistoMensagem(Notificacao notificacao) {
         if (notificacao != null) {
             notificacao.setVisto(true);
             notificacaoDao.update(notificacao);
@@ -106,10 +102,8 @@ public class NotificacaoMB implements Serializable{
             Mensagem.lancarMensagemInfo("Mensagem", "apagada com sucesso");
         }
     }
-    
-    
-    
-    public void fechar(){
+
+    public void fechar() {
         RequestContext.getCurrentInstance().closeDialog(new Notificacao());
     }
 }

@@ -35,9 +35,8 @@ import org.primefaces.context.RequestContext;
 
 @Named
 @ViewScoped
-public class CadPassaporteMB implements Serializable{
-    
-    
+public class CadPassaporteMB implements Serializable {
+
     @EJB
     private ClienteDao clienteDao;
     private Cliente cliente;
@@ -69,10 +68,9 @@ public class CadPassaporteMB implements Serializable{
     private ContasReceberDao contasReceberDao;
     @Inject
     private UsuarioLogadoMB usuarioLogadoMB;
-    
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         cliente = (Cliente) session.getAttribute("cliente");
@@ -81,7 +79,7 @@ public class CadPassaporteMB implements Serializable{
         if (passaporte == null) {
             passaporte = new Passaporte();
             passaporte.setDatacompra(new Date());
-        }    
+        }
         if (cliente != null) {
             cpfCliente = cliente.getCpf();
         }
@@ -89,7 +87,7 @@ public class CadPassaporteMB implements Serializable{
     }
 
     public ClienteDao getClienteDao() {
-        return clienteDao; 
+        return clienteDao;
     }
 
     public void setClienteDao(ClienteDao clienteDao) {
@@ -232,51 +230,46 @@ public class CadPassaporteMB implements Serializable{
         this.cadastropassaporte = cadastropassaporte;
     }
 
-    
- 
-    public void pesquisarCliente(){
-        List<Cliente> listaCliente = clienteDao.list("Select c From Cliente c Where c.cpf='" + cpfCliente + "'");
+    public void pesquisarCliente() {
+        List<Cliente> listaCliente = clienteDao.list("select c from Cliente c where c.cpf='" + cpfCliente + "'");
         if (listaCliente == null || listaCliente.isEmpty()) {
             cliente = new Cliente();
             cliente.setCpf(cpfCliente);
             Mensagem.lancarMensagemInfo("Cpf não encontrado", "cadastre um novo cliente");
             cadastropassaporte = false;
             cadastrocliente = true;
-        }else{
+        } else {
             for (int i = 0; i < listaCliente.size(); i++) {
                 cliente = listaCliente.get(i);
             }
             cadastropassaporte = true;
             cadastrocliente = false;
-        }  
+        }
     }
-    
-    
-    public void calcularValorTotal(){
+
+    public void calcularValorTotal() {
         if (passaportevalor == null || passaportevalor.getIdpassaportevalor() == null) {
             valorTotal = 0.0f;
-        }else{
+        } else {
             totalValorAdulto = passaportevalor.getValoradulto() * adultos;
             totalValorCrianca = passaportevalor.getValorcrianca() * criancas;
             valorTotal = totalValorAdulto + totalValorCrianca;
         }
     }
-    
-    public void getValoresPassaporte(){
-        listaPassaporteValor = passaporteValorDao.list("Select pv From Passaportevalor pv Where pv.situacao=1");
+
+    public void getValoresPassaporte() {
+        listaPassaporteValor = passaporteValorDao.list("select pv from Passaportevalor pv where pv.situacao=1");
         if (listaPassaporteValor == null || listaPassaporteValor.isEmpty()) {
-            listaPassaporteValor = new ArrayList<Passaportevalor>();  
+            listaPassaporteValor = new ArrayList<Passaportevalor>();
         }
     }
-    
-    
-    public void pegar(){
+
+    public void pegar() {
         valorAdulto = passaportevalor.getValoradulto();
         valorCrianca = passaportevalor.getValorcrianca();
     }
-      
-            
-    public void salvar(){
+
+    public void salvar() {
         String msg = validarDados();
         if (msg.length() < 5) {
             if (passaporte.getIdpassaporte() == null) {
@@ -289,7 +282,7 @@ public class CadPassaporteMB implements Serializable{
                 passaporte.setLocalizador("PPA" + passaporte.getIdpassaporte());
                 passaporteDao.update(passaporte);
                 lancarContasReceber();
-            }else{
+            } else {
                 passaporte.setCliente(cliente);
                 passaporte.setAdultos(adultos);
                 passaporte.setCriancas(criancas);
@@ -302,34 +295,30 @@ public class CadPassaporteMB implements Serializable{
             RequestContext.getCurrentInstance().closeDialog(passaporte);
         }
     }
-    
-    
-    public String validarDados(){
+
+    public String validarDados() {
         String msg = "";
         if (cliente == null) {
             msg = msg + " informe seu cpf para cadastrar ou procurar o cliente \r\n";
         }
         return msg;
     }
-    
-    
-    public void cancelar(){
+
+    public void cancelar() {
         RequestContext.getCurrentInstance().closeDialog(new Passaporte());
     }
-    
-    
-    public void salvarCliente(){
+
+    public void salvarCliente() {
         cliente = clienteDao.update(cliente);
         cadastropassaporte = true;
         cadastrocliente = false;
     }
-    
-    public void cancelarCliente(){
+
+    public void cancelarCliente() {
         cadastropassaporte = true;
         cadastrocliente = false;
     }
-    
-    
+
     public void lancarContasReceber() {
         Contasreceber contasreceber = new Contasreceber();
         contasreceber.setDatalancamento(new Date());
@@ -347,5 +336,5 @@ public class CadPassaporteMB implements Serializable{
         contasreceber.setPlanoconta(planoconta);
         contasReceberDao.update(contasreceber);
     }
-    
+
 }

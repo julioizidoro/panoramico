@@ -25,21 +25,19 @@ import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 
-
 @Named
 @ViewScoped
-public class PlanoMB implements Serializable{
-   
-    
+public class PlanoMB implements Serializable {
+
     @EJB
     private PlanoDao planoDao;
     private Plano plano;
     private List<Plano> listaPlano;
     @EJB
     private AssociadoDao associadoDao;
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         gerarListaPlano();
     }
 
@@ -58,9 +56,6 @@ public class PlanoMB implements Serializable{
     public void setAssociadoDao(AssociadoDao associadoDao) {
         this.associadoDao = associadoDao;
     }
-    
-    
-    
 
     public PlanoDao getPlanoDao() {
         return planoDao;
@@ -77,42 +72,38 @@ public class PlanoMB implements Serializable{
     public void setPlano(Plano plano) {
         this.plano = plano;
     }
-    
-    
-    public void gerarListaPlano(){
-        listaPlano = planoDao.list("Select p from Plano p");
+
+    public void gerarListaPlano() {
+        listaPlano = planoDao.list("select p from Plano p");
         if (listaPlano == null) {
             listaPlano = new ArrayList<Plano>();
         }
     }
-    
-    
+
     public String novoCadastroPlano() {
         Map<String, Object> options = new HashMap<String, Object>();
         options.put("contentWidth", 450);
         RequestContext.getCurrentInstance().openDialog("cadPlano", options, null);
         return "";
     }
-    
-    
-    public void retornoDialogNovo(SelectEvent event){
+
+    public void retornoDialogNovo(SelectEvent event) {
         Plano plano = (Plano) event.getObject();
-        if (plano.getIdplano()!= null) {
+        if (plano.getIdplano() != null) {
             Mensagem.lancarMensagemInfo("Salvou", "Cadastro de Plano realizado com sucesso");
         }
         gerarListaPlano();
     }
-    
-    public void retornoDialogAlteracao(SelectEvent event){
+
+    public void retornoDialogAlteracao(SelectEvent event) {
         Plano plano = (Plano) event.getObject();
-        if (plano.getIdplano()!= null) {
+        if (plano.getIdplano() != null) {
             Mensagem.lancarMensagemInfo("Salvou", "Alteração de Plano realizado com sucesso");
         }
         gerarListaPlano();
     }
-    
-    
-    public void editar(Plano plano){
+
+    public void editar(Plano plano) {
         if (plano != null) {
             Map<String, Object> options = new HashMap<String, Object>();
             FacesContext fc = FacesContext.getCurrentInstance();
@@ -122,15 +113,14 @@ public class PlanoMB implements Serializable{
             RequestContext.getCurrentInstance().openDialog("cadPlano", options, null);
         }
     }
-    
-    
-    public void excluir(Plano plano){
-        List<Associado> listaAssociado = associadoDao.list("Select a from Associado a where a.plano.idplano="+ plano.getIdplano());
+
+    public void excluir(Plano plano) {
+        List<Associado> listaAssociado = associadoDao.list("select a from Associado a where a.plano.idplano=" + plano.getIdplano());
         if (listaAssociado == null || listaAssociado.isEmpty()) {
             planoDao.remove(plano.getIdplano());
             Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
             gerarListaPlano();
-        }else{
+        } else {
             Mensagem.lancarMensagemInfo("Atenção", " este plano não pode ser excluido");
         }
     }

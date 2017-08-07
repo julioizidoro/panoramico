@@ -28,8 +28,8 @@ import org.primefaces.context.RequestContext;
 
 @Named
 @ViewScoped
-public class totalSerPagoMB implements Serializable{
-    
+public class totalSerPagoMB implements Serializable {
+
     private Contasreceber contasreceber;
     private List<Contasreceber> listaContasAssociados;
     private List<Contasreceber> listaContasAssociadosEmpresa;
@@ -43,7 +43,7 @@ public class totalSerPagoMB implements Serializable{
     private float valorTotalAssociado;
     private List<Contasreceber> listaTotalContasAssociados;
     private List<Contasreceber> listaTotalContasAssociadoEmpresa;
-    private boolean  empresa;
+    private boolean empresa;
     private boolean selecionadoTodosEmpresa;
     private boolean selecionadoTodosAssociado;
     @EJB
@@ -52,10 +52,9 @@ public class totalSerPagoMB implements Serializable{
     private Empresa empresaa;
     @EJB
     private AssociadoEmpresaDao associadoEmpresaDao;
-    
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         gerarListaAssociado();
         gerarListaEmpresa();
     }
@@ -83,8 +82,6 @@ public class totalSerPagoMB implements Serializable{
     public void setListaContasAssociadosEmpresa(List<Contasreceber> listaContasAssociadosEmpresa) {
         this.listaContasAssociadosEmpresa = listaContasAssociadosEmpresa;
     }
-
-    
 
     public ContasReceberDao getContasReceberDao() {
         return contasReceberDao;
@@ -117,8 +114,6 @@ public class totalSerPagoMB implements Serializable{
     public void setAssociadoDao(AssociadoDao associadoDao) {
         this.associadoDao = associadoDao;
     }
-    
-    
 
     public float getValorTotalEmpresa() {
         return valorTotalEmpresa;
@@ -208,37 +203,32 @@ public class totalSerPagoMB implements Serializable{
         this.associadoEmpresaDao = associadoEmpresaDao;
     }
 
-    
-    
-    
-    
-    public void gerarListaAssociado(){
+    public void gerarListaAssociado() {
         valorTotalEmpresa = 0.0f;
         valorTotalAssociado = 0.0f;
         listaTotalContasAssociadoEmpresa = new ArrayList<>();
         listaTotalContasAssociados = new ArrayList<>();
         listaContasAssociados = new ArrayList<>();
         listaContasAssociadosEmpresa = new ArrayList<>();
-        listaAssociado = associadoDao.list("Select a From Associado a Where a.situacao='Ativo'");
+        listaAssociado = associadoDao.list("select a from Associado a where a.situacao='Ativo'");
         if (listaAssociado == null || listaAssociado.isEmpty()) {
             listaAssociado = new ArrayList<>();
         }
         for (int i = 0; i < listaAssociado.size(); i++) {
-            List<Associadoempresa> lista = associadoEmpresaDao.list("Select a From Associadoempresa a Where a.associado.idassociado=" + listaAssociado.get(i).getIdassociado());
+            List<Associadoempresa> lista = associadoEmpresaDao.list("select a from Associadoempresa a where a.associado.idassociado=" + listaAssociado.get(i).getIdassociado());
             if (lista.size() > 0) {
                 for (int j = 0; j < lista.size(); j++) {
                     gerarListaContasAssociadoEmpresa(lista.get(j));
                 }
-            }else{
-                    gerarListaContasAssociado(listaAssociado.get(i));
+            } else {
+                gerarListaContasAssociado(listaAssociado.get(i));
             }
         }
     }
-    
-    
-    public void gerarListaContasAssociado(Associado associado){
-        listaContasAssociados = contasReceberDao.list("Select c From Contasreceber c Where c.situacao='PAGAR' and c.tipopagamento='Boleto' and c.cliente.idcliente="
-                    + associado.getCliente().getIdcliente());
+
+    public void gerarListaContasAssociado(Associado associado) {
+        listaContasAssociados = contasReceberDao.list("select c from Contasreceber c where c.situacao='PAGAR' and c.tipopagamento='Boleto' and c.cliente.idcliente="
+                + associado.getCliente().getIdcliente());
         if (listaContasAssociados == null || listaContasAssociados.isEmpty()) {
             listaContasAssociados = new ArrayList<>();
         }
@@ -247,20 +237,19 @@ public class totalSerPagoMB implements Serializable{
             listaTotalContasAssociados.add(listaContasAssociados.get(j));
         }
     }
-    
-    public void gerarListaContasAssociadoEmpresa(Associadoempresa associadoempresa){
-        listaContasAssociadosEmpresa = contasReceberDao.list("Select c From Contasreceber c Where c.situacao='PAGAR' and c.cliente.idcliente="
+
+    public void gerarListaContasAssociadoEmpresa(Associadoempresa associadoempresa) {
+        listaContasAssociadosEmpresa = contasReceberDao.list("select c from Contasreceber c where c.situacao='PAGAR' and c.cliente.idcliente="
                 + associadoempresa.getAssociado().getCliente().getIdcliente());
         if (listaContasAssociadosEmpresa == null || listaContasAssociadosEmpresa.isEmpty()) {
             listaContasAssociadosEmpresa = new ArrayList<>();
         }
-            for (int j = 0; j < listaContasAssociadosEmpresa.size(); j++) {
-                valorTotalEmpresa = valorTotalEmpresa + listaContasAssociadosEmpresa.get(j).getValorconta();
-                listaTotalContasAssociadoEmpresa.add(listaContasAssociadosEmpresa.get(j));
-            }
-    }  
-      
-    
+        for (int j = 0; j < listaContasAssociadosEmpresa.size(); j++) {
+            valorTotalEmpresa = valorTotalEmpresa + listaContasAssociadosEmpresa.get(j).getValorconta();
+            listaTotalContasAssociadoEmpresa.add(listaContasAssociadosEmpresa.get(j));
+        }
+    }
+
     public String boletoAssociado() {
         List<Contasreceber> listaSelecionada = new ArrayList<>();
         for (int i = 0; i < listaTotalContasAssociados.size(); i++) {
@@ -279,7 +268,7 @@ public class totalSerPagoMB implements Serializable{
         RequestContext.getCurrentInstance().openDialog("boletoTotalContas", options, null);
         return "";
     }
-    
+
     public String boletoEmpresa() {
         List<Contasreceber> listaSelecionada = new ArrayList<>();
         for (int i = 0; i < listaTotalContasAssociadoEmpresa.size(); i++) {
@@ -298,7 +287,7 @@ public class totalSerPagoMB implements Serializable{
         RequestContext.getCurrentInstance().openDialog("boletoTotalContas", options, null);
         return "";
     }
-    
+
     public void selecionarTodasListaEmpresa() {
         if (selecionadoTodosEmpresa) {
             for (int i = 0; i < listaTotalContasAssociadoEmpresa.size(); i++) {
@@ -310,7 +299,7 @@ public class totalSerPagoMB implements Serializable{
             }
         }
     }
-    
+
     public void selecionarTodasListaAssociado() {
         if (selecionadoTodosAssociado) {
             for (int i = 0; i < listaTotalContasAssociados.size(); i++) {
@@ -322,30 +311,29 @@ public class totalSerPagoMB implements Serializable{
             }
         }
     }
-    
-    
-    public void gerarListaEmpresa(){
-        String sql = "Select e From Empresa e";
+
+    public void gerarListaEmpresa() {
+        String sql = "select e from Empresa e";
         listaEmpresa = empresaDao.list(sql);
         if (listaEmpresa == null || listaEmpresa.isEmpty()) {
             listaEmpresa = new ArrayList<>();
         }
     }
-    
-    public void filtrar(){
+
+    public void filtrar() {
         listaTotalContasAssociadoEmpresa = new ArrayList<>();
         valorTotalEmpresa = 0.0f;
         String sql = "";
         List<Associadoempresa> listaAssociadoEmpresa;
         List<Contasreceber> listaContasEmpresa;
         if (empresaa == null) {
-            gerarListaAssociado();  
-        }else{
-            sql = "Select ae From Associadoempresa ae Where ae.empresa.idempresa=" + empresaa.getIdempresa();
+            gerarListaAssociado();
+        } else {
+            sql = "select ae from Associadoempresa ae where ae.empresa.idempresa=" + empresaa.getIdempresa();
             listaAssociadoEmpresa = associadoEmpresaDao.list(sql);
             for (int i = 0; i < listaAssociadoEmpresa.size(); i++) {
-                String sql2 = "Select c From Contasreceber c Where c.situacao='PAGAR' and c.cliente.idcliente=" + 
-                listaAssociadoEmpresa.get(i).getAssociado().getCliente().getIdcliente();
+                String sql2 = "select c from Contasreceber c where c.situacao='PAGAR' and c.cliente.idcliente="
+                        + listaAssociadoEmpresa.get(i).getAssociado().getCliente().getIdcliente();
                 listaContasEmpresa = contasReceberDao.list(sql2);
                 for (int j = 0; j < listaContasEmpresa.size(); j++) {
                     valorTotalEmpresa = valorTotalEmpresa + listaContasEmpresa.get(j).getValorconta();
@@ -354,20 +342,19 @@ public class totalSerPagoMB implements Serializable{
             }
         }
     }
-    
-    
-    public void limpar(){
+
+    public void limpar() {
         empresaa = null;
         gerarListaAssociado();
     }
-    
-   public String pegarNomeEmpresa(Contasreceber contasreceber){
-       List<Associadoempresa> lista = associadoEmpresaDao.list("Select a From Associadoempresa a Where a.associado.idassociado=" + contasreceber.getCliente().getAssociado().getIdassociado());
-       String nome = lista.get(0).getEmpresa().getRazaosocial();
-       return nome;   
-   }
-   
-   public String voltarContasReceber(){
-       return "consContasReceber";
-   }
+
+    public String pegarNomeEmpresa(Contasreceber contasreceber) {
+        List<Associadoempresa> lista = associadoEmpresaDao.list("select a from Associadoempresa a where a.associado.idassociado=" + contasreceber.getCliente().getAssociado().getIdassociado());
+        String nome = lista.get(0).getEmpresa().getRazaosocial();
+        return nome;
+    }
+
+    public String voltarContasReceber() {
+        return "consContasReceber";
+    }
 }

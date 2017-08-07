@@ -181,13 +181,8 @@ public class PassaporteMB implements Serializable {
         this.listaRecebimento = listaRecebimento;
     }
 
-    
-    
-    
-    
-
     public void gerarListaPassaporte() {
-        String sql = "Select p From Passaporte p Where p.dataacesso is null";
+        String sql = "select p from Passaporte p where p.dataacesso is null";
         listaPassaporte = passaporteDao.list(sql);
         if (listaPassaporte == null || listaPassaporte.isEmpty()) {
             listaPassaporte = new ArrayList<Passaporte>();
@@ -195,7 +190,7 @@ public class PassaporteMB implements Serializable {
     }
 
     public void gerarListaCliente() {
-        listaCliente = clienteDao.list("Select c From Cliente c");
+        listaCliente = clienteDao.list("select c from Cliente c");
         if (listaCliente == null || listaCliente.isEmpty()) {
             listaCliente = new ArrayList<Cliente>();
         }
@@ -233,7 +228,7 @@ public class PassaporteMB implements Serializable {
             listaPassaporte.remove(passaporte);
         }
     }
-    
+
     public void retornoDialogRecebimento(SelectEvent event) {
         Recebimento recebimento = (Recebimento) event.getObject();
         if (recebimento.getIdrecebimento() != null) {
@@ -251,55 +246,54 @@ public class PassaporteMB implements Serializable {
             RequestContext.getCurrentInstance().openDialog("cadPassaporte", options, null);
         }
     }
-    
-    
-    public void filtrar(){
-        String sql = "Select p From Passaporte p";
+
+    public void filtrar() {
+        String sql = "select p from Passaporte p";
         if ((cliente != null && cliente.getIdcliente() != null) || dataInicialUso != null || dataFinalUso != null || dataInicioCompra != null || dataFinalCompra != null
                 || !passaporteUtilizado.equalsIgnoreCase("sn") || !localCompra.equalsIgnoreCase("sn")) {
-            sql = sql + " Where";
+            sql = sql + " where";
         }
         if (cliente != null && cliente.getIdcliente() != null) {
             sql = sql + " p.cliente.idcliente=" + cliente.getIdcliente();
-             if (dataInicialUso != null || dataFinalUso != null || dataInicioCompra != null || dataFinalCompra != null
-                || !passaporteUtilizado.equalsIgnoreCase("sn") || !localCompra.equalsIgnoreCase("sn")) {
+            if (dataInicialUso != null || dataFinalUso != null || dataInicioCompra != null || dataFinalCompra != null
+                    || !passaporteUtilizado.equalsIgnoreCase("sn") || !localCompra.equalsIgnoreCase("sn")) {
                 sql = sql + " and";
             }
         }
         if (dataInicialUso != null && dataFinalUso != null) {
-             sql = sql + " p.dataacesso>='" + Formatacao.ConvercaoDataSql(dataInicialUso) + "' and p.dataacesso<='" + 
-                     Formatacao.ConvercaoDataSql(dataFinalUso) + "'";
-             if (dataInicioCompra != null || dataFinalCompra != null
-                || !passaporteUtilizado.equalsIgnoreCase("sn") || !localCompra.equalsIgnoreCase("sn")) {
+            sql = sql + " p.dataacesso>='" + Formatacao.ConvercaoDataSql(dataInicialUso) + "' and p.dataacesso<='"
+                    + Formatacao.ConvercaoDataSql(dataFinalUso) + "'";
+            if (dataInicioCompra != null || dataFinalCompra != null
+                    || !passaporteUtilizado.equalsIgnoreCase("sn") || !localCompra.equalsIgnoreCase("sn")) {
                 sql = sql + " and";
             }
         }
         if (dataInicioCompra != null && dataFinalCompra != null) {
-             sql = sql + " p.datacompra>='" + Formatacao.ConvercaoDataSql(dataInicioCompra) + "' and p.datacompra<='" + 
-                     Formatacao.ConvercaoDataSql(dataFinalCompra) + "'";
-             if (!passaporteUtilizado.equalsIgnoreCase("sn") || !localCompra.equalsIgnoreCase("sn")) {
+            sql = sql + " p.datacompra>='" + Formatacao.ConvercaoDataSql(dataInicioCompra) + "' and p.datacompra<='"
+                    + Formatacao.ConvercaoDataSql(dataFinalCompra) + "'";
+            if (!passaporteUtilizado.equalsIgnoreCase("sn") || !localCompra.equalsIgnoreCase("sn")) {
                 sql = sql + " and";
             }
         }
         if (!localCompra.equalsIgnoreCase("sn")) {
             if (localCompra.equalsIgnoreCase("site")) {
                 sql = sql + " p.localizador='PPA'";
-            }else if(localCompra.equalsIgnoreCase("clube")){
+            } else if (localCompra.equalsIgnoreCase("clube")) {
                 sql = sql + " p.localizador like 'PPA%'";
             }
         }
         if (!passaporteUtilizado.equalsIgnoreCase("sn")) {
             if (passaporteUtilizado.equalsIgnoreCase("sim")) {
                 sql = sql + " p.dataacesso>='1900-01-01'";
-            }else if(passaporteUtilizado.equalsIgnoreCase("nao")){
+            } else if (passaporteUtilizado.equalsIgnoreCase("nao")) {
                 sql = sql + " p.dataacesso is null";
             }
         }
         listaPassaporte = new ArrayList<Passaporte>();
-        listaPassaporte = passaporteDao.list(sql); 
+        listaPassaporte = passaporteDao.list(sql);
     }
-    
-    public void limparFiltro(){
+
+    public void limparFiltro() {
         cliente = null;
         dataFinalCompra = null;
         dataFinalUso = null;
@@ -309,12 +303,11 @@ public class PassaporteMB implements Serializable {
         passaporteUtilizado = "";
         gerarListaPassaporte();
     }
-    
-    
+
     public String novoRecebimento(Passaporte passaporte) {
         if (passaporte != null) {
-           contasreceber = contasReceberDao.find("Select c From Contasreceber c Where c.numerodocumento='Passaporte-" + passaporte.getIdpassaporte() + "'");
-           listaRecebimento = recebimentoDao.list("Select r From Recebimento r where r.contasreceber.idcontasreceber=" + contasreceber.getIdcontasreceber());
+            contasreceber = contasReceberDao.find("select c from Contasreceber c where c.numerodocumento='Passaporte-" + passaporte.getIdpassaporte() + "'");
+            listaRecebimento = recebimentoDao.list("select r from Recebimento r where r.contasreceber.idcontasreceber=" + contasreceber.getIdcontasreceber());
             if (listaRecebimento == null || listaRecebimento.isEmpty()) {
                 Map<String, Object> options = new HashMap<String, Object>();
                 options.put("contentWidth", 500);
@@ -322,8 +315,8 @@ public class PassaporteMB implements Serializable {
                 HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
                 session.setAttribute("contasreceber", contasreceber);
                 RequestContext.getCurrentInstance().openDialog("cadRecebimento", options, null);
-            }else{
-               Mensagem.lancarMensagemInfo("Este passaporte ja teve o valor recebido", "");
+            } else {
+                Mensagem.lancarMensagemInfo("Este passaporte ja teve o valor recebido", "");
             }
         }
         return "";

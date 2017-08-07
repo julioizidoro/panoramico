@@ -30,21 +30,18 @@ import org.primefaces.context.RequestContext;
  *
  * @author Anderson
  */
-
 @Named
 @ViewScoped
-public class RelatorioCancelamentoClienteMB implements Serializable{
-    
-    
+public class RelatorioCancelamentoClienteMB implements Serializable {
+
     private Date dataInicio;
     private Date dataFinal;
-    
-    
+
     @PostConstruct
-    public void init(){
-        
-    }          
-    
+    public void init() {
+
+    }
+
     public Date getDataInicio() {
         return dataInicio;
     }
@@ -60,15 +57,15 @@ public class RelatorioCancelamentoClienteMB implements Serializable{
     public void setDataFinal(Date dataFinal) {
         this.dataFinal = dataFinal;
     }
- 
+
     public String iniciarRelatorio() {
         ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
         Map<String, Object> parameters = new HashMap<String, Object>();
         String caminhoRelatorio = "";
-        String periodo = "";  
+        String periodo = "";
         if (dataInicio != null && dataFinal != null) {
             periodo = Formatacao.ConvercaoDataPadrao(dataInicio) + " - " + Formatacao.ConvercaoDataPadrao(dataFinal);
-        }else{
+        } else {
             periodo = "Sem periodo";
         }
         parameters.put("periodo", periodo);
@@ -77,13 +74,13 @@ public class RelatorioCancelamentoClienteMB implements Serializable{
         File f = new File(servletContext.getRealPath("resources/img/logo.png"));
         BufferedImage logo = null;
         try {
-            logo = ImageIO.read(f); 
+            logo = ImageIO.read(f);
         } catch (IOException ex) {
             Logger.getLogger(RelatorioAssociadoMB.class.getName()).log(Level.SEVERE, null, ex);
         }
         parameters.put("logo", logo);
         GerarRelatorios gerarRelatorio = new GerarRelatorios();
-        try {  
+        try {
             try {
                 gerarRelatorio.gerarRelatorioSqlPDF(caminhoRelatorio, parameters, "associado", null);
             } catch (IOException ex) {
@@ -91,29 +88,29 @@ public class RelatorioCancelamentoClienteMB implements Serializable{
             } catch (SQLException ex) {
                 Logger.getLogger(RelatorioCancelamentoClienteMB.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
         } catch (JRException ex) {
             Logger.getLogger(RelatorioCancelamentoClienteMB.class.getName()).log(Level.SEVERE, null, ex);
         }
         return "";
     }
- 
+
     public String gerarSQL() {
-        String sql = "SELECT distinct ccancelamento.data, ccancelamento.hora, ccancelamento.motivo, usuario.nome, ccancelamento.idccancelamento, cliente.nome as cliente"
+        String sql = "select distinct ccancelamento.data, ccancelamento.hora, ccancelamento.motivo, usuario.nome, ccancelamento.idccancelamento, cliente.nome as cliente"
                 + " from ccancelamento"
                 + " join cliente on ccancelamento.cliente_idcliente = cliente.idcliente "
                 + " join usuario on ccancelamento.usuario_idusuario = usuario.idusuario ";
         sql = sql + " where ccancelamento.idccancelamento>0";
         if (dataInicio != null && dataInicio != null) {
             sql = sql + " and ccancelamento.data>='" + Formatacao.ConvercaoDataSql(dataInicio) + "'"
-                    + " and ccancelamento.data<='" + Formatacao.ConvercaoDataSql(dataFinal) + "'"; 
+                    + " and ccancelamento.data<='" + Formatacao.ConvercaoDataSql(dataFinal) + "'";
         }
         sql = sql + " order by cliente.nome";
         return sql;
-    }  
+    }
 
     public void fechar() {
         RequestContext.getCurrentInstance().closeDialog(null);
     }
-    
+
 }

@@ -370,14 +370,14 @@ public class CadSolicitacaoExameMB implements Serializable {
     }
 
     public void gerarListaAssociados() {
-        listaAssociado = associadoDao.list("Select a from Associado a");
+        listaAssociado = associadoDao.list("select a from Associado a");
         if (listaAssociado == null || listaAssociado.isEmpty()) {
             listaAssociado = new ArrayList<Associado>();
         }
     }
 
     public void gerarListaDependentes() {
-        listaDependente = dependenteDao.list("Select d from Dependente d");
+        listaDependente = dependenteDao.list("select d from Dependente d");
         if (listaAssociado == null || listaAssociado.isEmpty()) {
             listaAssociado = new ArrayList<Associado>();
         }
@@ -475,15 +475,15 @@ public class CadSolicitacaoExameMB implements Serializable {
     }
 
     public void gerarListaMedico() {
-        listaMedico = medicoDao.list("Select m from Medico m where m.situacao='Ativo'");
+        listaMedico = medicoDao.list("select m from Medico m where m.situacao='Ativo'");
         if (listaMedico == null || listaMedico.isEmpty()) {
             listaMedico = new ArrayList<Medico>();
         }
     }
 
     public void pegarValores() {
-        List<Exameassociado> listaExameAssociado = exameAssociadoDao.list("Select ea from Exameassociado ea where ea.exame.idexame=" + exame.getIdexame());
-        List<Examedependente> listaExameDependente = exameDependenteDao.list("Select ed from Examedependente ed where ed.exame.idexame=" + exame.getIdexame());
+        List<Exameassociado> listaExameAssociado = exameAssociadoDao.list("select ea from Exameassociado ea where ea.exame.idexame=" + exame.getIdexame());
+        List<Examedependente> listaExameDependente = exameDependenteDao.list("select ed from Examedependente ed where ed.exame.idexame=" + exame.getIdexame());
         if (listaExameAssociado == null || listaExameAssociado.isEmpty()) {
             for (int i = 0; i < listaExameDependente.size(); i++) {
                 examedependente = listaExameDependente.get(i);

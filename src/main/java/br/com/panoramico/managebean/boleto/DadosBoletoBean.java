@@ -30,12 +30,11 @@ import org.jrimum.domkee.financeiro.banco.febraban.Sacado;
 import org.jrimum.domkee.financeiro.banco.febraban.TipoDeTitulo;
 import org.jrimum.domkee.financeiro.banco.febraban.Titulo;
 
-
 public class DadosBoletoBean {
-    
-     /**
-	 * 
-	 */
+
+    /**
+     *
+     */
     private static final long serialVersionUID = 1L;
     private String nomeCedente;
     private String cnpjCedente;
@@ -52,7 +51,7 @@ public class DadosBoletoBean {
     private String nossoNumeros;
     private String numeroDocumentos;
     private String digitoNossoNumeros;
-    private Boleto boleto;   
+    private Boleto boleto;
     private Endereco enderecoSacado;
     private String valorJuros;
     private String valorMulta;
@@ -60,7 +59,7 @@ public class DadosBoletoBean {
     private String instrucao2;
     private String instrucao3;
     private String instrucao4;
-    
+
     public String getNossoNumeros() {
         return nossoNumeros;
     }
@@ -93,8 +92,6 @@ public class DadosBoletoBean {
         this.enderecoSacado = enderecoSacado;
     }
 
-    
-
     public String getNomeCedente() {
         return nomeCedente;
     }
@@ -119,7 +116,6 @@ public class DadosBoletoBean {
         this.nomeSacado = nomeSacado;
     }
 
-
     public String getDigitoAgencias() {
         return digitoAgencias;
     }
@@ -143,6 +139,7 @@ public class DadosBoletoBean {
     public void setNumeroContas(String numeroContas) {
         this.numeroContas = numeroContas;
     }
+
     public String getDigitoContas() {
         return digitoContas;
     }
@@ -158,8 +155,6 @@ public class DadosBoletoBean {
     public void setCarteiras(String carteiras) {
         this.carteiras = carteiras;
     }
-
-   
 
     public BigDecimal getValor() {
         return valor;
@@ -248,25 +243,23 @@ public class DadosBoletoBean {
     public void setInstrucao4(String instrucao4) {
         this.instrucao4 = instrucao4;
     }
-  
-    
+
     public byte[] gerarBoleto() {
         criarBoleto("", "");
         BoletoViewer boletoViewer = new BoletoViewer(boleto);
         return boletoViewer.getPdfAsByteArray();
     }
-    
-    
+
     public File gerarBoletoEmArquivo(String arquivo) {
-        criarBoleto("","");
+        criarBoleto("", "");
         BoletoViewer boletoViewer = new BoletoViewer(boleto);
         return boletoViewer.getPdfAsFile(arquivo);
     }
-    
+
     public void criarBoleto(String juros, String multa) {
         valorJuros = juros;
         valorMulta = multa;
-        GerarDacNossoNumero dac = new GerarDacNossoNumero(nossoNumeros,carteiras, agencias, numeroContas);
+        GerarDacNossoNumero dac = new GerarDacNossoNumero(nossoNumeros, carteiras, agencias, numeroContas);
         this.digitoNossoNumeros = dac.getDac();
         ContaBancaria contaBancaria = criarContaBancaria();
         Sacado sacado = new Sacado(nomeSacado);
@@ -274,30 +267,29 @@ public class DadosBoletoBean {
         Cedente cedente = new Cedente(nomeCedente, cnpjCedente);
 
         Titulo titulo = criarTitulo(contaBancaria, sacado, cedente);
-        boleto = new Boleto(titulo); 
+        boleto = new Boleto(titulo);
         boleto.setLocalPagamento("PAGAVEL EM QUALQUER BANCO ATE O VENCIMENTO");
         boleto.setInstrucaoAoSacado("Instruções de responsabilidade do BENEFICIÁRIO. Qualquer dúvida sobre este boleto, contate o BENEFICIÁRIO.");
-        String codigoCedente  = agencias + "/" + numeroContas +"-" + digitoContas;
+        String codigoCedente = agencias + "/" + numeroContas + "-" + digitoContas;
         String nossoNumeroExibicao = carteiras + "/" + nossoNumeros + "-" + digitoNossoNumeros;
         boleto.addTextosExtras("txtFcAgenciaCodigoCedente", codigoCedente);
         boleto.addTextosExtras("txtRsAgenciaCodigoCedente", codigoCedente);
-        boleto.addTextosExtras("txtFcNossoNumero", nossoNumeroExibicao); 
+        boleto.addTextosExtras("txtFcNossoNumero", nossoNumeroExibicao);
         boleto.addTextosExtras("txtRsNossoNumero", nossoNumeroExibicao);
-        if (instrucao1!=null && instrucao1.length()>0){
+        if (instrucao1 != null && instrucao1.length() > 0) {
             boleto.setInstrucao1(instrucao1);
         }
-        if (instrucao2!=null && instrucao2.length()>0){
+        if (instrucao2 != null && instrucao2.length() > 0) {
             boleto.setInstrucao2(instrucao2);
-        }  
-        if (instrucao3!=null && instrucao3.length()>0){
+        }
+        if (instrucao3 != null && instrucao3.length() > 0) {
             boleto.setInstrucao3(instrucao3);
         }
-        if (instrucao4!=null && instrucao4.length()>0){
+        if (instrucao4 != null && instrucao4.length() > 0) {
             boleto.setInstrucao4(instrucao4);
-        }   
-    } 
-     
-    
+        }
+    }
+
     private ContaBancaria criarContaBancaria() {
         ContaBancaria contaBancaria = new ContaBancaria(BancosSuportados.BANCO_ITAU.create());
         contaBancaria.setAgencia(new Agencia(Integer.valueOf(agencias), digitoAgencias));
@@ -305,13 +297,13 @@ public class DadosBoletoBean {
         contaBancaria.setCarteira(new Carteira(Integer.valueOf(carteiras)));
         return contaBancaria;
     }
-      
+
     private Titulo criarTitulo(ContaBancaria contaBancaria, Sacado sacado, Cedente cedente) {
         Titulo titulo = new Titulo(contaBancaria, sacado, cedente);
 
 //       String codigo = this.geradorDigitoVerificador.completarComZeros(String.valueOf(codigoVenda));
-       titulo.setNumeroDoDocumento(numeroDocumentos);
-       titulo.setNossoNumero(nossoNumeros);
+        titulo.setNumeroDoDocumento(numeroDocumentos);
+        titulo.setNossoNumero(nossoNumeros);
         titulo.setDigitoDoNossoNumero(digitoNossoNumeros);
         titulo.setValor(valor);
         titulo.setDataDoDocumento(dataDocumento);
@@ -319,14 +311,14 @@ public class DadosBoletoBean {
         titulo.setTipoDeDocumento(TipoDeTitulo.DS_DUPLICATA_DE_SERVICO);
         titulo.setAceite(Titulo.Aceite.N);
         return titulo;
-    }  
-    
+    }
+
     private void enviarBoleto(byte[] pdf) throws IOException {
         HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
         response.setContentType("application/pdf");
         response.setContentLength(pdf.length);
         response.setHeader("Content-Disposition", "inline; filename=boletoItau.pdf");
-         OutputStream output = null;
+        OutputStream output = null;
 
         try {
             output = response.getOutputStream();
@@ -335,11 +327,10 @@ public class DadosBoletoBean {
             response.flushBuffer();
         } catch (Exception e) {
             throw new RuntimeException("Erro gerando boleto", e);
-        } 
+        }
 
         FacesContext.getCurrentInstance().responseComplete();
     }
-    
 
     public void emitir() {
         byte[] pdf = gerarBoleto();
@@ -349,18 +340,18 @@ public class DadosBoletoBean {
             Logger.getLogger(DadosBoletoBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void gerarPDFS(List<Boleto> listaBoletos){
-        FacesContext facesContext = FacesContext.getCurrentInstance();  
-        ServletContext servletContext = (ServletContext)facesContext.getExternalContext().getContext();
+
+    public void gerarPDFS(List<Boleto> listaBoletos) {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();
         String caminho = "/reports/itau/boletotemplatepanoramico.pdf";
-        caminho = servletContext.getRealPath(caminho); 
+        caminho = servletContext.getRealPath(caminho);
         byte[] pdf = BoletoViewer.groupInOnePdfWithTemplate(listaBoletos, caminho);
         try {
-            enviarBoleto(pdf); 
-        } catch (IOException ex) {  
+            enviarBoleto(pdf);
+        } catch (IOException ex) {
             Logger.getLogger(DadosBoletoBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-    } 
-       
-} 
+    }
+
+}

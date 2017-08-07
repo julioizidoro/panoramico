@@ -6,7 +6,6 @@
 package br.com.panoramico.managebean.cadastro;
 
 import br.com.panoramico.dao.ProprietarioDao;
-import br.com.panoramico.model.Plano;
 import br.com.panoramico.model.Proprietario;
 import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
@@ -27,18 +26,17 @@ import org.primefaces.event.SelectEvent;
  *
  * @author Kamilla Rodrigues
  */
-
 @Named
 @ViewScoped
-public class ProprietarioMB implements Serializable{
-    
+public class ProprietarioMB implements Serializable {
+
     private List<Proprietario> listaProprietario;
     private Proprietario proprietario;
     @EJB
     private ProprietarioDao proprietarioDao;
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         gerarListaProprietario();
     }
 
@@ -66,42 +64,37 @@ public class ProprietarioMB implements Serializable{
         this.proprietarioDao = proprietarioDao;
     }
 
-    
-    
     public void gerarListaProprietario() {
-        listaProprietario = proprietarioDao.list("Select p from Proprietario p");
+        listaProprietario = proprietarioDao.list("select p from Proprietario p");
         if (listaProprietario == null) {
             listaProprietario = new ArrayList<Proprietario>();
         }
     }
-    
-    
+
     public String novoCadastroProprietario() {
         Map<String, Object> options = new HashMap<String, Object>();
         options.put("contentWidth", 570);
         RequestContext.getCurrentInstance().openDialog("cadProprietario", options, null);
         return "";
     }
-    
-    
-    public void retornoDialogNovo(SelectEvent event){
+
+    public void retornoDialogNovo(SelectEvent event) {
         Proprietario proprietario = (Proprietario) event.getObject();
-        if (proprietario.getIdproprietario()!= null) {
+        if (proprietario.getIdproprietario() != null) {
             Mensagem.lancarMensagemInfo("Salvou", "Cadastro de Proprietario realizado com sucesso");
         }
         gerarListaProprietario();
     }
-    
-    public void retornoDialogAlteracao(SelectEvent event){
+
+    public void retornoDialogAlteracao(SelectEvent event) {
         Proprietario proprietario = (Proprietario) event.getObject();
-        if (proprietario.getIdproprietario()!= null) {
+        if (proprietario.getIdproprietario() != null) {
             Mensagem.lancarMensagemInfo("Salvou", "Alteração de Proprietario realizado com sucesso");
         }
         gerarListaProprietario();
     }
-    
-    
-    public void editar(Proprietario proprietario){
+
+    public void editar(Proprietario proprietario) {
         if (proprietario != null) {
             Map<String, Object> options = new HashMap<String, Object>();
             FacesContext fc = FacesContext.getCurrentInstance();
@@ -111,9 +104,8 @@ public class ProprietarioMB implements Serializable{
             RequestContext.getCurrentInstance().openDialog("cadProprietario", options, null);
         }
     }
-    
-    
-    public void excluir(Proprietario proprietario){
+
+    public void excluir(Proprietario proprietario) {
         proprietarioDao.remove(proprietario.getIdproprietario());
         Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
         gerarListaProprietario();

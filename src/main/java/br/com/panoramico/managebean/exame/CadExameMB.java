@@ -10,8 +10,6 @@ import br.com.panoramico.dao.ExameDao;
 import br.com.panoramico.dao.ExameDependenteDao;
 import br.com.panoramico.dao.MedicoDao;
 import br.com.panoramico.managebean.UsuarioLogadoMB;
-import br.com.panoramico.model.Associado;
-import br.com.panoramico.model.Dependente;
 import br.com.panoramico.model.Exame;
 import br.com.panoramico.model.Exameassociado;
 import br.com.panoramico.model.Examedependente;
@@ -33,8 +31,8 @@ import org.primefaces.context.RequestContext;
 
 @Named
 @ViewScoped
-public class CadExameMB implements Serializable{
-    
+public class CadExameMB implements Serializable {
+
     private Exame exame;
     private Medico medico;
     private Examedependente examedependente;
@@ -50,17 +48,16 @@ public class CadExameMB implements Serializable{
     private ExameDependenteDao exameDependenteDao;
     @Inject
     private UsuarioLogadoMB usuarioLogadoMB;
-    
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         exame = (Exame) session.getAttribute("exame");
         session.removeAttribute("exame");
         if (exame == null) {
             exame = new Exame();
-        }else{
+        } else {
             medico = (Medico) session.getAttribute("medico");
             session.removeAttribute("medico");
         }
@@ -138,21 +135,19 @@ public class CadExameMB implements Serializable{
     public void setExameDependenteDao(ExameDependenteDao exameDependenteDao) {
         this.exameDependenteDao = exameDependenteDao;
     }
-    
-    
-    
-    public void gerarListaMedicos(){
-        listaMedico = medicoDao.list("Select m from Medico m where m.situacao='Ativo'");
+
+    public void gerarListaMedicos() {
+        listaMedico = medicoDao.list("select m from Medico m where m.situacao='Ativo'");
         if (listaMedico == null) {
             listaMedico = new ArrayList<Medico>();
         }
     }
-    
-    public void cancelar(){
+
+    public void cancelar() {
         RequestContext.getCurrentInstance().closeDialog(new Exame());
     }
-    
-    public void salvar(){
+
+    public void salvar() {
         exame.setMedico(medico);
         String mensagem = validarDados();
         if (mensagem.length() < 5) {
@@ -160,8 +155,8 @@ public class CadExameMB implements Serializable{
             RequestContext.getCurrentInstance().closeDialog(exame);
         }
     }
-    
-    public String validarDados(){
+
+    public String validarDados() {
         String msg = "";
         if (exame.getData() == null) {
             msg = msg + " você não informou a data \r\n";
@@ -174,12 +169,12 @@ public class CadExameMB implements Serializable{
         }
         return msg;
     }
-    
+
     public void calcularValidade() {
         Calendar c = new GregorianCalendar();
         c.setTime(exame.getData());
         c.add(Calendar.DAY_OF_MONTH, 89);
         Date data = c.getTime();
-       exame.setDatavalidade(data);
+        exame.setDatavalidade(data);
     }
 }

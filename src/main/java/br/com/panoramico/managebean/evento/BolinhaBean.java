@@ -5,7 +5,6 @@
  */
 package br.com.panoramico.managebean.evento;
 
-
 public class BolinhaBean {
 
     private String cor;
@@ -27,5 +26,4 @@ public class BolinhaBean {
         this.caminho = caminho;
     }
 
-    
 }

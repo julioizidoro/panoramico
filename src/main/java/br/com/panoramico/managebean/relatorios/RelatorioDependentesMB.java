@@ -78,7 +78,7 @@ public class RelatorioDependentesMB implements Serializable {
     }
 
     public String gerarSQL() {
-        String sql = "SELECT distinct dependente.nome as nomedependente, dependente.datanascimento, dependente.matricula, cliente.nome as nomecliente"
+        String sql = "select distinct dependente.nome as nomedependente, dependente.datanascimento, dependente.matricula, cliente.nome as nomecliente"
                 + " from dependente"
                 + " join associado on dependente.associado_idassociado = associado.idassociado"
                 + " join cliente on associado.cliente_idcliente = cliente.idcliente";

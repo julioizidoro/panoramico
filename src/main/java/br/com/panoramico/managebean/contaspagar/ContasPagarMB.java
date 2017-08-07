@@ -31,8 +31,8 @@ import org.primefaces.event.SelectEvent;
 
 @Named
 @ViewScoped
-public class ContasPagarMB implements Serializable{
-    
+public class ContasPagarMB implements Serializable {
+
     private Contaspagar contaspagar;
     @EJB
     private ContasPagarDao contasPagarDao;
@@ -45,10 +45,9 @@ public class ContasPagarMB implements Serializable{
     private PlanoContaDao planoContaDao;
     private Date dataInicial;
     private Date dataFinal;
-    
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         gerarListaContasPagar();
         gerarListaPlanoContas();
     }
@@ -68,7 +67,7 @@ public class ContasPagarMB implements Serializable{
     public void setDataFinal(Date dataFinal) {
         this.dataFinal = dataFinal;
     }
-    
+
     public Planoconta getPlanoconta() {
         return planoconta;
     }
@@ -92,7 +91,7 @@ public class ContasPagarMB implements Serializable{
     public void setPlanoContaDao(PlanoContaDao planoContaDao) {
         this.planoContaDao = planoContaDao;
     }
-    
+
     public Contaspagar getContaspagar() {
         return contaspagar;
     }
@@ -124,48 +123,47 @@ public class ContasPagarMB implements Serializable{
     public void setUsuarioLogadoMB(UsuarioLogadoMB usuarioLogadoMB) {
         this.usuarioLogadoMB = usuarioLogadoMB;
     }
-    
-    public void gerarListaContasPagar(){
-        listaContasPagar = contasPagarDao.list("Select c from Contaspagar c Where c.situacao='PAGAR'");
+
+    public void gerarListaContasPagar() {
+        listaContasPagar = contasPagarDao.list("select c from Contaspagar c where c.situacao='PAGAR'");
         if (listaContasPagar == null) {
-            listaContasPagar = new ArrayList<Contaspagar>();
+            listaContasPagar = new ArrayList<>();
         }
     }
-    
-    public void gerarListaPlanoContas(){
-        listaPlanoContas = planoContaDao.list("Select p from Planoconta p");
+
+    public void gerarListaPlanoContas() {
+        listaPlanoContas = planoContaDao.list("select p from Planoconta p");
         if (listaPlanoContas == null) {
-            listaPlanoContas = new ArrayList<Planoconta>();
+            listaPlanoContas = new ArrayList<>();
         }
     }
-    
-    public void retornoDialogNovo(SelectEvent event){
+
+    public void retornoDialogNovo(SelectEvent event) {
         Contaspagar conta = (Contaspagar) event.getObject();
-        if (conta.getIdcontaspagar()!= null) {
+        if (conta.getIdcontaspagar() != null) {
             Mensagem.lancarMensagemInfo("Salvou", "Cadastro de uma conta a pagar realizado com sucesso");
         }
         gerarListaContasPagar();
     }
-    
-    public void retornoDialogPagamento(SelectEvent event){
+
+    public void retornoDialogPagamento(SelectEvent event) {
         Pagamento pagamento = (Pagamento) event.getObject();
-        if (pagamento.getIdpagamento()!= null) {
+        if (pagamento.getIdpagamento() != null) {
             listaContasPagar = null;
             Mensagem.lancarMensagemInfo("Salvou", "Pagamento de uma conta a pagar realizado com sucesso");
         }
         gerarListaContasPagar();
     }
-    
-    public void retornoDialogAlteracao(SelectEvent event){
+
+    public void retornoDialogAlteracao(SelectEvent event) {
         Contaspagar contaspagar = (Contaspagar) event.getObject();
-        if (contaspagar.getIdcontaspagar()!= null) {
+        if (contaspagar.getIdcontaspagar() != null) {
             Mensagem.lancarMensagemInfo("Salvou", "Alteração de uma conta a pagar realizado com sucesso");
         }
         gerarListaContasPagar();
     }
-    
-    
-    public void editar(Contaspagar contaspagar){
+
+    public void editar(Contaspagar contaspagar) {
         if (contaspagar != null) {
             Map<String, Object> options = new HashMap<String, Object>();
             FacesContext fc = FacesContext.getCurrentInstance();
@@ -176,54 +174,52 @@ public class ContasPagarMB implements Serializable{
         }
     }
 
-    
     public String novoPagamento(Contaspagar contaspagar) {
         if (contaspagar != null) {
-           Map<String, Object> options = new HashMap<String, Object>();
-           options.put("contentWidth", 500);
-           FacesContext fc = FacesContext.getCurrentInstance();
-           HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
-           session.setAttribute("contaspagar", contaspagar);
-           RequestContext.getCurrentInstance().openDialog("cadPagamentos", options, null);
+            Map<String, Object> options = new HashMap<String, Object>();
+            options.put("contentWidth", 500);
+            FacesContext fc = FacesContext.getCurrentInstance();
+            HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+            session.setAttribute("contaspagar", contaspagar);
+            RequestContext.getCurrentInstance().openDialog("cadPagamentos", options, null);
         }
         return "";
     }
-    
+
     public String novoCadastroContasPagar() {
         Map<String, Object> options = new HashMap<String, Object>();
         options.put("contentWidth", 580);
         RequestContext.getCurrentInstance().openDialog("cadContasPagar", options, null);
         return "";
     }
-    
-    
+
     public String novoRelatorio() {
         Map<String, Object> options = new HashMap<String, Object>();
         options.put("contentWidth", 580);
         RequestContext.getCurrentInstance().openDialog("imprimirContasPagar", options, null);
         return "";
     }
-    
+
     public String visualizarPagamento(Contaspagar contaspagar) {
         if (contaspagar != null) {
-           Map<String, Object> options = new HashMap<String, Object>();
-           options.put("contentWidth", 500);
-           FacesContext fc = FacesContext.getCurrentInstance();
-           HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
-           session.setAttribute("contaspagar", contaspagar);
-           RequestContext.getCurrentInstance().openDialog("consPagamentos", options, null);
+            Map<String, Object> options = new HashMap<String, Object>();
+            options.put("contentWidth", 500);
+            FacesContext fc = FacesContext.getCurrentInstance();
+            HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+            session.setAttribute("contaspagar", contaspagar);
+            RequestContext.getCurrentInstance().openDialog("consPagamentos", options, null);
         }
         return "";
     }
-    
-    public void excluir(Contaspagar contaspagar){
+
+    public void excluir(Contaspagar contaspagar) {
         contasPagarDao.remove(contaspagar.getIdcontaspagar());
         Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
         listaContasPagar.remove(contaspagar);
     }
-    
-    public void filtrar(){
-        String sql = "Select c from Contaspagar c";
+
+    public void filtrar() {
+        String sql = "select c from Contaspagar c";
         if (planoconta.getIdplanoconta() != null || dataInicial != null || dataFinal != null) {
             sql = sql + " where";
         }
@@ -240,8 +236,8 @@ public class ContasPagarMB implements Serializable{
         listaContasPagar = contasPagarDao.list(sql);
         Mensagem.lancarMensagemInfo("", "Filtrado com sucesso");
     }
-    
-    public void limparFiltro(){
+
+    public void limparFiltro() {
         planoconta = null;
         dataFinal = null;
         dataInicial = null;

@@ -7,7 +7,6 @@ package br.com.panoramico.managebean.cadastro;
 
 import br.com.panoramico.dao.AmbienteDao;
 import br.com.panoramico.model.Ambiente;
-import br.com.panoramico.model.Cliente;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -21,19 +20,17 @@ import org.primefaces.context.RequestContext;
  *
  * @author Julio
  */
-
 @Named
 @ViewScoped
-public class CadAmbienteMB implements Serializable{
-    
+public class CadAmbienteMB implements Serializable {
+
     @EJB
     private AmbienteDao ambienteDao;
     private Ambiente ambiente;
-    
-    
+
     @PostConstruct
-    public void init(){
-         FacesContext fc = FacesContext.getCurrentInstance();
+    public void init() {
+        FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         ambiente = (Ambiente) session.getAttribute("ambiente");
         session.removeAttribute("ambiente");
@@ -57,13 +54,13 @@ public class CadAmbienteMB implements Serializable{
     public void setAmbiente(Ambiente ambiente) {
         this.ambiente = ambiente;
     }
-    
-    public void salvar(){
+
+    public void salvar() {
         ambiente = ambienteDao.update(ambiente);
         RequestContext.getCurrentInstance().closeDialog(ambiente);
     }
-    
-    public void cancelar(){
+
+    public void cancelar() {
         RequestContext.getCurrentInstance().closeDialog(ambiente);
     }
 }

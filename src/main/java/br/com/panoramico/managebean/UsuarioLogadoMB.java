@@ -27,11 +27,10 @@ import org.primefaces.event.SelectEvent;
  *
  * @author Kamilla Rodrigues
  */
-
 @Named
 @SessionScoped
-public class UsuarioLogadoMB implements Serializable{
-    
+public class UsuarioLogadoMB implements Serializable {
+
     private Usuario usuario;
     @EJB
     private UsuarioDao usuarioDao;
@@ -73,8 +72,6 @@ public class UsuarioLogadoMB implements Serializable{
         this.excluir = excluir;
     }
 
-   
-    
     public String getConfirmaNovaSenha() {
         return confirmaNovaSenha;
     }
@@ -99,8 +96,6 @@ public class UsuarioLogadoMB implements Serializable{
         this.senhaAtual = senhaAtual;
     }
 
-    
-    
     public String getNomeCliente() {
         return nomeCliente;
     }
@@ -140,9 +135,7 @@ public class UsuarioLogadoMB implements Serializable{
     public void setCancelamento(boolean cancelamento) {
         this.cancelamento = cancelamento;
     }
-    
-    
-    
+
     public String validarUsuario() {
         if ((usuario.getLogin() != null) && (usuario.getSenha() == null)) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro!", "Login Invalido."));
@@ -155,7 +148,7 @@ public class UsuarioLogadoMB implements Serializable{
                 FacesMessage mensagem = new FacesMessage("Erro: " + ex);
                 FacesContext.getCurrentInstance().addMessage(null, mensagem);
             }
-            List<Usuario> listaUsuario = usuarioDao.list("Select u from Usuario u where u.login='" + usuario.getLogin() + "' and u.senha='" + senha + "'");
+            List<Usuario> listaUsuario = usuarioDao.list("select u from Usuario u where u.login='" + usuario.getLogin() + "' and u.senha='" + senha + "'");
             if (listaUsuario == null || listaUsuario.isEmpty()) {
                 Mensagem.lancarMensagemInfo("", "Acesso negado!!");
             } else {
@@ -172,9 +165,8 @@ public class UsuarioLogadoMB implements Serializable{
         usuario = new Usuario();
         return "";
     }
-     
-    
-     public void validarTrocarSenha() {
+
+    public void validarTrocarSenha() {
         if ((!usuario.getLogin().equalsIgnoreCase("")) && (usuario.getSenha().equalsIgnoreCase("")) || (usuario.getLogin().equalsIgnoreCase("")) && (!usuario.getSenha().equalsIgnoreCase(""))) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro!", "Login Invalido."));
         } else {
@@ -187,198 +179,197 @@ public class UsuarioLogadoMB implements Serializable{
                 FacesContext.getCurrentInstance().addMessage(null, mensagem);
             }
             usuario.setSenha(senha);
-                usuario = usuarioDao.find("Select u from Usuario u where u.login='"+ usuario.getLogin() +"' and u.senha='"+ usuario.getSenha()+"'");
-                if (usuario == null) {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Acesso Negado."));
-                }else{ 
-                	Map<String, Object> options = new HashMap<String, Object>();
-                	options.put("contentWidth", 400);
-                	options.put("closable", false);
-                	RequestContext.getCurrentInstance().openDialog("cadNovaSenha", options, null);
-                }
+            usuario = usuarioDao.find("select u from Usuario u where u.login='" + usuario.getLogin() + "' and u.senha='" + usuario.getSenha() + "'");
+            if (usuario == null) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Acesso Negado."));
+            } else {
+                Map<String, Object> options = new HashMap<String, Object>();
+                options.put("contentWidth", 400);
+                options.put("closable", false);
+                RequestContext.getCurrentInstance().openDialog("cadNovaSenha", options, null);
+            }
 
         }
     }
-     public String confirmaTrocaSenha() {
-    	 String repetirSenhaAtual = "";
-    	 try {
-			repetirSenhaAtual = Criptografia.encript(senhaAtual);
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	if (repetirSenhaAtual.equalsIgnoreCase(usuario.getSenha())) {
-    	
-	        if ((novaSenha.length() > 0) && (confirmaNovaSenha.length() > 0)) {
-                    if (novaSenha.equalsIgnoreCase(confirmaNovaSenha)) { 
-	                String senha = "";
-	                try {
-	                    senha = Criptografia.encript(novaSenha);
-	                } catch (NoSuchAlgorithmException ex) {
-	                    Logger.getLogger(UsuarioLogadoMB.class.getName()).log(Level.SEVERE, null, ex);
-	                    FacesMessage mensagem = new FacesMessage("Erro: " + ex);
-	                    FacesContext.getCurrentInstance().addMessage(null, mensagem);
-	                }
-                            usuario.setSenha(senha);
-	                    usuario = usuarioDao.update(usuario);
-	                    novaSenha = "";
-	                    confirmaNovaSenha = "";
-                            usuario = new Usuario();
-                            RequestContext.getCurrentInstance().closeDialog(usuario);
-                            return "";
-	            } else {
-	                novaSenha = "";
-	                confirmaNovaSenha = "";
-	                senhaAtual = "";
-                        usuario = new Usuario();
-	                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Acesso Negado."));
-	            }
-	
-	        } else {
-	        	FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Acesso Negado."));
-	        }
-    	}else{
-    		
-    		Mensagem.lancarMensagemInfo("Alteração Negada", "");
-    		senhaAtual = "";
-    		novaSenha = "";
-    		confirmaNovaSenha = "";
-                usuario = new Usuario();
-    	}
+
+    public String confirmaTrocaSenha() {
+        String repetirSenhaAtual = "";
+        try {
+            repetirSenhaAtual = Criptografia.encript(senhaAtual);
+        } catch (NoSuchAlgorithmException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        if (repetirSenhaAtual.equalsIgnoreCase(usuario.getSenha())) {
+
+            if ((novaSenha.length() > 0) && (confirmaNovaSenha.length() > 0)) {
+                if (novaSenha.equalsIgnoreCase(confirmaNovaSenha)) {
+                    String senha = "";
+                    try {
+                        senha = Criptografia.encript(novaSenha);
+                    } catch (NoSuchAlgorithmException ex) {
+                        Logger.getLogger(UsuarioLogadoMB.class.getName()).log(Level.SEVERE, null, ex);
+                        FacesMessage mensagem = new FacesMessage("Erro: " + ex);
+                        FacesContext.getCurrentInstance().addMessage(null, mensagem);
+                    }
+                    usuario.setSenha(senha);
+                    usuario = usuarioDao.update(usuario);
+                    novaSenha = "";
+                    confirmaNovaSenha = "";
+                    usuario = new Usuario();
+                    RequestContext.getCurrentInstance().closeDialog(usuario);
+                    return "";
+                } else {
+                    novaSenha = "";
+                    confirmaNovaSenha = "";
+                    senhaAtual = "";
+                    usuario = new Usuario();
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Acesso Negado."));
+                }
+
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Acesso Negado."));
+            }
+        } else {
+
+            Mensagem.lancarMensagemInfo("Alteração Negada", "");
+            senhaAtual = "";
+            novaSenha = "";
+            confirmaNovaSenha = "";
+            usuario = new Usuario();
+        }
         return "";
     }
-    
-     public String cancelarTrocaSenha(){
+
+    public String cancelarTrocaSenha() {
         usuario = new Usuario();
-        novaSenha="";
-        confirmaNovaSenha="";
+        novaSenha = "";
+        confirmaNovaSenha = "";
         RequestContext.getCurrentInstance().closeDialog(null);
         return "";
     }
-     
-     
-     public void retornoDialogAlteracaoSenha(SelectEvent event) {
-         Usuario usuario = (Usuario) event.getObject();
-         if (usuario != null) {
-         	Mensagem.lancarMensagemInfo("Senha", "alterada com sucesso");
-         }
-     }
-     
-     
-     public String deslogar(){
-         Map<String, Object> sessionMap = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();  
-         sessionMap.clear();  
-         return "index";
-     }
-     
-     public void verificarPerfilUsuario(Usuario usuario){
-         if(usuario.getPerfil().getAcesso().getIdacesso() == 1) {
-             cadastrar = true;
-             editar = true;
-             excluir = true;
-             financeiro = true;
-         }else if (usuario.getPerfil().getAcesso().getIdacesso() == 2) {
-             editar = true;
-             excluir = true;
-             financeiro = true;
-         }else if (usuario.getPerfil().getAcesso().getIdacesso() == 3) {
-             cadastrar = true;
-             excluir = true;
-             financeiro = true;
-         }else if (usuario.getPerfil().getAcesso().getIdacesso() == 4) {
-             financeiro = true;
-             excluir = true;
-         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 5){
-             excluir = true;
-         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 6){
-             editar = true;
-             financeiro = true;
-         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 7){
-             cadastrar = true;
-             financeiro = true;
-         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 8){
-             financeiro = true;
-         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 9){
-             cadastrar = true;
-             editar = true;
-             excluir = true;
-         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 10){
-             editar = true;
-             excluir = true;
-         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 11){
-             cadastrar = true;
-             excluir = true;
-         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 12){
-             excluir = true;
-         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 13){
-             cadastrar = true;
-             editar = true;
-         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 14){
-             editar = true;
-         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 15){
-             cadastrar = true;
-         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 17){
-             cadastrar = true;
-             editar = true;
-             excluir = true;
-             financeiro = true;
-             cancelamento = true;
-         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 18){
-             cadastrar = true;
-             editar = true;
-             excluir = true;
-             cancelamento = true;
-         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 19){
-             cadastrar = true;
-             editar = true;
-             financeiro = true;
-             cancelamento = true;
-         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 20){
-             cadastrar = true;
-             editar = true;
-             cancelamento = true;
-         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 21){
-             cadastrar = true;
-             excluir = true;
-             financeiro = true;
-             cancelamento = true;
-         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 22){
-             cadastrar = true;
-             excluir = true;
-             cancelamento = true;
-         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 23){
-             cadastrar = true;
-             financeiro = true;
-             cancelamento = true;
-         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 24){
-             cadastrar = true;
-             cancelamento = true;
-         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 25){
-             editar = true;
-             excluir = true;
-             financeiro = true;
-             cancelamento = true;
-         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 26){
-             editar = true;
-             excluir = true;
-             cancelamento = true;
-         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 27){
-             editar = true;
-             financeiro = true;
-             cancelamento = true;
-         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 28){
-             editar = true;
-             cancelamento = true;
-         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 29){
-             excluir = true;
-             financeiro = true;
-             cancelamento = true;
-         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 30){
-             excluir = true;
-             cancelamento = true;
-         }else if(usuario.getPerfil().getAcesso().getIdacesso() == 31){
-             financeiro = true;
-             cancelamento = true;
-         }
-     }
+
+    public void retornoDialogAlteracaoSenha(SelectEvent event) {
+        Usuario usuario = (Usuario) event.getObject();
+        if (usuario != null) {
+            Mensagem.lancarMensagemInfo("Senha", "alterada com sucesso");
+        }
+    }
+
+    public String deslogar() {
+        Map<String, Object> sessionMap = FacesContext.getCurrentInstance().getExternalContext().getSessionMap();
+        sessionMap.clear();
+        return "index";
+    }
+
+    public void verificarPerfilUsuario(Usuario usuario) {
+        if (usuario.getPerfil().getAcesso().getIdacesso() == 1) {
+            cadastrar = true;
+            editar = true;
+            excluir = true;
+            financeiro = true;
+        } else if (usuario.getPerfil().getAcesso().getIdacesso() == 2) {
+            editar = true;
+            excluir = true;
+            financeiro = true;
+        } else if (usuario.getPerfil().getAcesso().getIdacesso() == 3) {
+            cadastrar = true;
+            excluir = true;
+            financeiro = true;
+        } else if (usuario.getPerfil().getAcesso().getIdacesso() == 4) {
+            financeiro = true;
+            excluir = true;
+        } else if (usuario.getPerfil().getAcesso().getIdacesso() == 5) {
+            excluir = true;
+        } else if (usuario.getPerfil().getAcesso().getIdacesso() == 6) {
+            editar = true;
+            financeiro = true;
+        } else if (usuario.getPerfil().getAcesso().getIdacesso() == 7) {
+            cadastrar = true;
+            financeiro = true;
+        } else if (usuario.getPerfil().getAcesso().getIdacesso() == 8) {
+            financeiro = true;
+        } else if (usuario.getPerfil().getAcesso().getIdacesso() == 9) {
+            cadastrar = true;
+            editar = true;
+            excluir = true;
+        } else if (usuario.getPerfil().getAcesso().getIdacesso() == 10) {
+            editar = true;
+            excluir = true;
+        } else if (usuario.getPerfil().getAcesso().getIdacesso() == 11) {
+            cadastrar = true;
+            excluir = true;
+        } else if (usuario.getPerfil().getAcesso().getIdacesso() == 12) {
+            excluir = true;
+        } else if (usuario.getPerfil().getAcesso().getIdacesso() == 13) {
+            cadastrar = true;
+            editar = true;
+        } else if (usuario.getPerfil().getAcesso().getIdacesso() == 14) {
+            editar = true;
+        } else if (usuario.getPerfil().getAcesso().getIdacesso() == 15) {
+            cadastrar = true;
+        } else if (usuario.getPerfil().getAcesso().getIdacesso() == 17) {
+            cadastrar = true;
+            editar = true;
+            excluir = true;
+            financeiro = true;
+            cancelamento = true;
+        } else if (usuario.getPerfil().getAcesso().getIdacesso() == 18) {
+            cadastrar = true;
+            editar = true;
+            excluir = true;
+            cancelamento = true;
+        } else if (usuario.getPerfil().getAcesso().getIdacesso() == 19) {
+            cadastrar = true;
+            editar = true;
+            financeiro = true;
+            cancelamento = true;
+        } else if (usuario.getPerfil().getAcesso().getIdacesso() == 20) {
+            cadastrar = true;
+            editar = true;
+            cancelamento = true;
+        } else if (usuario.getPerfil().getAcesso().getIdacesso() == 21) {
+            cadastrar = true;
+            excluir = true;
+            financeiro = true;
+            cancelamento = true;
+        } else if (usuario.getPerfil().getAcesso().getIdacesso() == 22) {
+            cadastrar = true;
+            excluir = true;
+            cancelamento = true;
+        } else if (usuario.getPerfil().getAcesso().getIdacesso() == 23) {
+            cadastrar = true;
+            financeiro = true;
+            cancelamento = true;
+        } else if (usuario.getPerfil().getAcesso().getIdacesso() == 24) {
+            cadastrar = true;
+            cancelamento = true;
+        } else if (usuario.getPerfil().getAcesso().getIdacesso() == 25) {
+            editar = true;
+            excluir = true;
+            financeiro = true;
+            cancelamento = true;
+        } else if (usuario.getPerfil().getAcesso().getIdacesso() == 26) {
+            editar = true;
+            excluir = true;
+            cancelamento = true;
+        } else if (usuario.getPerfil().getAcesso().getIdacesso() == 27) {
+            editar = true;
+            financeiro = true;
+            cancelamento = true;
+        } else if (usuario.getPerfil().getAcesso().getIdacesso() == 28) {
+            editar = true;
+            cancelamento = true;
+        } else if (usuario.getPerfil().getAcesso().getIdacesso() == 29) {
+            excluir = true;
+            financeiro = true;
+            cancelamento = true;
+        } else if (usuario.getPerfil().getAcesso().getIdacesso() == 30) {
+            excluir = true;
+            cancelamento = true;
+        } else if (usuario.getPerfil().getAcesso().getIdacesso() == 31) {
+            financeiro = true;
+            cancelamento = true;
+        }
+    }
 }

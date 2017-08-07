@@ -31,8 +31,8 @@ import org.primefaces.event.SelectEvent;
 
 @Named
 @ViewScoped
-public class SolicitacaoExameMB implements Serializable{
-    
+public class SolicitacaoExameMB implements Serializable {
+
     private Exame exame;
     private List<Exame> listaSolicitacao;
     @EJB
@@ -47,14 +47,12 @@ public class SolicitacaoExameMB implements Serializable{
     private ExameConvidadoDao exameConvidadoDao;
     @Inject
     private UsuarioLogadoMB usuarioLogadoMB;
-    
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         gerarListaSolicitacoes();
     }
 
-    
     public Exame getExame() {
         return exame;
     }
@@ -71,7 +69,6 @@ public class SolicitacaoExameMB implements Serializable{
         this.listaSolicitacao = listaSolicitacao;
     }
 
-    
     public ExameDao getExameDao() {
         return exameDao;
     }
@@ -111,65 +108,64 @@ public class SolicitacaoExameMB implements Serializable{
     public void setExameAssociadoDao(ExameAssociadoDao exameAssociadoDao) {
         this.exameAssociadoDao = exameAssociadoDao;
     }
-    
-     public UsuarioLogadoMB getUsuarioLogadoMB() {
+
+    public UsuarioLogadoMB getUsuarioLogadoMB() {
         return usuarioLogadoMB;
     }
 
     public void setUsuarioLogadoMB(UsuarioLogadoMB usuarioLogadoMB) {
         this.usuarioLogadoMB = usuarioLogadoMB;
     }
-     
-    
-    public void gerarListaSolicitacoes(){
-        listaSolicitacao = exameDao.list("Select e from Exame e where e.situacao is null");
+
+    public void gerarListaSolicitacoes() {
+        listaSolicitacao = exameDao.list("select e from Exame e where e.situacao is null");
         if (listaSolicitacao == null || listaSolicitacao.isEmpty()) {
             listaSolicitacao = new ArrayList<Exame>();
         }
-    }  
-    
+    }
+
     public String novaSolicitacaoExame() {
         if (usuarioLogadoMB.getUsuario().getPerfil().getNome().equalsIgnoreCase("Administrativo")
                 || usuarioLogadoMB.getUsuario().getPerfil().getNome().equalsIgnoreCase("Gerencial")) {
             Map<String, Object> options = new HashMap<String, Object>();
             options.put("contentWidth", 545);
             RequestContext.getCurrentInstance().openDialog("cadSolicitacaoExame", options, null);
-        }else{
+        } else {
             Mensagem.lancarMensagemInfo("", "Acesso Negado!!");
         }
         return "";
     }
-    
-    public void retornoDialogNovo(SelectEvent event){
+
+    public void retornoDialogNovo(SelectEvent event) {
         Exame exame = (Exame) event.getObject();
-        if (exame.getIdexame()!= null) {
+        if (exame.getIdexame() != null) {
             Mensagem.lancarMensagemInfo("Salvou", "Solicitação de exame realizado com sucesso");
         }
         gerarListaSolicitacoes();
     }
-    
-    public void retornoDialogAlteracao(SelectEvent event){
+
+    public void retornoDialogAlteracao(SelectEvent event) {
         Exame exame = (Exame) event.getObject();
-        if (exame.getIdexame()!= null) {
+        if (exame.getIdexame() != null) {
             Mensagem.lancarMensagemInfo("Salvou", "Alteração de exame realizado com sucesso");
         }
         gerarListaSolicitacoes();
     }
-    
-      public void excluir(Exame exame){
-        if (exame.getExamedependente()!=null) {
+
+    public void excluir(Exame exame) {
+        if (exame.getExamedependente() != null) {
             exameDependenteDao.remove(exame.getExamedependente().getIdexamedependente());
-        }else if (exame.getExameassociado()!=null) {
+        } else if (exame.getExameassociado() != null) {
             exameAssociadoDao.remove(exame.getExameassociado().getIdexameassociado());
-        }else{
+        } else {
             exameConvidadoDao.remove(exame.getExameconvidado().getIdexameconvidado());
         }
         exameDao.remove(exame.getIdexame());
         Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
         gerarListaSolicitacoes();
     }
-     
-     public void editar(Exame exame){
+
+    public void editar(Exame exame) {
         if (usuarioLogadoMB.getUsuario().getPerfil().getNome().equalsIgnoreCase("Administrativo")
                 || usuarioLogadoMB.getUsuario().getPerfil().getNome().equalsIgnoreCase("Gerencial")) {
             Map<String, Object> options = new HashMap<String, Object>();
@@ -177,29 +173,28 @@ public class SolicitacaoExameMB implements Serializable{
             HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
             session.setAttribute("exame", exame);
             options.put("contentWidth", 545);
-            if(exame.getExameconvidado()!=null){
+            if (exame.getExameconvidado() != null) {
                 RequestContext.getCurrentInstance().openDialog("cadSolicitacaoExameConvidado", options, null);
-            }else{
+            } else {
                 RequestContext.getCurrentInstance().openDialog("cadSolicitacaoExame", options, null);
             }
-        }else{
+        } else {
             Mensagem.lancarMensagemInfo("", "Acesso Negado!!");
         }
     }
-     
-    public Float calcularTotal(Exame exame){
+
+    public Float calcularTotal(Exame exame) {
         return exame.getValor() - exame.getDesconto();
     }
-    
-    
-    public String nomeCliente(Exame exame){
-       if(exame.getExameassociado()!=null){
-           return exame.getExameassociado().getAssociado().getCliente().getNome();
-       }else if(exame.getExamedependente()!=null){
-           return exame.getExamedependente().getDependente().getNome();
-       }else if(exame.getExameconvidado()!=null){
-           return exame.getExameconvidado().getEventoconvidados().getNome();
-       }
-       return "";
+
+    public String nomeCliente(Exame exame) {
+        if (exame.getExameassociado() != null) {
+            return exame.getExameassociado().getAssociado().getCliente().getNome();
+        } else if (exame.getExamedependente() != null) {
+            return exame.getExamedependente().getDependente().getNome();
+        } else if (exame.getExameconvidado() != null) {
+            return exame.getExameconvidado().getEventoconvidados().getNome();
+        }
+        return "";
     }
 }

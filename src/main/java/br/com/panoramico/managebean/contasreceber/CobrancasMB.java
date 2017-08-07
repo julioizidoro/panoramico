@@ -25,7 +25,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
-import sun.misc.Request;
 
 @Named
 @ViewScoped
@@ -221,20 +220,20 @@ public class CobrancasMB implements Serializable{
             listaHistoricoCobranca = new ArrayList<>();
             adicionado = false;
         }else{
-            listaHistoricoCobranca = historicoCobrancaDao.list("Select h From Historicocobranca h Where h.cobranca.idcobranca="
+            listaHistoricoCobranca = historicoCobrancaDao.list("select h from Historicocobranca h where h.cobranca.idcobranca="
             + cobranca.getIdcobranca());
             if (listaHistoricoCobranca == null || listaHistoricoCobranca.isEmpty()) {
-                listaHistoricoCobranca = new ArrayList<Historicocobranca>();
+                listaHistoricoCobranca = new ArrayList<>();
             }
             adicionado = true;
         }
     }
     
     public void gerarListaCobrancasParcelas(){
-        listaCobrancasParcelas = cobrancasParcelasDao.list("Select c From Cobrancasparcelas c Where c.contasreceber.idcontasreceber="
+        listaCobrancasParcelas = cobrancasParcelasDao.list("select c from Cobrancasparcelas c where c.contasreceber.idcontasreceber="
         + contasreceber.getIdcontasreceber());
         if (listaCobrancasParcelas == null || listaCobrancasParcelas.isEmpty()) {
-            listaCobrancasParcelas = new ArrayList<Cobrancasparcelas>();
+            listaCobrancasParcelas = new ArrayList<>();
         }
         for (int i = 0; i < listaCobrancasParcelas.size(); i++) {
             cobranca = listaCobrancasParcelas.get(i).getCobranca();

@@ -28,21 +28,19 @@ import org.primefaces.event.SelectEvent;
  *
  * @author Julio
  */
-
 @Named
 @ViewScoped
-public class AmbienteMB implements  Serializable{
-    
+public class AmbienteMB implements Serializable {
+
     @EJB
     private AmbienteDao ambienteDao;
     private Ambiente ambiente;
     private List<Ambiente> listaAmbiente;
     @EJB
     private EventoDao eventoDao;
-    
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         gerarListaAmbiente();
     }
 
@@ -69,41 +67,38 @@ public class AmbienteMB implements  Serializable{
     public void setListaAmbiente(List<Ambiente> listaAmbiente) {
         this.listaAmbiente = listaAmbiente;
     }
-    
-    public void gerarListaAmbiente(){
-        listaAmbiente = ambienteDao.list("Select c from Ambiente c");
+
+    public void gerarListaAmbiente() {
+        listaAmbiente = ambienteDao.list("select c from Ambiente c");
         if (listaAmbiente == null) {
             listaAmbiente = new ArrayList<Ambiente>();
         }
     }
-    
-    
+
     public String novoCadastroAmbiente() {
         Map<String, Object> options = new HashMap<String, Object>();
         options.put("contentWidth", 480);
         RequestContext.getCurrentInstance().openDialog("cadAmbiente", options, null);
         return "";
     }
-    
-    
-    public void retornoDialogNovo(SelectEvent event){
+
+    public void retornoDialogNovo(SelectEvent event) {
         Ambiente ambiente = (Ambiente) event.getObject();
-        if (ambiente.getIdambiente()!= null) {
+        if (ambiente.getIdambiente() != null) {
             Mensagem.lancarMensagemInfo("Salvou", "Cadastro de Ambiente realizado com sucesso");
         }
         gerarListaAmbiente();
     }
-    
-    public void retornoDialogAlteracao(SelectEvent event){
+
+    public void retornoDialogAlteracao(SelectEvent event) {
         Ambiente ambiente = (Ambiente) event.getObject();
-        if (ambiente.getIdambiente()!= null) {
+        if (ambiente.getIdambiente() != null) {
             Mensagem.lancarMensagemInfo("Salvou", "Alteração do Ambiente realizado com sucesso");
         }
         gerarListaAmbiente();
     }
-    
-    
-    public void editar(Ambiente ambiente){
+
+    public void editar(Ambiente ambiente) {
         if (ambiente != null) {
             Map<String, Object> options = new HashMap<String, Object>();
             FacesContext fc = FacesContext.getCurrentInstance();
@@ -113,15 +108,14 @@ public class AmbienteMB implements  Serializable{
             RequestContext.getCurrentInstance().openDialog("cadAmbiente", options, null);
         }
     }
-    
-    
-    public void excluir(Ambiente ambiente){
-        List<Evento> listaEvento = eventoDao.list("Select e From Evento e Where e.ambiente.idambiente="+ ambiente.getIdambiente());
+
+    public void excluir(Ambiente ambiente) {
+        List<Evento> listaEvento = eventoDao.list("select e from Evento e where e.ambiente.idambiente=" + ambiente.getIdambiente());
         if (listaEvento == null || listaEvento.isEmpty()) {
             ambienteDao.remove(ambiente.getIdambiente());
             Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
             gerarListaAmbiente();
-        }else{
+        } else {
             Mensagem.lancarMensagemInfo("Atenção", " este ambiente não pode ser excluido");
         }
     }

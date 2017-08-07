@@ -27,12 +27,10 @@ import org.primefaces.context.RequestContext;
  *
  * @author Julio
  */
-
 @Named
 @ViewScoped
-public class CadEmpresaMB implements  Serializable{
-    
-    
+public class CadEmpresaMB implements Serializable {
+
     @EJB
     private EmpresaDao empresaDao;
     private Empresa empresa;
@@ -44,17 +42,16 @@ public class CadEmpresaMB implements  Serializable{
     private List<Banco> listaBanco;
     @EJB
     private BancoDao bancoDao;
-    
-    
+
     @PostConstruct
-    public void init(){
-         FacesContext fc = FacesContext.getCurrentInstance();
-         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
-         empresa =  (Empresa) session.getAttribute("empresa");
-         session.removeAttribute("empresa");
+    public void init() {
+        FacesContext fc = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+        empresa = (Empresa) session.getAttribute("empresa");
+        session.removeAttribute("empresa");
         if (empresa == null) {
             empresa = new Empresa();
-        }else{
+        } else {
             plano = empresa.getPlano();
         }
         gerarListaPlano();
@@ -124,47 +121,43 @@ public class CadEmpresaMB implements  Serializable{
     public void setBancoDao(BancoDao bancoDao) {
         this.bancoDao = bancoDao;
     }
-    
-    
-    
-    
-     public void salvar(){
-         String msg = validarDaodos();
-         if (msg.length() < 5) {
+
+    public void salvar() {
+        String msg = validarDaodos();
+        if (msg.length() < 5) {
             empresa.setPlano(plano);
             empresa = empresaDao.update(empresa);
             RequestContext.getCurrentInstance().closeDialog(empresa);
-         }else{
-             Mensagem.lancarMensagemInfo("", msg);
-         }
+        } else {
+            Mensagem.lancarMensagemInfo("", msg);
+        }
     }
-     
-     public void cancelar(){
-         RequestContext.getCurrentInstance().closeDialog(new Empresa());
-     }
-     
-     
-     public String validarDaodos(){
-         String mensagem = "";
-         
-         if (empresa.getRazaosocial().equalsIgnoreCase("")) {
-             mensagem = mensagem + " Você não informou a razão social \r\n";
-         }
-         return mensagem;
-     }
-     
-     public void gerarListaPlano(){
-         listaPlano = planoDao.list("Select p from Plano p");
-         if (listaPlano == null || listaPlano.isEmpty()) {
-             listaPlano = new ArrayList<Plano>();
-         }
-     }
-     
-     public void gerarListaBanco(){
-         listaBanco = bancoDao.list("Select b from Banco b");
-         if (listaBanco == null || listaBanco.isEmpty()) {
-             listaBanco = new ArrayList<Banco>();
-         }
-     }
-    
+
+    public void cancelar() {
+        RequestContext.getCurrentInstance().closeDialog(new Empresa());
+    }
+
+    public String validarDaodos() {
+        String mensagem = "";
+
+        if (empresa.getRazaosocial().equalsIgnoreCase("")) {
+            mensagem = mensagem + " Você não informou a razão social \r\n";
+        }
+        return mensagem;
+    }
+
+    public void gerarListaPlano() {
+        listaPlano = planoDao.list("select p from Plano p");
+        if (listaPlano == null || listaPlano.isEmpty()) {
+            listaPlano = new ArrayList<Plano>();
+        }
+    }
+
+    public void gerarListaBanco() {
+        listaBanco = bancoDao.list("select b from Banco b");
+        if (listaBanco == null || listaBanco.isEmpty()) {
+            listaBanco = new ArrayList<Banco>();
+        }
+    }
+
 }

@@ -11,33 +11,30 @@ import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
 
 /**
  *
  * @author Julio
  */
-
 @Named
 @ViewScoped
-public class CadProprietarioMB implements  Serializable{
-    
+public class CadProprietarioMB implements Serializable {
+
     @EJB
     private ProprietarioDao proprietarioDao;
     private Proprietario proprietario;
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         proprietario = proprietarioDao.find(1);
         if (proprietario == null) {
             proprietario = new Proprietario();
         }
     }
- 
+
     public Proprietario getProprietario() {
         return proprietario;
     }
@@ -53,20 +50,18 @@ public class CadProprietarioMB implements  Serializable{
     public void setProprietarioDao(ProprietarioDao proprietarioDao) {
         this.proprietarioDao = proprietarioDao;
     }
-    
-    
-    
+
     /**
      *
      */
-    public void salvar(){ 
-      proprietario =  proprietarioDao.update(proprietario);
-      Mensagem.lancarMensagemInfo("Salvou", "Proprietario cadastrado com sucesso!!");
-      proprietario = new Proprietario();
-      RequestContext.getCurrentInstance().closeDialog(proprietario);
+    public void salvar() {
+        proprietario = proprietarioDao.update(proprietario);
+        Mensagem.lancarMensagemInfo("Salvou", "Proprietario cadastrado com sucesso!!");
+        proprietario = new Proprietario();
+        RequestContext.getCurrentInstance().closeDialog(proprietario);
     }
-    
-    public void cancelar(){
+
+    public void cancelar() {
         RequestContext.getCurrentInstance().closeDialog(new Proprietario());
     }
 }

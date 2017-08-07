@@ -17,18 +17,16 @@ import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
 
-
-
 @Named
 @ViewScoped
-public class alterarSituacaoEventoMB implements Serializable{
-    
+public class alterarSituacaoEventoMB implements Serializable {
+
     private Evento evento;
     @EJB
     private EventoDao eventoDao;
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         evento = (Evento) session.getAttribute("evento");
@@ -54,20 +52,17 @@ public class alterarSituacaoEventoMB implements Serializable{
     public void setEventoDao(EventoDao eventoDao) {
         this.eventoDao = eventoDao;
     }
-    
-    
-    
+
     public void salvar() {
         if (evento.getSituacao().equalsIgnoreCase("sn")) {
             Mensagem.lancarMensagemInfo("Atenção", "você selecionou uma situação para o evento");
-        }else{
+        } else {
             evento = eventoDao.update(evento);
             RequestContext.getCurrentInstance().closeDialog(evento);
         }
     }
-    
-    
-    public void cancelar(){
+
+    public void cancelar() {
         RequestContext.getCurrentInstance().closeDialog(new Evento());
     }
 }

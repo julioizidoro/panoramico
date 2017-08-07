@@ -16,7 +16,6 @@ import br.com.panoramico.uil.Criptografia;
 import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -37,11 +36,10 @@ import org.primefaces.context.RequestContext;
  *
  * @author Julio
  */
-
 @Named
 @ViewScoped
-public class CadUsuarioMB implements Serializable{
-     
+public class CadUsuarioMB implements Serializable {
+
     @EJB
     private UsuarioDao usuarioDao;
     private Usuario usuario;
@@ -54,24 +52,23 @@ public class CadUsuarioMB implements Serializable{
     private UsuarioLogadoMB usuarioLogadoMB;
     @EJB
     private NotificacaoDao notificacaoDao;
-    
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
-        usuario =  (Usuario) session.getAttribute("usuario");
+        usuario = (Usuario) session.getAttribute("usuario");
         session.removeAttribute("usuario");
-        gerarListaPerfil(); 
+        gerarListaPerfil();
         if (usuario == null) {
             usuario = new Usuario();
             perfil = new Perfil();
             habilitarSenha = true;
-        }else{
+        } else {
             perfil = usuario.getPerfil();
             habilitarSenha = false;
         }
-        
+
     }
 
     public UsuarioDao getUsuarioDao() {
@@ -137,11 +134,9 @@ public class CadUsuarioMB implements Serializable{
     public void setNotificacaoDao(NotificacaoDao notificacaoDao) {
         this.notificacaoDao = notificacaoDao;
     }
-    
-    
-    
+
     public void gerarListaPerfil() {
-        listaPerfil = perfilDao.list("Select p from Perfil p");
+        listaPerfil = perfilDao.list("select p from Perfil p");
         if (listaPerfil == null) {
             listaPerfil = new ArrayList<Perfil>();
         }
@@ -149,13 +144,13 @@ public class CadUsuarioMB implements Serializable{
 
     public String salvar() {
         String msg = "";
-        List<Usuario> listaUsuario = usuarioDao.list("Select u from Usuario u where u.login='" + usuario.getLogin() + "'");
+        List<Usuario> listaUsuario = usuarioDao.list("select u from Usuario u where u.login='" + usuario.getLogin() + "'");
         if (listaUsuario == null || listaUsuario.isEmpty()) {
             usuario.setPerfil(perfil);
             msg = validarDados();
             if (msg.length() > 0) {
                 Mensagem.lancarMensagemInfo("", msg);
-            }else{
+            } else {
                 try {
                     usuario.setSenha(Criptografia.encript(usuario.getSenha()));
                 } catch (NoSuchAlgorithmException ex) {
@@ -175,8 +170,8 @@ public class CadUsuarioMB implements Serializable{
         }
         return "";
     }
-    
-    public void boasVindas(){
+
+    public void boasVindas() {
         Notificacao notificacao = new Notificacao();
         notificacao.setAssunto("Seja bem vindo " + usuario.getNome());
         notificacao.setData(new Date());
@@ -186,21 +181,19 @@ public class CadUsuarioMB implements Serializable{
         notificacao.setHora(retornarHoraAtual());
         notificacaoDao.update(notificacao);
     }
-    
+
     public String retornarHoraAtual() {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         Date hora = Calendar.getInstance().getTime();
         return sdf.format(hora);
     }
-     
-        
-    public void cancelar(){
+
+    public void cancelar() {
         perfil = perfilDao.find(1);
         RequestContext.getCurrentInstance().closeDialog(new Usuario());
     }
-    
-    
-    public String validarDados(){
+
+    public String validarDados() {
         Usuario user;
         String mensagem = "";
         if (perfil == null) {
@@ -208,10 +201,10 @@ public class CadUsuarioMB implements Serializable{
         }
         if (usuario.getCpf() == null || usuario.getCpf().length() == 0) {
             mensagem = mensagem + " Informe o CPF \r\n";
-        }else{
-            user = usuarioDao.find("Select u From Usuario u Where u.cpf='" + usuario.getCpf() + "'");
+        } else {
+            user = usuarioDao.find("select u from Usuario u where u.cpf='" + usuario.getCpf() + "'");
             if (user == null || user.getIdusuario() == null) {
-            }else{
+            } else {
                 mensagem = mensagem + " Esse CPF ja existe \r\n";
             }
         }

@@ -7,7 +7,6 @@ package br.com.panoramico.managebean.cadastro;
 
 import br.com.panoramico.dao.MedicoDao;
 import br.com.panoramico.model.Medico;
-import br.com.panoramico.model.Usuario;
 import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -71,7 +70,7 @@ public class MedicoMB implements Serializable {
     }
 
     public void gerarListaMedico() {
-        listaMedicos = medicoDao.list("Select m from Medico m where m.idusuario>0 order by m.nome");
+        listaMedicos = medicoDao.list("select m from Medico m where m.idusuario>0 order by m.nome");
         if (listaMedicos == null) {
             listaMedicos = new ArrayList<Medico>();
         }
@@ -115,7 +114,7 @@ public class MedicoMB implements Serializable {
         if (medico.getSituacao().equalsIgnoreCase("Ativo")) {
             medico.setSituacao("Inativo");
             Mensagem.lancarMensagemInfo("Desativado", " com sucesso");
-        }else{
+        } else {
             medico.setSituacao("Ativo");
             Mensagem.lancarMensagemInfo("Ativado", "com sucesso");
         }
@@ -124,7 +123,7 @@ public class MedicoMB implements Serializable {
     }
 
     public void pesquisar() {
-        listaMedicos = medicoDao.list("Select m from Medico m where m.nome like '%" + nome + "%' order by m.nome");
+        listaMedicos = medicoDao.list("select m from Medico m where m.nome like '%" + nome + "%' order by m.nome");
         if (listaMedicos == null) {
             listaMedicos = new ArrayList<Medico>();
         }
@@ -134,20 +133,19 @@ public class MedicoMB implements Serializable {
         nome = "";
         gerarListaMedico();
     }
-    
-    
-    public String pegarIcone(Medico medico){
+
+    public String pegarIcone(Medico medico) {
         if (medico.getSituacao().equalsIgnoreCase("Ativo")) {
             return "fa fa-toggle-on";
-        }else{
+        } else {
             return "fa fa-toggle-off";
         }
     }
-    
-    public String retornarSituacao(Medico medico){
+
+    public String retornarSituacao(Medico medico) {
         if (medico.getSituacao().equalsIgnoreCase("Ativo")) {
             return "Usuário Ativo";
-        }else{
+        } else {
             return "Usuário Inativo";
         }
     }

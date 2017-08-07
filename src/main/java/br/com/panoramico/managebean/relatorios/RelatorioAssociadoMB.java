@@ -11,7 +11,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.sql.SQLException; 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -36,7 +36,7 @@ import org.primefaces.context.RequestContext;
 @Named
 @ViewScoped
 public class RelatorioAssociadoMB implements Serializable {
- 
+
     private Date dataInicio;
     private Date dataFinal;
     private String status;
@@ -46,12 +46,12 @@ public class RelatorioAssociadoMB implements Serializable {
     @EJB
     private PlanoDao planoDao;
     private Plano plano;
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         gerarListaPlano();
     }
-    
+
     public Date getDataInicio() {
         return dataInicio;
     }
@@ -91,7 +91,7 @@ public class RelatorioAssociadoMB implements Serializable {
     public void setPlano(Plano plano) {
         this.plano = plano;
     }
- 
+
     public String iniciarRelatorio() {
         ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
         Map<String, Object> parameters = new HashMap<String, Object>();
@@ -99,21 +99,21 @@ public class RelatorioAssociadoMB implements Serializable {
         if (buscarListaAssociado()) {
             caminhoRelatorio = "reports/relatorios/associado/relatorioassociado.jasper";
             parameters.put("sql", gerarSQL());
-        }else{
+        } else {
             caminhoRelatorio = "reports/relatorios/associado/relatoriosemassociado.jasper";
             parameters.put("dataInicio", dataInicio);
             parameters.put("dataFinal", dataFinal);
-        }   
+        }
         File f = new File(servletContext.getRealPath("resources/img/logo.png"));
         BufferedImage logo = null;
         try {
-            logo = ImageIO.read(f); 
+            logo = ImageIO.read(f);
         } catch (IOException ex) {
             Logger.getLogger(RelatorioAssociadoMB.class.getName()).log(Level.SEVERE, null, ex);
         }
         parameters.put("logo", logo);
         GerarRelatorios gerarRelatorio = new GerarRelatorios();
-        try {  
+        try {
             try {
                 gerarRelatorio.gerarRelatorioSqlPDF(caminhoRelatorio, parameters, "associado", null);
             } catch (IOException ex) {
@@ -126,16 +126,15 @@ public class RelatorioAssociadoMB implements Serializable {
         }
         return "";
     }
- 
+
     public String gerarSQL() {
-        String sqlData = "";
-        String sql = "SELECT distinct associado.dataassociacao, associado.matricula, cliente.nome, cliente.telefone"
+        String sql = "select distinct associado.dataassociacao, associado.matricula, cliente.nome, cliente.telefone"
                 + " from associado"
                 + " join cliente on associado.cliente_idcliente = cliente.idcliente"
                 + " join plano on associado.plano_idplano=plano.idplano";
         if (status != null) {
-            sql = sql + " Where associado.situacao='" + status + "'";
-        }else{
+            sql = sql + " where associado.situacao='" + status + "'";
+        } else {
             sql = sql + " where associado.situacao='Ativo'";
         }
         if (plano != null) {
@@ -143,40 +142,37 @@ public class RelatorioAssociadoMB implements Serializable {
         }
         if (dataInicio != null && dataInicio != null) {
             sql = sql + " and associado.dataassociacao>='" + Formatacao.ConvercaoDataSql(dataInicio) + "'"
-                    + " and associado.dataassociacao<='" + Formatacao.ConvercaoDataSql(dataFinal) + "'"; 
-            sqlData = sqlData + " and a.dataassociacao>='" + Formatacao.ConvercaoDataSql(dataInicio) + "'"
-                    + " and a.dataassociacao<='" + Formatacao.ConvercaoDataSql(dataFinal) + "'"; 
+                    + " and associado.dataassociacao<='" + Formatacao.ConvercaoDataSql(dataFinal) + "'";
         }
         sql = sql + " order by cliente.nome";
         return sql;
-    }  
+    }
 
     public void fechar() {
         RequestContext.getCurrentInstance().closeDialog(null);
     }
-    
-    public boolean buscarListaAssociado(){
+
+    public boolean buscarListaAssociado() {
         String sqlData = "";
         if (dataInicio != null && dataInicio != null) {
             sqlData = sqlData + " and a.dataassociacao>='" + Formatacao.ConvercaoDataSql(dataInicio) + "'"
-                    + " and a.dataassociacao<='" + Formatacao.ConvercaoDataSql(dataFinal) + "'"; 
+                    + " and a.dataassociacao<='" + Formatacao.ConvercaoDataSql(dataFinal) + "'";
         }
-        List<Associado> lista = associadoDao.list("select a from Associado a Where a.situacao='Ativo' " + sqlData);
+        List<Associado> lista = associadoDao.list("select a from Associado a where a.situacao='Ativo' " + sqlData);
         if (lista != null) {
             if (lista.size() > 0) {
                 return true;
-            }else{
+            } else {
                 return false;
             }
         }
         return false;
     }
-    
-    
+
     public void gerarListaPlano() {
-        listaPlano = planoDao.list("Select p from Plano p");
+        listaPlano = planoDao.list("select p from Plano p");
         if (listaPlano == null) {
-            listaPlano = new ArrayList<Plano>();
+            listaPlano = new ArrayList<>();
         }
     }
 }

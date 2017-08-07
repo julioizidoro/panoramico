@@ -26,12 +26,10 @@ import org.primefaces.context.RequestContext;
  *
  * @author Julio
  */
-
 @Named
 @ViewScoped
-public class CadAssociadoEmpresaMB implements Serializable{
-    
-    
+public class CadAssociadoEmpresaMB implements Serializable {
+
     @EJB
     private AssociadoEmpresaDao associadoEmpresaDao;
     private Associadoempresa associadoempresa;
@@ -41,10 +39,9 @@ public class CadAssociadoEmpresaMB implements Serializable{
     private Empresa empresa;
     private Associado associado;
     private String botaoAssociar = "";
-    
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         associado = (Associado) session.getAttribute("associado");
@@ -57,11 +54,11 @@ public class CadAssociadoEmpresaMB implements Serializable{
                 associadoempresa = new Associadoempresa();
                 empresa = new Empresa();
                 botaoAssociar = "Associar a Empresa";
-            }else{
+            } else {
                 empresa = associadoempresa.getEmpresa();
                 botaoAssociar = "Associado a Empresa";
             }
-            
+
         }
     }
 
@@ -120,33 +117,31 @@ public class CadAssociadoEmpresaMB implements Serializable{
     public void setBotaoAssociar(String botaoAssociar) {
         this.botaoAssociar = botaoAssociar;
     }
-    
-    
-    
-    public void gerarListaEmpresa(){
-        listarEmpresa = empresaDao.list("Select e from Empresa e");
+
+    public void gerarListaEmpresa() {
+        listarEmpresa = empresaDao.list("select e from Empresa e");
         if (listarEmpresa == null) {
             listarEmpresa = new ArrayList<Empresa>();
         }
     }
-    
-    public void salvar(){
+
+    public void salvar() {
         associadoempresa.setEmpresa(empresa);
         associadoempresa.setAssociado(associado);
         associadoempresa = associadoEmpresaDao.update(associadoempresa);
     }
-    
-    public void cancelar(){
+
+    public void cancelar() {
         RequestContext.getCurrentInstance().closeDialog(new Associadoempresa());
     }
-    
-    public void verificarAssociadoEmpresa(){
+
+    public void verificarAssociadoEmpresa() {
         if (associadoempresa == null || associadoempresa.getIdassociadoempresa() == null) {
             salvar();
             botaoAssociar = "Associado a Empresa";
-            Mensagem.lancarMensagemInfo("", "Sócio vinculado a empresa "+empresa.getNomefantasia()+".");
+            Mensagem.lancarMensagemInfo("", "Sócio vinculado a empresa " + empresa.getNomefantasia() + ".");
             associadoempresa = null;
-        }else{
+        } else {
             desvincularAssociado();
             associadoempresa = new Associadoempresa();
             gerarListaEmpresa();
@@ -155,9 +150,9 @@ public class CadAssociadoEmpresaMB implements Serializable{
             botaoAssociar = "Associar a Empresa";
         }
     }
-    
-    public void desvincularAssociado(){
+
+    public void desvincularAssociado() {
         associadoEmpresaDao.remove(associadoempresa.getIdassociadoempresa());
     }
-    
+
 }

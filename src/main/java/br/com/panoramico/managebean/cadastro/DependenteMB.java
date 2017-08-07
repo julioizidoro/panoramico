@@ -52,7 +52,7 @@ public class DependenteMB implements Serializable {
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         associado = (Associado) session.getAttribute("associado");
         if (associado == null) {
-        }else{
+        } else {
             gerarListaDependente();
             habilitarVoltar = (boolean) session.getAttribute("habilitarVoltar");
             session.removeAttribute("habilitarVoltar");
@@ -147,11 +147,9 @@ public class DependenteMB implements Serializable {
     public void setHabilitarVoltar(boolean habilitarVoltar) {
         this.habilitarVoltar = habilitarVoltar;
     }
-    
-    
 
     public String novoCadastroDependente() {
-        if(associado!=null && associado.getIdassociado()!=null){
+        if (associado != null && associado.getIdassociado() != null) {
             FacesContext fc = FacesContext.getCurrentInstance();
             HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
             session.setAttribute("associado", associado);
@@ -193,11 +191,11 @@ public class DependenteMB implements Serializable {
     }
 
     public void gerarListaDependente() {
-        if (associado != null && associado.getIdassociado()!=null) {
-            listaDependente = dependenteDao.list("Select c from Dependente c where c.situacao='Ativo' "
+        if (associado != null && associado.getIdassociado() != null) {
+            listaDependente = dependenteDao.list("select c from Dependente c where c.situacao='Ativo' "
                     + " and c.associado.idassociado=" + associado.getIdassociado() + " order by c.nome");
         } else {
-            listaDependente = dependenteDao.list("Select c from Dependente c where c.situacao='Ativo' "
+            listaDependente = dependenteDao.list("select c from Dependente c where c.situacao='Ativo' "
                     + " order by c.nome");
         }
         if (listaDependente == null) {
@@ -212,7 +210,7 @@ public class DependenteMB implements Serializable {
     }
 
     public void pesquisar() {
-        String sql = "Select c from Dependente c where c.nome like '%" + nome + "%'";
+        String sql = "select c from Dependente c where c.nome like '%" + nome + "%'";
         if (nomeassociado != null && nomeassociado.length() > 0) {
             sql = sql + " and c.associado.cliente.nome like '%" + associado + "%'";
         }
@@ -240,16 +238,16 @@ public class DependenteMB implements Serializable {
         matricula = null;
         gerarListaDependente();
     }
-    
-    public boolean habilitarPesquisa(){
-        if(associado!=null && associado.getIdassociado()!=null){
+
+    public boolean habilitarPesquisa() {
+        if (associado != null && associado.getIdassociado() != null) {
             return false;
-        }else{
+        } else {
             return true;
         }
     }
-    
-    public String voltarAssociado(){
+
+    public String voltarAssociado() {
         return "consAssociado";
     }
 }

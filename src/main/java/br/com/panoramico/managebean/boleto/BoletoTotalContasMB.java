@@ -22,7 +22,6 @@ import br.com.panoramico.model.Ftpdados;
 import br.com.panoramico.model.Proprietario;
 import br.com.panoramico.uil.Formatacao;
 import br.com.panoramico.uil.Ftp;
-import br.com.panoramico.uil.Mensagem;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
@@ -95,7 +94,7 @@ public class BoletoTotalContasMB implements Serializable {
         session.removeAttribute("listaContasReceber");
         session.removeAttribute("empresa");
         proprietario = proprietarioDao.find(1);
-        banco = bancoDao.find("Select b From Banco b Where b.proprietario.idproprietario=" + proprietario.getIdproprietario() + " and b.emitiboleto=1");
+        banco = bancoDao.find("select b from Banco b where b.proprietario.idproprietario=" + proprietario.getIdproprietario() + " and b.emitiboleto=1");
         nomearquivo = Formatacao.ConvercaoDataPadrao(new Date());
         nomeFtp = nomearquivo.substring(6, 10) + nomearquivo.substring(3, 5) + nomearquivo.substring(0, 2) + ".REM";
         ServletContext servletContext = (ServletContext) fc.getExternalContext().getContext();
@@ -309,10 +308,6 @@ public class BoletoTotalContasMB implements Serializable {
     public void setFile(StreamedContent file) {
         this.file = file;
     }
-    
-    
-    
-    
 
     public void selecionarTodasLista() {
         if (selecionadoTodos) {
@@ -328,7 +323,7 @@ public class BoletoTotalContasMB implements Serializable {
 
     public void gerarContas2via() {
         listaContasReceber = null;
-        listaContasReceber = contasReceberDao.list("Select c from Contasreceber c Where c.enviado=true and c.tipopagamento='Boleto'");
+        listaContasReceber = contasReceberDao.list("select c from Contasreceber c where c.enviado=true and c.tipopagamento='Boleto'");
         if (listaContasReceber == null || listaContasReceber.isEmpty()) {
             listaContasReceber = new ArrayList<Contasreceber>();
         }
@@ -344,7 +339,7 @@ public class BoletoTotalContasMB implements Serializable {
     public String gerarBoleto() {
         if (habilitarEmpresa) {
             gerarBoletoEmpresa();
-        }else{
+        } else {
             List<Boleto> listaBoletos = null;
             listaBoletos = new ArrayList<Boleto>();
             for (int i = 0; i < listaContasReceber.size(); i++) {
@@ -385,12 +380,12 @@ public class BoletoTotalContasMB implements Serializable {
             dadosBoletoBean.getEnderecoSacado().setLogradouro(associado.getTipologradouro() + " " + associado.getLogradouro());
             dadosBoletoBean.getEnderecoSacado().setNumero(associado.getNumero());
             dadosBoletoBean.getEnderecoSacado().setUF(UnidadeFederativa.valueOfSigla(associado.getEstado()));
-             if (associado.getDescotomensalidade()>0){
+            if (associado.getDescotomensalidade() > 0) {
                 dadosBoletoBean.setInstrucao1("ATE O VENCIMENTO DESCONTO DE R$ " + Formatacao.foramtarFloatString(associado.getDescotomensalidade()));
                 dadosBoletoBean.setInstrucao2(banco.getObservacao1());
                 dadosBoletoBean.setInstrucao3(banco.getObservacao2());
                 dadosBoletoBean.setInstrucao4(banco.getObservacao3());
-            }else {
+            } else {
                 dadosBoletoBean.setInstrucao1(banco.getObservacao1());
                 dadosBoletoBean.setInstrucao2(banco.getObservacao2());
                 dadosBoletoBean.setInstrucao2(banco.getObservacao3());
@@ -405,7 +400,7 @@ public class BoletoTotalContasMB implements Serializable {
         return dadosBoletoBean.getBoleto();
     }
 
-    public String gerarBoletoEmpresa(){
+    public String gerarBoletoEmpresa() {
         Associado copia = null;
         float valorTotalPorEmpresa;
         List<Boleto> listaBoletos = null;
@@ -415,22 +410,22 @@ public class BoletoTotalContasMB implements Serializable {
             if (associado == null) {
                 associado = pegarEndereco(listaContasReceber.get(i));
                 if (copia == null) {
-                }else{
+                } else {
                     if (associado.getIdassociado() == copia.getIdassociado()) {
                         associado = null;
                     }
                 }
-            }else{
+            } else {
                 copia = pegarEndereco(listaContasReceber.get(i));
                 if (associado.getIdassociado() == copia.getIdassociado()) {
                     associado = null;
-                }else{
+                } else {
                     associado = copia;
                 }
             }
             if (associado == null) {
-            }else{  
-                List<Associadoempresa> lista = associadoEmpresaDao.list("Select a From Associadoempresa a Where a.associado.idassociado="+ associado.getIdassociado());
+            } else {
+                List<Associadoempresa> lista = associadoEmpresaDao.list("select a from Associadoempresa a where a.associado.idassociado=" + associado.getIdassociado());
                 empresa = lista.get(0).getEmpresa();
                 for (int j = 0; j < listaContasReceber.size(); j++) {
                     if (listaContasReceber.get(j).getCliente().getIdcliente() == lista.get(0).getAssociado().getCliente().getIdcliente()) {
@@ -496,7 +491,7 @@ public class BoletoTotalContasMB implements Serializable {
             ftpDados = ftpDadosDao.find(1);
             GerarArquivoRemessaItau arquivoRemessaItau = new GerarArquivoRemessaItau(lista, usuarioLogadoMB, proprietario, lista, banco, nomearquivo, nomeFtp, ftpDados);
             confirmarContas(lista);
-             InputStream stream = procurarArquivo();
+            InputStream stream = procurarArquivo();
             file = new DefaultStreamedContent(stream, "", nomeFtp);
             FacesMessage msg = new FacesMessage("Enviado! ", "Disponivel para download, aperte novamente");
             FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -514,7 +509,7 @@ public class BoletoTotalContasMB implements Serializable {
     }
 
     public void gerarListaEmpresa() {
-        listaEmpresa = empresaDao.list("Select e from Empresa e");
+        listaEmpresa = empresaDao.list("select e from Empresa e");
         if (listaEmpresa == null) {
             listaEmpresa = new ArrayList<Empresa>();
         }
@@ -537,25 +532,24 @@ public class BoletoTotalContasMB implements Serializable {
 
     public Associado pegarEndereco(Contasreceber contasreceber) {
         Associado associadoo;
-        listaAssociado = associadoDao.list("Select a from Associado a where a.cliente.idcliente=" + contasreceber.getCliente().getIdcliente());
+        listaAssociado = associadoDao.list("select a from Associado a where a.cliente.idcliente=" + contasreceber.getCliente().getIdcliente());
         for (int i = 0; i < listaAssociado.size(); i++) {
             associadoo = listaAssociado.get(i);
             return associadoo;
         }
         return null;
     }
-    
+
     public Associado pegarAssociadoEmpresa(Associado associado) {
         Associado associadoo;
-        listaAssociado = associadoDao.list("Select a from Associado a where a.cliente.idcliente=" + contasreceber.getCliente().getIdcliente());
+        listaAssociado = associadoDao.list("select a from Associado a where a.cliente.idcliente=" + contasreceber.getCliente().getIdcliente());
         for (int i = 0; i < listaAssociado.size(); i++) {
             associadoo = listaAssociado.get(i);
             return associadoo;
         }
         return null;
     }
-    
-    
+
     public InputStream procurarArquivo() {
         InputStream is = null;
         ftpDados = ftpDadosDao.find(1);
@@ -570,5 +564,5 @@ public class BoletoTotalContasMB implements Serializable {
         }
         return is;
     }
-    
+
 }

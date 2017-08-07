@@ -9,7 +9,6 @@ import br.com.panoramico.dao.AcessoDao;
 import br.com.panoramico.dao.PerfilDao;
 import br.com.panoramico.dao.UsuarioDao;
 import br.com.panoramico.managebean.UsuarioLogadoMB;
-import br.com.panoramico.model.Acesso;
 import br.com.panoramico.model.Perfil;
 import br.com.panoramico.model.Usuario;
 import br.com.panoramico.uil.Mensagem;
@@ -32,11 +31,10 @@ import org.primefaces.event.SelectEvent;
  *
  * @author Julio
  */
-
 @Named
 @ViewScoped
-public class PerfilMB implements  Serializable{
-    
+public class PerfilMB implements Serializable {
+
     @EJB
     private PerfilDao perfilDao;
     private Perfil perfil;
@@ -47,10 +45,9 @@ public class PerfilMB implements  Serializable{
     private UsuarioLogadoMB usuarioLogadoMB;
     @EJB
     private AcessoDao acessoDao;
-    
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         gerarListaPerfil();
     }
 
@@ -70,7 +67,6 @@ public class PerfilMB implements  Serializable{
         this.usuarioLogadoMB = usuarioLogadoMB;
     }
 
-    
     public PerfilDao getPerfilDao() {
         return perfilDao;
     }
@@ -102,43 +98,38 @@ public class PerfilMB implements  Serializable{
     public void setAcessoDao(AcessoDao acessoDao) {
         this.acessoDao = acessoDao;
     }
-    
-    
-    
-    public void gerarListaPerfil(){
-        listaPerfil = perfilDao.list("Select p from Perfil p");
+
+    public void gerarListaPerfil() {
+        listaPerfil = perfilDao.list("select p from Perfil p");
         if (listaPerfil == null) {
             listaPerfil = new ArrayList<Perfil>();
         }
     }
-    
-    
+
     public String novoCadastroPerfil() {
         Map<String, Object> options = new HashMap<String, Object>();
         options.put("contentWidth", 400);
         RequestContext.getCurrentInstance().openDialog("cadPerfil", options, null);
         return "";
     }
-    
-    
-    public void retornoDialogNovo(SelectEvent event){
+
+    public void retornoDialogNovo(SelectEvent event) {
         Perfil perfil = (Perfil) event.getObject();
-        if (perfil.getIdperfil()!= null) {
+        if (perfil.getIdperfil() != null) {
             Mensagem.lancarMensagemInfo("Salvou", "Cadastro de perfil realizado com sucesso");
         }
         gerarListaPerfil();
     }
-    
-    public void retornoDialogAlteracao(SelectEvent event){
+
+    public void retornoDialogAlteracao(SelectEvent event) {
         Perfil perfil = (Perfil) event.getObject();
-        if (perfil.getIdperfil()!= null) {
+        if (perfil.getIdperfil() != null) {
             Mensagem.lancarMensagemInfo("Salvou", "Ateração de perfil realizado com sucesso");
         }
         gerarListaPerfil();
     }
-    
-    
-    public void editar(Perfil perfil){
+
+    public void editar(Perfil perfil) {
         if (perfil != null) {
             Map<String, Object> options = new HashMap<String, Object>();
             FacesContext fc = FacesContext.getCurrentInstance();
@@ -148,15 +139,14 @@ public class PerfilMB implements  Serializable{
             RequestContext.getCurrentInstance().openDialog("cadPerfil", options, null);
         }
     }
-    
-    
-    public void excluir(Perfil perfil){
-        List<Usuario> listaPerfilUsuario = usuarioDao.list("Select u from Usuario u where u.perfil.idperfil=" + perfil.getIdperfil());
+
+    public void excluir(Perfil perfil) {
+        List<Usuario> listaPerfilUsuario = usuarioDao.list("select u from Usuario u where u.perfil.idperfil=" + perfil.getIdperfil());
         if (listaPerfilUsuario == null || listaPerfilUsuario.isEmpty()) {
             perfilDao.remove(perfil.getIdperfil());
             Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
             gerarListaPerfil();
-        }else{
+        } else {
             Mensagem.lancarMensagemInfo("Atenção", " este perfil não pode ser excluido");
         }
     }

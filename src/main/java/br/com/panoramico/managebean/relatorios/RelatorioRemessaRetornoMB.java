@@ -193,9 +193,6 @@ public class RelatorioRemessaRetornoMB implements Serializable {
     public void setTodosretorno(boolean todosretorno) {
         this.todosretorno = todosretorno;
     }
-     
-    
-    
 
     public void direcionarPesquisa() {
         if (tipo.equalsIgnoreCase("Remessa")) {
@@ -206,9 +203,9 @@ public class RelatorioRemessaRetornoMB implements Serializable {
     }
 
     public void pesquisarRemessa() {
-        String sql = "Select r From Remessacontas r ";
+        String sql = "select r from Remessacontas r ";
         if (dataInicial != null || dataFinal != null) {
-            sql = sql + " Where ";
+            sql = sql + " where ";
         }
         if (dataInicial != null) {
             sql = sql + " r.remessaarquivo.dataenvio>='" + Formatacao.ConvercaoDataSql(dataInicial) + "' ";
@@ -226,12 +223,12 @@ public class RelatorioRemessaRetornoMB implements Serializable {
         if (listaRemessaContas == null) {
             listaRemessaContas = new ArrayList<>();
         }
-    }  
+    }
 
     public void pesquisarRetorno() {
-        String sql = "Select r From Retornocontas r ";
+        String sql = "select r from Retornocontas r ";
         if (dataInicial != null || dataFinal != null) {
-            sql = sql + " Where ";
+            sql = sql + " where ";
         }
         if (dataInicial != null) {
             sql = sql + " r.retornoarquivo.dataretorno>='" + Formatacao.ConvercaoDataSql(dataInicial) + "' ";
@@ -297,7 +294,7 @@ public class RelatorioRemessaRetornoMB implements Serializable {
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
-            }  
+            }
             parameters.put("logo", logo);
             parameters.put("titulo", "Remessa Enviada");
             parameters.put("tituloColunaData", "Data vcto.");
@@ -319,16 +316,14 @@ public class RelatorioRemessaRetornoMB implements Serializable {
         }
         return "";
     }
-    
-    
-    public void selecionarTodasRemessa(){
+
+    public void selecionarTodasRemessa() {
         for (int i = 0; i < listaRemessaContas.size(); i++) {
             listaRemessaContas.get(i).setSelecionado(todasremessa);
         }
     }
-    
-    
-    public void selecionarTodasRetorno(){
+
+    public void selecionarTodasRetorno() {
         for (int i = 0; i < listaRetornoContas.size(); i++) {
             listaRetornoContas.get(i).setSelecionado(todosretorno);
         }

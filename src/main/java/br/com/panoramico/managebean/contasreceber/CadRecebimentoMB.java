@@ -27,8 +27,8 @@ import org.primefaces.context.RequestContext;
 
 @Named
 @ViewScoped
-public class CadRecebimentoMB implements Serializable{
-    
+public class CadRecebimentoMB implements Serializable {
+
     private Contasreceber contasreceber;
     private Recebimento recebimento;
     @Inject
@@ -45,10 +45,9 @@ public class CadRecebimentoMB implements Serializable{
     private List<Banco> listaBanco;
     @EJB
     private BancoDao bancoDao;
-    
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         contasreceber = (Contasreceber) session.getAttribute("contasreceber");
@@ -71,8 +70,6 @@ public class CadRecebimentoMB implements Serializable{
         this.recebimentoDao = recebimentoDao;
     }
 
-    
-    
     public Contasreceber getContasreceber() {
         return contasreceber;
     }
@@ -136,9 +133,8 @@ public class CadRecebimentoMB implements Serializable{
     public void setConasReceberDao(ContasReceberDao conasReceberDao) {
         this.conasReceberDao = conasReceberDao;
     }
-    
-    
-    public void calcularTotal(){
+
+    public void calcularTotal() {
         valorTotalRecebido = (valorReceber + juros) - desagio;
     }
 
@@ -165,25 +161,23 @@ public class CadRecebimentoMB implements Serializable{
     public void setBancoDao(BancoDao bancoDao) {
         this.bancoDao = bancoDao;
     }
-    
-    
-    
-    public void salvar(){
+
+    public void salvar() {
         Float totalRecebido = 0.0f;
         boolean dados = validarDados();
-        if(dados){
+        if (dados) {
             if (valorTotalRecebido > contasreceber.getValorconta() && juros == 0.0f) {
                 Mensagem.lancarMensagemInfo("Atenção", "valor total a receber acima do valor da conta sem constar o valor de juros");
-            }else{
+            } else {
                 if (valorTotalRecebido >= contasreceber.getValorconta()) {
                     totalRecebido = totalRecebido + valorTotalRecebido;
-                    List<Recebimento> listaRecebimento = recebimentoDao.list("Select r from Recebimento r where r.contasreceber.idcontasreceber="+ contasreceber.getIdcontasreceber());
+                    List<Recebimento> listaRecebimento = recebimentoDao.list("select r from Recebimento r where r.contasreceber.idcontasreceber=" + contasreceber.getIdcontasreceber());
                     for (int i = 0; i < listaRecebimento.size(); i++) {
                         totalRecebido = totalRecebido + listaRecebimento.get(i).getValorrecebido();
                     }
                     contasreceber.setValorconta(totalRecebido);
                     contasreceber.setSituacao("PAGO");
-                }else{
+                } else {
                     contasreceber.setValorconta(contasreceber.getValorconta() - valorTotalRecebido);
                 }
                 conasReceberDao.update(contasreceber);
@@ -198,13 +192,13 @@ public class CadRecebimentoMB implements Serializable{
             }
         }
     }
-    
-    public boolean validarDados(){ 
-        if(recebimento.getFormarecebimento()==null || recebimento.getFormarecebimento().length()==0){
+
+    public boolean validarDados() {
+        if (recebimento.getFormarecebimento() == null || recebimento.getFormarecebimento().length() == 0) {
             Mensagem.lancarMensagemInfo("Atenção", "Forma de Recebimento não informada.");
             return false;
         }
-        if(recebimento.getDatarecebimento()==null){
+        if (recebimento.getDatarecebimento() == null) {
             Mensagem.lancarMensagemInfo("Atenção", "Data não informada.");
             return false;
         }
@@ -214,13 +208,13 @@ public class CadRecebimentoMB implements Serializable{
         }
         return true;
     }
-    
-    public void cancelar(){
+
+    public void cancelar() {
         RequestContext.getCurrentInstance().closeDialog(new Recebimento());
     }
-    
-    public void gerarListaBanco(){
-        listaBanco = bancoDao.list("Select b From Banco b");
+
+    public void gerarListaBanco() {
+        listaBanco = bancoDao.list("select b from Banco b");
         if (listaBanco == null || listaBanco.isEmpty()) {
             listaBanco = new ArrayList<>();
         }

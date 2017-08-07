@@ -5,9 +5,8 @@
  */
 package br.com.panoramico.managebean.acesso;
 
-
 public class InformacoesFrequenciaBean {
-    
+
     private String nomeAssociado;
     private String nomeDependente;
     private String tipo;
@@ -62,7 +61,5 @@ public class InformacoesFrequenciaBean {
     public void setIdAssociado(Integer idAssociado) {
         this.idAssociado = idAssociado;
     }
-    
-    
-    
+
 }

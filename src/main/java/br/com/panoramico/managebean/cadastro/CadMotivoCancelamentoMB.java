@@ -21,18 +21,16 @@ import org.primefaces.context.RequestContext;
  *
  * @author Anderson
  */
-
 @Named
 @ViewScoped
-public class CadMotivoCancelamentoMB implements Serializable{
-    
+public class CadMotivoCancelamentoMB implements Serializable {
+
     private Motivocancelamento motivocancelamento;
     @EJB
     private MotivoCancelamentoDao motivoCancelamentoDao;
-    
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         motivocancelamento = (Motivocancelamento) session.getAttribute("motivocancelamento");
@@ -49,31 +47,27 @@ public class CadMotivoCancelamentoMB implements Serializable{
     public void setMotivocancelamento(Motivocancelamento motivocancelamento) {
         this.motivocancelamento = motivocancelamento;
     }
-    
-    
-    
-    
-    public void cancelar(){
+
+    public void cancelar() {
         RequestContext.getCurrentInstance().closeDialog(new Motivocancelamento());
     }
-    
-    public void salvar(){
+
+    public void salvar() {
         String mensagem = validarDados();
         if (mensagem.length() < 5) {
             motivocancelamento = motivoCancelamentoDao.update(motivocancelamento);
             RequestContext.getCurrentInstance().closeDialog(motivocancelamento);
-        }else{
+        } else {
             Mensagem.lancarMensagemInfo("", mensagem);
         }
     }
-    
-    public String validarDados(){
+
+    public String validarDados() {
         String msg = "";
         if (motivocancelamento.getDescricao().equalsIgnoreCase("")) {
             msg = msg + " Descrição não informada \r\n";
         }
         return msg;
     }
-    
-    
+
 }

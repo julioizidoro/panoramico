@@ -26,8 +26,8 @@ import org.primefaces.context.RequestContext;
 
 @Named
 @ViewScoped
-public class CadNotificacaoMB implements Serializable{
-    
+public class CadNotificacaoMB implements Serializable {
+
     private Usuario usuario;
     private List<Usuario> listaUsuarios;
     private Notificacao notificacao;
@@ -38,10 +38,9 @@ public class CadNotificacaoMB implements Serializable{
     private UsuarioLogadoMB usuarioLogadoMB;
     @EJB
     private UsuarioDao usuarioDao;
-    
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         if (notificacao == null) {
             notificacao = new Notificacao();
             notificacao.setData(new Date());
@@ -51,9 +50,8 @@ public class CadNotificacaoMB implements Serializable{
         gerarListaUsuario();
     }
 
-    
     public Usuario getUsuario() {
-        return usuario; 
+        return usuario;
     }
 
     public void setUsuario(Usuario usuario) {
@@ -107,15 +105,13 @@ public class CadNotificacaoMB implements Serializable{
     public void setUsuarioDao(UsuarioDao usuarioDao) {
         this.usuarioDao = usuarioDao;
     }
-    
-    
-    
-    public void cancelar(){
+
+    public void cancelar() {
         RequestContext.getCurrentInstance().closeDialog(new Notificacao());
     }
-    
-    public void salvar(){
-        if (usuarioEnviar==null){
+
+    public void salvar() {
+        if (usuarioEnviar == null) {
             usuarioEnviar = new Usuario();
         }
         notificacao.setUsuarioenvia(usuarioEnviar);
@@ -125,12 +121,12 @@ public class CadNotificacaoMB implements Serializable{
         if (msg.length() < 5) {
             notificacao = notificacaoDao.update(notificacao);
             RequestContext.getCurrentInstance().closeDialog(notificacao);
-        }else{
+        } else {
             Mensagem.lancarMensagemInfo("", msg);
         }
     }
-     
-    public String validarDados(){
+
+    public String validarDados() {
         String mensagem = "";
         if (notificacao.getAssunto().equalsIgnoreCase("")) {
             mensagem = mensagem + " você não digitou o assunto \r\n";
@@ -140,17 +136,17 @@ public class CadNotificacaoMB implements Serializable{
         }
         return mensagem;
     }
-    
-   public void gerarListaUsuario(){
-       listaUsuarios = usuarioDao.list("Select u from Usuario u where u.idusuario<>" + usuarioLogadoMB.getUsuario().getIdusuario());
-       if (listaUsuarios == null || listaUsuarios.isEmpty()) {
-           listaUsuarios = new ArrayList<Usuario>();
-       }
-   }
-   
-   public void retornarHoraAtual(){
-    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-    Date hora = Calendar.getInstance().getTime();
-    notificacao.setHora(sdf.format(hora));
-   }
+
+    public void gerarListaUsuario() {
+        listaUsuarios = usuarioDao.list("select u from Usuario u where u.idusuario<>" + usuarioLogadoMB.getUsuario().getIdusuario());
+        if (listaUsuarios == null || listaUsuarios.isEmpty()) {
+            listaUsuarios = new ArrayList<Usuario>();
+        }
+    }
+
+    public void retornarHoraAtual() {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        Date hora = Calendar.getInstance().getTime();
+        notificacao.setHora(sdf.format(hora));
+    }
 }

@@ -204,21 +204,21 @@ public class CadEventoMB implements Serializable {
     }
 
     public void gerarListaAmbiente() {
-        listaAmbiente = ambienteDao.list("Select a from Ambiente a");
+        listaAmbiente = ambienteDao.list("select a from Ambiente a");
         if (listaAmbiente == null) {
             listaAmbiente = new ArrayList<Ambiente>();
         }
     }
 
     public void gerarListaTipoEvento() {
-        listaTipoEvento = tipoEventoDao.list("Select t from Tipoenvento t ");
+        listaTipoEvento = tipoEventoDao.list("select t from Tipoenvento t ");
         if (listaTipoEvento == null) {
             listaTipoEvento = new ArrayList<Tipoenvento>();
         }
     }
 
     public void gerarListaResponsavel() {
-        listaCliente = clienteDao.list("Select c from Cliente c");
+        listaCliente = clienteDao.list("select c from Cliente c");
         if (listaCliente == null) {
             listaCliente = new ArrayList<Cliente>();
         }
@@ -265,7 +265,7 @@ public class CadEventoMB implements Serializable {
 
     public String validarDados() {
         String mensagem = "";
-        List<Evento> listaEventos = eventoDao.list("Select e from Evento e where e.ambiente.idambiente=" + ambiente.getIdambiente()
+        List<Evento> listaEventos = eventoDao.list("select e from Evento e where e.ambiente.idambiente=" + ambiente.getIdambiente()
                 + " and e.data='" + Formatacao.ConvercaoDataSql(evento.getData()) + "' and e.idevento<>" + evento.getIdevento());
         if (listaEventos == null | listaEventos.isEmpty()) {
         } else {
@@ -279,7 +279,7 @@ public class CadEventoMB implements Serializable {
         }
         if (cliente == null) {
             mensagem = mensagem + " Cliente não selecionado";
-        }    
+        }
         return mensagem;
     }
 }

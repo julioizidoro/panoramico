@@ -33,8 +33,8 @@ import org.primefaces.context.RequestContext;
 
 @Named
 @ViewScoped
-public class CadContasReceberMB implements Serializable{
-    
+public class CadContasReceberMB implements Serializable {
+
     private Contasreceber contasreceber;
     private Planoconta planoconta;
     private Cliente cliente;
@@ -53,15 +53,14 @@ public class CadContasReceberMB implements Serializable{
     private String numeroParcela;
     @EJB
     private AssociadoEmpresaDao asssociadoEmpresaDao;
-    
-    
+
     @PostConstruct
-    public void init() { 
+    public void init() {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         contasreceber = (Contasreceber) session.getAttribute("contasreceber");
         cliente = (Cliente) session.getAttribute("cliente");
-        session.removeAttribute("cliente"); 
+        session.removeAttribute("cliente");
         session.removeAttribute("contasreceber");
         if (contasreceber == null) {
             contasreceber = new Contasreceber();
@@ -73,7 +72,7 @@ public class CadContasReceberMB implements Serializable{
         }
         gerarListaCliente();
         gerarListaPlanoConta();
-    } 
+    }
 
     public Contasreceber getContasreceber() {
         return contasreceber;
@@ -126,7 +125,7 @@ public class CadContasReceberMB implements Serializable{
     public List<Cliente> getListaCliente() {
         return listaCliente;
     }
- 
+
     public void setListaCliente(List<Cliente> listaCliente) {
         this.listaCliente = listaCliente;
     }
@@ -170,27 +169,25 @@ public class CadContasReceberMB implements Serializable{
     public void setNumeroParcela(String numeroParcela) {
         this.numeroParcela = numeroParcela;
     }
-    
-    
-    
-    public void gerarListaPlanoConta(){
-        listaPlanoContas = planoContaDao.list("Select p from Planoconta p");
+
+    public void gerarListaPlanoConta() {
+        listaPlanoContas = planoContaDao.list("select p from Planoconta p");
         if (listaPlanoContas == null) {
             listaPlanoContas = new ArrayList<Planoconta>();
         }
     }
-    
-    public void gerarListaCliente(){
-        listaCliente = clienteDao.list("Select c from Cliente c");
+
+    public void gerarListaCliente() {
+        listaCliente = clienteDao.list("select c from Cliente c");
         if (listaCliente == null) {
             listaCliente = new ArrayList<Cliente>();
         }
     }
-    
-    public void cancelar(){
+
+    public void cancelar() {
         RequestContext.getCurrentInstance().closeDialog(new Contasreceber());
     }
-    
+
     public void salvar() {
         Float formataNParcela = Formatacao.formatarStringfloat(numeroParcela);
         contasreceber.setDatalancamento(new Date());
@@ -205,19 +202,19 @@ public class CadContasReceberMB implements Serializable{
             contasreceber.setSituacao("PAGAR");
             String mensagem = validarDados(contasreceber);
             if (mensagem.length() < 5) {
-                List<Associadoempresa> lista = asssociadoEmpresaDao.list("Select a From Associadoempresa a Where a.associado.idassociado=" + cliente.getAssociado().getIdassociado());
+                List<Associadoempresa> lista = asssociadoEmpresaDao.list("select a from Associadoempresa a where a.associado.idassociado=" + cliente.getAssociado().getIdassociado());
                 if (lista == null) {
                     lista = new ArrayList<>();
                 }
                 if (lista.size() > 0) {
                     contasreceber.setIdempresa(lista.get(0).getEmpresa().getIdempresa());
-                }else{
+                } else {
                     contasreceber.setIdempresa(0);
                 }
                 if (contasreceber.getTipopagamento().equalsIgnoreCase("Boleto") && contasreceber.getIdcontasreceber() == null) {
                     contasreceber.setSituacaoboleto("Novo");
                     contasreceber.setEnviado(false);
-                }else if(!contasreceber.getTipopagamento().equalsIgnoreCase("Boleto")  && contasreceber.getIdcontasreceber() == null){
+                } else if (!contasreceber.getTipopagamento().equalsIgnoreCase("Boleto") && contasreceber.getIdcontasreceber() == null) {
                     contasreceber.setSituacaoboleto("Não");
                     contasreceber.setEnviado(false);
                 }
@@ -229,8 +226,8 @@ public class CadContasReceberMB implements Serializable{
 
         }
     }
-    
-    public String validarDados(Contasreceber contasreceber){
+
+    public String validarDados(Contasreceber contasreceber) {
         String msg = "";
         if (contasreceber.getNumeroparcela().equalsIgnoreCase("")) {
             msg = msg + " Número de parcela não selecionada \r\n";
@@ -246,7 +243,7 @@ public class CadContasReceberMB implements Serializable{
         }
         return msg;
     }
-    
+
     public void calculoParcelaMensal(Float nParcela, Contasreceber contasreceber) {
         float valorParcela = contasreceber.getValorconta() / nParcela;
         contasreceber.setValorconta(valorParcela);
@@ -261,22 +258,22 @@ public class CadContasReceberMB implements Serializable{
             contasreceber.setSituacao("PAGAR");
             String mensagem = validarDados(contasreceber);
             if (mensagem.length() < 5) {
-               List<Associadoempresa> lista = asssociadoEmpresaDao.list("Select a From Associadoempresa a Where a.associado.idassociado=" + cliente.getAssociado().getIdassociado());
+                List<Associadoempresa> lista = asssociadoEmpresaDao.list("select a from Associadoempresa a where a.associado.idassociado=" + cliente.getAssociado().getIdassociado());
                 if (lista == null) {
                     lista = new ArrayList<>();
                 }
-               if (lista.size() > 0) {  
+                if (lista.size() > 0) {
                     contasreceber.setIdempresa(lista.get(0).getEmpresa().getIdempresa());
-                }else{
+                } else {
                     contasreceber.setIdempresa(0);
                 }
                 if (contasreceber.getTipopagamento().equalsIgnoreCase("Boleto") && contasreceber.getIdcontasreceber() == null) {
                     contasreceber.setSituacaoboleto("Novo");
                     contasreceber.setEnviado(false);
-                }else if(!contasreceber.getTipopagamento().equalsIgnoreCase("Boleto")  && contasreceber.getIdcontasreceber() == null){
+                } else if (!contasreceber.getTipopagamento().equalsIgnoreCase("Boleto") && contasreceber.getIdcontasreceber() == null) {
                     contasreceber.setSituacaoboleto("Não");
                     contasreceber.setEnviado(false);
-                } 
+                }
                 contasreceber = contasReceberDao.update(contasreceber);
                 Calendar c = new GregorianCalendar();
                 c.setTime(copia.getDatavencimento());

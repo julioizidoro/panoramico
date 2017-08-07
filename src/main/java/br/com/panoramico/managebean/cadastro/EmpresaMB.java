@@ -28,21 +28,19 @@ import org.primefaces.event.SelectEvent;
  *
  * @author Julio
  */
-
 @Named
 @ViewScoped
-public class EmpresaMB implements  Serializable{
-    
+public class EmpresaMB implements Serializable {
+
     @EJB
     private EmpresaDao empresaDao;
     private Empresa empresa;
     private List<Empresa> listaEmpresa;
     @EJB
     private AssociadoEmpresaDao associadoEmpresaDao;
-    
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         gerarListaEmpresa();
     }
 
@@ -69,35 +67,31 @@ public class EmpresaMB implements  Serializable{
     public void setListaEmpresa(List<Empresa> listaEmpresa) {
         this.listaEmpresa = listaEmpresa;
     }
-    
-    
-    
-   public String novoCadastroEmpresa() {
+
+    public String novoCadastroEmpresa() {
         Map<String, Object> options = new HashMap<String, Object>();
         options.put("contentWidth", 570);
         RequestContext.getCurrentInstance().openDialog("cadEmpresa", options, null);
         return "";
     }
-    
-    
-    public void retornoDialogNovo(SelectEvent event){
+
+    public void retornoDialogNovo(SelectEvent event) {
         Empresa empresa = (Empresa) event.getObject();
-        if (empresa.getIdempresa()!= null) {
+        if (empresa.getIdempresa() != null) {
             Mensagem.lancarMensagemInfo("Salvou", "Cadastro de empresa realizado com sucesso");
         }
         gerarListaEmpresa();
     }
-    
-     public void retornoDialogAlteracao(SelectEvent event){
+
+    public void retornoDialogAlteracao(SelectEvent event) {
         Empresa empresa = (Empresa) event.getObject();
-        if (empresa.getIdempresa()!= null) {
+        if (empresa.getIdempresa() != null) {
             Mensagem.lancarMensagemInfo("Salvou", "Alteração da empresa realizada com sucesso");
         }
         gerarListaEmpresa();
     }
-    
-    
-    public void editar(Empresa empresa){
+
+    public void editar(Empresa empresa) {
         if (empresa != null) {
             Map<String, Object> options = new HashMap<String, Object>();
             FacesContext fc = FacesContext.getCurrentInstance();
@@ -109,25 +103,24 @@ public class EmpresaMB implements  Serializable{
     }
 
     public void gerarListaEmpresa() {
-        listaEmpresa = empresaDao.list("Select e from Empresa e");
+        listaEmpresa = empresaDao.list("select e from Empresa e");
         if (listaEmpresa == null) {
             listaEmpresa = new ArrayList<Empresa>();
         }
     }
-    
-    
-    public void excluir(Empresa empresa){
-        List<Associadoempresa> listaAssociadoEmpresa = associadoEmpresaDao.list("Select ae From Associadoempresa ae Where ae.empresa.idempresa=" + empresa.getIdempresa());
+
+    public void excluir(Empresa empresa) {
+        List<Associadoempresa> listaAssociadoEmpresa = associadoEmpresaDao.list("select ae from Associadoempresa ae where ae.empresa.idempresa=" + empresa.getIdempresa());
         if (listaAssociadoEmpresa == null || listaAssociadoEmpresa.isEmpty()) {
             empresaDao.remove(empresa.getIdempresa());
             Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
             gerarListaEmpresa();
-        }else{
+        } else {
             Mensagem.lancarMensagemInfo("Atenção", " esta empresa não pode ser excluido");
         }
     }
-    
-    public String consAssociadoEmpresa(Empresa empresa){
+
+    public String consAssociadoEmpresa(Empresa empresa) {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         session.setAttribute("empresa", empresa);

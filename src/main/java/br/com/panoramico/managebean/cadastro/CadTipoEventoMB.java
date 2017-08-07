@@ -20,19 +20,16 @@ import org.primefaces.context.RequestContext;
  *
  * @author Julio
  */
-
-
 @Named
 @ViewScoped
-public class CadTipoEventoMB implements Serializable{
-    
+public class CadTipoEventoMB implements Serializable {
+
     @EJB
     private TipoEventoDao tipoEventoDao;
     private Tipoenvento tipoenvento;
-    
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         tipoenvento = (Tipoenvento) session.getAttribute("tipoenvento");
@@ -57,14 +54,13 @@ public class CadTipoEventoMB implements Serializable{
     public void setTipoenvento(Tipoenvento tipoenvento) {
         this.tipoenvento = tipoenvento;
     }
-    
 
-    public void salvar(){
+    public void salvar() {
         tipoenvento = tipoEventoDao.update(tipoenvento);
         RequestContext.getCurrentInstance().closeDialog(tipoenvento);
     }
-    
-    public void cancelar(){
+
+    public void cancelar() {
         RequestContext.getCurrentInstance().closeDialog(tipoenvento);
     }
 }

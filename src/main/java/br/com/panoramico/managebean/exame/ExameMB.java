@@ -34,8 +34,8 @@ import org.primefaces.event.SelectEvent;
 
 @Named
 @ViewScoped
-public class ExameMB implements Serializable{
-    
+public class ExameMB implements Serializable {
+
     private Exame exame;
     private List<Exame> listaExames;
     @EJB
@@ -56,9 +56,9 @@ public class ExameMB implements Serializable{
     private MedicoDao medicoDao;
     private String nomeCliente;
     private String matricula;
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         gerarListaExame();
     }
 
@@ -181,47 +181,42 @@ public class ExameMB implements Serializable{
     public void setMatricula(String matricula) {
         this.matricula = matricula;
     }
-    
-    
-    
-    
-    public void gerarListaExame(){
-        listaExames = exameDao.list("Select e from Exame e Where e.situacao is null");
+
+    public void gerarListaExame() {
+        listaExames = exameDao.list("select e from Exame e where e.situacao is null");
         if (listaExames == null) {
             listaExames = new ArrayList<Exame>();
         }
     }
-    
-    
-     public String novoCadastroExame() {
+
+    public String novoCadastroExame() {
         Map<String, Object> options = new HashMap<String, Object>();
         options.put("contentWidth", 545);
         RequestContext.getCurrentInstance().openDialog("cadExame", options, null);
         return "";
     }
-    
-    public void retornoDialogNovo(SelectEvent event){
+
+    public void retornoDialogNovo(SelectEvent event) {
         Exame exame = (Exame) event.getObject();
-        if (exame.getIdexame()!= null) {
+        if (exame.getIdexame() != null) {
             Mensagem.lancarMensagemInfo("Salvou", "Cadastro de exame realizado com sucesso");
         }
         gerarListaExame();
     }
-    
-    public void retornoDialogAlteracao(SelectEvent event){
+
+    public void retornoDialogAlteracao(SelectEvent event) {
         Exame exame = (Exame) event.getObject();
-        if (exame.getIdexame()!= null) {
+        if (exame.getIdexame() != null) {
             Mensagem.lancarMensagemInfo("Salvou", "Alteração de exame realizado com sucesso");
         }
         gerarListaExame();
     }
-    
-    
-    public void editar(Exame exame){
+
+    public void editar(Exame exame) {
         pesquisarMedico(usuarioLogadoMB.getUsuario().getIdusuario());
         if (medico == null) {
             Mensagem.lancarMensagemInfo("", "Acesso Negado!!");
-        }else{
+        } else {
             Map<String, Object> options = new HashMap<String, Object>();
             FacesContext fc = FacesContext.getCurrentInstance();
             HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
@@ -231,15 +226,15 @@ public class ExameMB implements Serializable{
             RequestContext.getCurrentInstance().openDialog("cadExame", options, null);
         }
     }
-    
-    public void excluir(Exame exame){
-        List<Exameassociado> listaExameAssociado = exameAssociadoDao.list("Select ea from Exameassociado ea where ea.exame.idexame=" + exame.getIdexame());
-        List<Examedependente> listaExameDependente  = exameDependenteDao.list("Select ed from Examedependente ed where ed.exame.idexame=" + exame.getIdexame());
+
+    public void excluir(Exame exame) {
+        List<Exameassociado> listaExameAssociado = exameAssociadoDao.list("select ea from Exameassociado ea where ea.exame.idexame=" + exame.getIdexame());
+        List<Examedependente> listaExameDependente = exameDependenteDao.list("select ed from Examedependente ed where ed.exame.idexame=" + exame.getIdexame());
         if (listaExameAssociado == null || listaExameAssociado.isEmpty()) {
             for (int i = 0; i < listaExameDependente.size(); i++) {
                 exameDependenteDao.remove(listaExameDependente.get(i).getIdexamedependente());
             }
-        }else{
+        } else {
             for (int i = 0; i < listaExameAssociado.size(); i++) {
                 exameAssociadoDao.remove(listaExameAssociado.get(i).getIdexameassociado());
             }
@@ -248,65 +243,63 @@ public class ExameMB implements Serializable{
         Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
         gerarListaExame();
     }
-    
-    
-     public String pegarValores(Exame exame){
-          if (exame.getExamedependente() == null && exame.getExameconvidado() == null && exame.getExameassociado() != null) {
-             return exame.getExameassociado().getAssociado().getCliente().getNome();
-          }else if(exame.getExameassociado()== null && exame.getExameconvidado() == null && exame.getExamedependente() != null){
-              return exame.getExamedependente().getDependente().getAssociado().getCliente().getNome();
-          }else if(exame.getExameassociado() == null && exame.getExamedependente() == null && exame.getExameconvidado() != null){
-              return exame.getExameconvidado().getEventoconvidados().getNome();
-          }
-          return "";
-    }
-     
-    
-    public void filtrar(){
-        String sql = "Select e from Exame e";
-        if (!situacao.equalsIgnoreCase("sn") || dataInicio != null || dataFinal != null || nomeCliente.length() > 0 || matricula.length() > 0) {
-            sql = sql + " where"; 
+
+    public String pegarValores(Exame exame) {
+        if (exame.getExamedependente() == null && exame.getExameconvidado() == null && exame.getExameassociado() != null) {
+            return exame.getExameassociado().getAssociado().getCliente().getNome();
+        } else if (exame.getExameassociado() == null && exame.getExameconvidado() == null && exame.getExamedependente() != null) {
+            return exame.getExamedependente().getDependente().getAssociado().getCliente().getNome();
+        } else if (exame.getExameassociado() == null && exame.getExamedependente() == null && exame.getExameconvidado() != null) {
+            return exame.getExameconvidado().getEventoconvidados().getNome();
         }
-        
+        return "";
+    }
+
+    public void filtrar() {
+        String sql = "select e from Exame e";
+        if (!situacao.equalsIgnoreCase("sn") || dataInicio != null || dataFinal != null || nomeCliente.length() > 0 || matricula.length() > 0) {
+            sql = sql + " where";
+        }
+
         if (nomeCliente.length() > 0) {
             sql = sql + " (e.nomeCliente like '%" + nomeCliente + "%')";
             if (!situacao.equalsIgnoreCase("sn") || dataInicio != null || dataFinal != null || matricula.length() > 0) {
                 sql = sql + " and";
             }
         }
-        
+
         if (matricula.length() > 0) {
             sql = sql + " (e. matricula='" + matricula + "')";
             if (!situacao.equalsIgnoreCase("sn") || dataInicio != null || dataFinal != null) {
                 sql = sql + " and";
             }
         }
-        
+
         if (!situacao.equalsIgnoreCase("sn")) {
             sql = sql + " e.situacao='" + situacao + "'";
             if (dataInicio != null && dataFinal != null) {
                 sql = sql + " and";
             }
         }
-        
+
         if (dataInicio != null && dataFinal != null) {
-            sql = sql + " e.data>='" + Formatacao.ConvercaoDataSql(dataInicio) + "' and e.data<='" 
+            sql = sql + " e.data>='" + Formatacao.ConvercaoDataSql(dataInicio) + "' and e.data<='"
                     + Formatacao.ConvercaoDataSql(dataFinal) + "'";
         }
         listaExames = exameDao.list(sql);
         Mensagem.lancarMensagemInfo("", "Filtrado com sucesso");
     }
-     
-    public void limparFiltro(){
+
+    public void limparFiltro() {
         situacao = "";
         dataInicio = null;
         dataFinal = null;
         gerarListaExame();
     }
-    
-    public void pesquisarMedico(int idusuario){
-        List<Medico> listaMedico = medicoDao.list("Select m From Medico m Where m.idusuario=" + idusuario
-          + " and m.situacao='Ativo'");
+
+    public void pesquisarMedico(int idusuario) {
+        List<Medico> listaMedico = medicoDao.list("select m from Medico m where m.idusuario=" + idusuario
+                + " and m.situacao='Ativo'");
         for (int i = 0; i < listaMedico.size(); i++) {
             medico = listaMedico.get(i);
         }

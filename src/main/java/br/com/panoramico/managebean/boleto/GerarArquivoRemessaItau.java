@@ -7,8 +7,6 @@ package br.com.panoramico.managebean.boleto;
 
 import br.com.panoramico.bean.RetornoBean;
 import br.com.panoramico.dao.ContasReceberDao;
-import br.com.panoramico.dao.EmpresaDao;
-import br.com.panoramico.dao.FtpDadosDao;
 import br.com.panoramico.dao.ProprietarioDao;
 import br.com.panoramico.managebean.UsuarioLogadoMB;
 import br.com.panoramico.model.Banco;
@@ -49,7 +47,7 @@ public class GerarArquivoRemessaItau {
     private String nomeFtp;
     private Ftpdados ftpdados;
     private List<RetornoBean> listaEnviada;
-            
+
     public GerarArquivoRemessaItau(List<Contasreceber> lista, UsuarioLogadoMB usuarioLogadoMB, Proprietario proprietario, List<Contasreceber> listaContas, Banco banco, String nomeArquivo, String nomeFtp, Ftpdados ftpdados) {
         this.listaContas = lista;
         this.usuarioLogadoMB = usuarioLogadoMB;
@@ -58,7 +56,7 @@ public class GerarArquivoRemessaItau {
         this.banco = banco;
         this.nomeArquivo = nomeArquivo;
         this.nomeFtp = nomeFtp;
-        this.ftpdados  = ftpdados;
+        this.ftpdados = ftpdados;
         listaEnviada = new ArrayList<>();
         iniciarRemessa();
     }
@@ -136,23 +134,23 @@ public class GerarArquivoRemessaItau {
     }
 
     private void iniciarRemessa() {
-        FacesContext facesContext = FacesContext.getCurrentInstance(); 
-    	ServletContext request = (ServletContext) facesContext.getExternalContext().getContext();
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        ServletContext request = (ServletContext) facesContext.getExternalContext().getContext();
         String pasta = request.getRealPath("");
         if (this.listaContas != null) {
             try {
                 pasta = pasta + "\\remessa\\" + nomeArquivo;
                 File arquivo = new File(pasta);
                 remessa = new FileWriter(arquivo);
-                try {  
+                try {
                     lerConta();
-                } catch (Exception ex) {  
+                } catch (Exception ex) {
                     Logger.getLogger(ArquivoRemessaEnviar.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } catch (IOException ex) {
                 Logger.getLogger(GerarArquivoRemessaItau.class.getName()).log(Level.SEVERE, null, ex);
             }
-  
+
         }
     }
 
@@ -175,7 +173,7 @@ public class GerarArquivoRemessaItau {
         }
         remessa.close();
         enviarArquivoFTP();
-        
+
     }
 
     private void atualizarBoleto(Contasreceber conta) throws IOException, Exception {
@@ -215,8 +213,8 @@ public class GerarArquivoRemessaItau {
         retornoBean.setValorJuros(0.0f);
         retornoBean.setValorTitulo(conta.getValorconta());
         listaEnviada.add(retornoBean);
-    }  
- 
+    }
+
     private void confirmarContas() {
         for (int i = 0; i < listaContas.size(); i++) {
             Contasreceber conta = listaContas.get(i);
@@ -225,11 +223,10 @@ public class GerarArquivoRemessaItau {
             contasReceberDao.update(conta);
         }
     }
-    
-    
+
     public void enviarArquivoFTP() {
-    	FacesContext facesContext = FacesContext.getCurrentInstance(); 
-    	ServletContext request = (ServletContext) facesContext.getExternalContext().getContext();
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        ServletContext request = (ServletContext) facesContext.getExternalContext().getContext();
         String pasta = request.getRealPath("");
         try {
             Ftp ftp = new Ftp(ftpdados.getHostupload(), ftpdados.getUser(), ftpdados.getPassword());

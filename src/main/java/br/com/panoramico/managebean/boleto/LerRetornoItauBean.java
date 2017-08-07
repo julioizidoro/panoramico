@@ -79,7 +79,7 @@ public class LerRetornoItauBean {
     public void registarRecebimento(String nossoNumero, String dataPagamento, String valorPago, String juros, String ocorrencia) {
         Retornoarquivo retornoarquivo;
         Retornocontas retornocontas;
-        String sql = "Select c from Contasreceber c where c.nossonumero='" + nossoNumero + "'";
+        String sql = "select c from Contasreceber c where c.nossonumero='" + nossoNumero + "'";
         Contasreceber conta = contasReceberDao.find(sql);
         recebimento = new Recebimento();
         if (conta != null) {

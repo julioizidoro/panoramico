@@ -18,21 +18,19 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
-import sun.misc.Request;
 
 @Named
 @ViewScoped
-public class ConsPagamentosMB implements Serializable{
-    
+public class ConsPagamentosMB implements Serializable {
+
     private Pagamento pagamento;
     @EJB
     private PagamentoDao pagamentoDao;
     private Contaspagar contaspagar;
     private List<Pagamento> listaPagamentos;
-    
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         contaspagar = (Contaspagar) session.getAttribute("contaspagar");
@@ -71,15 +69,15 @@ public class ConsPagamentosMB implements Serializable{
     public void setListaPagamentos(List<Pagamento> listaPagamentos) {
         this.listaPagamentos = listaPagamentos;
     }
-    
-    public void gerarListaPagamentos(){
-        listaPagamentos = pagamentoDao.list("Select p from Pagamento p where p.contaspagar.idcontaspagar=" + contaspagar.getIdcontaspagar());
+
+    public void gerarListaPagamentos() {
+        listaPagamentos = pagamentoDao.list("select p from Pagamento p where p.contaspagar.idcontaspagar=" + contaspagar.getIdcontaspagar());
         if (listaPagamentos == null) {
-            listaPagamentos = new ArrayList<Pagamento>();
+            listaPagamentos = new ArrayList<>();
         }
     }
-    
-    public void fechar(){
+
+    public void fechar() {
         RequestContext.getCurrentInstance().closeDialog(null);
     }
 }

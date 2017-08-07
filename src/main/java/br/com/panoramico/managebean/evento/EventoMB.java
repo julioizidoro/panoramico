@@ -40,11 +40,10 @@ import org.primefaces.event.SelectEvent;
  *
  * @author Kamilla Rodrigues
  */
-
 @Named
 @ViewScoped
-public class EventoMB implements Serializable{
-    
+public class EventoMB implements Serializable {
+
     @Inject
     private UsuarioLogadoMB usuarioLogadoMB;
     private Evento evento;
@@ -67,10 +66,9 @@ public class EventoMB implements Serializable{
     private Date dataInicio;
     private Date dataFinal;
     private List<BolinhaBean> listaBolinhas;
-    
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         gerarListaEventos();
         gerarListaAmbiente();
         gerarListaResponsavel();
@@ -212,92 +210,88 @@ public class EventoMB implements Serializable{
     public void setListaBolinhas(List<BolinhaBean> listaBolinhas) {
         this.listaBolinhas = listaBolinhas;
     }
-    
-    
+
     public Date calcularDiasEventos() {
         Calendar c = new GregorianCalendar();
         c.setTime(new Date());
         c.add(Calendar.DAY_OF_MONTH, 30);
         Date data = c.getTime();
-       return data;
+        return data;
     }
-    
-    public void gerarListaEventos(){
+
+    public void gerarListaEventos() {
         Date dataIncial = new Date();
         Date dataFinal = calcularDiasEventos();
-        listaEvento = eventoDao.list("Select e from Evento e where e.data>='" + Formatacao.ConvercaoDataSql(dataIncial) + "' and "
+        listaEvento = eventoDao.list("select e from Evento e where e.data>='" + Formatacao.ConvercaoDataSql(dataIncial) + "' and "
                 + "e.data<='" + Formatacao.ConvercaoDataSql(dataFinal) + "'");
         if (listaEvento == null) {
             listaEvento = new ArrayList<Evento>();
         }
     }
-    
-     public String novoCadastroEvento() {
+
+    public String novoCadastroEvento() {
         Map<String, Object> options = new HashMap<String, Object>();
         options.put("contentWidth", 580);
         RequestContext.getCurrentInstance().openDialog("cadEventos", options, null);
         return "";
     }
-     
-     public String novoConvidados(Evento e) {
+
+    public String novoConvidados(Evento e) {
         if (e != null) {
-           Map<String, Object> options = new HashMap<String, Object>();
-           options.put("contentWidth", 600);
-           FacesContext fc = FacesContext.getCurrentInstance();
-           HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
-           session.setAttribute("evento", e);
-           RequestContext.getCurrentInstance().openDialog("cadConvidadosEvento", options, null);
+            Map<String, Object> options = new HashMap<String, Object>();
+            options.put("contentWidth", 600);
+            FacesContext fc = FacesContext.getCurrentInstance();
+            HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+            session.setAttribute("evento", e);
+            RequestContext.getCurrentInstance().openDialog("cadConvidadosEvento", options, null);
         }
         return "";
     }
-     
-    public void retornoDialogConvidados(SelectEvent event){
+
+    public void retornoDialogConvidados(SelectEvent event) {
         String mensagem = (String) event.getObject();
         if (mensagem.length() > 5) {
             Mensagem.lancarMensagemInfo("", mensagem);
         }
     }
-   
-    
-    public void retornoDialogNovo(SelectEvent event){
+
+    public void retornoDialogNovo(SelectEvent event) {
         Evento evento = (Evento) event.getObject();
         if (evento.getIdevento() != null) {
             Mensagem.lancarMensagemInfo("Salvou", "Cadastro de Evento realizado com sucesso");
         }
         gerarListaEventos();
-    } 
-    
-    public void retornoDialogAlteracao(SelectEvent event){
+    }
+
+    public void retornoDialogAlteracao(SelectEvent event) {
         Evento evento = (Evento) event.getObject();
         if (evento.getIdevento() != null) {
             Mensagem.lancarMensagemInfo("Salvou", "Alteração do Ambiente realizado com sucesso");
         }
         gerarListaEventos();
     }
-    
-    
+
     public String novoCancelamento(Evento e) {
         if (e != null) {
-           Map<String, Object> options = new HashMap<String, Object>();
-           options.put("contentWidth", 600);
-           FacesContext fc = FacesContext.getCurrentInstance();
-           HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
-           session.setAttribute("evento", e);
-           RequestContext.getCurrentInstance().openDialog("cadCancelamentoEvento", options, null);
+            Map<String, Object> options = new HashMap<String, Object>();
+            options.put("contentWidth", 600);
+            FacesContext fc = FacesContext.getCurrentInstance();
+            HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+            session.setAttribute("evento", e);
+            RequestContext.getCurrentInstance().openDialog("cadCancelamentoEvento", options, null);
         }
         return "";
     }
-    
-    public void retornoDialogCancelamento(SelectEvent event){
+
+    public void retornoDialogCancelamento(SelectEvent event) {
         Eventocancelamento eventocancelamento = (Eventocancelamento) event.getObject();
         if (eventocancelamento.getIdeventocancelamento() != null) {
             Mensagem.lancarMensagemInfo("Salvou", "Cancelamento do Evento realizado com sucesso");
         }
         gerarListaEventos();
-    } 
-    
-    
-    public void editar(Evento evento){
+    }
+
+    public void editar(Evento evento) {
         if (evento != null) {
             Map<String, Object> options = new HashMap<String, Object>();
             FacesContext fc = FacesContext.getCurrentInstance();
@@ -307,58 +301,58 @@ public class EventoMB implements Serializable{
             RequestContext.getCurrentInstance().openDialog("cadEventos", options, null);
         }
     }
-    
-    public String verificarSituacao(Evento evento){
+
+    public String verificarSituacao(Evento evento) {
         if (evento.getSituacao().equalsIgnoreCase("A")) {
             return " color:green;";
-        }else if (evento.getSituacao().equalsIgnoreCase("C")) {
+        } else if (evento.getSituacao().equalsIgnoreCase("C")) {
             return " color:red;";
-        }else{
+        } else {
             return " color:blue;";
         }
     }
-    
-    public String verificarSituacaoCancelada(Evento evento){
+
+    public String verificarSituacaoCancelada(Evento evento) {
         if (evento.getSituacao().equalsIgnoreCase("C")) {
             return "true";
-        }else{
+        } else {
             return "false";
         }
     }
-    
-    public String verificarSituacaoRealizada(Evento evento){
+
+    public String verificarSituacaoRealizada(Evento evento) {
         if (evento.getSituacao().equalsIgnoreCase("R")) {
             return "true";
-        }else{
+        } else {
             return "false";
         }
     }
-    
-    public void gerarListaAmbiente(){
-        listaAmbiente = ambienteDao.list("Select a from Ambiente a");
+
+    public void gerarListaAmbiente() {
+        listaAmbiente = ambienteDao.list("select a from Ambiente a");
         if (listaAmbiente == null) {
             listaAmbiente = new ArrayList<Ambiente>();
         }
     }
-    
-    public void gerarListaTipoEvento(){
-        listaTipoEvento = tipoEventoDao.list("Select t from Tipoenvento t ");
+
+    public void gerarListaTipoEvento() {
+        listaTipoEvento = tipoEventoDao.list("select t from Tipoenvento t ");
         if (listaTipoEvento == null) {
             listaTipoEvento = new ArrayList<Tipoenvento>();
         }
     }
-    
-    public void gerarListaResponsavel(){
-        listaCliente = clienteDao.list("Select c from Cliente c");
+
+    public void gerarListaResponsavel() {
+        listaCliente = clienteDao.list("select c from Cliente c");
         if (listaCliente == null) {
             listaCliente = new ArrayList<Cliente>();
         }
     }
-    
-    public void filtrar(){
-        String sql = "Select e from Evento e";
+
+    public void filtrar() {
+        String sql = "select e from Evento e";
         if (cliente.getIdcliente() != null || ambiente.getIdambiente() != null || tipoenvento.getIdtipoenvento() != null || !situacao.equalsIgnoreCase("sn") || dataInicio != null || dataFinal != null) {
-                sql = sql + " where";
+            sql = sql + " where";
         }
         if (cliente.getIdcliente() != null) {
             sql = sql + " e.cliente.idcliente=" + cliente.getIdcliente();
@@ -390,8 +384,8 @@ public class EventoMB implements Serializable{
         listaEvento = eventoDao.list(sql);
         Mensagem.lancarMensagemInfo("", "Filtrado com sucesso");
     }
-    
-    public void limparFiltro(){
+
+    public void limparFiltro() {
         cliente = null;
         ambiente = null;
         tipoenvento = null;
@@ -403,44 +397,42 @@ public class EventoMB implements Serializable{
         dataInicio = null;
         dataFinal = null;
     }
-    
-    public String verSituacao(Evento evento){
+
+    public String verSituacao(Evento evento) {
         if (evento.getSituacao().equalsIgnoreCase("A")) {
             return "../../resources/img/bolaVerde.png";
-        }else if (evento.getSituacao().equalsIgnoreCase("C")) {
+        } else if (evento.getSituacao().equalsIgnoreCase("C")) {
             return "../../resources/img/bolaVermelha.png";
-        }else{
+        } else {
             return "../../resources/img/bolaAzul.png";
         }
     }
-    
-    public String nomeSituacao(Evento evento){
+
+    public String nomeSituacao(Evento evento) {
         if (evento.getSituacao().equalsIgnoreCase("A")) {
             return "Situação: Agendado";
-        }else if (evento.getSituacao().equalsIgnoreCase("C")) {
+        } else if (evento.getSituacao().equalsIgnoreCase("C")) {
             return "Situação: Cancelado";
-        }else{
+        } else {
             return "Situação: Realizado";
         }
     }
-    
-    public void realizadoEvento(Evento evento){
+
+    public void realizadoEvento(Evento evento) {
         if (evento != null) {
             evento.setSituacao("R");
             eventoDao.update(evento);
         }
     }
-    
-    
+
     public String novoRelatorio() {
         Map<String, Object> options = new HashMap<String, Object>();
         options.put("contentWidth", 580);
         RequestContext.getCurrentInstance().openDialog("imprimirEvento", options, null);
         return "";
     }
-    
-    
-    public void lancarContaReceber(Evento evento){
+
+    public void lancarContaReceber(Evento evento) {
         if (evento != null) {
             Contasreceber contasreceber = new Contasreceber();
             contasreceber.setCliente(evento.getCliente());

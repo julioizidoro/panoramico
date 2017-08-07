@@ -6,7 +6,6 @@
 package br.com.panoramico.managebean.cadastro;
 
 import br.com.panoramico.dao.PlanoDao;
-import br.com.panoramico.model.Empresa;
 import br.com.panoramico.model.Plano;
 import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
@@ -22,25 +21,23 @@ import org.primefaces.context.RequestContext;
  *
  * @author Julio
  */
-
 @Named
 @ViewScoped
-public class CadPlanoMB implements Serializable{
-    
+public class CadPlanoMB implements Serializable {
+
     @EJB
     private PlanoDao planoDao;
     private Plano plano;
-    
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         FacesContext fc = FacesContext.getCurrentInstance();
-         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
-         plano =  (Plano) session.getAttribute("plano");
-         session.removeAttribute("plano");
+        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+        plano = (Plano) session.getAttribute("plano");
+        session.removeAttribute("plano");
         if (plano == null) {
             plano = new Plano();
-        } 
+        }
     }
 
     public PlanoDao getPlanoDao() {
@@ -58,23 +55,22 @@ public class CadPlanoMB implements Serializable{
     public void setPlano(Plano plano) {
         this.plano = plano;
     }
-    
-    
-    public void salvar(){
+
+    public void salvar() {
         String mensagem = validarDados();
         if (mensagem.length() == 0) {
             plano = planoDao.update(plano);
             RequestContext.getCurrentInstance().closeDialog(plano);
-        }else{
+        } else {
             Mensagem.lancarMensagemInfo("", mensagem);
         }
     }
-    
-    public void cancelar(){
+
+    public void cancelar() {
         RequestContext.getCurrentInstance().closeDialog(plano);
     }
-    
-    public String validarDados(){
+
+    public String validarDados() {
         String msg = "";
         if (plano.getDescricao() == null || plano.getDescricao().length() == 0) {
             msg = msg + " Informe a descrição do plano \r\n";

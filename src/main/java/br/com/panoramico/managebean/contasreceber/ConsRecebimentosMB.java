@@ -21,17 +21,16 @@ import org.primefaces.context.RequestContext;
 
 @Named
 @ViewScoped
-public class ConsRecebimentosMB implements Serializable{
-    
+public class ConsRecebimentosMB implements Serializable {
+
     private Recebimento recebimento;
     private Contasreceber contasreceber;
     private List<Recebimento> listaRecebimentos;
     @EJB
     private RecebimentoDao recebimentoDao;
-    
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         contasreceber = (Contasreceber) session.getAttribute("contasreceber");
@@ -70,17 +69,16 @@ public class ConsRecebimentosMB implements Serializable{
     public void setRecebimentoDao(RecebimentoDao recebimentoDao) {
         this.recebimentoDao = recebimentoDao;
     }
-    
-    
-    public void gerarListaRecebimentos(){
-        listaRecebimentos = recebimentoDao.list("Select r from Recebimento r "
+
+    public void gerarListaRecebimentos() {
+        listaRecebimentos = recebimentoDao.list("select r from Recebimento r "
                 + " where r.contasreceber.idcontasreceber=" + contasreceber.getIdcontasreceber());
         if (listaRecebimentos == null) {
-            listaRecebimentos = new ArrayList<Recebimento>();
-        }  
+            listaRecebimentos = new ArrayList<>();
+        }
     }
-    
-    public void fechar(){
+
+    public void fechar() {
         RequestContext.getCurrentInstance().closeDialog(null);
-    } 
-}  
+    }
+}

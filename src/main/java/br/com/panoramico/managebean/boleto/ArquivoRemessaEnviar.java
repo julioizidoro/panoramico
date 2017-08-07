@@ -13,16 +13,13 @@ import br.com.panoramico.model.Empresa;
 import br.com.panoramico.model.Proprietario;
 import br.com.panoramico.uil.Formatacao;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.view.ViewScoped;
-import javax.inject.Named;
 
-public class ArquivoRemessaEnviar implements ArquivoRemessaItau{ 
-    
+public class ArquivoRemessaEnviar implements ArquivoRemessaItau {
+
     private String branco = "                                        ";
     private String zeros = "000000000000000000000";
     @EJB
@@ -31,10 +28,10 @@ public class ArquivoRemessaEnviar implements ArquivoRemessaItau{
     private EmpresaDao empresaDao;
     private Proprietario proprietario;
     private List<Empresa> listaEmpresa;
-    
+
     @PostConstruct
-    public void init(){
-    }  
+    public void init() {
+    }
 
     public String getBranco() {
         return branco;
@@ -76,102 +73,101 @@ public class ArquivoRemessaEnviar implements ArquivoRemessaItau{
         this.listaEmpresa = listaEmpresa;
     }
 
-    
-
-    
-    
-    
-    public String gerarHeader(Contasreceber conta, int numeroSequencial, Proprietario proprietario, Banco banco) throws IOException{
-        String linha="";
-        linha = linha  + ("0");
-        linha = linha  + ("1");
-        linha = linha  + ("REMESSA");
-        linha = linha  + ("01");
-        linha = linha  + ("COBRANCA       ");
-        linha = linha  + (banco.getAgencia());
-        linha = linha  + ("00");
-        linha = linha  + (banco.getConta()); 
-        linha = linha  + (banco.getDigitoconta());
-        linha = linha  + (branco.substring(0, 8));
+    public String gerarHeader(Contasreceber conta, int numeroSequencial, Proprietario proprietario, Banco banco) throws IOException {
+        String linha = "";
+        linha = linha + ("0");
+        linha = linha + ("1");
+        linha = linha + ("REMESSA");
+        linha = linha + ("01");
+        linha = linha + ("COBRANCA       ");
+        linha = linha + (banco.getAgencia());
+        linha = linha + ("00");
+        linha = linha + (banco.getConta());
+        linha = linha + (banco.getDigitoconta());
+        linha = linha + (branco.substring(0, 8));
         String nomeEmpresa = proprietario.getRazaosocial();
         if (nomeEmpresa == null) {
             nomeEmpresa = " Sem nome da empresa";
         }
         nomeEmpresa = nomeEmpresa.toUpperCase();
-        if (nomeEmpresa.length()<30){
+        if (nomeEmpresa.length() < 30) {
             nomeEmpresa = nomeEmpresa + branco.substring(0, 30 - nomeEmpresa.length());
-        }else nomeEmpresa = nomeEmpresa.substring(0,30);
-        linha = linha  + (nomeEmpresa);
-        linha = linha  + ("341");
-        linha = linha  + ("BANCO ITAU S.A.");
-        linha = linha  + (Formatacao.ConvercaoDataDDMMAA(new Date()));
-        linha = linha  + (branco + branco + branco + branco + branco + branco + branco + branco.substring(0,14));
+        } else {
+            nomeEmpresa = nomeEmpresa.substring(0, 30);
+        }
+        linha = linha + (nomeEmpresa);
+        linha = linha + ("341");
+        linha = linha + ("BANCO ITAU S.A.");
+        linha = linha + (Formatacao.ConvercaoDataDDMMAA(new Date()));
+        linha = linha + (branco + branco + branco + branco + branco + branco + branco + branco.substring(0, 14));
         String ns = "";
-        if (numeroSequencial<10){
+        if (numeroSequencial < 10) {
             ns = "00000" + String.valueOf(numeroSequencial);
-        }else if (numeroSequencial<100){
+        } else if (numeroSequencial < 100) {
             ns = "0000" + String.valueOf(numeroSequencial);
-        }else ns = "000" + String.valueOf(numeroSequencial);
-        linha = linha  + (ns + "\r\n");
+        } else {
+            ns = "000" + String.valueOf(numeroSequencial);
+        }
+        linha = linha + (ns + "\r\n");
         return linha;
-    } 
-    
-    public String gerarDetalhe(Contasreceber conta, int numeroSequencial, Proprietario proprietario, Banco banco) throws IOException, Exception{
-        String linha="";
-        linha = linha  + ("1");
-        linha = linha  + ("02");
-        linha = linha  + (Formatacao.retirarPontos(proprietario.getCnpj()));
-        linha = linha  + (banco.getAgencia());
-        linha = linha  + ("00");
-        linha = linha  + (banco.getConta());
-        linha = linha  + (banco.getDigitoconta());
-        linha = linha  + (branco.substring(0, 4));
-        linha = linha  + ("0000");
-        linha = linha  + (branco.substring(0, 25));
-        linha = linha  + (conta.getNossonumero());
-        linha = linha  + ("0000000000000");
-        linha = linha  + ("109");
-        linha = linha  + ("000000000000000000000");
-        linha = linha  + ("I");
-        linha = linha  + ("01");
-        linha = linha  + (conta.getNossonumero() + "  ");
-        linha = linha  + (Formatacao.ConvercaoDataDDMMAA(conta.getDatavencimento()));
+    }
+
+    public String gerarDetalhe(Contasreceber conta, int numeroSequencial, Proprietario proprietario, Banco banco) throws IOException, Exception {
+        String linha = "";
+        linha = linha + ("1");
+        linha = linha + ("02");
+        linha = linha + (Formatacao.retirarPontos(proprietario.getCnpj()));
+        linha = linha + (banco.getAgencia());
+        linha = linha + ("00");
+        linha = linha + (banco.getConta());
+        linha = linha + (banco.getDigitoconta());
+        linha = linha + (branco.substring(0, 4));
+        linha = linha + ("0000");
+        linha = linha + (branco.substring(0, 25));
+        linha = linha + (conta.getNossonumero());
+        linha = linha + ("0000000000000");
+        linha = linha + ("109");
+        linha = linha + ("000000000000000000000");
+        linha = linha + ("I");
+        linha = linha + ("01");
+        linha = linha + (conta.getNossonumero() + "  ");
+        linha = linha + (Formatacao.ConvercaoDataDDMMAA(conta.getDatavencimento()));
         String valor = Formatacao.foramtarFloatString(conta.getValorconta());
         valor = Formatacao.retirarPontos(valor);
-        if (valor.length()<13){
+        if (valor.length() < 13) {
             valor = zeros.substring(0, 13 - valor.length()) + valor;
         }
-        linha = linha  + (valor);
-        linha = linha  + ("341");
-        linha = linha  + ("00000");
-        linha = linha  + ("08");
-        linha = linha  + ("N");
-        linha = linha  + (Formatacao.ConvercaoDataDDMMAA(new Date()));
-        linha = linha  + ("00");
-        linha = linha  + ("00");
-        linha = linha  + ("0000000000000");
-        float valorDesconto =0.0f;
-        if (conta.getIdempresa()==0){
-            if (conta.getCliente().getAssociado().getDescotomensalidade()>0){
+        linha = linha + (valor);
+        linha = linha + ("341");
+        linha = linha + ("00000");
+        linha = linha + ("08");
+        linha = linha + ("N");
+        linha = linha + (Formatacao.ConvercaoDataDDMMAA(new Date()));
+        linha = linha + ("00");
+        linha = linha + ("00");
+        linha = linha + ("0000000000000");
+        float valorDesconto = 0.0f;
+        if (conta.getIdempresa() == 0) {
+            if (conta.getCliente().getAssociado().getDescotomensalidade() > 0) {
                 valorDesconto = conta.getCliente().getAssociado().getDescotomensalidade();
             }
         }
-        if (valorDesconto>0){
-            linha = linha  + (Formatacao.ConvercaoDataDDMMAA(conta.getDatavencimento()));
+        if (valorDesconto > 0) {
+            linha = linha + (Formatacao.ConvercaoDataDDMMAA(conta.getDatavencimento()));
             valor = Formatacao.foramtarFloatString(conta.getCliente().getAssociado().getDescotomensalidade());
             valor = Formatacao.retirarPontos(valor);
-            if (valor.length()<13){
+            if (valor.length() < 13) {
                 valor = zeros.substring(0, 13 - valor.length()) + valor;
             }
-            linha = linha  + (zeros.substring(0, 13));
-        }else {
-            linha = linha  + (Formatacao.ConvercaoDataDDMMAA(new Date()));
-            linha = linha  + (zeros.substring(0, 13));
+            linha = linha + (zeros.substring(0, 13));
+        } else {
+            linha = linha + (Formatacao.ConvercaoDataDDMMAA(new Date()));
+            linha = linha + (zeros.substring(0, 13));
         }
-        linha = linha  + (zeros.substring(0, 13));
-        linha = linha  + (zeros.substring(0, 13));
+        linha = linha + (zeros.substring(0, 13));
+        linha = linha + (zeros.substring(0, 13));
         //dados Cliente
-        if (conta.getIdempresa()==0) {
+        if (conta.getIdempresa() == 0) {
             linha = linha + ("01");
             linha = linha + (Formatacao.retirarPontos(conta.getCliente().getCpf()) + "   ");
             String nomeCliente = conta.getCliente().getNome();
@@ -277,69 +273,67 @@ public class ArquivoRemessaEnviar implements ArquivoRemessaItau{
             linha = linha + (cidade);
             linha = linha + (empresa.getEstado().toUpperCase());
         }
-        
-        
-        
-        
-                
-                
-                
-                
-        
-        linha = linha  + (branco.substring(0,30));
-        linha = linha  + ("    ");
-        linha = linha  + (Formatacao.SubtarirDatas(conta.getDatavencimento(), -1, "ddMMyy"));
-        linha = linha  + ("13");
-        linha = linha  + (" ");
-        String ns;
-        if (numeroSequencial<10){
-            ns = "00000" + String.valueOf(numeroSequencial);
-        }else if (numeroSequencial<100){
-            ns = "0000" + String.valueOf(numeroSequencial);
-        }else ns = "000" + String.valueOf(numeroSequencial);
-        linha = linha  + (ns + "\r\n");
-        return linha;
-    }
-        public String gerarMulta(Contasreceber conta, int numeroSequencial, Banco banco) throws IOException, Exception{
 
-        String linha="";
-        linha = linha  + ("2");
-        linha = linha  + ("1");
-        linha = linha  + (Formatacao.SubtarirDatas(conta.getDatavencimento(), -1, "ddMMyyyy"));
-        linha = linha  + (valorJuros(0f, 0f));
-        linha = linha  + (branco + branco + branco + branco + branco + branco + branco + branco + branco + branco.substring(0,11));
+        linha = linha + (branco.substring(0, 30));
+        linha = linha + ("    ");
+        linha = linha + (Formatacao.SubtarirDatas(conta.getDatavencimento(), -1, "ddMMyy"));
+        linha = linha + ("13");
+        linha = linha + (" ");
         String ns;
-        if (numeroSequencial<10){
+        if (numeroSequencial < 10) {
             ns = "00000" + String.valueOf(numeroSequencial);
-        }else if (numeroSequencial<100){
+        } else if (numeroSequencial < 100) {
             ns = "0000" + String.valueOf(numeroSequencial);
-        }else ns = "000" + String.valueOf(numeroSequencial);
-        linha = linha  + (ns + "\r\n");
-        return linha;
-    }  
-    
-    public String gerarTrailer(int numeroSequencial) throws IOException{
-        String linha="";
-        linha = linha  + ("9");
-        linha = linha  + (branco + branco + branco + branco + branco + branco + branco + branco + branco + branco.substring(0,33));
-        String ns;
-        if (numeroSequencial<10){
-            ns = "00000" + String.valueOf(numeroSequencial);
-        }else if (numeroSequencial<100){
-            ns = "0000" + String.valueOf(numeroSequencial);
-        }else ns = "000" + String.valueOf(numeroSequencial);
-        linha = linha  + (ns + "\r\n");
+        } else {
+            ns = "000" + String.valueOf(numeroSequencial);
+        }
+        linha = linha + (ns + "\r\n");
         return linha;
     }
-    
-    private String valorJuros(Float valorConta, float juros){
-        Float valorJuros = valorConta * (juros/100);
+
+    public String gerarMulta(Contasreceber conta, int numeroSequencial, Banco banco) throws IOException, Exception {
+
+        String linha = "";
+        linha = linha + ("2");
+        linha = linha + ("1");
+        linha = linha + (Formatacao.SubtarirDatas(conta.getDatavencimento(), -1, "ddMMyyyy"));
+        linha = linha + (valorJuros(0f, 0f));
+        linha = linha + (branco + branco + branco + branco + branco + branco + branco + branco + branco + branco.substring(0, 11));
+        String ns;
+        if (numeroSequencial < 10) {
+            ns = "00000" + String.valueOf(numeroSequencial);
+        } else if (numeroSequencial < 100) {
+            ns = "0000" + String.valueOf(numeroSequencial);
+        } else {
+            ns = "000" + String.valueOf(numeroSequencial);
+        }
+        linha = linha + (ns + "\r\n");
+        return linha;
+    }
+
+    public String gerarTrailer(int numeroSequencial) throws IOException {
+        String linha = "";
+        linha = linha + ("9");
+        linha = linha + (branco + branco + branco + branco + branco + branco + branco + branco + branco + branco.substring(0, 33));
+        String ns;
+        if (numeroSequencial < 10) {
+            ns = "00000" + String.valueOf(numeroSequencial);
+        } else if (numeroSequencial < 100) {
+            ns = "0000" + String.valueOf(numeroSequencial);
+        } else {
+            ns = "000" + String.valueOf(numeroSequencial);
+        }
+        linha = linha + (ns + "\r\n");
+        return linha;
+    }
+
+    private String valorJuros(Float valorConta, float juros) {
+        Float valorJuros = valorConta * (juros / 100);
         String valor = Formatacao.retirarPontos(Formatacao.foramtarFloatString(valorJuros));
-        if (valor.length()<13){
+        if (valor.length() < 13) {
             valor = zeros.substring(0, 13 - valor.length()) + valor;
         }
         return valor;
     }
 
-   
 }

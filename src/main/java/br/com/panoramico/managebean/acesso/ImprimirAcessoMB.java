@@ -156,7 +156,7 @@ public class ImprimirAcessoMB implements Serializable {
 
     public String gerarSql() {
         String sql = "";
-        sql = "Select distinct controleacesso.data, controleacesso.hora, controleacesso.tipo, controleacesso.idcontroleacesso From controleacesso Where "
+        sql = "select distinct controleacesso.data, controleacesso.hora, controleacesso.tipo, controleacesso.idcontroleacesso from controleacesso where "
                 + " controleacesso.situacao='LIBERADO' ";
 
         if ((dataInicio != null) && (dataFinal != null)) {
@@ -179,7 +179,7 @@ public class ImprimirAcessoMB implements Serializable {
     }
 
     public void gerarTotalAcesso() {
-        String sql = "Select c From Controleacesso c Where c.situacao='LIBERADO'";
+        String sql = "select c from Controleacesso c where c.situacao='LIBERADO'";
         if (dataInicio != null && dataFinal != null) {
             sql = sql + " and c.data>='" + Formatacao.ConvercaoDataSql(dataInicio)
                     + "' and c.data<='" + Formatacao.ConvercaoDataSql(dataFinal) + "'";
@@ -198,7 +198,7 @@ public class ImprimirAcessoMB implements Serializable {
         List<InformacoesFrequenciaBean> lista = new ArrayList<>();
         List<Associado> listaAssociados = new ArrayList<>();
         List<Controleacesso> listaControleAcesso = new ArrayList<>();
-        String sql = " Select c From Controleacesso c Where c.situacao='LIBERADO' ";
+        String sql = " select c from Controleacesso c where c.situacao='LIBERADO' ";
         if ((dataInicio != null) && (dataFinal != null)) {
             sql = sql + " and c.data>='" + Formatacao.ConvercaoDataSql(dataInicio)
                     + "' and c.data<='" + Formatacao.ConvercaoDataSql(dataFinal) + "' ";
@@ -232,9 +232,9 @@ public class ImprimirAcessoMB implements Serializable {
     public Integer quantidadeFrequencia(Controleacesso controleacesso) {
         String sql = "";
         if (controleacesso.getIddependente() > 0) {
-            sql = " Select count(c.iddependente) From Controleacesso Where c.iddependente=" + controleacesso.getIddependente();
+            sql = " select count(c.iddependente) from Controleacesso where c.iddependente=" + controleacesso.getIddependente();
         } else {
-            sql = " Select count(c.associado.idassociado) From Controleacesso Where c.associado.idassociado=" + controleacesso.getAssociado().getIdassociado();
+            sql = " select count(c.associado.idassociado) from Controleacesso where c.associado.idassociado=" + controleacesso.getAssociado().getIdassociado();
         }
         try {
             Integer numeroFrequencia = controleAcessoDao.numeroFrequencia(sql);

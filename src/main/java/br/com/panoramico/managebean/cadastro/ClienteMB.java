@@ -10,7 +10,6 @@ import br.com.panoramico.dao.ClienteDao;
 import br.com.panoramico.model.Associado;
 import br.com.panoramico.model.Ccancelamento;
 import br.com.panoramico.model.Cliente;
-import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.uil.Mensagem;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -30,11 +29,10 @@ import org.primefaces.event.SelectEvent;
  *
  * @author Julio
  */
-
 @Named
 @ViewScoped
-public class ClienteMB implements Serializable{
-    
+public class ClienteMB implements Serializable {
+
     @EJB
     private ClienteDao clienteDao;
     private Cliente cliente;
@@ -47,29 +45,28 @@ public class ClienteMB implements Serializable{
     @EJB
     private AssociadoDao associadoDao;
     private boolean temSql = false;
-    private int idCliente = 0 ;
+    private int idCliente = 0;
     private String situacao;
-    
-    
+
     @PostConstruct
-    public void init(){
-       FacesContext fc = FacesContext.getCurrentInstance();
-       HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
-       sql = (String) session.getAttribute("sql");
-       Integer idC = (Integer) session.getAttribute("idCliente");
+    public void init() {
+        FacesContext fc = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+        sql = (String) session.getAttribute("sql");
+        Integer idC = (Integer) session.getAttribute("idCliente");
         if (idC == null) {
             idC = 0;
         }
         idCliente = idC;
-         if (idCliente>0){
+        if (idCliente > 0) {
             sql = null;
-             gerarListaCliente();
-        }else if (sql != null) {
+            gerarListaCliente();
+        } else if (sql != null) {
             temSql = true;
             gerarListaCliente();
         }
-       session.removeAttribute("sql");
-       session.removeAttribute("idCliente");
+        session.removeAttribute("sql");
+        session.removeAttribute("idCliente");
     }
 
     public ClienteDao getClienteDao() {
@@ -160,23 +157,20 @@ public class ClienteMB implements Serializable{
         this.situacao = situacao;
     }
 
-    
-    
-    public void gerarListaCliente(){
+    public void gerarListaCliente() {
         if (!temSql) {
             if (idCliente > 0) {
-                sql = "Select a From Cliente a where a.idcliente>" + (idCliente-5) + " and a.situacao<>'Inativo' order by a.idcliente DESC";
+                sql = "select a from Cliente a where a.idcliente>" + (idCliente - 5) + " and a.situacao<>'Inativo' order by a.idcliente DESC";
                 listaCliente = clienteDao.list(sql);
             }
-        }else{
+        } else {
             listaCliente = clienteDao.list(sql);
         }
         if (listaCliente == null) {
             listaCliente = new ArrayList<Cliente>();
         }
     }
-    
-    
+
     public String novoCadastroCliente() {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
@@ -186,9 +180,8 @@ public class ClienteMB implements Serializable{
         RequestContext.getCurrentInstance().openDialog("cadCliente", options, null);
         return "";
     }
-    
-      
-    public void retornoDialogNovo(SelectEvent event){
+
+    public void retornoDialogNovo(SelectEvent event) {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         sql = (String) session.getAttribute("sql");
@@ -202,8 +195,8 @@ public class ClienteMB implements Serializable{
             listaCliente.add(cliente);
         }
     }
-    
-    public void retornoDialogAlteracao(SelectEvent event){
+
+    public void retornoDialogAlteracao(SelectEvent event) {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         sql = (String) session.getAttribute("sql");
@@ -214,9 +207,8 @@ public class ClienteMB implements Serializable{
         }
         gerarListaCliente();
     }
-    
-    
-    public void editar(Cliente cliente){
+
+    public void editar(Cliente cliente) {
         if (cliente != null) {
             Map<String, Object> options = new HashMap<String, Object>();
             FacesContext fc = FacesContext.getCurrentInstance();
@@ -227,19 +219,18 @@ public class ClienteMB implements Serializable{
             RequestContext.getCurrentInstance().openDialog("cadCliente", options, null);
         }
     }
-    
-    public void excluir(Cliente cliente){
-        List<Associado> listaAssociado = associadoDao.list("Select a From Associado a Where a.cliente.idcliente=" + cliente.getIdcliente());
+
+    public void excluir(Cliente cliente) {
+        List<Associado> listaAssociado = associadoDao.list("select a from Associado a where a.cliente.idcliente=" + cliente.getIdcliente());
         if (listaAssociado == null || listaAssociado.isEmpty()) {
             clienteDao.remove(cliente.getIdcliente());
             Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
             listaCliente.remove(cliente);
-        }else{
+        } else {
             Mensagem.lancarMensagemInfo("Atenção", " este cliente não pode ser excluido");
         }
     }
-    
-    
+
     public String novoCancelamento(Cliente cliente) {
         if (cliente != null) {
             Map<String, Object> options = new HashMap<String, Object>();
@@ -252,28 +243,28 @@ public class ClienteMB implements Serializable{
         }
         return "";
     }
-    
-    public String limpar(){
-        temSql=false;
+
+    public String limpar() {
+        temSql = false;
         listaCliente = new ArrayList<>();
         gerarListaCliente();
-        nome="";
-        cpf="";
-        email="";
-        telefone="";
+        nome = "";
+        cpf = "";
+        email = "";
+        telefone = "";
         return "";
     }
-    
-    public String pesquisar(){
-        temSql=true;
-        sql = "Select c from Cliente c where c.nome like '%" + nome + "%' ";
-        if (cpf.length()>0){
+
+    public String pesquisar() {
+        temSql = true;
+        sql = "select c from Cliente c where c.nome like '%" + nome + "%' ";
+        if (cpf.length() > 0) {
             sql = sql + " and c.cpf='" + cpf + "' ";
         }
-        if (email.length()>0){
+        if (email.length() > 0) {
             sql = sql + " and c.email='" + email + "' ";
         }
-        if (telefone.length()>0){
+        if (telefone.length() > 0) {
             sql = sql + " and c.telefone='" + telefone + "' ";
         }
         if (situacao != null && !situacao.equalsIgnoreCase("sn")) {
@@ -281,17 +272,17 @@ public class ClienteMB implements Serializable{
         }
         sql = sql + " order by c.nome";
         gerarListaCliente();
-        return "";  
+        return "";
     }
-    
-    public boolean desabilitarBotao(Cliente cliente){
-            if (cliente != null && cliente.getSituacao().equalsIgnoreCase("Inativo")) {
-                return true;
-            }
+
+    public boolean desabilitarBotao(Cliente cliente) {
+        if (cliente != null && cliente.getSituacao().equalsIgnoreCase("Inativo")) {
+            return true;
+        }
         return false;
     }
-    
-    public void retornoDialogCencelamento(SelectEvent event){
+
+    public void retornoDialogCencelamento(SelectEvent event) {
         Ccancelamento ccancelamento = (Ccancelamento) event.getObject();
         if (ccancelamento.getIdccancelamento() != null) {
             Mensagem.lancarMensagemFatal("Cancalmento feito com sucesso", "");

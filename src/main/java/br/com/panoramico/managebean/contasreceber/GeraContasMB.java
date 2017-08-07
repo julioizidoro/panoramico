@@ -26,8 +26,8 @@ import org.primefaces.context.RequestContext;
 
 @Named
 @ViewScoped
-public class GeraContasMB implements Serializable{
-    
+public class GeraContasMB implements Serializable {
+
     private Associado associado;
     private Contasreceber contasreceber;
     private List<Associado> listaAssociado;
@@ -45,14 +45,12 @@ public class GeraContasMB implements Serializable{
     private String cpf;
     private String anoReferencia;
     private boolean habilitarVoltarFinanceiro;
-    
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         gerarListaAssociado();
     }
 
-    
     public Associado getAssociado() {
         return associado;
     }
@@ -164,30 +162,24 @@ public class GeraContasMB implements Serializable{
     public void setHabilitarVoltarFinanceiro(boolean habilitarVoltarFinanceiro) {
         this.habilitarVoltarFinanceiro = habilitarVoltarFinanceiro;
     }
-    
-    
-    
-    
-    
-    public void gerarListaAssociado(){
-        String sql = "Select a From Associado a Where a.situacao<>'Inativo' order by a.idassociado";
+
+    public void gerarListaAssociado() {
+        String sql = "select a from Associado a where a.situacao<>'Inativo' order by a.idassociado";
         listaAssociado = associadoDao.list(sql);
         if (listaAssociado == null || listaAssociado.isEmpty()) {
             listaAssociado = new ArrayList<>();
         }
     }
-    
-    
-    public float pegarValorManutencao(Associado associado){
+
+    public float pegarValorManutencao(Associado associado) {
         float valorAssociado = associado.getPlano().getValor();
         float valorDependente = 0.0f;
         float valorTotal = 0.0f;
         valorTotal = (valorAssociado + valorDependente) - associado.getDescotomensalidade();
         return valorTotal;
     }
-    
-    
-    public void lancarContaReceber(Associado associado){
+
+    public void lancarContaReceber(Associado associado) {
         if (associado != null) {
             Contasreceber contasreceber = new Contasreceber();
             contasreceber.setValorconta(pegarValorManutencao(associado));
@@ -200,11 +192,10 @@ public class GeraContasMB implements Serializable{
             RequestContext.getCurrentInstance().openDialog("cadContasReceber", options, null);
         }
     }
-    
-    
+
     public String pesquisar() {
         String sql = "";
-        sql = "Select a from Associado a where a.cliente.nome like '%" + nome + "%' ";
+        sql = "select a from Associado a where a.cliente.nome like '%" + nome + "%' ";
         if (cpf.length() > 0) {
             sql = sql + " and a.cliente.cpf='" + cpf + "' ";
         }
@@ -224,8 +215,7 @@ public class GeraContasMB implements Serializable{
         }
         return "";
     }
-    
-    
+
     public String limpar() {
         gerarListaAssociado();
         matricula = "";
@@ -235,7 +225,7 @@ public class GeraContasMB implements Serializable{
         anoReferencia = "";
         return "";
     }
-      
+
     public String financeiro(Associado associado) {
         habilitarVoltarFinanceiro = false;
         FacesContext fc = FacesContext.getCurrentInstance();
@@ -244,5 +234,5 @@ public class GeraContasMB implements Serializable{
         session.setAttribute("habilitarVoltarFinanceiro", habilitarVoltarFinanceiro);
         return "consContasReceber";
     }
-    
+
 }

@@ -22,23 +22,19 @@ import org.primefaces.context.RequestContext;
  *
  * @author Julio
  */
-
 @Named
 @ViewScoped
-public class CadPerfilMB implements Serializable{
-    
+public class CadPerfilMB implements Serializable {
+
     @EJB
     private PerfilDao perfilDao;
     private Perfil perfil;
     @EJB
     private AcessoDao acessoDao;
     private Acesso acesso;
-    
-    
-    
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         perfil = (Perfil) session.getAttribute("perfil");
@@ -46,7 +42,7 @@ public class CadPerfilMB implements Serializable{
         if (perfil == null) {
             perfil = new Perfil();
             acesso = new Acesso();
-        }else{
+        } else {
             acesso = perfil.getAcesso();
         }
     }
@@ -82,17 +78,15 @@ public class CadPerfilMB implements Serializable{
     public void setPerfil(Perfil perfil) {
         this.perfil = perfil;
     }
-    
-    
-    
-    public void salvar(){
+
+    public void salvar() {
         acesso = acessoDao.update(acesso);
         perfil.setAcesso(acesso);
         perfil = perfilDao.update(perfil);
         RequestContext.getCurrentInstance().closeDialog(perfil);
     }
 
-    public void cancelar(){
+    public void cancelar() {
         RequestContext.getCurrentInstance().closeDialog(new Perfil());
     }
 }

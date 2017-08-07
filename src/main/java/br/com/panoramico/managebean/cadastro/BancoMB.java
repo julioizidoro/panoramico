@@ -24,21 +24,19 @@ import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 
-
 @Named
 @ViewScoped
-public class BancoMB implements Serializable{
-    
+public class BancoMB implements Serializable {
+
     private Banco banco;
     private List<Banco> listaBanco;
     @EJB
     private BancoDao bancoDao;
     @EJB
     private RecebimentoDao recebimentoDao;
-    
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         gerarListaBanco();
     }
 
@@ -65,23 +63,22 @@ public class BancoMB implements Serializable{
     public void setBancoDao(BancoDao bancoDao) {
         this.bancoDao = bancoDao;
     }
-    
-    
-    public void gerarListaBanco(){
-        listaBanco = bancoDao.list("Select b from Banco b");
+
+    public void gerarListaBanco() {
+        listaBanco = bancoDao.list("select b from Banco b");
         if (listaBanco == null || listaBanco.isEmpty()) {
             listaBanco = new ArrayList<Banco>();
         }
     }
-    
-    public void retornoDialogNovo(SelectEvent event){
+
+    public void retornoDialogNovo(SelectEvent event) {
         Banco banco = (Banco) event.getObject();
         if (banco.getIdbanco() != null) {
             listaBanco.add(banco);
             Mensagem.lancarMensagemInfo("Banco:" + banco.getNome(), " salvo com sucesso");
         }
     }
-    
+
     public String editar(Banco banco) {
         if (banco != null) {
             Map<String, Object> options = new HashMap<String, Object>();
@@ -93,21 +90,21 @@ public class BancoMB implements Serializable{
         }
         return "";
     }
-    
+
     public String novoBanco() {
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put("contentWidth", 500); 
+        options.put("contentWidth", 500);
         RequestContext.getCurrentInstance().openDialog("cadBanco", options, null);
         return "";
     }
-    
-    public void excluir(Banco banco){
-        List<Recebimento> listaRecebimento = recebimentoDao.list("Select r From Recebimento r Where r.banco.idbanco=" + banco.getIdbanco());
+
+    public void excluir(Banco banco) {
+        List<Recebimento> listaRecebimento = recebimentoDao.list("select r from Recebimento r where r.banco.idbanco=" + banco.getIdbanco());
         if (listaRecebimento == null || listaRecebimento.isEmpty()) {
             bancoDao.remove(banco.getIdbanco());
             listaBanco.remove(banco);
             Mensagem.lancarMensagemInfo("Excluido", " com sucesso");
-        }else{
+        } else {
             Mensagem.lancarMensagemInfo("Atenção", " este banco não pode ser excluido");
         }
     }

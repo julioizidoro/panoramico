@@ -98,7 +98,7 @@ public class CadAssociadoMB implements Serializable {
             if (plano != null) {
                 valorPlano = plano.getValor();
             }
-            associadoempresa = associadoEmpresaDao.find("Select a From Associadoempresa a Where a.associado.idassociado=" + associado.getIdassociado());
+            associadoempresa = associadoEmpresaDao.find("select a from Associadoempresa a where a.associado.idassociado=" + associado.getIdassociado());
             if (associadoempresa != null) {
                 vinculaEmpresa = true;
                 empresa = associadoempresa.getEmpresa();
@@ -234,8 +234,6 @@ public class CadAssociadoMB implements Serializable {
     public void setListaEmpresa(List<Empresa> listaEmpresa) {
         this.listaEmpresa = listaEmpresa;
     }
-    
-    
 
     public void salvar() {
         Associadoempresa associadoempresa;
@@ -248,8 +246,8 @@ public class CadAssociadoMB implements Serializable {
         String msg = validarDados();
         if (msg.length() > 0) {
             Mensagem.lancarMensagemInfo("", msg);
-        }else{
-            if(associado.getIdassociado()==null){
+        } else {
+            if (associado.getIdassociado() == null) {
                 associado.setDataassociacao(new Date());
             }
             if (associado.getSituacao().equalsIgnoreCase("Inativo")) {
@@ -261,45 +259,45 @@ public class CadAssociadoMB implements Serializable {
                         dependenteDao.update(dependente);
                     }
                 }
-                List<Contasreceber> listaContasReceber = contasReceberDao.list("Select c from Contasreceber c where c.situacao<>'CANCELADO' and c.situacao<>'PAGO'");
+                List<Contasreceber> listaContasReceber = contasReceberDao.list("select c from Contasreceber c where c.situacao<>'CANCELADO' and c.situacao<>'PAGO'");
                 if (listaContasReceber != null && listaContasReceber.size() > 0) {
                     for (int i = 0; i < listaContasReceber.size(); i++) {
                         listaContasReceber.get(i).setSituacao("CANCELADO");
                         contasReceberDao.update(listaContasReceber.get(i));
                     }
                 }
-            }else if (situacaoAntiga != null && situacaoAntiga.equalsIgnoreCase("Inativo")
+            } else if (situacaoAntiga != null && situacaoAntiga.equalsIgnoreCase("Inativo")
                     && !situacaoAntiga.equalsIgnoreCase(associado.getSituacao())) {
                 if (associado.getDependenteList() != null && associado.getDependenteList().size() > 0) {
                     salvarDependentes();
                 }
             }
             boolean novo = false;
-            if (associado.getIdassociado()==null){
-                novo=true;
+            if (associado.getIdassociado() == null) {
+                novo = true;
             }
             associado = associadoDao.update(associado);
-            if (novo){
-                session.setAttribute("idAssociado",  associado.getIdassociado());
+            if (novo) {
+                session.setAttribute("idAssociado", associado.getIdassociado());
                 if (vinculaEmpresa && empresa != null) {
                     associadoempresa = new Associadoempresa();
                     associadoempresa.setAssociado(associado);
                     associadoempresa.setEmpresa(empresa);
                     associadoEmpresaDao.update(associadoempresa);
                 }
-            }else{
+            } else {
                 session.setAttribute("idAssociado", 0);
                 if (vinculaEmpresa && empresa != null) {
                     associadoempresa = new Associadoempresa();
                     associadoempresa.setAssociado(associado);
                     associadoempresa.setEmpresa(empresa);
                     associadoEmpresaDao.update(associadoempresa);
-                }else if (!vinculaEmpresa) {
-                    associadoempresa = associadoEmpresaDao.find("Select a From Associadoempresa a Where a.associado.idassociado=" + associado.getIdassociado());
+                } else if (!vinculaEmpresa) {
+                    associadoempresa = associadoEmpresaDao.find("select a from Associadoempresa a where a.associado.idassociado=" + associado.getIdassociado());
                     if (associadoempresa != null) {
                         desvincularAssociado(associadoempresa);
                     }
-                }  
+                }
             }
             RequestContext.getCurrentInstance().closeDialog(associado);
         }
@@ -317,14 +315,14 @@ public class CadAssociadoMB implements Serializable {
     }
 
     private void gerarListaCliente() {
-        listaCliente = clienteDao.list("Select c from Cliente c");
+        listaCliente = clienteDao.list("select c from Cliente c");
         if (listaCliente == null) {
             listaCliente = new ArrayList<Cliente>();
         }
     }
 
     public void gerarListaPlano() {
-        listaPlano = planoDao.list("Select p from Plano p");
+        listaPlano = planoDao.list("select p from Plano p");
         if (listaPlano == null) {
             listaPlano = new ArrayList<Plano>();
         }
@@ -333,28 +331,27 @@ public class CadAssociadoMB implements Serializable {
     public void cancelar() {
         RequestContext.getCurrentInstance().closeDialog(new Associado());
     }
-    
-     public void pegarValorPlano(){
+
+    public void pegarValorPlano() {
         if (plano != null) {
             valorPlano = plano.getValor();
         }
     }
-     
-     
-    public String validarDados(){
+
+    public String validarDados() {
         Associado socio;
         String mensagem = "";
-        
+
         if (cliente == null) {
             mensagem = mensagem + " Informe o cliente para esse associado \r\n";
         }
         if (associado.getMatricula() == null || associado.getMatricula().length() == 0) {
             mensagem = mensagem + " Informe a matricula \r\n";
-        }else{
-            if(associado.getIdassociado()==null){
-                socio = associadoDao.find("Select a From Associado a Where a.matricula='" + associado.getMatricula() + "'");
+        } else {
+            if (associado.getIdassociado() == null) {
+                socio = associadoDao.find("select a from Associado a where a.matricula='" + associado.getMatricula() + "'");
                 if (socio == null || socio.getIdassociado() == null) {
-                }else{
+                } else {
                     mensagem = mensagem + " Matricula ja existente \r\n";
                 }
             }
@@ -367,22 +364,19 @@ public class CadAssociadoMB implements Serializable {
         }
         return mensagem;
     }
-    
-    
-    public void gerarListaEmpresa(){
-        listaEmpresa = empresaDao.list("Select e From Empresa e");
+
+    public void gerarListaEmpresa() {
+        listaEmpresa = empresaDao.list("select e from Empresa e");
         if (listaEmpresa == null) {
             listaEmpresa = new ArrayList<>();
         }
     }
-    
-    
-    public void desvincularAssociado(Associadoempresa associadoempresa){
+
+    public void desvincularAssociado(Associadoempresa associadoempresa) {
         associadoEmpresaDao.remove(associadoempresa.getIdassociadoempresa());
     }
-    
-    
-    public String lancarContasReceber(){
+
+    public String lancarContasReceber() {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         session.setAttribute("associado", associado);
@@ -390,9 +384,8 @@ public class CadAssociadoMB implements Serializable {
         session.setAttribute("plano", plano);
         return "cadContasReceberAssociado";
     }
-    
-    
-     public void buscarendereco() {
+
+    public void buscarendereco() {
         ControladorCEPBean cep = new ControladorCEPBean();
         cep.setCep(associado.getCep());
         EnderecoBean endereco = cep.carregarEndereco();
@@ -409,11 +402,9 @@ public class CadAssociadoMB implements Serializable {
             String tipo = endereco.getLogradouro().substring(0, posicao + 1);
             associado.setLogradouro(logradouro);
             associado.setTipologradouro(tipo);
-        }else{
+        } else {
             Mensagem.lancarMensagemInfo("Endereço não encontrado!!", "");
         }
     }
-            
-            
 
 }

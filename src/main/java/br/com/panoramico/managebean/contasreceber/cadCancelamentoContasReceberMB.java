@@ -26,10 +26,10 @@ import org.primefaces.context.RequestContext;
 
 @Named
 @ViewScoped
-public class cadCancelamentoContasReceberMB implements Serializable{
-    
+public class cadCancelamentoContasReceberMB implements Serializable {
+
     @Inject
-     private UsuarioLogadoMB usuarioLogadoMB;
+    private UsuarioLogadoMB usuarioLogadoMB;
     private Contasreceber contasreceber;
     private String mensagem = "";
     private Crcancelamento crcancelamento;
@@ -37,18 +37,17 @@ public class cadCancelamentoContasReceberMB implements Serializable{
     private CrCancelamentoDao crCanlamentoDao;
     @EJB
     private ContasReceberDao contasReceberDao;
-    
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         contasreceber = (Contasreceber) session.getAttribute("contasreceber");
         session.removeAttribute("contasreceber");
         if (contasreceber == null) {
-            Mensagem.lancarMensagemInfo("",  " Conta a receber não selecionada");
+            Mensagem.lancarMensagemInfo("", " Conta a receber não selecionada");
             RequestContext.getCurrentInstance().closeDialog(new Crcancelamento());
-        }else{
+        } else {
             crcancelamento = new Crcancelamento();
             crcancelamento.setData(new Date());
         }
@@ -62,7 +61,6 @@ public class cadCancelamentoContasReceberMB implements Serializable{
     public void setContasReceberDao(ContasReceberDao contasReceberDao) {
         this.contasReceberDao = contasReceberDao;
     }
-    
 
     public Crcancelamento getCrcancelamento() {
         return crcancelamento;
@@ -103,13 +101,12 @@ public class cadCancelamentoContasReceberMB implements Serializable{
     public void setMensagem(String mensagem) {
         this.mensagem = mensagem;
     }
-    
-    
-    public void cancelar(){
+
+    public void cancelar() {
         RequestContext.getCurrentInstance().closeDialog(new Crcancelamento());
     }
-    
-    public void salvar(){
+
+    public void salvar() {
         crcancelamento.setUsuario(usuarioLogadoMB.getUsuario());
         crcancelamento.setContasreceber(contasreceber);
         String mensagem = validarDados(crcancelamento);
@@ -120,15 +117,15 @@ public class cadCancelamentoContasReceberMB implements Serializable{
             RequestContext.getCurrentInstance().closeDialog(crcancelamento);
         }
     }
-    
-    public String validarDados(Crcancelamento cancelamento){
+
+    public String validarDados(Crcancelamento cancelamento) {
         String msg = "";
         if (cancelamento.getMotivo().equalsIgnoreCase("")) {
             msg = msg + " você não informou o motivo do cancelamento \r\n";
         }
         return msg;
     }
-    
+
     public void retornarHoraAtual() {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         Date hora = Calendar.getInstance().getTime();

@@ -32,7 +32,7 @@ import javax.inject.Named;
 import javax.servlet.ServletContext;
 import net.sf.jasperreports.engine.JRException;
 import org.primefaces.context.RequestContext;
- 
+
 @Named
 @ViewScoped
 public class ImprimirContasPagarMB implements Serializable {
@@ -59,7 +59,7 @@ public class ImprimirContasPagarMB implements Serializable {
     public void setContaspagar(Contaspagar contaspagar) {
         this.contaspagar = contaspagar;
     }
- 
+
     public ContasPagarDao getContasPagarDao() {
         return contasPagarDao;
     }
@@ -109,22 +109,22 @@ public class ImprimirContasPagarMB implements Serializable {
     }
 
     public void gerarListaPlanoConta() {
-        listaPlanoConta = planoContasDao.list("Select p From Planoconta p");
+        listaPlanoConta = planoContasDao.list("select p from Planoconta p");
         if (listaPlanoConta == null || listaPlanoConta.isEmpty()) {
             listaPlanoConta = new ArrayList<Planoconta>();
         }
-    } 
+    }
 
     public String gerarRelatorio() throws SQLException, IOException {
         String nomePlanoConta = "";
         ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
         String caminhoRelatorio = "";
         Map<String, Object> parameters = new HashMap<String, Object>();
-        caminhoRelatorio = "reports/relatorios/contasPagar/reportContasPagas.jasper"; 
+        caminhoRelatorio = "reports/relatorios/contasPagar/reportContasPagas.jasper";
         parameters.put("sql", gerarSql());
         if (planocontas == null || planocontas.getIdplanoconta() == null) {
             nomePlanoConta = "Todos";
-        }else{
+        } else {
             nomePlanoConta = planocontas.getDescricao();
         }
         parameters.put("planocontas", nomePlanoConta);
@@ -144,31 +144,30 @@ public class ImprimirContasPagarMB implements Serializable {
             Logger.getLogger(ImprimirContasPagarMB.class.getName()).log(Level.SEVERE, null, ex);
         }
         return "";
-    }  
+    }
 
     public String gerarSql() {
         String sql = "";
-        sql = "Select distinct pagamento.datapagamento, contaspagar.credor, ";
+        sql = "select distinct pagamento.datapagamento, contaspagar.credor, ";
         sql = sql + "contaspagar.idcontaspagar, pagamento.valorpago, contaspagar.numeroparcela from pagamento Join"
-                + " contaspagar on pagamento.contaspagar_idcontaspagar=contaspagar.idcontaspagar Where ";
-        
+                + " contaspagar on pagamento.contaspagar_idcontaspagar=contaspagar.idcontaspagar where ";
+
         if ((dataInicio != null) && (dataFinal != null)) {
             sql = sql + "pagamento.datapagamento>='" + Formatacao.ConvercaoDataSql(dataInicio)
                     + "' and pagamento.datapagamento<='" + Formatacao.ConvercaoDataSql(dataFinal) + "' ";
             if (planocontas != null && planocontas.getIdplanoconta() != null) {
                 sql = sql + " and ";
-            } 
-        }  
+            }
+        }
         if (planocontas != null && planocontas.getIdplanoconta() != null) {
             sql = sql + " contaspagar.planoconta_idplanoconta=" + planocontas.getIdplanoconta();
-        } 
+        }
 
         return sql;
-    }  
-    
-    
-    public void cancelar(){
+    }
+
+    public void cancelar() {
         RequestContext.getCurrentInstance().closeDialog(null);
-    } 
+    }
 
 }

@@ -93,10 +93,10 @@ public class ContasReceberMB implements Serializable {
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         associado = (Associado) session.getAttribute("associado");
         if (associado == null) {
-        } else {   
+        } else {
             habilitarVoltarFinanceiro = (boolean) session.getAttribute("habilitarVoltarFinanceiro");
             session.removeAttribute("habilitarVoltarFinanceiro");
-        }  
+        }
         session.removeAttribute("associado");
         gerarListaContasReceber();
         gerarListaCliente();
@@ -315,9 +315,9 @@ public class ContasReceberMB implements Serializable {
 
     public void gerarListaContasReceber() {
         if (associado == null || associado.getIdassociado() == null) {
-            listaContasReceber = contasReceberDao.list("Select c from Contasreceber c where c.situacao='PAGAR' order by c.datavencimento");
+            listaContasReceber = contasReceberDao.list("select c from Contasreceber c where c.situacao='PAGAR' order by c.datavencimento");
         } else {
-            listaContasReceber = contasReceberDao.list("Select c from Contasreceber c where c.situacao<>'CANCELADO' and c.situacao<>'PAGO'" + " and c.cliente.idcliente=" + associado.getCliente().getIdcliente() + " order by c.datavencimento");
+            listaContasReceber = contasReceberDao.list("select c from Contasreceber c where c.situacao<>'CANCELADO' and c.situacao<>'PAGO'" + " and c.cliente.idcliente=" + associado.getCliente().getIdcliente() + " order by c.datavencimento");
         }
         if (listaContasReceber == null) {
             listaContasReceber = new ArrayList<Contasreceber>();
@@ -325,7 +325,7 @@ public class ContasReceberMB implements Serializable {
     }
 
     public void gerarListaCliente() {
-        listaCliente = clienteDao.list("Select c from Cliente c");
+        listaCliente = clienteDao.list("select c from Cliente c");
         if (listaCliente == null) {
             listaCliente = new ArrayList<Cliente>();
         }
@@ -429,7 +429,7 @@ public class ContasReceberMB implements Serializable {
         btnGerarBoleto = false;
         btnGerarSegundaVia = false;
         btnEnviarBoleto = false;
-        String sql = "Select c from Contasreceber c";
+        String sql = "select c from Contasreceber c";
         if (!situacao.equalsIgnoreCase("sn") && (dataInicial == null && dataFinal == null)) {
             Mensagem.lancarMensagemInfo("Forneça um periodo na pesquisa", "");
         } else {
@@ -539,7 +539,7 @@ public class ContasReceberMB implements Serializable {
 
     public Integer numeroCob(int contasreceber) {
         Integer cob = 0;
-        String sql = "Select c From Cobrancasparcelas c Where c.contasreceber.idcontasreceber=" + contasreceber;
+        String sql = "select c from Cobrancasparcelas c where c.contasreceber.idcontasreceber=" + contasreceber;
         List<Cobrancasparcelas> listaCobranca = cobrancasParcelasDao.list(sql);
         if (listaCobranca.size() > 0) {
             cob = listaCobranca.size();
@@ -618,7 +618,7 @@ public class ContasReceberMB implements Serializable {
     public Boleto gerarClasseBoleto(Contasreceber conta) {
         associado = pegarEndereco(conta);
         proprietario = proprietarioDao.find(1);
-        Banco banco = bancoDao.find("Select b From Banco b Where b.proprietario.idproprietario=" + proprietario.getIdproprietario());
+        Banco banco = bancoDao.find("select b from Banco b where b.proprietario.idproprietario=" + proprietario.getIdproprietario());
         DadosBoletoBean dadosBoletoBean = new DadosBoletoBean();
         dadosBoletoBean.setAgencias(banco.getAgencia());
         dadosBoletoBean.setCarteiras(banco.getCarteira());
@@ -665,7 +665,7 @@ public class ContasReceberMB implements Serializable {
 
     public Associado pegarEndereco(Contasreceber contasreceber) {
         Associado associadoo;
-        List<Associado> listaAssociado = associadoDao.list("Select a from Associado a where a.cliente.idcliente=" + contasreceber.getCliente().getIdcliente());
+        List<Associado> listaAssociado = associadoDao.list("select a from Associado a where a.cliente.idcliente=" + contasreceber.getCliente().getIdcliente());
         for (int i = 0; i < listaAssociado.size(); i++) {
             associadoo = listaAssociado.get(i);
             return associadoo;
@@ -701,7 +701,7 @@ public class ContasReceberMB implements Serializable {
 
     public Boleto gerarClasseBoletoSegundaVia(Contasreceber conta) {
         proprietario = proprietarioDao.find(1);
-        Banco banco = bancoDao.find("Select b From Banco b Where b.proprietario.idproprietario=" + proprietario.getIdproprietario());
+        Banco banco = bancoDao.find("select b from Banco b where b.proprietario.idproprietario=" + proprietario.getIdproprietario());
         DadosBoletoBean dadosBoletoBean = new DadosBoletoBean();
         dadosBoletoBean.setAgencias(banco.getAgencia());
         dadosBoletoBean.setCarteiras(banco.getCarteira());
@@ -759,7 +759,7 @@ public class ContasReceberMB implements Serializable {
         String pago = "NÃO";
         if (contasreceber.getSituacao().equalsIgnoreCase("PAGO")) {
             pago = "SIM";
-        }else if(contasreceber.getSituacao().equalsIgnoreCase("CANCELADO")){
+        } else if (contasreceber.getSituacao().equalsIgnoreCase("CANCELADO")) {
             pago = "CANCELADO";
         }
         return pago;
@@ -785,8 +785,8 @@ public class ContasReceberMB implements Serializable {
         }
         return null;
     }
-    
-    public void boletosRemessaRetorno(String tipo){
+
+    public void boletosRemessaRetorno(String tipo) {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         Map<String, Object> options = new HashMap<String, Object>();
@@ -794,27 +794,26 @@ public class ContasReceberMB implements Serializable {
         session.setAttribute("tipo", tipo);
         RequestContext.getCurrentInstance().openDialog("relatorioRemessaRetorno", options, null);
     }
-     
-    public boolean verificarSituacao(Contasreceber contasreceber){
-        if(contasreceber.getSituacao().equalsIgnoreCase("CANCELADO")) {
+
+    public boolean verificarSituacao(Contasreceber contasreceber) {
+        if (contasreceber.getSituacao().equalsIgnoreCase("CANCELADO")) {
             return true;
         }
         return false;
-    } 
-    
-    
-    public void excluirContaLote(){
+    }
+
+    public void excluirContaLote() {
         List<Contasreceber> listaNaoSelecionada = new ArrayList<>();
         List<Remessacontas> listaRemessa = new ArrayList<>();
         for (int i = 0; i < listaContasReceber.size(); i++) {
             if (listaContasReceber.get(i).isSelecionado()) {
-                listaRemessa = remessaContasDao.list("Select r From Remessacontas r where r.contasreceber.idcontasreceber=" +
-                        listaContasReceber.get(i).getIdcontasreceber());
+                listaRemessa = remessaContasDao.list("select r from Remessacontas r where r.contasreceber.idcontasreceber="
+                        + listaContasReceber.get(i).getIdcontasreceber());
                 for (int j = 0; j < listaRemessa.size(); j++) {
                     remessaContasDao.remove(listaRemessa.get(j).getIdremessacontas());
                 }
                 contasReceberDao.remove(listaContasReceber.get(i).getIdcontasreceber());
-            }else{
+            } else {
                 listaNaoSelecionada.add(listaContasReceber.get(i));
             }
         }

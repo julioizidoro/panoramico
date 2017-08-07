@@ -24,8 +24,8 @@ import org.primefaces.context.RequestContext;
 
 @Named
 @ViewScoped
-public class CadPagamentoMB implements Serializable{
-    
+public class CadPagamentoMB implements Serializable {
+
     private Contaspagar contaspagar;
     private Pagamento pagamento;
     @EJB
@@ -38,10 +38,9 @@ public class CadPagamentoMB implements Serializable{
     private Float valorPagar = 0.0f;
     @Inject
     private UsuarioLogadoMB usuarioLogadoMB;
-    
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         contaspagar = (Contaspagar) session.getAttribute("contaspagar");
@@ -126,29 +125,29 @@ public class CadPagamentoMB implements Serializable{
     public void setUsuarioLogadoMB(UsuarioLogadoMB usuarioLogadoMB) {
         this.usuarioLogadoMB = usuarioLogadoMB;
     }
-    
-    public void calcularTotal(){
+
+    public void calcularTotal() {
         valorTotalPago = (valorPagar + juros) - desagio;
     }
-    
-    public void cancelar(){
+
+    public void cancelar() {
         RequestContext.getCurrentInstance().closeDialog(new Pagamento());
     }
-    
-     public void salvar(){
+
+    public void salvar() {
         Float totalPago = 0.0f;
         if (valorTotalPago > contaspagar.getValor() && juros == 0.0f) {
             Mensagem.lancarMensagemInfo("Atenção", "valor total a pagar acima do valor da conta sem constar o valor de juros");
-        }else{
+        } else {
             if (valorTotalPago >= contaspagar.getValor()) {
                 totalPago = totalPago + valorTotalPago;
-                List<Pagamento> listaPagamento = pagamentoDao.list("Select p from Pagamento p where p.contaspagar.idcontaspagar="+ contaspagar.getIdcontaspagar());
+                List<Pagamento> listaPagamento = pagamentoDao.list("select p from Pagamento p where p.contaspagar.idcontaspagar=" + contaspagar.getIdcontaspagar());
                 for (int i = 0; i < listaPagamento.size(); i++) {
                     totalPago = totalPago + listaPagamento.get(i).getValorpago();
                 }
                 contaspagar.setValor(totalPago);
                 contaspagar.setSituacao("PAGO");
-            }else{
+            } else {
                 contaspagar.setValor(contaspagar.getValor() - valorTotalPago);
             }
             contasPagarDao.update(contaspagar);

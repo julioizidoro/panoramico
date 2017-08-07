@@ -168,10 +168,10 @@ public class ImprimirEventoMB implements Serializable {
     public String gerarSql() {
         String sql = "";
         if (tipoRelatorio.equalsIgnoreCase("faturamentoEvento")) {
-            sql = " Select distinct evento.data, evento.valor, ambiente.nome, evento.idevento From evento "
+            sql = " select distinct evento.data, evento.valor, ambiente.nome, evento.idevento from evento "
                     + " Join ambiente on evento.ambiente_idambiente=ambiente.idambiente ";
             if (((dataInicio != null) && (dataFinal != null)) || (ambiente != null && ambiente.getIdambiente() != null)) {
-                sql = sql + " Where ";
+                sql = sql + " where ";
             }
             if ((dataInicio != null) && (dataFinal != null)) {
                 sql = sql + "evento.data>='" + Formatacao.ConvercaoDataSql(dataInicio)
@@ -186,11 +186,11 @@ public class ImprimirEventoMB implements Serializable {
             }
             sql = sql + " order by evento.data";
         } else {
-            sql = "Select distinct evento.data, ambiente.nome, tipoenvento.descricao, evento.idevento from evento "
+            sql = "select distinct evento.data, ambiente.nome, tipoenvento.descricao, evento.idevento from evento "
                     + " Join ambiente on evento.ambiente_idambiente= ambiente.idambiente "
                     + " Join tipoenvento on evento.tipoenvento_idtipoenvento= tipoenvento.idtipoenvento ";
             if (((dataInicio != null) && (dataFinal != null)) || (ambiente != null && ambiente.getIdambiente() != null)) {
-                sql = sql + " Where ";
+                sql = sql + " where ";
             }
             if ((dataInicio != null) && (dataFinal != null)) {
                 sql = sql + " evento.data>='" + Formatacao.ConvercaoDataSql(dataInicio)
@@ -212,16 +212,16 @@ public class ImprimirEventoMB implements Serializable {
     }
 
     public void gerarListaAmbiente() {
-        listaAmbientes = ambienteDao.list("Select a From Ambiente a");
+        listaAmbientes = ambienteDao.list("select a from Ambiente a");
         if (listaAmbientes == null || listaAmbientes.isEmpty()) {
             listaAmbientes = new ArrayList<Ambiente>();
         }
     }
 
     public void gerarValorTotal() {
-        String sql = " Select e From Evento e ";
+        String sql = " select e from Evento e ";
         if (((dataInicio != null) && (dataFinal != null)) || (ambiente != null && ambiente.getIdambiente() != null)) {
-            sql = sql + " Where ";
+            sql = sql + " where ";
         }
         if ((dataInicio != null) && (dataFinal != null)) {
             sql = sql + "e.data>='" + Formatacao.ConvercaoDataSql(dataInicio)

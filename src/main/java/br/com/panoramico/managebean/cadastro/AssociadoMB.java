@@ -10,7 +10,6 @@ import br.com.panoramico.dao.AssociadoEmpresaDao;
 import br.com.panoramico.dao.DependenteDao;
 import br.com.panoramico.model.Associado;
 import br.com.panoramico.model.Associadoempresa;
-import br.com.panoramico.model.Cliente;
 import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.model.Dependente;
 import br.com.panoramico.uil.Mensagem;
@@ -57,7 +56,7 @@ public class AssociadoMB implements Serializable {
     private boolean habilitarVoltar = false;
     private boolean habilitarVoltarFinanceiro = false;
     private boolean temsql = false;
-    private int idAssociado=0;
+    private int idAssociado = 0;
 
     @PostConstruct
     public void init() {
@@ -69,10 +68,10 @@ public class AssociadoMB implements Serializable {
             idA = 0;
         }
         idAssociado = idA;
-        if (idAssociado>0){
+        if (idAssociado > 0) {
             sql = null;
-             gerarListaAssociado();
-        }else if (sql != null) {
+            gerarListaAssociado();
+        } else if (sql != null) {
             temsql = true;
             gerarListaAssociado();
         }
@@ -199,16 +198,14 @@ public class AssociadoMB implements Serializable {
     public void setTemsql(boolean temsql) {
         this.temsql = temsql;
     }
-    
-    
 
     public void gerarListaAssociado() {
         if (!temsql) {
-            if (idAssociado>0){
-                sql = "Select a From Associado a where a.cliente.idcliente>" + (idAssociado-5) + " order by a.cliente.idcliente DESC";
+            if (idAssociado > 0) {
+                sql = "select a from Associado a where a.cliente.idcliente>" + (idAssociado - 5) + " order by a.cliente.idcliente DESC";
                 listaAssociado = associadoDao.list(sql);
             }
-        }else {
+        } else {
             listaAssociado = associadoDao.list(sql);
         }
         if (listaAssociado == null) {
@@ -250,7 +247,7 @@ public class AssociadoMB implements Serializable {
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
         sql = (String) session.getAttribute("sql");
         session.removeAttribute("sql");
-        idAssociado=0;
+        idAssociado = 0;
         Associado associado = (Associado) event.getObject();
         if (associado.getIdassociado() != null) {
             Mensagem.lancarMensagemInfo("Salvou", "Alteração do Associado realizado com sucesso");
@@ -274,7 +271,7 @@ public class AssociadoMB implements Serializable {
     public void associarEmpresa(Associado associado) {
         if (associado != null) {
             try {
-                associadoempresa = associadoEmpresaDao.consultar("Select a from Associadoempresa a where a.associado.idassociado=" + associado.getIdassociado());
+                associadoempresa = associadoEmpresaDao.consultar("select a from Associadoempresa a where a.associado.idassociado=" + associado.getIdassociado());
             } catch (SQLException ex) {
                 Logger.getLogger(AssociadoMB.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -290,7 +287,7 @@ public class AssociadoMB implements Serializable {
     }
 
     public void excluir(Associado associado) {
-        List<Dependente> listaDependente = dependenteDao.list("Select d from Dependente d where d.associado.idassociado=" + associado.getIdassociado());
+        List<Dependente> listaDependente = dependenteDao.list("select d from Dependente d where d.associado.idassociado=" + associado.getIdassociado());
         if (listaDependente == null || listaDependente.isEmpty()) {
             associadoDao.remove(associado.getIdassociado());
             Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
@@ -307,34 +304,34 @@ public class AssociadoMB implements Serializable {
         cpf = "";
         email = "";
         telefone = "";
-        situacao="";
+        situacao = "";
         listaAssociado = new ArrayList<>();
         gerarListaAssociado();
     }
 
     public String pesquisar() {
-        sql = "Select a from Associado a where a.cliente.nome like '%" + nome + "%' ";
-        temsql= true;
-        if (cpf!=null && cpf.length() > 0) {
+        sql = "select a from Associado a where a.cliente.nome like '%" + nome + "%' ";
+        temsql = true;
+        if (cpf != null && cpf.length() > 0) {
             sql = sql + " and a.cliente.cpf='" + cpf + "' ";
         }
-        if (email!=null && email.length() > 0) {
+        if (email != null && email.length() > 0) {
             sql = sql + " and a.cliente.email='" + email + "' ";
         }
-        if (telefone!=null && telefone.length() > 0) {
+        if (telefone != null && telefone.length() > 0) {
             sql = sql + " and a.cliente.telefone='" + telefone + "' ";
         }
-        if (matricula!=null && matricula.length() > 0) {
+        if (matricula != null && matricula.length() > 0) {
             sql = sql + " and a.matricula='" + matricula + "' ";
         }
-        if (situacao!=null && situacao.length() > 0) {
+        if (situacao != null && situacao.length() > 0) {
             sql = sql + " and a.situacao='" + situacao + "'";
         }
         sql = sql + " order by a.cliente.nome";
         gerarListaAssociado();
         return "";
     }
- 
+
     public String dependentes(Associado associado) {
         habilitarVoltar = true;
         FacesContext fc = FacesContext.getCurrentInstance();
@@ -343,7 +340,7 @@ public class AssociadoMB implements Serializable {
         session.setAttribute("habilitarVoltar", habilitarVoltar);
         return "consDependente";
     }
-    
+
     public String financeiro(Associado associado) {
         habilitarVoltarFinanceiro = true;
         FacesContext fc = FacesContext.getCurrentInstance();
@@ -352,8 +349,8 @@ public class AssociadoMB implements Serializable {
         session.setAttribute("habilitarVoltarFinanceiro", habilitarVoltarFinanceiro);
         return "consContasReceber";
     }
-    
-    public void lancarContaReceber(Associado associado){
+
+    public void lancarContaReceber(Associado associado) {
         if (associado != null) {
             Contasreceber contasreceber = new Contasreceber();
 //            contasreceber.setValorconta(associado.getPlano().getValor() + gerarContaDependentes(associado));
@@ -366,10 +363,10 @@ public class AssociadoMB implements Serializable {
             RequestContext.getCurrentInstance().openDialog("cadContasReceber", options, null);
         }
     }
-    
+
 //    public float gerarContaDependentes(Associado associado){
 //        float valorTotal = 0.0f;
-//        List<Dependente> lista = dependenteDao.list("Select d From Dependente d Where d.associado.idassociado=" + associado.getIdassociado());
+//        List<Dependente> lista = dependenteDao.list("select d from Dependente d where d.associado.idassociado=" + associado.getIdassociado());
 //        if (lista == null || lista.isEmpty()) {
 //            lista = new ArrayList<>();
 //        }
@@ -378,37 +375,35 @@ public class AssociadoMB implements Serializable {
 //        }
 //        return valorTotal;
 //    }
-    
-    public String pegarIcone(Associado associado){
+    public String pegarIcone(Associado associado) {
         if (associado.getSituacao().equalsIgnoreCase("Ativo")) {
             return "fa fa-toggle-on";
-        }else{
+        } else {
             return "fa fa-toggle-off";
         }
     }
-    
-    public String retornarSituacao(Associado associado){
+
+    public String retornarSituacao(Associado associado) {
         if (associado.getSituacao().equalsIgnoreCase("Ativo")) {
             return "Associado Ativo";
-        }else{
+        } else {
             return "Associado Inativo";
         }
     }
-    
+
     public void desativarAssociado(Associado associado) {
         if (associado.getSituacao().equalsIgnoreCase("Ativo")) {
             associado.setSituacao("Inativo");
             Mensagem.lancarMensagemInfo("Desativado", "com sucesso");
-        }else{
+        } else {
             associado.setSituacao("Ativo");
             Mensagem.lancarMensagemInfo("Ativado", "com sucesso");
         }
         associadoDao.update(associado);
         gerarListaAssociado();
     }
-    
-    
-    public boolean desabilitarBotao(Associado associado){
+
+    public boolean desabilitarBotao(Associado associado) {
         if (associado != null) {
             if (associado.getSituacao().equalsIgnoreCase("Inativo")) {
                 return true;

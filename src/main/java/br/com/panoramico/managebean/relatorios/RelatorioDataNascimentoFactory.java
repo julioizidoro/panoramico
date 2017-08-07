@@ -12,7 +12,7 @@ import java.util.List;
  * @author Kamila
  */
 public class RelatorioDataNascimentoFactory {
-    
+
     private static List<RelatorioDataNascimnetoBean> lista;
 
     public static List<RelatorioDataNascimnetoBean> getLista() {
@@ -23,10 +23,8 @@ public class RelatorioDataNascimentoFactory {
         RelatorioDataNascimentoFactory.lista = lista;
     }
 
-    public static List<RelatorioDataNascimnetoBean> listar(){
+    public static List<RelatorioDataNascimnetoBean> listar() {
         return getLista();
     }
-    
-    
-    
+
 }

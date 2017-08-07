@@ -16,21 +16,19 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import org.primefaces.context.RequestContext;
 
-
 @Named
 @ViewScoped
-public class PesquisarAssociadoMB implements Serializable{
-    
+public class PesquisarAssociadoMB implements Serializable {
+
     private Cliente cliente;
     private String cpfCliente;
     private String matricula;
     @EJB
     private ClienteDao clienteDao;
-    
-    
+
     @PostConstruct
-    public void init(){
-        
+    public void init() {
+
     }
 
     public Cliente getCliente() {
@@ -56,29 +54,28 @@ public class PesquisarAssociadoMB implements Serializable{
     public void setMatricula(String matricula) {
         this.matricula = matricula;
     }
-    
-    
-    public void pesquisar(){
-        List<Cliente> listaCliente = clienteDao.list("Select c From Cliente c Where c.cpf='" + cpfCliente + "'");
+
+    public void pesquisar() {
+        List<Cliente> listaCliente = clienteDao.list("select c from Cliente c where c.cpf='" + cpfCliente + "'");
         if (listaCliente == null || listaCliente.isEmpty()) {
             Mensagem.lancarMensagemInfo("Cliente não encontrado", "");
             cliente = null;
             matricula = "";
-        }else{
+        } else {
             for (int i = 0; i < listaCliente.size(); i++) {
                 cliente = listaCliente.get(i);
             }
             if (cliente.getAssociado() == null) {
                 Mensagem.lancarMensagemInfo("Cliente não é associado", "");
                 matricula = "";
-            }else{
+            } else {
                 matricula = cliente.getAssociado().getMatricula();
             }
         }
     }
-    
-    public void fechar(){
+
+    public void fechar() {
         RequestContext.getCurrentInstance().closeDialog(null);
     }
-    
+
 }

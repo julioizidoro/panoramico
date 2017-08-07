@@ -85,7 +85,7 @@ public class UsuarioMB implements Serializable {
     }
 
     public void gerarListaUsuario() {
-        listaUsuario = usuarioDao.list("Select u from Usuario u");
+        listaUsuario = usuarioDao.list("select u from Usuario u");
         if (listaUsuario == null) {
             listaUsuario = new ArrayList<Usuario>();
         }
@@ -129,7 +129,7 @@ public class UsuarioMB implements Serializable {
         if (usuario.isSituacao()) {
             usuario.setSituacao(false);
             Mensagem.lancarMensagemInfo("Desativado", "com sucesso");
-        }else{
+        } else {
             usuario.setSituacao(true);
             Mensagem.lancarMensagemInfo("Ativado", "com sucesso");
         }
@@ -138,7 +138,7 @@ public class UsuarioMB implements Serializable {
     }
 
     public void pesquisar() {
-        String sql = "Select u from Usuario u where u.nome like '%" + nome + "%'";
+        String sql = "select u from Usuario u where u.nome like '%" + nome + "%'";
         if (login != null && login.length() > 0) {
             sql = sql + " and u.login='" + login + "'";
         }
@@ -154,24 +154,23 @@ public class UsuarioMB implements Serializable {
         login = null;
         gerarListaUsuario();
     }
-    
-    public String pegarIcone(Usuario usuario){
+
+    public String pegarIcone(Usuario usuario) {
         if (usuario.isSituacao()) {
             return "fa fa-toggle-on";
-        }else{
+        } else {
             return "fa fa-toggle-off";
         }
     }
-    
-    public String retornarSituacao(Usuario usuario){
+
+    public String retornarSituacao(Usuario usuario) {
         if (usuario.isSituacao()) {
             return "Usuário Ativo";
-        }else{
+        } else {
             return "Usuário Inativo";
         }
     }
-    
-    
+
     public void resetarSenhaUsuario(Usuario usuario) {
         String senhaResetada;
         try {

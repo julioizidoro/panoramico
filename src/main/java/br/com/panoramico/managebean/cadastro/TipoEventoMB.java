@@ -28,21 +28,19 @@ import org.primefaces.event.SelectEvent;
  *
  * @author Julio
  */
-
 @Named
 @ViewScoped
-public class TipoEventoMB implements Serializable{
-    
+public class TipoEventoMB implements Serializable {
+
     @EJB
     private TipoEventoDao tipoEventoDao;
     private Tipoenvento tipoEnvento;
     private List<Tipoenvento> listaTipoEvento;
     @EJB
     private EventoDao eventoDao;
-    
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         gerarListaTipoEvento();
     }
 
@@ -69,43 +67,38 @@ public class TipoEventoMB implements Serializable{
     public void setListaTipoEvento(List<Tipoenvento> listaTipoEvento) {
         this.listaTipoEvento = listaTipoEvento;
     }
-    
-    
-    
-    
-    public void gerarListaTipoEvento(){
-        listaTipoEvento = tipoEventoDao.list("Select t from Tipoenvento t");
+
+    public void gerarListaTipoEvento() {
+        listaTipoEvento = tipoEventoDao.list("select t from Tipoenvento t");
         if (listaTipoEvento == null) {
             listaTipoEvento = new ArrayList<Tipoenvento>();
         }
     }
-    
+
     public String novoCadastroTipoEvento() {
         Map<String, Object> options = new HashMap<String, Object>();
         options.put("contentWidth", 400);
         RequestContext.getCurrentInstance().openDialog("cadTipoEvento", options, null);
         return "";
     }
-    
-    
-    public void retornoDialogNovo(SelectEvent event){
+
+    public void retornoDialogNovo(SelectEvent event) {
         Tipoenvento tipoenvento = (Tipoenvento) event.getObject();
-        if (tipoenvento.getIdtipoenvento()!= null) {
+        if (tipoenvento.getIdtipoenvento() != null) {
             Mensagem.lancarMensagemInfo("Salvou", "Cadastro de cliente realizado com sucesso");
         }
         gerarListaTipoEvento();
     }
-    
-    public void retornoDialogAlteracao(SelectEvent event){
+
+    public void retornoDialogAlteracao(SelectEvent event) {
         Tipoenvento tipoenvento = (Tipoenvento) event.getObject();
-        if (tipoenvento.getIdtipoenvento()!= null) {
+        if (tipoenvento.getIdtipoenvento() != null) {
             Mensagem.lancarMensagemInfo("Salvou", "Alteração de cliente realizado com sucesso");
         }
         gerarListaTipoEvento();
     }
-    
-    
-    public void editar(Tipoenvento tipoenvento){
+
+    public void editar(Tipoenvento tipoenvento) {
         if (tipoenvento != null) {
             Map<String, Object> options = new HashMap<String, Object>();
             FacesContext fc = FacesContext.getCurrentInstance();
@@ -115,15 +108,14 @@ public class TipoEventoMB implements Serializable{
             RequestContext.getCurrentInstance().openDialog("cadTipoEvento", options, null);
         }
     }
-    
-    
-    public void excluir(Tipoenvento tipoenvento){
-        List<Evento> listaEvento = eventoDao.list("Select e From Evento e Where e.tipoenvento.idtipoenvento=" + tipoenvento.getIdtipoenvento());
+
+    public void excluir(Tipoenvento tipoenvento) {
+        List<Evento> listaEvento = eventoDao.list("select e from Evento e where e.tipoenvento.idtipoenvento=" + tipoenvento.getIdtipoenvento());
         if (listaEvento == null || listaEvento.isEmpty()) {
             tipoEventoDao.remove(tipoenvento.getIdtipoenvento());
             Mensagem.lancarMensagemInfo("Excluido", "com sucesso");
             gerarListaTipoEvento();
-        }else{
+        } else {
             Mensagem.lancarMensagemInfo("Atenção", " este tipo de evento não pode ser excluido");
         }
     }

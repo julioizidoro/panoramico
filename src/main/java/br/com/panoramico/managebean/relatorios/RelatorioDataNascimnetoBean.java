@@ -10,7 +10,7 @@ package br.com.panoramico.managebean.relatorios;
  * @author Kamila
  */
 public class RelatorioDataNascimnetoBean {
-    
+
     private String nome;
     private String datanascimento;
     private String mes;
@@ -34,7 +34,7 @@ public class RelatorioDataNascimnetoBean {
     public void setDatanascimento(String datanascimento) {
         this.datanascimento = datanascimento;
     }
-    
+
     public String getMes() {
         return mes;
     }
@@ -74,7 +74,5 @@ public class RelatorioDataNascimnetoBean {
     public void setEmail(String email) {
         this.email = email;
     }
-    
-    
-    
+
 }

@@ -22,11 +22,10 @@ import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-
 @Named
 @ViewScoped
-public class AcessoPiscinaMB implements Serializable{
-    
+public class AcessoPiscinaMB implements Serializable {
+
     private String nomeCliente;
     private String matricula;
     private Exame exame;
@@ -45,10 +44,9 @@ public class AcessoPiscinaMB implements Serializable{
     private List<Exameassociado> listaExameAssociado;
     @EJB
     private ExameAssociadoDao exameAssociadoDao;
-    
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         listaExameAssociado = new ArrayList<>();
         listaExameDependente = new ArrayList<>();
     }
@@ -164,106 +162,100 @@ public class AcessoPiscinaMB implements Serializable{
     public void setExameAssociadoDao(ExameAssociadoDao exameAssociadoDao) {
         this.exameAssociadoDao = exameAssociadoDao;
     }
-    
-    
-    
-    
-    public void pesquisar(){
+
+    public void pesquisar() {
         listaExame = new ArrayList<>();
-        String sql = "Select e From Exame e Where ";
+        String sql = "select e from Exame e where ";
         String msg = "";
         if (nomeCliente.length() > 0) {
             sql = sql + " e.nomeCliente like '%" + nomeCliente + "%'";
-            if (matricula.length() > 0 ) {
+            if (matricula.length() > 0) {
                 sql = sql + " and ";
             }
-        }else{
+        } else {
             if (matricula.length() < 0) {
                 msg = msg + " Nome do cliente ou matricula não foram informadas \r\n";
             }
         }
         if (matricula.length() > 0) {
-            sql = sql + " e.matricula='"+ matricula + "'";
+            sql = sql + " e.matricula='" + matricula + "'";
         }
-        
+
         if (msg.length() > 1) {
             Mensagem.lancarMensagemInfo(msg, "");
-        }else{
+        } else {
             listaExame = exameDao.list(sql);
             if (listaExame == null || listaExame.isEmpty()) {
                 listaExame = new ArrayList<>();
             }
         }
     }
-    
-    public void limpar(){
+
+    public void limpar() {
         listaExameAssociado = new ArrayList<>();
         listaExameDependente = new ArrayList<>();
         matricula = "";
         nomeCliente = "";
     }
-    
-    
-    public void pesquisarDependentes(){
+
+    public void pesquisarDependentes() {
         String msg = "";
-        String sql = "Select ed From Examedependente ed Where ";
-        
+        String sql = "select ed from Examedependente ed where ";
+
         if (nomeCliente.length() > 0) {
             sql = sql + " ed.dependente.nome like '%" + nomeCliente + "%'";
-            if (matricula.length() > 0 ) {
+            if (matricula.length() > 0) {
                 sql = sql + " and ";
             }
-        }else{
+        } else {
             if (matricula.length() < 0) {
                 msg = msg + " Nome do cliente ou matricula não foram informadas \r\n";
             }
         }
         if (matricula.length() > 0) {
-            sql = sql + " ed.dependente.matricula='"+ matricula + "'";
+            sql = sql + " ed.dependente.matricula='" + matricula + "'";
         }
-        
+
         if (msg.length() > 1) {
             Mensagem.lancarMensagemInfo(msg, "");
-        }else{
+        } else {
             listaExameDependente = exameDependenteDao.list(sql);
             if (listaExameDependente == null || listaExameDependente.isEmpty()) {
                 listaExameDependente = new ArrayList<>();
             }
         }
     }
-    
-    
-    
-    public void pesquisarAssociado(){
+
+    public void pesquisarAssociado() {
         String msg = "";
-        String sql = "Select ea From Exameassociado ea Where ";
-        
+        String sql = "select ea from Exameassociado ea where ";
+
         if (nomeCliente.length() > 0) {
             sql = sql + " ea.associado.cliente.nome like '%" + nomeCliente + "%'";
-            if (matricula.length() > 0 ) {
+            if (matricula.length() > 0) {
                 sql = sql + " and ";
             }
-        }else{
+        } else {
             if (matricula.length() < 0) {
                 msg = msg + " Nome do cliente ou matricula não foram informadas \r\n";
             }
         }
         if (matricula.length() > 0) {
-            sql = sql + " ea.associado.matricula='"+ matricula + "'";
+            sql = sql + " ea.associado.matricula='" + matricula + "'";
         }
-        
+
         if (msg.length() > 1) {
             Mensagem.lancarMensagemInfo(msg, "");
-        }else{
+        } else {
             listaExameAssociado = exameAssociadoDao.list(sql);
             if (listaExameAssociado == null || listaExameAssociado.isEmpty()) {
                 listaExameAssociado = new ArrayList<>();
-            }else{
+            } else {
                 if (listaExameDependente == null || listaExameDependente.isEmpty()) {
-                        listaExameDependente = new ArrayList<>();
+                    listaExameDependente = new ArrayList<>();
                     for (int i = 0; i < listaExameAssociado.size(); i++) {
-                        List<Examedependente> listaExamedep = exameDependenteDao.list("Select ed From Examedependente ed Where ed.dependente.associado.idassociado=" + 
-                                listaExameAssociado.get(i).getAssociado().getIdassociado());
+                        List<Examedependente> listaExamedep = exameDependenteDao.list("select ed from Examedependente ed where ed.dependente.associado.idassociado="
+                                + listaExameAssociado.get(i).getAssociado().getIdassociado());
                         for (int j = 0; j < listaExamedep.size(); j++) {
                             listaExameDependente.add(listaExamedep.get(j));
                         }
@@ -272,9 +264,8 @@ public class AcessoPiscinaMB implements Serializable{
             }
         }
     }
-    
-    
-    public void pequisarAssociadoDependente(){ 
+
+    public void pequisarAssociadoDependente() {
         pesquisarDependentes();
         pesquisarAssociado();
     }
