@@ -231,14 +231,14 @@ public class ClienteMB implements Serializable {
         }
     }
 
-    public String novoCancelamento(Cliente cliente) {
-        if (cliente != null) {
+    public String novoCancelamento(Associado associado) {
+        if (associado != null) {
             Map<String, Object> options = new HashMap<String, Object>();
             options.put("contentWidth", 400);
             options.put("closable", false);
             FacesContext fc = FacesContext.getCurrentInstance();
             HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
-            session.setAttribute("cliente", cliente);
+            session.setAttribute("associado", associado);
             RequestContext.getCurrentInstance().openDialog("cadCancelamentoCliente", options, null);
         }
         return "";
@@ -286,6 +286,36 @@ public class ClienteMB implements Serializable {
         Ccancelamento ccancelamento = (Ccancelamento) event.getObject();
         if (ccancelamento.getIdccancelamento() != null) {
             Mensagem.lancarMensagemFatal("Cancalmento feito com sucesso", "");
+        }
+    }
+    
+    
+    public void desativarCliente(Cliente cliente) {
+        if (cliente.getSituacao().equalsIgnoreCase("Ativo")) {
+            cliente.setSituacao("Inativo");
+            Mensagem.lancarMensagemInfo("Desativado", "com sucesso");
+        } else {
+            cliente.setSituacao("Ativo");
+            Mensagem.lancarMensagemInfo("Ativado", "com sucesso");
+        }
+        clienteDao.update(cliente);
+        gerarListaCliente();
+    }
+    
+     public String retornarSituacao(Cliente cliente) {
+        if (cliente.getSituacao().equalsIgnoreCase("Ativo")) {
+            return "Associado Ativo";
+        } else {
+            return "Associado Inativo";
+        }
+    }
+     
+     
+     public String pegarIcone(Cliente cliente) {
+        if (cliente.getSituacao().equalsIgnoreCase("Ativo")) {
+            return "fa fa-toggle-on";
+        } else {
+            return "fa fa-toggle-off";
         }
     }
 }

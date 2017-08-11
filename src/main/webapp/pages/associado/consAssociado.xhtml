@@ -109,9 +109,10 @@
                             <p:commandLink disabled="#{associadoMB.desabilitarBotao(associado)}" rendered="#{usuarioLogadoMB.usuario.perfil.acesso.editar}" style="text-decoration: none;" title="Financeiro" action="#{associadoMB.financeiro(associado)}" update=":idFormConsultaAssociado:messages, @form">
                                 <div class="fa fa-money"></div>
                             </p:commandLink>
-                            <p:commandLink title="#{associadoMB.retornarSituacao(associado)}" rendered="#{usuarioLogadoMB.usuario.perfil.acesso.excluir}" action="#{associadoMB.desativarAssociado(associado)}" style="text-decoration: none;" update=":idFormConsultaAssociado:messages, @form">
-                                <div class="#{associadoMB.pegarIcone(associado)}"></div>
-                            </p:commandLink>
+                            <p:commandLink title="Cancelar Associado" rendered="#{usuarioLogadoMB.usuario.perfil.acesso.cancelamento}" disabled="#{associadoMB.desabilitarBotao(associado)}" style="text-decoration: none;" action="#{associadoMB.novoCancelamento(associado)}" >
+                                <div class="fa fa-times"></div>
+                                <p:ajax event="dialogReturn" listener="#{associadoMB.retornoDialogCencelamento}" update=":idFormConsultaAssociado:messages, @form"/> 
+                            </p:commandLink>   
                         </h:column>
 
    

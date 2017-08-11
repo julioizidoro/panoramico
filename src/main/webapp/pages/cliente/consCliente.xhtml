@@ -80,11 +80,10 @@
                                          <div class="fa fa-pencil-square-o" style="margin-left:5%;">
                                         </div>   
                                          <p:ajax  event="dialogReturn" listener="#{clienteMB.retornoDialogAlteracao}" update=":idFormConsultaCliente:messages, @form"/>
+                                     </p:commandLink> 
+                                     <p:commandLink title="#{clienteMB.retornarSituacao(cliente)}" rendered="#{usuarioLogadoMB.usuario.perfil.acesso.excluir}" action="#{clienteMB.desativarCliente(cliente)}" style="text-decoration: none;" update=":idFormConsultaCliente:messages, @form">
+                                         <div class="#{clienteMB.pegarIcone(cliente)}"></div>
                                      </p:commandLink>
-                                     <p:commandLink  rendered="#{usuarioLogadoMB.usuario.perfil.acesso.cancelamento}" disabled="#{clienteMB.desabilitarBotao(cliente)}" style="text-decoration: none;" action="#{clienteMB.novoCancelamento(cliente)}" >
-                                        <div class="fa fa-times"></div>
-                                        <p:ajax event="dialogReturn" listener="#{clienteMB.retornoDialogCencelamento}" update=":idFormConsultaCliente:messages, @form"/> 
-                                     </p:commandLink>    
                                 </h:column> 
 
 

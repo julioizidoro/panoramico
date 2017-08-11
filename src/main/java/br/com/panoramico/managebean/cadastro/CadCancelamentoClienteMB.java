@@ -7,18 +7,17 @@ package br.com.panoramico.managebean.cadastro;
 
 import br.com.panoramico.dao.AssociadoDao;
 import br.com.panoramico.dao.CCancelamentoDao;
-import br.com.panoramico.dao.ClienteDao;
 import br.com.panoramico.dao.ContasReceberDao;
 import br.com.panoramico.dao.DependenteDao;
 import br.com.panoramico.dao.MotivoCancelamentoDao;
 import br.com.panoramico.managebean.UsuarioLogadoMB;
 import br.com.panoramico.managebean.relatorios.RelatorioAssociadoMB;
 import br.com.panoramico.managebean.relatorios.RelatorioCancelamentoClienteMB;
+import br.com.panoramico.model.Associado;
 import br.com.panoramico.model.Ccancelamento;
 import br.com.panoramico.model.Cliente;
 import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.model.Motivocancelamento;
-import br.com.panoramico.uil.Formatacao;
 import br.com.panoramico.uil.GerarRelatorios;
 import br.com.panoramico.uil.Mensagem;
 import java.awt.image.BufferedImage;
@@ -61,8 +60,6 @@ public class CadCancelamentoClienteMB implements Serializable {
     private Cliente cliente;
     private Ccancelamento ccancelamento;
     @EJB
-    private ClienteDao clienteDao;
-    @EJB
     private CCancelamentoDao cCancelamentoDao;
     private List<Contasreceber> listaContasReceber;
     @EJB
@@ -75,16 +72,17 @@ public class CadCancelamentoClienteMB implements Serializable {
     private List<Motivocancelamento> listaMotivoCancelamento;
     @EJB
     private MotivoCancelamentoDao motivoCancelamentoDao;
+    private Associado associado;
 
     @PostConstruct
     public void init() {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
-        cliente = (Cliente) session.getAttribute("cliente");
-        session.removeAttribute("cliente");
+        associado = (Associado) session.getAttribute("associado");
+        session.removeAttribute("associado");
         gerarListaMotivoCancelamento();
-        if (cliente == null) {
-            Mensagem.lancarMensagemInfo("", " Cliente não selecionado");
+        if (associado == null) {
+            Mensagem.lancarMensagemInfo("", " Associado não selecionado");
             RequestContext.getCurrentInstance().closeDialog(new Ccancelamento());
         } else {
             ccancelamento = new Ccancelamento();
@@ -145,28 +143,30 @@ public class CadCancelamentoClienteMB implements Serializable {
         RequestContext.getCurrentInstance().closeDialog(new Ccancelamento());
     }
 
+    public Associado getAssociado() {
+        return associado;
+    }
+
+    public void setAssociado(Associado associado) {
+        this.associado = associado;
+    }
+
     public void salvar() {
         ccancelamento.setUsuario(usuarioLogadoMB.getUsuario());
-        ccancelamento.setCliente(cliente);
+        ccancelamento.setCliente(associado.getCliente());
         String mensagem = validarDados(ccancelamento);
         if (mensagem.length() < 5) {
             ccancelamento.setMotivocancelamento(motivocancelamento);
             ccancelamento = cCancelamentoDao.update(ccancelamento);
-            cliente.setSituacao("Inativo");
-            cliente = clienteDao.update(cliente);
-            if (cliente.getAssociado() != null) {
-                cliente.getAssociado().setSituacao("Inativo");
-                associadoDao.update(cliente.getAssociado());
-
-                if (cliente.getAssociado().getDependenteList() != null && cliente.getAssociado().getDependenteList().size() > 0) {
-                    for (int i = 0; i < cliente.getAssociado().getDependenteList().size(); i++) {
-                        cliente.getAssociado().getDependenteList().get(i).setSituacao("Inativo");
-                        dependenteDao.update(cliente.getAssociado().getDependenteList().get(i));
-                    }
+            associado.setSituacao("Inativo");
+            associado = associadoDao.update(associado);
+            if (associado.getDependenteList() != null && associado.getDependenteList().size() > 0) {
+                for (int i = 0; i < associado.getDependenteList().size(); i++) {
+                    associado.getDependenteList().get(i).setSituacao("Inativo");
+                    dependenteDao.update(associado.getDependenteList().get(i));
                 }
             }
-
-            listaContasReceber = contasReceberDao.list("select c from Contasreceber c where c.cliente.idcliente=" + cliente.getIdcliente());
+            listaContasReceber = contasReceberDao.list("select c from Contasreceber c where c.cliente.idcliente=" + associado.getCliente().getIdcliente());
             if (listaContasReceber == null) {
                 listaContasReceber = new ArrayList<>();
             }
@@ -208,13 +208,12 @@ public class CadCancelamentoClienteMB implements Serializable {
     public void iniciarRelatorio() {
         ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
         Map<String, Object> parameters = new HashMap<String, Object>();
-        String caminhoRelatorio = "";
-        caminhoRelatorio = "reports/relatorios/cliente/termoCancelamento.jasper";
+        String caminhoRelatorio  = "reports/relatorios/cliente/termoCancelamento.jasper";
         parameters.put("sql", gerarSQL());
-        if (cliente.getAssociado() == null) {
+        if (associado == null) {
             parameters.put("matricula", 0);
         } else {
-            parameters.put("matricula", cliente.getAssociado().getMatricula());
+            parameters.put("matricula", associado.getMatricula());
         }
         if (motivocancelamento == null) {
             parameters.put("motivo", "");
@@ -235,9 +234,7 @@ public class CadCancelamentoClienteMB implements Serializable {
         try {
             try {
                 gerarRelatorio.gerarRelatorioSqlPDF(caminhoRelatorio, parameters, "cliente", null);
-            } catch (IOException ex) {
-                Logger.getLogger(RelatorioCancelamentoClienteMB.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SQLException ex) {
+            } catch (IOException | SQLException ex) {
                 Logger.getLogger(RelatorioCancelamentoClienteMB.class.getName()).log(Level.SEVERE, null, ex);
             }
 
@@ -250,7 +247,7 @@ public class CadCancelamentoClienteMB implements Serializable {
     public String gerarSQL() {
         String sql = "select distinct cliente.nome, cliente.cpf, cliente.rg"
                 + " from cliente";
-        sql = sql + " where cliente.idcliente=" + cliente.getIdcliente();
+        sql = sql + " where cliente.idcliente=" + associado.getCliente().getIdcliente();
 //        if (dataInicio != null && dataInicio != null) {
 //            sql = sql + " and ccancelamento.data>='" + Formatacao.ConvercaoDataSql(dataInicio) + "'"
 //                    + " and ccancelamento.data<='" + Formatacao.ConvercaoDataSql(dataFinal) + "'"; 

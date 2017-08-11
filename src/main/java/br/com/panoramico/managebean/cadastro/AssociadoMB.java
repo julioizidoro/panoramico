@@ -10,6 +10,7 @@ import br.com.panoramico.dao.AssociadoEmpresaDao;
 import br.com.panoramico.dao.DependenteDao;
 import br.com.panoramico.model.Associado;
 import br.com.panoramico.model.Associadoempresa;
+import br.com.panoramico.model.Ccancelamento;
 import br.com.panoramico.model.Contasreceber;
 import br.com.panoramico.model.Dependente;
 import br.com.panoramico.uil.Mensagem;
@@ -410,5 +411,26 @@ public class AssociadoMB implements Serializable {
             }
         }
         return false;
+    }
+    
+    
+    public String novoCancelamento(Associado associado) {
+        if (associado != null) {
+            Map<String, Object> options = new HashMap<String, Object>();
+            options.put("contentWidth", 400);
+            options.put("closable", false);
+            FacesContext fc = FacesContext.getCurrentInstance();
+            HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+            session.setAttribute("associado", associado);
+            RequestContext.getCurrentInstance().openDialog("cadCancelamentoCliente", options, null);
+        }
+        return "";
+    }
+
+    public void retornoDialogCencelamento(SelectEvent event) {
+        Ccancelamento ccancelamento = (Ccancelamento) event.getObject();
+        if (ccancelamento.getIdccancelamento() != null) {
+            Mensagem.lancarMensagemFatal("Cancalmento feito com sucesso", "");
+        }
     }
 }
