@@ -185,8 +185,8 @@ public class BoletoMB implements Serializable {
                 }
                 GerarArquivoRemessaItau arquivoRemessaItau = new GerarArquivoRemessaItau(lista, usuarioLogadoMB, proprietario, lista, banco, nomearquivo, nomeFtp, ftpdados);
                 confirmarContas(lista);
-                InputStream stream = procurarArquivo();
-                file = new DefaultStreamedContent(stream, "", nomeFtp);
+                InputStream stream = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream("\\remessa\\" + nomearquivo);
+                file = new DefaultStreamedContent(stream, "texto/txt", nomearquivo);
                 FacesMessage msg = new FacesMessage("Enviado! ", "Disponivel para download, aperte novamente");
                 FacesContext.getCurrentInstance().addMessage(null, msg);
                 nomeBotao = "Download";
@@ -194,21 +194,21 @@ public class BoletoMB implements Serializable {
                 FacesMessage msg = new FacesMessage("Erro! ", "Nenhuma Conta Selecionada");
                 FacesContext.getCurrentInstance().addMessage(null, msg);
             }
+            remessaarquivo = new Remessaarquivo();
+            remessaarquivo.setDataenvio(new Date());
+            remessaarquivo.setUsuario(usuarioLogadoMB.getUsuario());
+            remessaarquivo.setNomearquivo(nomearquivo);
+            remessaarquivo = remesssaArquivoDao.update(remessaarquivo);
             for (int i = 0; i < lista.size(); i++) {
-                remessaarquivo = new Remessaarquivo();
                 remessacontas = new Remessacontas();
-                remessaarquivo.setDataenvio(new Date());
-                remessaarquivo.setUsuario(usuarioLogadoMB.getUsuario());
-                remessaarquivo.setNomearquivo(nomearquivo);
-                remessaarquivo = remesssaArquivoDao.update(remessaarquivo);
                 remessacontas.setContasreceber(lista.get(i));
                 remessacontas.setCodigoocorrencia("01");
                 remessacontas.setRemessaarquivo(remessaarquivo);
                 remessaContasDao.update(remessacontas);
             }
         } else if (nomeBotao.equalsIgnoreCase("Download")) {
-            InputStream stream = procurarArquivo();
-            file = new DefaultStreamedContent(stream, "", nomeFtp);
+            InputStream stream = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream("\\remessa\\" + nomearquivo);
+            file = new DefaultStreamedContent(stream, "texto/txt", nomearquivo);
         }
         return "";
     }

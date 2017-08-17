@@ -172,7 +172,7 @@ public class GerarArquivoRemessaItau {
             }
         }
         remessa.close();
-        enviarArquivoFTP();
+        //enviarArquivoFTP();
 
     }
 
