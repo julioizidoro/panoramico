@@ -192,13 +192,7 @@ public class CadClienteMB implements Serializable {
         String mensagem = "";
         if (cliente.getCpf() == null || cliente.getCpf().length() == 0) {
             mensagem = mensagem + " Informe o CPF \r\n";
-        } else {
-            Cliente c = clienteDao.find("select c from Cliente c where c.cpf='" + cliente.getCpf() + "'");
-            if (c == null || c.getIdcliente() == null) {
-            } else {
-                mensagem = mensagem + " Este CPF ja existe \r\n";
-            }
-        }
+        } 
         return mensagem;
     }
 }

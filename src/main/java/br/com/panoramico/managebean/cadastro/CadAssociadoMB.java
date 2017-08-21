@@ -360,7 +360,10 @@ public class CadAssociadoMB implements Serializable {
             mensagem = mensagem + " Informe o plano desde associado \r\n";
         }
         if (associado.getDescotomensalidade() == null) {
-            mensagem = mensagem + " Informe o valor do desconto de mensalidade";
+            mensagem = mensagem + " Informe o valor do desconto de mensalidade \r\n";
+        }
+        if (associado.getSituacao() == null || associado.getSituacao().equalsIgnoreCase("sn")) {
+            mensagem = mensagem + " Informe a situação do associado \r\n";            
         }
         return mensagem;
     }
