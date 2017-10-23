@@ -26,9 +26,6 @@
             <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
             <br/>
             <p:commandButton value="Gerar Boleto" id="botaoGerarBoleto" update="messages, botaoGerarBoleto, botaoEnviar, idFormConsultaNotificacao, idConsultaNotificacao" style="margin-left: 1%;" rendered="#{boletoTotalContasMB.habilitarGerarBoleto}" actionListener="#{boletoTotalContasMB.gerarBoleto()}"  onclick="this.form.target = '_blank'" ajax="false"/>
-            <p:commandButton value="Enviar" id="botaoEnviar" ajax="false" style="margin-left:3%;" action="#{boletoTotalContasMB.enviarBoleto()}" rendered="#{boletoTotalContasMB.habilitarGerarBoleto}" update="messages, idConsultaNotificacao, botaoGerarBoleto, botaoEnviar">
-                <p:fileDownload value="#{boletoTotalContasMB.file}" />
-            </p:commandButton> 
             <h:dataTable id="idConsultaNotificacao" style="width: 98%;" styleClass="table" value="#{boletoTotalContasMB.listaContasReceber}" var="contasreceber">
                 <h:column> 
                     <f:facet name="header">Cliente</f:facet> 

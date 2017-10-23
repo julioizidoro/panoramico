@@ -474,7 +474,7 @@ public class ContasReceberMB implements Serializable {
                         Mensagem.lancarMensagemInfo("Atenção", "Selecione a função desejada.");
                     } else {
                         if (funcaoBotaoBoleto.equalsIgnoreCase("Gerar")) {
-                            sql = sql + " and c.nossonumero='0' and c.situacao='PAGAR' and c.situacaoboleto='Novo' and c.datavencimento>='" + Formatacao.ConvercaoDataSql(new Date()) + "'";
+                            sql = sql + " and (c.nossonumero='0' or c.nossonumero is null) and c.situacao='PAGAR' and c.situacaoboleto='Novo' and c.datavencimento>='" + Formatacao.ConvercaoDataSql(new Date()) + "'";
                             btnGerarBoleto = true;
                             btnGerarSegundaVia = false;
                             btnEnviarBoleto = false;
